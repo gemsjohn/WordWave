@@ -169,11 +169,11 @@ export const Game = (props) => {
 
     // Letter Array
     const [randomWord, setRandomWord] = useState('')
-    const [wordPlusSeven, setWordPlusSeven] = useState([]);
+    // const [wordPlusSeven, setWordPlusSeven] = useState([]);
+    const wordPlusSeven = useRef([])
 
     // Letter Position
-    const [letterInXRange, setLetterInXRange] = useState(false);
-    const [letterInYRange, setLetterInYRange] = useState(false);
+    const animation = useRef(null)
     const position = useRef(new Animated.Value(1000)).current;
     const [yPos, setYPos] = useState(0);
 
@@ -193,7 +193,7 @@ export const Game = (props) => {
     const crashes = useRef(0);
     const prevCrashes = useRef(0);
     const isGameInProgress = useRef(false);
-    const animation = useRef(null)
+    
     const score = useRef(0);
     const hasUpdatedLetterBlock = useRef(false);
     const hasUpdatedObstacle_0 = useRef(false);
@@ -203,7 +203,7 @@ export const Game = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     useLayoutEffect(() => {
-      console.log("useLayoutEffect")
+      // console.log("useLayoutEffect")
       isGameInProgress.current = false;
     }, [])
 
@@ -232,38 +232,40 @@ export const Game = (props) => {
       let scambledCombined = shuffle(uniqueCombined);
       console.log(scambledCombined)
 
-      isGameInProgress.current = true;
-
-      setWordPlusSeven(scambledCombined)
+      
       setRandomWord(word);
       setDisplayLetters(letters)
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+      
+      
+      
     }
 
     useEffect(() => {
       console.log("#!!!!")
       if (isGameInProgress.current) {
+          runAnimation();
           runObstacleAnimation_0();
       }
       
     }, [isGameInProgress.current])
 
     const runAnimation = () => {
-      if (!isGameInProgress.current) {
-        return
-      }
-      hasUpdatedLetterBlock.current = false;
-      setYPos(Math.floor(Math.random() * 310));
-      setLetter(wordPlusSeven[count._value]);
-      position.setValue(1000);
-      animation.current = Animated.timing(position, {
-        toValue: -80,
-        duration: 4000,
-        useNativeDriver: true,
-      })
       if (isGameInProgress.current) {
+        console.log("runAnimation: " + wordPlusSeven.current)
+        hasUpdatedLetterBlock.current = false;
+        setYPos(Math.floor(Math.random() * 310));
+        setLetter(wordPlusSeven.current[count._value]);
+        position.setValue(1000);
+        animation.current = Animated.timing(position, {
+          toValue: -80,
+          duration: 4000,
+          useNativeDriver: true,
+        })
         animation.current.start(() => {
-          console.log("ANimation, start?")
-          if (count._value >= wordPlusSeven.length - 1) {
+          // console.log("ANimation, start?")
+          if (count._value >= wordPlusSeven.current.length - 1) {
             // console.log("Restart wordPlusSeven")
             count.setValue(0)
           } else {
@@ -273,10 +275,11 @@ export const Game = (props) => {
           setTimeout(() => {
             runAnimation();
           }, 200)
-
-
         });
+      } else {
+        return;
       }
+      
     };
 
     const runObstacleAnimation_0 = () => {
@@ -297,7 +300,7 @@ export const Game = (props) => {
         obstacle_0.current.start(() => {
           setTimeout(() => {
             runObstacleAnimation_0();
-            console.log("#3 = runObstacleAnimation_0 ")
+            // console.log("#3 = runObstacleAnimation_0 ")
           }, 200)
         });
       } else {
@@ -327,11 +330,12 @@ export const Game = (props) => {
 
 
     useEffect(() => {
-      if (wordPlusSeven.length > 0) {
-        runAnimation();
+      if (wordPlusSeven.current.length > 0) {
+        isGameInProgress.current = true;
+        // runAnimation();
         // runObstacleAnimation_1();
       }
-    }, [wordPlusSeven])
+    }, [wordPlusSeven.current])
 
 
     let localCharXPos = props.charX - Math.trunc(windowWidth * 0.313);
@@ -404,13 +408,13 @@ export const Game = (props) => {
 
       if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
         // youWin(crashes.current)
-        endGame();
+        endGame({continue: true, crashes: crashes.current});
       }
     }, [letterPocket])
 
     useEffect(() => {
       if (crashes.current >= 3) {
-        endGame();
+        endGame({continue: false, crashes: 0});
       }
     }, [crashes.current])
 
@@ -423,8 +427,9 @@ export const Game = (props) => {
       }
     }
 
-    const endGame = () => {
-      console.log("YOU LOOSE!")
+    const endGame = (input) => {
+      console.log("COMPLETE")
+      console.log(input)
       // Stop Game
       animation.current.stop();
       obstacle_0.current.stop();
@@ -438,7 +443,7 @@ export const Game = (props) => {
 
       // Clear Word
       setRandomWord('');
-      setWordPlusSeven([]);
+      wordPlusSeven.current = [];
 
       // Clear Letter Position
       position.setValue(1000);
@@ -458,46 +463,21 @@ export const Game = (props) => {
 
       isGameInProgress.current = false;
 
-      setTimeout(() => {
-        // prevCrashes.current = input;
-        setModalVisible(true)
-      }, 200);
+      if (input.continue) {
+        Generate(input.crashes)
+      } else {
+        setTimeout(() => {
+          setModalVisible(true)
+        }, 100);
+      }
+      
+      
     }
 
-    // const youWin = (input) => {
-    //   console.log("YOU WIN!")
-    //   let resetCount = 0;
-
-    //   obstacle_0.current.reset();
-    //   setLetter('');
-    //   setLetterPocket([]);
-    //   setRandomWord('');
-    //   crashes.current = 0;
-    //   score.current += 1;
-    //   hasUpdatedLetterBlock.current = false;
-    //   hasUpdatedObstacle_0.current = false;
-      
-    //   setTimeout(() => {
-    //     if (resetCount < 1) {
-    //       console.log("resetCount")
-    //       animation.current.reset(); 
-    //       Generate(input);
-    //     }
-    //     resetCount += 1;
-        
-    //   }, 200);
-    // }
 
     return (
       <View>
         <>
-
-          {/* {displayRed &&
-            <View style={{ backgroundColor: 'blue', height: 30, width: 30, position: 'absolute', zIndex: -5, top: windowHeight / 2, left: windowWidth / 2 }} />
-          }
-          {displayRed_1 &&
-            <View style={{ backgroundColor: 'red', height: 30, width: 30, position: 'absolute', zIndex: -5, top: windowHeight / 2, left: windowWidth / 2 }} />
-          } */}
 
           <TouchableOpacity
             onPress={() => { Generate() }}
@@ -518,10 +498,6 @@ export const Game = (props) => {
                 <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 40 }}>Score: 0</Text>
               </View>
             }
-
-            {/* <TouchableOpacity onPress={() => {animation.stop(); isRunning.current = false;}} style={{ position: 'absolute', left: 450, top: -30 }}>
-                <Image source={require('../../assets/pauseBTN.png')} style={{ height: 50, width: 50 }}></Image>
-              </TouchableOpacity> */}
 
             {/* Letter Blocks */}
             <Animated.View
