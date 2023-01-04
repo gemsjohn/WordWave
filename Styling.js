@@ -35,7 +35,7 @@ export const Styling = StyleSheet.create({
     flex: 1,
     alignItems: "flex-start",
     justifyContent: "center",
-    marginTop: 10,
+    // marginTop: 10,
     backgroundColor: 'red',
     position: 'absolute',
     zIndex: 0

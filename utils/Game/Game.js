@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 // import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
@@ -36,6 +36,7 @@ export const Game = (props) => {
   let newX;
   let charHeight = 42;
   let charWidth = 62;
+  
 
   setTimeout(() => {
     setLoadingComplete(true)
@@ -90,7 +91,6 @@ export const Game = (props) => {
         onPanResponderMove: (e, gestureState) => {
           newY = gestureState.moveY - yInit[0];
           newX = gestureState.moveX - xInit[0];
-          console.log(Math.trunc(windowWidth))
           
           if (newY <= 0) {
             newY = 0;
@@ -108,7 +108,6 @@ export const Game = (props) => {
           objectPosition.current = { x: newX, y: newY };
           setPosY(Math.trunc(objectPosition.current.y));
           setPosX(Math.trunc(objectPosition.current.x))
-
 
           Animated.event(
             [
@@ -135,7 +134,7 @@ export const Game = (props) => {
           <Animated.View
             style={{
               // transform: [{ translateX: 480 }, { translateY: posY }]
-              transform: [{ translateX: posX + 480 }, { translateY: posY }]
+              transform: [{ translateX: posX + 480 }, { translateY: posY + 10 }]
 
 
             }}
@@ -153,7 +152,7 @@ export const Game = (props) => {
           </Animated.View>
 
         </View>
-        <Projectile charY={posY} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+        <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
       </View>
     );
   }
@@ -197,6 +196,7 @@ export const Game = (props) => {
     const isGameInProgress = useRef(null)
     const animation = useRef(null)
     const score = useRef(0);
+    const[displayRed, setDisplayRed] = useState(false)
     
     const Generate = () => {
       const data = require('./output.json');
@@ -297,7 +297,7 @@ export const Game = (props) => {
       }
     };
 
-    function isColliding(obj1, obj2) {
+    function isLetterBlockColliding(obj1, obj2) {
       return (
         obj1.x < obj2.x + obj2.width &&
         obj1.x + obj1.width > obj2.x &&
@@ -316,45 +316,91 @@ export const Game = (props) => {
       }
     }, [wordPlusSeven])
 
-    console.log("charX: " + props.charX)
-  
+
+    let localCharXPos = props.charX - Math.trunc(windowWidth*0.313);
+    let localCharYPos = props.charY - Math.trunc(windowWidth*0.011);
+
+    const [obj1, setObj1] = useState({
+      x: localCharXPos,
+      y: localCharYPos,
+      width: props.charWidth,
+      height: props.charHeight
+    });
+
     useEffect(() => {
-      // const wordBlockListener = position.addListener((value) => {
-      //   if (value.value <= 96 &&
-      //     value.value > -5) {
-      //     setLetterInXRange(true)
-      //   } else {
-      //     setLetterInXRange(false)
-      //   }
-      // });
-
-      // let obj1 = {x: props.charX, y: , width: , height: }
-      // let obj2 = {x: , y: , width: , height: }
-
-      // if (isColliding(obj1, obj2)) {
-      //   console.log('The objects are colliding!');
-      // } else {
-      //   console.log('The objects are not colliding.');
-      // }
-
-
-      const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-        if (value.value <= 96 &&
-          value.value > -5) {
-            // console.log("TRUE!!!!!!!!!!!!!TRUE!!!!!!!!!!!!!!!!!TRUE")
-            setObstacleInXRange_0(true)
+      setObj1({
+        x: localCharXPos,
+        y: localCharYPos,
+        width: props.charWidth,
+        height: props.charHeight
+      });
+    }, [localCharXPos, localCharYPos, props.charWidth, props.charHeight]);
+    
+    useLayoutEffect(() => {
+      const wordBlockListener = position.addListener((value) => {
+        let obj2 = {x: value.value, y: yPos, width: 50, height: 50}
+        console.log(obj1)
+        
+        if (isLetterBlockColliding(obj1, obj2)) {
+          // console.log('The objects are colliding!');
+          setDisplayRed(true)
         } else {
-          // console.log("xxxxxxxFLASExxxxxxxxxxFALSExxxxxxxxxxxFALSE")
-          setObstacleInXRange_0(false)
+          // console.log('The objects are not colliding.');
+          setDisplayRed(false)
         }
       });
-  
+    
       return () => {
-        // position.removeListener(wordBlockListener);
-        obstaclePosition_0.removeListener(obstacleListener_0)
-        // obstaclePosition_1.removeListener(obstacleListener_1)
+        position.removeListener(wordBlockListener);
       }
-    }, []);
+    }, [obj1]);
+    
+  
+    // useEffect(() => {
+    //   // const wordBlockListener = position.addListener((value) => {
+    //   //   if (value.value <= 96 &&
+    //   //     value.value > -5) {
+    //   //     setLetterInXRange(true)
+    //   //   } else {
+    //   //     setLetterInXRange(false)
+    //   //   }
+    //   // });
+    //   const wordBlockListener = position.addListener((value) => {
+    //     let obj2 = {x: value.value, y: yPos, width: 50, height: 50}
+    //     console.log(obj1)
+        
+    //     if (isColliding(obj1, obj2)) {
+    //       // console.log('The objects are colliding!');
+    //       setDisplayRed(true)
+    //     } else {
+    //       // console.log('The objects are not colliding.');
+    //       setDisplayRed(false)
+    //     }
+    //   });
+      
+
+      
+
+      
+
+
+    //   const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
+    //     if (value.value <= 96 &&
+    //       value.value > -5) {
+    //         // console.log("TRUE!!!!!!!!!!!!!TRUE!!!!!!!!!!!!!!!!!TRUE")
+    //         setObstacleInXRange_0(true)
+    //     } else {
+    //       // console.log("xxxxxxxFLASExxxxxxxxxxFALSExxxxxxxxxxxFALSE")
+    //       setObstacleInXRange_0(false)
+    //     }
+    //   });
+  
+    //   return () => {
+    //     position.removeListener(wordBlockListener);
+    //     obstaclePosition_0.removeListener(obstacleListener_0)
+    //     // obstaclePosition_1.removeListener(obstacleListener_1)
+    //   }
+    // }, []);
   
     useEffect(() => {
         try {
@@ -485,6 +531,10 @@ export const Game = (props) => {
     return (
       <View>
         <>
+
+          {displayRed &&
+            <View style={{ backgroundColor: 'red', height: 30, width: 30, position: 'absolute', zIndex: -5, top: windowHeight / 2, left: windowWidth / 2 }} />
+          }
           
           <TouchableOpacity
             onPress={() => { Generate() }} 
@@ -626,10 +676,20 @@ export const Game = (props) => {
         {loadingComplete ?
           <>
             {/* GUIDE LINES START */}
+            {/* CROSS */}
             <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: windowHeight / 2 }} />
             <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: windowWidth / 2 }} />
+
+            {/* Char Left to Right */}
             <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: 40 }} />
             <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: 252 }} />
+
+            {/* Char Top to Bottom */}
+            <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: 10 }} />
+            <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: 412 }} />
+
+            
+
             {/* GUIDE LINES START */}
             <CharacterAndJoystick />
           </>
