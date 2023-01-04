@@ -161,6 +161,7 @@ export const Game = (props) => {
   
     // Letter Position
     const [letterInXRange, setLetterInXRange] = useState(false);
+    const [letterInYRange, setLetterInYRange] = useState(false);
     const position = useRef(new Animated.Value(1000)).current;
     const [yPos, setYPos] = useState(0);
   
@@ -311,14 +312,6 @@ export const Game = (props) => {
           setObstacleInXRange_0(false)
         }
       });
-      // const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-      //   if (value.value <= 96 &&
-      //     value.value > -5) {
-      //       setObstacleInXRange_1(true)
-      //   } else {
-      //     setObstacleInXRange_1(false)
-      //   }
-      // });
   
       return () => {
         position.removeListener(wordBlockListener);
@@ -330,7 +323,7 @@ export const Game = (props) => {
     useEffect(() => {
         try {
           if (letterInXRange) {
-            if (props.charY >= yPos - yCalibrated && props.charY <= yPos + 50 + yCalibrated) {
+            if (props.charY >= yPos - props.charHeight && props.charY <= yPos + 50) {
               setLetterPocket(prevItems => [...prevItems, letter])
               animation.current.reset()
             }
@@ -356,20 +349,7 @@ export const Game = (props) => {
         console.log("MISS")
       }
   }, [obstacleInXRange_0])
-  // useEffect(() => {
-  //   try {
-  //     if (obstacleInXRange_1) {
-  //       if (props.charY >= obstacleYPos_1 - yCalibrated && props.charY <= yPos + 50 + yCalibrated) {
-  //         let setCrashNum = prevCrashes.current + wrongElements.length + 1;
-  //         crashes.current = setCrashNum;
-  //         animation.current.reset()
-  //       }
-  //     }
-  //   } catch {
-  //     console.log("MISS")
-  //   }
-  // }, [obstacleInXRange_1])
-  
+   
     
   
     useEffect(() => {
@@ -470,8 +450,14 @@ export const Game = (props) => {
       <View>
         <>
           
-          <TouchableOpacity onPress={() => { Generate() }} style={{ position: 'absolute', left: windowWidth/2 - 25, top: -5 }}>
-            <Image source={require('../../assets/button_play.png')} style={{ height: 50, width: 50 }}></Image>
+          <TouchableOpacity
+            onPress={() => { Generate() }} 
+            style={{ position: 'absolute', left: windowWidth/2 - 25, top: -5 }}
+          >
+            <Image 
+              source={require('../../assets/button_play.png')} 
+              style={{ height: 50, width: 50 }} 
+            />
           </TouchableOpacity>
           {score.current > 0 ?
           <View style={{position: 'absolute', bottom: - windowHeight + 100, left: windowWidth/2 - 50}}>
@@ -495,7 +481,7 @@ export const Game = (props) => {
                 // transform: [{ translateX: position }, { translateY: yPos + yCalibrated }],
                 transform: [
                   { translateX: position }, 
-                  { translateY: yPos + yCalibrated }
+                  { translateY: yPos }
                 ],
 
               },
@@ -507,7 +493,7 @@ export const Game = (props) => {
           </Animated.View>
           
           {/* Obstacles */}
-          {/* <Animated.View
+          <Animated.View
             style={[
               Styling.obstacleBlock,
               {
@@ -515,7 +501,7 @@ export const Game = (props) => {
               },
             ]}
           >
-          </Animated.View> */}
+          </Animated.View>
 
           {/* <Animated.View
             style={[
@@ -527,9 +513,9 @@ export const Game = (props) => {
           >
           </Animated.View> */}
   
-          {/* <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', position: 'absolute', zIndex: -7, top: obstacleYPos_0, left: 12, height: 50, width: windowWidth}} >
-            <Text style={{color: 'white'}}>{obstacleYPos_0}</Text>
-          </View> */}
+          <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', position: 'absolute', zIndex: -7, top: yPos, left: 12, height: 50, width: windowWidth}} >
+            <Text style={{color: 'white'}}>{yPos}</Text>
+          </View>
   
           {displayLetters.map((l, i) => (
             <View style={{
