@@ -103,9 +103,9 @@ export const Navbar = (props) => {
                 <View
                     style={{
                     backgroundColor: button.backgroundColor,
-                    padding: WidthRatio(8),
+                    padding: WidthRatio(3),
                     borderRadius: 10,
-                    width: windowWidth / 4,
+                    width: windowWidth / 8,
                     flexDirection: "column"
                     }}
                     accessible
@@ -121,7 +121,7 @@ export const Navbar = (props) => {
                         color: "white",
                         marginTop: 6,
                         alignSelf: "center",
-                        fontSize: HeightRatio(14),
+                        fontSize: HeightRatio(30),
                         // fontFamily: "Inter_900Black"
                     }}
                     allowFontScaling={false}

@@ -23,13 +23,33 @@ export const HeightRatio = (size) => {
 }
 
 export const Styling = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // paddingTop: StatusBar.currentHeight,
-  },
   scrollView: {
-    // backgroundColor: 'pink',
-    // marginHorizontal: 20,
+    marginHorizontal: 0,
+  },
+  container: {
+    flex: 1,
+    // backgroundColor: '#240046',
+    marginTop: 30
+  },
+  joyStickContainer: {
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    marginTop: 10
+  },
+  box: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    justifyContent: 'center',
+    top: 0
+  },
+  boxContainer: {
+    position: 'absolute', 
+    bottom: HeightRatio(windowHeight), 
+    left: WidthRatio(151), 
+    zIndex: 20, top: 0
   },
 
 });
