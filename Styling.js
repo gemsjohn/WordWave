@@ -35,21 +35,66 @@ export const Styling = StyleSheet.create({
     flex: 1,
     alignItems: "flex-start",
     justifyContent: "center",
-    marginTop: 10
+    marginTop: 10,
+    backgroundColor: 'red',
+    position: 'absolute',
+    zIndex: 0
   },
-  box: {
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+  joyStickKnob: {
+    backgroundColor: "rgba(111, 245, 122, 0.5)",
     width: 50,
     height: 50,
     borderRadius: 100,
     justifyContent: 'center',
     top: 0
   },
-  boxContainer: {
+  joyStickInnerContainer: {
     position: 'absolute', 
     bottom: HeightRatio(windowHeight), 
     left: WidthRatio(151), 
     zIndex: 20, top: 0
+  },
+
+  // Blocks, Obstacles
+  block: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: '#1b263b',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 5,
+  },
+  obstacleBlock: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 10,
+  },
+  wordBox: {
+    width: 300, position: 'absolute', top: -40, left: 550,
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: '#43bccd',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: ''
+  },
+  letter: {
+    fontSize: 35,
+    fontWeight: 'bold',
+    color: '#e0e1dd',
+    alignSelf: 'center'
+  },
+  randomWordLetter: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'black',
   },
 
 });
