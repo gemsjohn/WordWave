@@ -18,7 +18,8 @@ import {
   Animated,
   PanResponder,
   UIManager,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal
 } from 'react-native';
 
 
@@ -198,7 +199,8 @@ export const Game = (props) => {
     const hasUpdatedObstacle_0 = useRef(false);
 
     // In Test
-    const [prevWrongElements, setPrevWrongElements]= useState(0)
+    const [prevWrongElements, setPrevWrongElements]= useState(0);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const Generate = (prevC) => {
       const data = require('./output.json');
@@ -427,6 +429,7 @@ export const Game = (props) => {
       // Stop Game
       isGameInProgress.current = false
       animation.current.stop();
+      
 
       // Clear Letters
       letterRef.current = null;
@@ -451,10 +454,14 @@ export const Game = (props) => {
       // Clear Game Logic
       crashes.current = 0;
       prevCrashes.current = 0
-      isGameInProgress.current = null;
       score.current = 0;
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
+
+      setTimeout(() => {
+        // prevCrashes.current = input;
+        setModalVisible(true)
+      }, 200);
     }
 
     const youWin = (input) => {
@@ -482,10 +489,10 @@ export const Game = (props) => {
       obstacle_0.current.stop();
       obstaclePosition_0.setValue(1000)
       setObstacleYPos_0(0)
+      
 
       // Clear Game Logic
       crashes.current = 0;
-      isGameInProgress.current = null;
       score.current = 0;
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
@@ -516,114 +523,124 @@ export const Game = (props) => {
               style={{ height: 50, width: 50 }}
             />
           </TouchableOpacity>
-          {score.current > 0 ?
-            <View style={{ position: 'absolute', bottom: - windowHeight + 100, left: windowWidth / 2 - 50 }}>
-              <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 40 }}>Score: {score.current}</Text>
-            </View>
-            :
-            <View style={{ position: 'absolute', bottom: - windowHeight + 100, left: windowWidth / 2 - 50 }}>
-              <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 40 }}>Score: 0</Text>
-            </View>
-          }
 
-          {/* <TouchableOpacity onPress={() => {animation.stop(); isRunning.current = false;}} style={{ position: 'absolute', left: 450, top: -30 }}>
-              <Image source={require('../../assets/pauseBTN.png')} style={{ height: 50, width: 50 }}></Image>
-            </TouchableOpacity> */}
+            {score.current > 0 ?
+              <View style={{ position: 'absolute', bottom: - windowHeight + 100, left: windowWidth / 2 - 50 }}>
+                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 40 }}>Score: {score.current}</Text>
+              </View>
+              :
+              <View style={{ position: 'absolute', bottom: - windowHeight + 100, left: windowWidth / 2 - 50 }}>
+                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 40 }}>Score: 0</Text>
+              </View>
+            }
 
-          {/* Letter Blocks */}
-          <Animated.View
-            style={[
-              Styling.projectile_word_block,
-              {
-                // transform: [{ translateX: position }, { translateY: yPos + yCalibrated }],
-                transform: [
-                  { translateX: position },
-                  { translateY: yPos }
-                ],
+            {/* <TouchableOpacity onPress={() => {animation.stop(); isRunning.current = false;}} style={{ position: 'absolute', left: 450, top: -30 }}>
+                <Image source={require('../../assets/pauseBTN.png')} style={{ height: 50, width: 50 }}></Image>
+              </TouchableOpacity> */}
 
-              },
-            ]}
-          >
-            <Text ref={letterRef} style={Styling.projectile_letter}>
-              {letter.toUpperCase()}
-            </Text>
-          </Animated.View>
+            {/* Letter Blocks */}
+            <Animated.View
+              style={[
+                Styling.projectile_word_block,
+                {
+                  // transform: [{ translateX: position }, { translateY: yPos + yCalibrated }],
+                  transform: [
+                    { translateX: position },
+                    { translateY: yPos }
+                  ],
 
-          {/* Obstacles */}
-          <Animated.View
-            style={[
-              Styling.projectile_obstacle_block,
-              {
-                transform: [{ translateX: obstaclePosition_0 }, { translateY: obstacleYPos_0 }],
-              },
-            ]}
-          >
-            <Image source={require('../../assets/enemy_0.png')} style={{ height: 50, width: 50 }} />
-          </Animated.View>
-
-          {/* <Animated.View
-            style={[
-              Styling.projectile_obstacle_block,
-              {
-                transform: [{ translateX: obstaclePosition_1 }, { translateY: obstacleYPos_1 + yCalibrated }],
-              },
-            ]}
-          >
-          </Animated.View> */}
-
-          {/* <View style={{backgroundColor: 'rgba(0, 0, 0, .5)', position: 'absolute', zIndex: -7, top: yPos, left: 12, height: 50, width: windowWidth}} >
-            <Text style={{color: 'white'}}>{yPos}</Text>
-          </View> */}
-
-          {displayLetters.map((l, i) => (
-            <View style={{
-              width: 40, position: 'absolute', top: windowHeight - 60, left: (10 + (i * 45)),
-              height: 40,
-              borderRadius: 10,
-              backgroundColor: getBackgroundColor(l),
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-              key={i}
+                },
+              ]}
             >
-              <Text style={Styling.projectile_random_word_letter}>{l.toUpperCase()}</Text>
-            </View>
-          ))}
-          {crashes.current > 0 ?
-            <>
-              {Array.from(Array(crashes.current).keys()).map((n, i) => (
-                <View style={{
-                  width: 40, position: 'absolute', top: windowHeight - 60, left: (windowWidth / 2 + 200 + (i * 50)),
-                  height: 40,
-                  borderRadius: 10,
-                  backgroundColor: 'transparent',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-                  key={i}
-                >
-                  <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
-                </View>
-              ))}
-            </>
-            :
-            <>
-              {Array.from(Array(prevCrashes.current).keys()).map((n, i) => (
-                <View style={{
-                  width: 50, position: 'absolute', top: -40, left: (550 + (i * 50)),
-                  height: 50,
-                  borderRadius: 10,
-                  backgroundColor: 'transparent',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-                  key={i}
-                >
-                  <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
-                </View>
-              ))}
-            </>
-          }
+              <Text ref={letterRef} style={Styling.projectile_letter}>
+                {letter.toUpperCase()}
+              </Text>
+            </Animated.View>
+
+            {/* Obstacles */}
+            <Animated.View
+              style={[
+                Styling.projectile_obstacle_block,
+                {
+                  transform: [{ translateX: obstaclePosition_0 }, { translateY: obstacleYPos_0 }],
+                },
+              ]}
+            >
+              <Image source={require('../../assets/enemy_0.png')} style={{ height: 50, width: 50 }} />
+            </Animated.View>
+
+
+            {displayLetters.map((l, i) => (
+              <View style={{
+                width: 40, position: 'absolute', top: windowHeight - 60, left: (10 + (i * 45)),
+                height: 40,
+                borderRadius: 10,
+                backgroundColor: getBackgroundColor(l),
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+                key={i}
+              >
+                <Text style={Styling.projectile_random_word_letter}>{l.toUpperCase()}</Text>
+              </View>
+            ))}
+            {crashes.current > 0 ?
+              <>
+                {Array.from(Array(crashes.current).keys()).map((n, i) => (
+                  <View style={{
+                    width: 40, position: 'absolute', top: windowHeight - 60, left: (windowWidth / 2 + 200 + (i * 50)),
+                    height: 40,
+                    borderRadius: 10,
+                    backgroundColor: 'transparent',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                    key={i}
+                  >
+                    <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
+                  </View>
+                ))}
+              </>
+              :
+              <>
+                {Array.from(Array(prevCrashes.current).keys()).map((n, i) => (
+                  <View style={{
+                    width: 50, position: 'absolute', top: -40, left: (550 + (i * 50)),
+                    height: 50,
+                    borderRadius: 10,
+                    backgroundColor: 'transparent',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                    key={i}
+                  >
+                    <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
+                  </View>
+                ))}
+              </>
+            }
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={Styling.centeredView}>
+          <View style={Styling.modalView}>
+            <Text style={Styling.modalText}>Hello World!</Text>
+            <TouchableOpacity
+              style={[Styling.button, Styling.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={Styling.textStyle}>Hide Modal</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
         </>
       </View>
