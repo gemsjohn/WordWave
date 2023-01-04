@@ -197,6 +197,7 @@ export const Game = (props) => {
     const animation = useRef(null)
     const score = useRef(0);
     const[displayRed, setDisplayRed] = useState(false)
+    const[displayRed_1, setDisplayRed_1] = useState(false)
     
     const Generate = () => {
       const data = require('./output.json');
@@ -297,7 +298,16 @@ export const Game = (props) => {
       }
     };
 
-    function isLetterBlockColliding(obj1, obj2) {
+    const isLetterBlockColliding = (obj1, obj2) => {
+      return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+      );
+    }
+
+    const isObstacleColliding_0 = (obj1, obj2) => {
       return (
         obj1.x < obj2.x + obj2.width &&
         obj1.x + obj1.width > obj2.x &&
@@ -339,19 +349,27 @@ export const Game = (props) => {
     useLayoutEffect(() => {
       const wordBlockListener = position.addListener((value) => {
         let obj2 = {x: value.value, y: yPos, width: 50, height: 50}
-        console.log(obj1)
         
         if (isLetterBlockColliding(obj1, obj2)) {
-          // console.log('The objects are colliding!');
           setDisplayRed(true)
         } else {
-          // console.log('The objects are not colliding.');
           setDisplayRed(false)
+        }
+      });
+
+      const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
+        let obj2 = {x: value.value, y: obstacleYPos_0, width: 50, height: 50}
+        
+        if (isObstacleColliding_0(obj1, obj2)) {
+          setDisplayRed_1(true)
+        } else {
+          setDisplayRed_1(false)
         }
       });
     
       return () => {
         position.removeListener(wordBlockListener);
+        obstaclePosition_0.removeListener(obstacleListener_0)
       }
     }, [obj1]);
     
@@ -533,6 +551,9 @@ export const Game = (props) => {
         <>
 
           {displayRed &&
+            <View style={{ backgroundColor: 'blue', height: 30, width: 30, position: 'absolute', zIndex: -5, top: windowHeight / 2, left: windowWidth / 2 }} />
+          }
+          {displayRed_1 &&
             <View style={{ backgroundColor: 'red', height: 30, width: 30, position: 'absolute', zIndex: -5, top: windowHeight / 2, left: windowWidth / 2 }} />
           }
           
