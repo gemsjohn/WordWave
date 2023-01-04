@@ -159,9 +159,6 @@ export const Game = (props) => {
 
 
   const Projectile = (props) => {
-    // Random Word
-    const [randomWord, setRandomWord] = useState('')
-
     // Letter
     const letterRef = useRef(null);
     const [letter, setLetter] = useState('');
@@ -170,6 +167,7 @@ export const Game = (props) => {
     const count = new Animated.Value(0);
 
     // Letter Array
+    const [randomWord, setRandomWord] = useState('')
     const [wordPlusSeven, setWordPlusSeven] = useState([]);
 
     // Letter Position
@@ -196,14 +194,13 @@ export const Game = (props) => {
     const isGameInProgress = useRef(null)
     const animation = useRef(null)
     const score = useRef(0);
-
-    // In Test
-    const [displayRed, setDisplayRed] = useState(false)
-    const [displayRed_1, setDisplayRed_1] = useState(false)
     const hasUpdatedLetterBlock = useRef(false);
     const hasUpdatedObstacle_0 = useRef(false);
 
-    const Generate = () => {
+    // In Test
+    const [prevWrongElements, setPrevWrongElements]= useState(0)
+
+    const Generate = (prevC) => {
       const data = require('./output.json');
       const index = Math.floor(Math.random() * data.length);
       const word = data[index].word;
@@ -223,7 +220,13 @@ export const Game = (props) => {
       console.log(scambledCombined)
 
       isGameInProgress.current = true;
-      crashes.current = prevCrashes.current;
+
+      if (prevC > 0) {
+        crashes.current = prevC;
+      } else {
+        crashes.current = 0;
+      }
+      
       setWordPlusSeven(scambledCombined)
       setRandomWord(word);
       setDisplayLetters(letters)
@@ -355,15 +358,12 @@ export const Game = (props) => {
         let obj2 = { x: value.value, y: yPos, width: 50, height: 50 }
 
         if (isLetterBlockColliding(obj1, obj2)) {
-          setDisplayRed(true)
           if (!hasUpdatedLetterBlock.current) {
             setLetterPocket(prevItems => [...prevItems, letter])
             hasUpdatedLetterBlock.current = true;
           }
           
           animation.current.reset()
-        } else {
-          setDisplayRed(false)
         }
       });
 
@@ -371,20 +371,14 @@ export const Game = (props) => {
         let obj2 = { x: value.value, y: obstacleYPos_0, width: 50, height: 50 }
 
         if (isObstacleColliding_0(obj1, obj2)) {
-          setDisplayRed_1(true)
           if (!hasUpdatedObstacle_0.current) {
-            let setCrashNum = prevCrashes.current + crashes.current + 1;
-            crashes.current = setCrashNum;
+            // let setCrashNum = prevCrashes.current + crashes.current + 1;
+            // crashes.current += setCrashNum;
+            crashes.current += 1;
             hasUpdatedObstacle_0.current = true;
           }
           
           obstacle_0.current.reset()
-
-          if (crashes.current >= 3) {
-            endGame();
-          }
-        } else {
-          setDisplayRed_1(false)
         }
       });
 
@@ -395,37 +389,6 @@ export const Game = (props) => {
     }, [obj1]);
 
 
-    // useEffect(() => {
-    //     try {
-    //       if (letterInXRange) {
-    //         if (props.charY >= yPos - props.charHeight && props.charY <= yPos + 50) {
-    //           setLetterPocket(prevItems => [...prevItems, letter])
-    //           animation.current.reset()
-    //         }
-    //       }
-    //     } catch {
-    //       console.log("MISS")
-    //     }
-    // }, [letterInXRange])
-    useEffect(() => {
-      try {
-        if (obstacleInXRange_0) {
-          if (props.charY >= obstacleYPos_0 - props.charHeight && props.charY <= obstacleYPos_0 + 50) {
-            console.log("TRUE!!!!!!!!!!!!!TRUE!!!!!!!!!!!!!!!!!TRUE")
-            let setCrashNum = prevCrashes.current + crashes.current + 1;
-            crashes.current = setCrashNum;
-            obstacle_0.current.reset()
-            if (crashes.current >= 3) {
-              endGame();
-            }
-          }
-        }
-      } catch {
-        console.log("MISS")
-      }
-    }, [obstacleInXRange_0])
-
-
 
     useEffect(() => {
       let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -434,27 +397,21 @@ export const Game = (props) => {
 
       const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
       const wrongElements = letterPocket.filter((element) => !letters.includes(element));
-
-      // console.log("similarElements: " + similarElements)
-      console.log("wrongElements: " + wrongElements)
-      console.log("prev: " + prevCrashes.current)
-      let setCrashNum = prevCrashes.current + wrongElements.length;
-      crashes.current = setCrashNum;
-
-
-
-      if (letterPocket.length > 0) {
-
-        if (similarElements.length === uniqueLetters.length) {
-          // console.log("YOU WIN")
-          youWin(crashes.current)
-        } else if (crashes.current >= 3) {
-          // console.log("YOU LOOSE")
-          endGame()
-        }
+      if (wrongElements.length > prevWrongElements) {
+        crashes.current += 1;
       }
+      setPrevWrongElements(wrongElements.length)
 
+      if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
+        youWin(crashes.current)
+      }
     }, [letterPocket])
+
+    useEffect(() => {
+      if (crashes.current >= 3) {
+        endGame();
+      }
+    }, [crashes.current])
 
     const getBackgroundColor = (input) => {
       let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -466,71 +423,89 @@ export const Game = (props) => {
     }
 
     const endGame = () => {
-      console.log("stopped?")
+      console.log("YOU LOOSE!")
       // Stop Game
       isGameInProgress.current = false
-      animation.current.reset();
+      animation.current.stop();
+
       // Clear Letters
+      letterRef.current = null;
       setLetter('');
       setLetterPocket([]);
       setDisplayLetters([]);
+      count.setValue(0)
+
       // Clear Word
       setRandomWord('');
       setWordPlusSeven([]);
+
       // Clear Letter Position
-      setLetterInXRange(false);
       position.setValue(1000);
       setYPos(0)
-      // Clear Game Logic
-      score.current = 0;
-      // setCrashes(0)
-      // setPrevCrashes(0)
-      crashes.current = 0;
-      prevCrashes.current = 0;
 
+      // Clear Obstacle's
+      obstacle_0.current.stop();
+      obstaclePosition_0.setValue(1000)
+      setObstacleYPos_0(0)
+
+      // Clear Game Logic
+      crashes.current = 0;
+      prevCrashes.current = 0
+      isGameInProgress.current = null;
+      score.current = 0;
+      hasUpdatedLetterBlock.current = false;
+      hasUpdatedObstacle_0.current = false;
     }
 
     const youWin = (input) => {
-      console.log("youWin")
-      console.log("lives: " + input)
+      console.log("YOU WIN!")
       // Stop Game
       isGameInProgress.current = false
-      animation.current.reset();
+      animation.current.stop();
+
       // Clear Letters
+      letterRef.current = null;
       setLetter('');
       setLetterPocket([]);
       setDisplayLetters([]);
+      count.setValue(0)
+
       // Clear Word
       setRandomWord('');
       setWordPlusSeven([]);
+
       // Clear Letter Position
-      setLetterInXRange(false);
       position.setValue(1000);
       setYPos(0)
+
+      // Clear Obstacle's
+      obstacle_0.current.stop();
+      obstaclePosition_0.setValue(1000)
+      setObstacleYPos_0(0)
+
       // Clear Game Logic
       crashes.current = 0;
-      score.current = score.current + 1;
-
+      isGameInProgress.current = null;
+      score.current = 0;
+      hasUpdatedLetterBlock.current = false;
+      hasUpdatedObstacle_0.current = false;
+      
       setTimeout(() => {
-        // setPrevCrashes(input)
-
-        prevCrashes.current = input;
-        // setCrashes(input);
-        Generate();
-      }, 200)
-
+        // prevCrashes.current = input;
+        Generate(input);
+      }, 200);
     }
 
     return (
       <View>
         <>
 
-          {displayRed &&
+          {/* {displayRed &&
             <View style={{ backgroundColor: 'blue', height: 30, width: 30, position: 'absolute', zIndex: -5, top: windowHeight / 2, left: windowWidth / 2 }} />
           }
           {displayRed_1 &&
             <View style={{ backgroundColor: 'red', height: 30, width: 30, position: 'absolute', zIndex: -5, top: windowHeight / 2, left: windowWidth / 2 }} />
-          }
+          } */}
 
           <TouchableOpacity
             onPress={() => { Generate() }}
