@@ -31,7 +31,7 @@ export const Styling = StyleSheet.create({
     // backgroundColor: '#240046',
     marginTop: 30
   },
-  joyStickContainer: {
+  joystick_container: {
     flex: 1,
     alignItems: "flex-start",
     justifyContent: "center",
@@ -40,7 +40,7 @@ export const Styling = StyleSheet.create({
     position: 'absolute',
     zIndex: 0
   },
-  joyStickKnob: {
+  joystick_knob: {
     backgroundColor: "rgba(111, 245, 122, 0.5)",
     width: 50,
     height: 50,
@@ -48,7 +48,7 @@ export const Styling = StyleSheet.create({
     justifyContent: 'center',
     top: 0
   },
-  joyStickInnerContainer: {
+  joystick_inner_container: {
     position: 'absolute', 
     bottom: HeightRatio(windowHeight), 
     left: WidthRatio(151), 
@@ -56,7 +56,7 @@ export const Styling = StyleSheet.create({
   },
 
   // Blocks, Obstacles
-  block: {
+  projectile_word_block: {
     width: 50,
     height: 50,
     borderRadius: 10,
@@ -66,32 +66,32 @@ export const Styling = StyleSheet.create({
     position: 'absolute',
     zIndex: 5,
   },
-  obstacleBlock: {
+  projectile_obstacle_block: {
     width: 50,
     height: 50,
     borderRadius: 10,
-    backgroundColor: 'red',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
     zIndex: 10,
   },
-  wordBox: {
-    width: 300, position: 'absolute', top: -40, left: 550,
-    height: 50,
-    borderRadius: 10,
-    backgroundColor: '#43bccd',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: ''
-  },
-  letter: {
+  // wordBox: {
+  //   width: 300, position: 'absolute', top: -40, left: 550,
+  //   height: 50,
+  //   borderRadius: 10,
+  //   backgroundColor: '#43bccd',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   fontFamily: ''
+  // },
+  projectile_letter: {
     fontSize: 35,
     fontWeight: 'bold',
     color: '#e0e1dd',
     alignSelf: 'center'
   },
-  randomWordLetter: {
+  projectile_random_word_letter: {
     fontSize: 24,
     fontWeight: 'bold',
     color: 'black',
