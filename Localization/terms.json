@@ -1,0 +1,19 @@
+{
+    "en": {
+      "home": {
+        "title": "Home"
+      },
+      "game": {
+        "title": "Game"
+      },
+      "profile": {
+        "title": "Profile"
+      }
+    },
+    "es": {
+      "home": "",
+      "page_0": "",
+      "page_1": "",
+      "profile": ""
+    }
+  }
