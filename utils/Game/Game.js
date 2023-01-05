@@ -296,18 +296,9 @@ export const Game = (props) => {
     const runAnimation = () => {
       console.log("#5a Run Animation")
       if (isGameInProgress.current) {
-        console.log("#5b Letters Array: " + wordPlusSeven.current)
+        // console.log("#5b Letters Array: " + wordPlusSeven.current)
         hasUpdatedLetterBlock.current = false;
-        let localYPos = Math.floor(Math.random() * 310);
-        if (localYPos >= position && localYPos <= position + props.charHeight) {
-          let delta = localYPos - position;
-          let randomBinary = Math.round(Math.random());
-          if (randomBinary == 0) {setYPos(delta-50);}
-          else if (randomBinary == 1) {setYPos(delta+50);}
-        } else {
-          setYPos(localYPos);
-        }
-        
+        setYPos(Math.floor(Math.random() * 310))
         setLetter(wordPlusSeven.current[count._value]);
         position.setValue(1000);
         animation.current = Animated.timing(position, {
@@ -315,9 +306,9 @@ export const Game = (props) => {
           duration: 4000,
           useNativeDriver: true,
         })
-        console.log("#5c Post Animated.timing")
+
         animation.current.start(() => {
-          console.log("#5d Animation.Current.Start")
+
           if (count._value >= wordPlusSeven.current.length - 1) {
             count.setValue(0)
           } else {
@@ -330,7 +321,7 @@ export const Game = (props) => {
           })
           
           timeoutId_a = setTimeout(() => {
-            console.log("#5e Run Animation Cycle")
+            console.log("#5b Re-run")
             runAnimation();
           }, 500)
         });
@@ -348,21 +339,31 @@ export const Game = (props) => {
     console.log("#6a Run Obstacle Animation")
     if (isGameInProgress.current) {
       hasUpdatedObstacle_0.current = false;
-      setObstacleYPos_0(Math.floor(Math.random() * 310));
+      // setObstacleYPos_0(Math.floor(Math.random() * 310));
+      
+      // [Detect Close Objects]
+      let localYPos = Math.floor(Math.random() * 310);
+        if (localYPos >= position && localYPos <= position + props.charHeight) {
+          console.log("--- Close Objects ---")
+          let delta = localYPos - position;
+          let randomBinary = Math.round(Math.random());
+          if (randomBinary == 0) {setObstacleYPos_0(delta-50);}
+          else if (randomBinary == 1) {setObstacleYPos_0(delta+50);}
+        } else {
+          setObstacleYPos_0(localYPos);
+        }
       obstaclePosition_0.setValue(1000);
       obstacle_0.current = Animated.timing(obstaclePosition_0, {
         toValue: -80,
         duration: 2500,
         useNativeDriver: true,
       })
-      console.log("#6b Post Animated.timing")
       obstacle_0.current.start(() => {
-        console.log("#6c Obstacle_0.Current.Start")
         if (timeoutId) {
           clearTimeout(timeoutId);
         }
         timeoutId = setTimeout(() => {
-          console.log("#6d Run Obstacle Animation Cycle")
+          console.log("#6b Re-run")
           runObstacleAnimation_0();
         }, 200)
       });
