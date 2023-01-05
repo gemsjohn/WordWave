@@ -201,6 +201,9 @@ export const Game = (props) => {
     // In Test
     const [prevWrongElements, setPrevWrongElements]= useState(0);
     const [modalVisible, setModalVisible] = useState(false);
+    const [hasGameStatusBeenUpdate, setHasGameStatusBeenUpdate] = useState(false)
+    let timeoutId_a;
+    let timeoutId_b;
 
     useLayoutEffect(() => {
       // console.log("useLayoutEffect")
@@ -208,11 +211,13 @@ export const Game = (props) => {
     }, [])
 
     const Generate = (prevC) => {
+      clearTimeout(timeoutId_b);
       if (prevC > 0) {
         crashes.current = prevC;
       } else {
         crashes.current = 0;
       }
+      
 
       const data = require('./output.json');
       const index = Math.floor(Math.random() * data.length);
@@ -244,9 +249,12 @@ export const Game = (props) => {
 
     useEffect(() => {
       console.log("#!!!!")
-      if (isGameInProgress.current) {
-          runAnimation();
-          runObstacleAnimation_0();
+      if (!hasGameStatusBeenUpdate) {
+        if (isGameInProgress.current) {
+            runAnimation();
+            runObstacleAnimation_0();
+            setHasGameStatusBeenUpdate(true)
+        }
       }
       
     }, [isGameInProgress.current])
@@ -272,31 +280,37 @@ export const Game = (props) => {
             count.setValue(count._value + 1)
           }
 
-          setTimeout(() => {
+          animation.current.stop((value) => {
+            position.setValue(value)
+            
+          })
+          
+
+          timeoutId_a = setTimeout(() => {
             runAnimation();
-          }, 200)
+          }, 500)
         });
       } else {
+        clearTimeout(timeoutId_a);
         return;
       }
       
     };
 
+    
+
     const runObstacleAnimation_0 = () => {
-      if (!isGameInProgress.current) {
-        return;
-      }
-      
-      hasUpdatedObstacle_0.current = false;
-      setObstacleYPos_0(Math.floor(Math.random() * 310));
-      obstaclePosition_0.setValue(1000);
-      obstacle_0.current = Animated.timing(obstaclePosition_0, {
-        toValue: -80,
-        duration: 2500,
-        useNativeDriver: true,
-      })
-      
       if (isGameInProgress.current) {
+      
+        hasUpdatedObstacle_0.current = false;
+        setObstacleYPos_0(Math.floor(Math.random() * 310));
+        obstaclePosition_0.setValue(1000);
+        obstacle_0.current = Animated.timing(obstaclePosition_0, {
+          toValue: -80,
+          duration: 2500,
+          useNativeDriver: true,
+        })
+      
         obstacle_0.current.start(() => {
           setTimeout(() => {
             runObstacleAnimation_0();
@@ -306,6 +320,7 @@ export const Game = (props) => {
       } else {
         return;
       }
+
     };
 
 
@@ -330,12 +345,16 @@ export const Game = (props) => {
 
 
     useEffect(() => {
-      if (wordPlusSeven.current.length > 0) {
-        isGameInProgress.current = true;
-        // runAnimation();
-        // runObstacleAnimation_1();
-      }
+      
+        if (wordPlusSeven.current.length > 0) {
+          isGameInProgress.current = true;
+          // runAnimation();
+          // runObstacleAnimation_1();
+          
+        }
     }, [wordPlusSeven.current])
+
+    
 
 
     let localCharXPos = props.charX - Math.trunc(windowWidth * 0.313);
@@ -367,7 +386,7 @@ export const Game = (props) => {
             hasUpdatedLetterBlock.current = true;
           }
           
-          animation.current.reset()
+          // animation.current.reset()
         }
       });
 
@@ -408,8 +427,12 @@ export const Game = (props) => {
 
       if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
         // youWin(crashes.current)
-        endGame({continue: true, crashes: crashes.current});
+        endGame({continue: true, crashes: 0});
       }
+      if (letterPocket.length > 0) {
+        animation.current.reset()
+      }
+      
     }, [letterPocket])
 
     useEffect(() => {
@@ -464,7 +487,11 @@ export const Game = (props) => {
       isGameInProgress.current = false;
 
       if (input.continue) {
-        Generate(input.crashes)
+        setHasGameStatusBeenUpdate(false);
+        timeoutId_b = setTimeout(() => {
+          Generate(input.crashes)
+        }, 500)
+        
       } else {
         setTimeout(() => {
           setModalVisible(true)
