@@ -182,16 +182,10 @@ export const Game = (props) => {
     const obstacle_0 = useRef(null)
     const obstaclePosition_0 = useRef(new Animated.Value(1000)).current;
     const [obstacleYPos_0, setObstacleYPos_0] = useState(0)
-    const [obstacleInXRange_0, setObstacleInXRange_0] = useState(false);
-
-    const obstacle_1 = useRef(null)
-    const obstaclePosition_1 = useRef(new Animated.Value(1000)).current;
-    const [obstacleYPos_1, setObstacleYPos_1] = useState(0)
-    const [obstacleInXRange_1, setObstacleInXRange_1] = useState(false);
 
    // Collision Detection Variables
-   const localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.272));
-   const localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
+   let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.272));
+   let localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
 
     // Game Logic
     let yCalibrated = 25;
@@ -209,12 +203,11 @@ export const Game = (props) => {
     const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
     let timeoutId_a;
     let timeoutId_b;
-    const [hasContinuousGameBeenInitiated, setHasContinuousGameBeenInitiated] = useState(false)
 
     useLayoutEffect(() => {
       console.log("#0 useLayoutEffect")
       isGameInProgress.current = false;
-      localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.272);
+      localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
       localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
     }, [])
 
@@ -313,34 +306,36 @@ export const Game = (props) => {
       
     };
 
-    
 
-    const runObstacleAnimation_0 = () => {
-      console.log("#6a Run Obstacle Animation")
-      if (isGameInProgress.current) {
-      
-        hasUpdatedObstacle_0.current = false;
-        setObstacleYPos_0(Math.floor(Math.random() * 310));
-        obstaclePosition_0.setValue(1000);
-        obstacle_0.current = Animated.timing(obstaclePosition_0, {
-          toValue: -80,
-          duration: 2500,
-          useNativeDriver: true,
-        })
-        console.log("#6b Post Animated.timing")
-        obstacle_0.current.start(() => {
-          console.log("#6c Obstacle_0.Current.Start")
-          setTimeout(() => {
-            console.log("#6d Run Obstacle Animation Cycle")
-            runObstacleAnimation_0();
-            // console.log("#3 = runObstacleAnimation_0 ")
-          }, 200)
-        });
-      } else {
-        return;
-      }
+  let timeoutId;
 
-    };
+  const runObstacleAnimation_0 = () => {
+    console.log("#6a Run Obstacle Animation")
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_0.current = false;
+      setObstacleYPos_0(Math.floor(Math.random() * 310));
+      obstaclePosition_0.setValue(1000);
+      obstacle_0.current = Animated.timing(obstaclePosition_0, {
+        toValue: -80,
+        duration: 2500,
+        useNativeDriver: true,
+      })
+      console.log("#6b Post Animated.timing")
+      obstacle_0.current.start(() => {
+        console.log("#6c Obstacle_0.Current.Start")
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+          console.log("#6d Run Obstacle Animation Cycle")
+          runObstacleAnimation_0();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
 
 
     const isLetterBlockColliding = (obj1, obj2) => {
@@ -361,25 +356,30 @@ export const Game = (props) => {
       );
     }
 
+    localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
+    localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
+    // console.log({x: localCharXPos, y: localCharYPos});
+    // console.log(windowHeight)
      
 
     const [obj1, setObj1] = useState({
-      x: localCharXPos,
-      y: localCharYPos,
+      x: localCharXPos.current,
+      y: localCharYPos.current,
       width: props.charWidth,
       height: props.charHeight
     });
 
     useEffect(() => {
       setObj1({
-        x: localCharXPos,
-        y: localCharYPos,
+        x: localCharXPos.current,
+        y: localCharYPos.current,
         width: props.charWidth,
         height: props.charHeight
       });
-    }, [localCharXPos, localCharYPos, props.charWidth, props.charHeight]);
+    }, [localCharXPos.current, localCharYPos.current, props.charWidth, props.charHeight]);
 
     useLayoutEffect(() => {
+      console.log(obj1)
       const wordBlockListener = position.addListener((value) => {
         let obj2 = { x: value.value, y: yPos, width: 50, height: 50 }
 
@@ -388,8 +388,6 @@ export const Game = (props) => {
             setLetterPocket(prevItems => [...prevItems, letter])
             hasUpdatedLetterBlock.current = true;
           }
-          
-          // animation.current.reset()
         }
       });
 
@@ -398,12 +396,9 @@ export const Game = (props) => {
 
         if (isObstacleColliding_0(obj1, obj2)) {
           if (!hasUpdatedObstacle_0.current) {
-            // let setCrashNum = prevCrashes.current + crashes.current + 1;
-            // crashes.current += setCrashNum;
             crashes.current += 1;
             hasUpdatedObstacle_0.current = true;
           }
-          
           obstacle_0.current.reset()
         }
       });
@@ -457,6 +452,7 @@ export const Game = (props) => {
       console.log("COMPLETE")
       console.log(input)
       // Stop Game
+      isGameInProgress.current = false;
       animation.current.stop();
       obstacle_0.current.stop();
       
@@ -487,24 +483,26 @@ export const Game = (props) => {
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
 
-      isGameInProgress.current = false;
+      
 
-      if (input.continue && !hasContinuousGameBeenInitiated) {
+      if (input.continue) {
         setHasGameBeenStarted(false);
         score.current += 1;
         timeoutId_b = setTimeout(() => {
           Generate(input.crashes)
-          setHasContinuousGameBeenInitiated(true)
         }, 500)
         
       } else {
         setTimeout(() => {
+          setHasGameBeenStarted(false);
           setModalVisible(true)
         }, 100);
       }
       
       
     }
+
+
     
 
     return (
