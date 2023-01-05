@@ -19,7 +19,8 @@ import {
   PanResponder,
   UIManager,
   TouchableOpacity,
-  Modal
+  Modal,
+  Alert
 } from 'react-native';
 
 
@@ -35,7 +36,7 @@ export const Game = (props) => {
   const [loadingComplete, setLoadingComplete] = useState(false)
   let newY;
   let newX;
-  let charHeight = 42;
+  let charHeight = 38;
   let charWidth = 62;
 
 
@@ -143,7 +144,7 @@ export const Game = (props) => {
           >
             {/* <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: posY, left: -windowWidth }} /> */}
             <View style={{ right: windowWidth - 250, top: 0, flexDirection: 'row' }} >
-              <Image source={require('../../assets/Char_0.png')} style={{ height: charHeight, width: charWidth }} />
+              <Image source={require('../../assets/Char_0.png')} style={{ height: charHeight, width: charWidth, }} />
               <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', padding: 4, height: 23, width: 29, borderRadius: 10, left: -95, top: 16 }}>
                 <Text style={{ color: '#ccff33', fontSize: 10 }}>{posY}</Text>
               </View>
@@ -188,6 +189,10 @@ export const Game = (props) => {
     const [obstacleYPos_1, setObstacleYPos_1] = useState(0)
     const [obstacleInXRange_1, setObstacleInXRange_1] = useState(false);
 
+   // Collision Detection Variables
+   const localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.272));
+   const localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
+
     // Game Logic
     let yCalibrated = 25;
     const crashes = useRef(0);
@@ -201,16 +206,20 @@ export const Game = (props) => {
     // In Test
     const [prevWrongElements, setPrevWrongElements]= useState(0);
     const [modalVisible, setModalVisible] = useState(false);
-    const [hasGameStatusBeenUpdate, setHasGameStatusBeenUpdate] = useState(false)
+    const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
     let timeoutId_a;
     let timeoutId_b;
+    const [hasContinuousGameBeenInitiated, setHasContinuousGameBeenInitiated] = useState(false)
 
     useLayoutEffect(() => {
-      // console.log("useLayoutEffect")
+      console.log("#0 useLayoutEffect")
       isGameInProgress.current = false;
+      localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.272);
+      localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
     }, [])
 
     const Generate = (prevC) => {
+      console.log("#1: Start Generate")
       clearTimeout(timeoutId_b);
       if (prevC > 0) {
         crashes.current = prevC;
@@ -218,7 +227,6 @@ export const Game = (props) => {
         crashes.current = 0;
       }
       
-
       const data = require('./output.json');
       const index = Math.floor(Math.random() * data.length);
       const word = data[index].word;
@@ -242,26 +250,34 @@ export const Game = (props) => {
       setDisplayLetters(letters)
 
       wordPlusSeven.current = scambledCombined; // Must be last
-      
-      
-      
+      console.log("#2 Finish Generate")
     }
 
     useEffect(() => {
-      console.log("#!!!!")
-      if (!hasGameStatusBeenUpdate) {
-        if (isGameInProgress.current) {
+      
+      if (wordPlusSeven.current.length > 0) {
+        console.log("#3 Word Plus 7 useEffect")
+        isGameInProgress.current = true;
+        // setHasContinuousGameBeenInitiated(false);
+        console.log("[STATUS - hasGameBeenStarted]  :: " + hasGameBeenStarted)
+        console.log("[STATUS - isGameInProgress.current]  :: " + isGameInProgress.current)
+
+        if (!hasGameBeenStarted) {
+          if (isGameInProgress.current) {
+            console.log("#4 About to run animations.")
             runAnimation();
             runObstacleAnimation_0();
-            setHasGameStatusBeenUpdate(true)
+            setHasGameBeenStarted(true)
+          }
         }
       }
-      
-    }, [isGameInProgress.current])
+  }, [wordPlusSeven.current])
+
 
     const runAnimation = () => {
+      console.log("#5a Run Animation")
       if (isGameInProgress.current) {
-        console.log("runAnimation: " + wordPlusSeven.current)
+        console.log("#5b Letters Array: " + wordPlusSeven.current)
         hasUpdatedLetterBlock.current = false;
         setYPos(Math.floor(Math.random() * 310));
         setLetter(wordPlusSeven.current[count._value]);
@@ -271,10 +287,10 @@ export const Game = (props) => {
           duration: 4000,
           useNativeDriver: true,
         })
+        console.log("#5c Post Animated.timing")
         animation.current.start(() => {
-          // console.log("ANimation, start?")
+          console.log("#5d Animation.Current.Start")
           if (count._value >= wordPlusSeven.current.length - 1) {
-            // console.log("Restart wordPlusSeven")
             count.setValue(0)
           } else {
             count.setValue(count._value + 1)
@@ -285,8 +301,8 @@ export const Game = (props) => {
             
           })
           
-
           timeoutId_a = setTimeout(() => {
+            console.log("#5e Run Animation Cycle")
             runAnimation();
           }, 500)
         });
@@ -300,6 +316,7 @@ export const Game = (props) => {
     
 
     const runObstacleAnimation_0 = () => {
+      console.log("#6a Run Obstacle Animation")
       if (isGameInProgress.current) {
       
         hasUpdatedObstacle_0.current = false;
@@ -310,9 +327,11 @@ export const Game = (props) => {
           duration: 2500,
           useNativeDriver: true,
         })
-      
+        console.log("#6b Post Animated.timing")
         obstacle_0.current.start(() => {
+          console.log("#6c Obstacle_0.Current.Start")
           setTimeout(() => {
+            console.log("#6d Run Obstacle Animation Cycle")
             runObstacleAnimation_0();
             // console.log("#3 = runObstacleAnimation_0 ")
           }, 200)
@@ -342,23 +361,7 @@ export const Game = (props) => {
       );
     }
 
-
-
-    useEffect(() => {
-      
-        if (wordPlusSeven.current.length > 0) {
-          isGameInProgress.current = true;
-          // runAnimation();
-          // runObstacleAnimation_1();
-          
-        }
-    }, [wordPlusSeven.current])
-
-    
-
-
-    let localCharXPos = props.charX - Math.trunc(windowWidth * 0.313);
-    let localCharYPos = props.charY - Math.trunc(windowWidth * 0.011);
+     
 
     const [obj1, setObj1] = useState({
       x: localCharXPos,
@@ -427,7 +430,7 @@ export const Game = (props) => {
 
       if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
         // youWin(crashes.current)
-        endGame({continue: true, crashes: 0});
+        endGame({continue: true, crashes: crashes.current});
       }
       if (letterPocket.length > 0) {
         animation.current.reset()
@@ -480,16 +483,18 @@ export const Game = (props) => {
       // Clear Game Logic
       crashes.current = 0;
       prevCrashes.current = 0
-      score.current = 0;
+      // score.current = 0;
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
 
       isGameInProgress.current = false;
 
-      if (input.continue) {
-        setHasGameStatusBeenUpdate(false);
+      if (input.continue && !hasContinuousGameBeenInitiated) {
+        setHasGameBeenStarted(false);
+        score.current += 1;
         timeoutId_b = setTimeout(() => {
           Generate(input.crashes)
+          setHasContinuousGameBeenInitiated(true)
         }, 500)
         
       } else {
@@ -500,7 +505,7 @@ export const Game = (props) => {
       
       
     }
-
+    
 
     return (
       <View>
@@ -647,23 +652,48 @@ export const Game = (props) => {
       {/* BODY */}
       <View style={{}}>
         <Image
-          source={require('../../assets/background_1.png')}
+          source={require('../../assets/background_3.png')}
           style={{ position: 'absolute', zIndex: -10, left: -10, top: -200 }}
         />
         {loadingComplete ?
           <>
             {/* GUIDE LINES START */}
             {/* CROSS */}
-            <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: windowHeight / 2 }} />
-            <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: windowWidth / 2 }} />
+            {/* <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: windowHeight / 2 }} />
+            <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: windowWidth / 2 }} /> */}
 
             {/* Char Left to Right */}
-            <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: 40 }} />
-            <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: 252 }} />
+            {/* <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: 40 }} />
+            <View style={{ backgroundColor: 'white', width: 1, height: windowHeight, position: 'absolute', zIndex: -5, left: 252 }} /> */}
 
             {/* Char Top to Bottom */}
-            <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: 10 }} />
-            <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: 412 }} />
+            {/* <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: 10 }} />
+            <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: 412 }} /> */}
+
+            {/* Zone Box */}
+            <View style={{ 
+              // backgroundColor: 'rgba(0, 0, 0, 0.25)', 
+              width: 1, 
+              height: (364 + charHeight), 
+              width: 212, 
+              position: 'absolute', 
+              zIndex: -5, 
+              left: 40, 
+              top: 10,
+              borderRadius: 8,
+              borderTopWidth: 1,
+              borderBottomWidth: 1,
+              borderColor: 'rgba(0, 255, 255, 0.50)' 
+            }} />
+             <View style={{ 
+              backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+              width: 1, 
+              height: windowHeight, 
+              width: 212, 
+              position: 'absolute', 
+              zIndex: -5, 
+              left: 40, 
+            }} />
 
 
 
