@@ -44,6 +44,19 @@ export const Game = (props) => {
     setLoadingComplete(true)
   }, 1000)
 
+  useEffect(() => {
+    // This is the effect that should be cleaned up when the component is unmounted
+    const timeoutId = setTimeout(() => {
+      console.log("MOUNTED")
+    }, 1000);
+  
+    // Return a function that cleans up the effect
+    return () => {
+      console.log("UNMOUNTED")
+      clearTimeout(timeoutId);
+    };
+  }, []); 
+
 
   const CharacterAndJoystick = () => {
 
@@ -131,7 +144,6 @@ export const Game = (props) => {
 
     return (
       <View style={Styling.joystick_container}>
-        {/* <HandleScore score={score._value} /> */}
         <View style={Styling.joystick_inner_container}>
           <Animated.View
             style={{
@@ -144,10 +156,10 @@ export const Game = (props) => {
           >
             {/* <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: posY, left: -windowWidth }} /> */}
             <View style={{ right: windowWidth - 250, top: 0, flexDirection: 'row' }} >
-              <Image source={require('../../assets/Char_0.png')} style={{ height: charHeight, width: charWidth, }} />
-              <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', padding: 4, height: 23, width: 29, borderRadius: 10, left: -95, top: 16 }}>
+              <Image source={require('../../assets/Char_0.png')} style={{ height: charHeight, width: charWidth }} />
+              {/* <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', padding: 4, height: 23, width: 29, borderRadius: 10, left: -95, top: 16 }}>
                 <Text style={{ color: '#ccff33', fontSize: 10 }}>{posY}</Text>
-              </View>
+              </View> */}
             </View>
             <View style={Styling.joystick_knob} />
 
@@ -188,7 +200,6 @@ export const Game = (props) => {
    let localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
 
     // Game Logic
-    let yCalibrated = 25;
     const crashes = useRef(0);
     const prevCrashes = useRef(0);
     const isGameInProgress = useRef(false);
@@ -210,6 +221,21 @@ export const Game = (props) => {
       localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
       localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
     }, [])
+
+    useEffect(() => {
+      // This is the effect that should be cleaned up when the component is unmounted
+      const timeoutId = setTimeout(() => {
+        console.log("MOUNTED_INNER")
+        // setGameMounted(true)
+      }, 1000);
+    
+      // Return a function that cleans up the effect
+      return () => {
+        console.log("UNMOUNTED_INNER")
+        endGame({continue: false, local: "c", crashes: 0, score: 0});
+        clearTimeout(timeoutId);
+      };
+    }, []); 
 
     const Generate = (prevC) => {
       console.log("#1: Start Generate")
@@ -272,7 +298,16 @@ export const Game = (props) => {
       if (isGameInProgress.current) {
         console.log("#5b Letters Array: " + wordPlusSeven.current)
         hasUpdatedLetterBlock.current = false;
-        setYPos(Math.floor(Math.random() * 310));
+        let localYPos = Math.floor(Math.random() * 310);
+        if (localYPos >= position && localYPos <= position + props.charHeight) {
+          let delta = localYPos - position;
+          let randomBinary = Math.round(Math.random());
+          if (randomBinary == 0) {setYPos(delta-50);}
+          else if (randomBinary == 1) {setYPos(delta+50);}
+        } else {
+          setYPos(localYPos);
+        }
+        
         setLetter(wordPlusSeven.current[count._value]);
         position.setValue(1000);
         animation.current = Animated.timing(position, {
@@ -379,7 +414,6 @@ export const Game = (props) => {
     }, [localCharXPos.current, localCharYPos.current, props.charWidth, props.charHeight]);
 
     useLayoutEffect(() => {
-      console.log(obj1)
       const wordBlockListener = position.addListener((value) => {
         let obj2 = { x: value.value, y: yPos, width: 50, height: 50 }
 
@@ -425,7 +459,7 @@ export const Game = (props) => {
 
       if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
         // youWin(crashes.current)
-        endGame({continue: true, crashes: crashes.current});
+        endGame({continue: true, local: "a", crashes: crashes.current, score: score.current});
       }
       if (letterPocket.length > 0) {
         animation.current.reset()
@@ -435,7 +469,10 @@ export const Game = (props) => {
 
     useEffect(() => {
       if (crashes.current >= 3) {
-        endGame({continue: false, crashes: 0});
+        setTimeout(() => {
+          endGame({continue: false, local: "b", crashes: 0, score: 0});
+        }, 200);
+        
       }
     }, [crashes.current])
 
@@ -453,8 +490,10 @@ export const Game = (props) => {
       console.log(input)
       // Stop Game
       isGameInProgress.current = false;
-      animation.current.stop();
-      obstacle_0.current.stop();
+      if (input.local != "c"){
+        animation.current.stop();
+        obstacle_0.current.stop();
+      }
       
       // Clear Letters
       // letterRef.current = null;
@@ -479,7 +518,7 @@ export const Game = (props) => {
       // Clear Game Logic
       crashes.current = 0;
       prevCrashes.current = 0
-      // score.current = 0;
+      score.current = 0;
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
 
@@ -487,16 +526,21 @@ export const Game = (props) => {
 
       if (input.continue) {
         setHasGameBeenStarted(false);
-        score.current += 1;
+        let localScore = input.score + 1;
+        score.current = localScore;
         timeoutId_b = setTimeout(() => {
           Generate(input.crashes)
         }, 500)
         
       } else {
-        setTimeout(() => {
+        if (input.local == "b") {
+          setTimeout(() => {
+            setHasGameBeenStarted(false);
+            setModalVisible(true)
+          }, 100);
+        } else if (input.local == "c") {
           setHasGameBeenStarted(false);
-          setModalVisible(true)
-        }, 100);
+        }
       }
       
       
@@ -615,20 +659,26 @@ export const Game = (props) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
+        // visible={true}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+          // Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
           isGameInProgress.current = false;
         }}
       >
-        <View style={Styling.centeredView}>
-          <View style={Styling.modalView}>
-            <Text style={Styling.modalText}>Hello World!</Text>
+        <View style={Styling.modal_centered_view}>
+          <View style={Styling.modal_view}>
+            <Text style={Styling.modal_text}>Game Over</Text>
+            <View style={{margin: HeightRatio(20)}}>
+              <Text style={Styling.modal_text_style}>Score</Text>
+              <Text style={Styling.modal_text_style}>Time</Text>
+              <Text style={Styling.modal_text_style}>Words</Text>
+            </View>
             <TouchableOpacity
-              style={[Styling.button, Styling.buttonClose]}
+              style={[Styling.modal_button]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={Styling.textStyle}>Hide Modal</Text>
+              <Text style={Styling.modal_text_style}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -89,46 +89,52 @@ export const Styling = StyleSheet.create({
   },
 
   // MODAL STUFF
-  centeredView: {
-    flex: 1,
+  modal_centered_view: {
+    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    // marginTop: 22,
   },
-  modalView: {
+  modal_view: {
     margin: 20,
-    backgroundColor: "white",
+    width: windowWidth - WidthRatio(400),
+    backgroundColor: "rgba(38, 178, 106, 0.90)",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: "#c5ffff",
     shadowOffset: {
       width: 0,
       height: 2
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 1.0,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 20
   },
-  button: {
-    borderRadius: 20,
+  modal_button: {
+    borderRadius: 10,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+    backgroundColor: '#3517bf',
+    width: WidthRatio(100)
+
   },
-  buttonOpen: {
+  modal_button_open: {
     backgroundColor: "#F194FF",
   },
-  buttonClose: {
+  modal_button_close: {
     backgroundColor: "#2196F3",
   },
-  textStyle: {
+  modal_text_style: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center"
   },
-  modalText: {
+  modal_text: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: 40,
+    fontWeight: 'bold'
   }
 
 });
