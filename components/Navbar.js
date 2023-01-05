@@ -74,9 +74,9 @@ export const Navbar = (props) => {
     ];
 
     useEffect(() => {
-        if (props.from == `${getTerm('home', props.language, 'title')}`) {setHomeBg('rgba(255, 255, 255, 0.1)')} else {setHomeBg('transparent')}
-        if (props.from == `${getTerm('game', props.language, 'title')}`) {setGameBg('rgba(255, 255, 255, 0.1)')} else {setGameBg('transparent')}
-        if (props.from == `${getTerm('profile', props.language, 'title')}`) {setProfileBg('rgba(255, 255, 255, 0.1)')} else {setProfileBg('transparent')}
+        if (props.from == `${getTerm('home', props.language, 'title')}`) {setHomeBg('#fa1f5a75')} else {setHomeBg('#86000c90')}
+        if (props.from == `${getTerm('game', props.language, 'title')}`) {setGameBg('#fa1f5a75')} else {setGameBg('#86000c90')}
+        if (props.from == `${getTerm('profile', props.language, 'title')}`) {setProfileBg('#fa1f5a75')} else {setProfileBg('#86000c90')}
         
         // CurrentUser()
         // getBearerToken()
@@ -106,22 +106,24 @@ export const Navbar = (props) => {
                     padding: WidthRatio(3),
                     borderRadius: 10,
                     width: windowWidth / 8,
-                    flexDirection: "column"
+                    flexDirection: "column",
+                    borderWidth: 2,
+                    borderColor: '#fa1f5a', marginLeft: WidthRatio(3), marginRight: WidthRatio(3)
                     }}
                     accessible
                     accessibilityLabel={button.label}
                 >
-                    <FontAwesomeIcon
+                    {/* <FontAwesomeIcon
                     icon={faSolid, button.icon}
                     style={{ color: button.iconColor, alignSelf: "center" }}
                     size={25}
-                    />
+                    /> */}
                     <Text
                     style={{
-                        color: "white",
-                        marginTop: 6,
+                        color: '#3aff00',
+                        // marginTop: 6,
                         alignSelf: "center",
-                        fontSize: HeightRatio(30),
+                        fontSize: HeightRatio(40),
                         // fontFamily: "Inter_900Black"
                     }}
                     allowFontScaling={false}

@@ -340,7 +340,7 @@ export const Game = (props) => {
     if (isGameInProgress.current) {
       hasUpdatedObstacle_0.current = false;
       // setObstacleYPos_0(Math.floor(Math.random() * 310));
-      
+
       // [Detect Close Objects]
       let localYPos = Math.floor(Math.random() * 310);
         if (localYPos >= position && localYPos <= position + props.charHeight) {
@@ -700,8 +700,10 @@ export const Game = (props) => {
         hidden={true} />
       {/* BODY */}
       <View style={{}}>
+        {/* <View style={{position: 'absolute', zIndex: -5, backgroundColor: 'red', height: 10, width: 10, top: windowHeight / 2, left: windowWidth / 2}} /> */}
+
         <Image
-          source={require('../../assets/background_3.png')}
+          source={require('../../assets/background_2.png')}
           style={{ position: 'absolute', zIndex: -10, left: -10, top: -200 }}
         />
         {loadingComplete ?
@@ -720,6 +722,7 @@ export const Game = (props) => {
             <View style={{ backgroundColor: 'white', height: 1, width: windowWidth, position: 'absolute', zIndex: -5, top: 412 }} /> */}
 
             {/* Zone Box */}
+            
             <View style={{ 
               // backgroundColor: 'rgba(0, 0, 0, 0.25)', 
               width: 1, 
@@ -738,10 +741,10 @@ export const Game = (props) => {
               backgroundColor: 'rgba(0, 0, 0, 0.5)', 
               width: 1, 
               height: windowHeight, 
-              width: 212, 
+              width: 252, 
               position: 'absolute', 
               zIndex: -5, 
-              left: 40, 
+              left: 0, 
             }} />
 
 
