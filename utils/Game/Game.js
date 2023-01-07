@@ -214,6 +214,7 @@ export const Game = (props) => {
     const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
     let timeoutId_a;
     let timeoutId_b;
+    const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
 
     useLayoutEffect(() => {
       console.log("#0 useLayoutEffect")
@@ -239,6 +240,7 @@ export const Game = (props) => {
 
     const Generate = (prevC) => {
       console.log("#1: Start Generate")
+      setContinuousEndGameCall(false)
       clearTimeout(timeoutId_b);
       if (prevC > 0) {
         crashes.current = prevC;
@@ -458,9 +460,12 @@ export const Game = (props) => {
       }
       setPrevWrongElements(wrongElements.length)
 
-      if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
-        // youWin(crashes.current)
-        endGame({continue: true, local: "a", crashes: crashes.current, score: score.current});
+      if (!continuousEndGameCall) {
+        if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
+          // youWin(crashes.current)
+          console.log("CURRENT SCORE:   " + score.current)
+          endGame({continue: true, local: "a", crashes: crashes.current, score: score.current});
+        }
       }
       if (letterPocket.length > 0) {
         animation.current.reset()
@@ -489,6 +494,7 @@ export const Game = (props) => {
     const endGame = (input) => {
       console.log("COMPLETE")
       console.log(input)
+      setContinuousEndGameCall(true)
       // Stop Game
       isGameInProgress.current = false;
       if (input.local != "c"){
@@ -528,6 +534,7 @@ export const Game = (props) => {
       if (input.continue) {
         setHasGameBeenStarted(false);
         let localScore = input.score + 1;
+        console.log("LOCAL:   " + localScore)
         score.current = localScore;
         timeoutId_b = setTimeout(() => {
           Generate(input.crashes)
@@ -739,6 +746,7 @@ export const Game = (props) => {
             }} />
              <View style={{ 
               backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+              borderRadius: 0,
               width: 1, 
               height: windowHeight, 
               width: 252, 

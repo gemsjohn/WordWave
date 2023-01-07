@@ -41,10 +41,12 @@ export const Styling = StyleSheet.create({
     zIndex: 0
   },
   joystick_knob: {
-    backgroundColor: "rgba(111, 245, 122, 0.5)",
+    backgroundColor: "#3aff0050",
     width: 50,
     height: 50,
     borderRadius: 100,
+    borderWidth: 1,
+    borderColor: '#84ff4e',
     justifyContent: 'center',
     top: 0
   },
