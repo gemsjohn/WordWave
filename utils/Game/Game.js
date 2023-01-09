@@ -685,6 +685,8 @@ export const Game = (props) => {
               <Text style={Styling.projectile_letter}>
                 {letter.toUpperCase()}
               </Text>
+              <Image source={require('../../assets/block_keyboard_key.png')} style={{height: 50, width: 50}} />
+              
             </Animated.View>
 
             {/* Obstacles */}

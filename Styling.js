@@ -59,10 +59,10 @@ export const Styling = StyleSheet.create({
 
   // Blocks, Obstacles
   projectile_word_block: {
-    width: 50,
-    height: 50,
+    width: HeightRatio(50),
+    height: HeightRatio(50),
     borderRadius: 10,
-    backgroundColor: '#1b263b',
+    // backgroundColor: '#1b263b',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -81,8 +81,12 @@ export const Styling = StyleSheet.create({
   projectile_letter: {
     fontSize: 35,
     fontWeight: 'bold',
-    color: '#e0e1dd',
-    alignSelf: 'center'
+    color: 'black',
+    alignSelf: 'center',
+    position: 'absolute',
+    top: HeightRatio(-20),
+    left: WidthRatio(0),
+    zIndex: 12,
   },
   projectile_random_word_letter: {
     fontSize: 24,

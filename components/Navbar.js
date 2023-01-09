@@ -98,14 +98,17 @@ export const Navbar = (props) => {
                 width: windowWidth
             }}
             >
-            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionHome); }} >
-                <Image source={require('../assets/button_home_nav.png')} style={{height: 50, width: 50}} />
+            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionHome); }} style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
+                <Image source={require('../assets/button_home_nav.png')} style={{height: 60, width: 60}} />
+                {/* <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>HOME</Text> */}
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionGame); }} >
-                <Image source={require('../assets/button_game_nav.png')} style={{height: 50, width: 50}} />
+            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionGame); }}  style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
+                <Image source={require('../assets/button_game_nav.png')} style={{height: 60, width: 60}} />
+                {/* <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>GAME</Text> */}
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionProfile); }} >
-                <Image source={require('../assets/button_profile_nav.png')} style={{height: 50, width: 50}} />
+            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionProfile); }}  style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
+                <Image source={require('../assets/button_profile_nav.png')} style={{height: 60, width: 60}} />
+                {/* <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>PROFILE</Text> */}
             </TouchableOpacity>
             </View>
     )
