@@ -182,8 +182,8 @@ export const Game = (props) => {
 
     // Letter Array
     const [randomWord, setRandomWord] = useState('')
-    // const [wordPlusSeven, setWordPlusSeven] = useState([]);
     const wordPlusSeven = useRef([])
+    const [prevWrongElements, setPrevWrongElements]= useState(0);
 
     // Letter Position
     const animation = useRef(null)
@@ -194,6 +194,12 @@ export const Game = (props) => {
     const obstacle_0 = useRef(null)
     const obstaclePosition_0 = useRef(new Animated.Value(1000)).current;
     const [obstacleYPos_0, setObstacleYPos_0] = useState(0)
+    const hasUpdatedObstacle_0 = useRef(false);
+
+    const obstacle_1 = useRef(null)
+    const obstaclePosition_1 = useRef(new Animated.Value(1000)).current;
+    const [obstacleYPos_1, setObstacleYPos_1] = useState(0)
+    const hasUpdatedObstacle_1 = useRef(false);
 
    // Collision Detection Variables
    let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.272));
@@ -206,15 +212,23 @@ export const Game = (props) => {
     
     const score = useRef(0);
     const hasUpdatedLetterBlock = useRef(false);
-    const hasUpdatedObstacle_0 = useRef(false);
-
-    // In Test
-    const [prevWrongElements, setPrevWrongElements]= useState(0);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
     const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
+    const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
+
+    // Auxilliary
     let timeoutId_a;
     let timeoutId_b;
-    const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false);
+    
+    // In Test
+    
+    
+    
+    
+    
+    
+  
 
     useLayoutEffect(() => {
       console.log("#0 useLayoutEffect")
@@ -288,7 +302,9 @@ export const Game = (props) => {
             console.log("#4 About to run animations.")
             runAnimation();
             runObstacleAnimation_0();
+            runObstacleAnimation_1();
             setHasGameBeenStarted(true)
+            setDisplayPlaybutton(false)
           }
         }
       }
@@ -335,7 +351,8 @@ export const Game = (props) => {
     };
 
 
-  let timeoutId;
+  let timeoutId_0;
+  let timeoutId_1;
 
   const runObstacleAnimation_0 = () => {
     console.log("#6a Run Obstacle Animation")
@@ -361,12 +378,49 @@ export const Game = (props) => {
         useNativeDriver: true,
       })
       obstacle_0.current.start(() => {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
+        if (timeoutId_0) {
+          clearTimeout(timeoutId_0);
         }
-        timeoutId = setTimeout(() => {
+        timeoutId_0 = setTimeout(() => {
           console.log("#6b Re-run")
           runObstacleAnimation_0();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
+  const runObstacleAnimation_1 = () => {
+    console.log("#7a Run Obstacle Animation")
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_1.current = false;
+      // setObstacleYPos_1(Math.floor(Math.random() * 310));
+
+      // [Detect Close Objects]
+      let localYPos = Math.floor(Math.random() * 310);
+        if (localYPos >= position && localYPos <= position + props.charHeight) {
+          console.log("--- Close Objects ---")
+          let delta = localYPos - position;
+          let randomBinary = Math.round(Math.random());
+          if (randomBinary == 0) {setObstacleYPos_1(delta-50);}
+          else if (randomBinary == 1) {setObstacleYPos_1(delta+50);}
+        } else {
+          setObstacleYPos_1(localYPos);
+        }
+      obstaclePosition_1.setValue(1000);
+      obstacle_1.current = Animated.timing(obstaclePosition_1, {
+        toValue: -80,
+        duration: 3000,
+        useNativeDriver: true,
+      })
+      obstacle_1.current.start(() => {
+        if (timeoutId_1) {
+          clearTimeout(timeoutId_1);
+        }
+        timeoutId_1 = setTimeout(() => {
+          console.log("#7b Re-run")
+          runObstacleAnimation_1();
         }, 200)
       });
     } else {
@@ -386,6 +440,15 @@ export const Game = (props) => {
     }
 
     const isObstacleColliding_0 = (obj1, obj2) => {
+      return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+      );
+    }
+
+    const isObstacleColliding_1 = (obj1, obj2) => {
       return (
         obj1.x < obj2.x + obj2.width &&
         obj1.x + obj1.width > obj2.x &&
@@ -440,9 +503,22 @@ export const Game = (props) => {
         }
       });
 
+      const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
+        let obj2 = { x: value.value, y: obstacleYPos_1, width: 50, height: 50 }
+
+        if (isObstacleColliding_1(obj1, obj2)) {
+          if (!hasUpdatedObstacle_1.current) {
+            crashes.current += 1;
+            hasUpdatedObstacle_1.current = true;
+          }
+          obstacle_1.current.reset()
+        }
+      });
+
       return () => {
         position.removeListener(wordBlockListener);
         obstaclePosition_0.removeListener(obstacleListener_0)
+        obstaclePosition_1.removeListener(obstacleListener_1)
       }
     }, [obj1]);
 
@@ -500,6 +576,7 @@ export const Game = (props) => {
       if (input.local != "c"){
         animation.current.stop();
         obstacle_0.current.stop();
+        obstacle_1.current.stop();
       }
       
       // Clear Letters
@@ -522,12 +599,16 @@ export const Game = (props) => {
       obstaclePosition_0.setValue(1000)
       setObstacleYPos_0(0)
 
+      obstaclePosition_1.setValue(1000)
+      setObstacleYPos_1(0)
+
       // Clear Game Logic
       crashes.current = 0;
       prevCrashes.current = 0
       score.current = 0;
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
+      hasUpdatedObstacle_1.current = false;
 
       
 
@@ -541,6 +622,7 @@ export const Game = (props) => {
         }, 500)
         
       } else {
+        
         if (input.local == "b") {
           setTimeout(() => {
             setHasGameBeenStarted(false);
@@ -560,26 +642,31 @@ export const Game = (props) => {
     return (
       <View>
         <>
-
-          <TouchableOpacity
-            onPress={() => { Generate() }}
-            style={{ position: 'absolute', left: windowWidth / 2 - 25, top: -5 }}
-          >
-            <Image
-              source={require('../../assets/button_play.png')}
-              style={{ height: 50, width: 50 }}
-            />
-          </TouchableOpacity>
-
+          {displayPlaybutton ?
+            <TouchableOpacity
+              onPress={() => { Generate() }}
+              style={{ position: 'absolute', left: windowWidth/2 - 125, top: windowHeight/2 - 125, zIndex: -5 }}
+            >
+              <Image
+                source={require('../../assets/button_play.png')}
+                style={{ height: 250, width: 250 }}
+              />
+            </TouchableOpacity>
+            :
+            <>
             {score.current > 0 ?
-              <View style={{ position: 'absolute', bottom: - windowHeight + 100, left: windowWidth / 2 - 50 }}>
-                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 40 }}>Score: {score.current}</Text>
+              <View style={{ position: 'absolute', top: windowHeight/2 - 60, left: windowWidth / 2 - WidthRatio(50), zIndex: -7, backgroundColor: 'blue', padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
+                <Text style={{ color: 'rgba(255, 255, 255, 1.0)', fontSize: 60, fontWeight: 'bold' }}>Score: {score.current}</Text>
               </View>
               :
-              <View style={{ position: 'absolute', bottom: - windowHeight + 100, left: windowWidth / 2 - 50 }}>
-                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 40 }}>Score: 0</Text>
+              <View style={{ position: 'absolute', top: windowHeight/2 - 60, left: windowWidth / 2 - WidthRatio(50), zIndex: -7, backgroundColor: 'blue', padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
+                <Text style={{ color: 'rgba(255, 255, 255, 1.0)', fontSize: 60, fontWeight: 'bold' }}>Score: 0</Text>
               </View>
             }
+            </>
+          }
+
+            
 
             {/* Letter Blocks */}
             <Animated.View
@@ -606,6 +693,17 @@ export const Game = (props) => {
                 Styling.projectile_obstacle_block,
                 {
                   transform: [{ translateX: obstaclePosition_0 }, { translateY: obstacleYPos_0 }],
+                },
+              ]}
+            >
+              <Image source={require('../../assets/enemy_0.png')} style={{ height: 50, width: 50 }} />
+            </Animated.View>
+
+            <Animated.View
+              style={[
+                Styling.projectile_obstacle_block,
+                {
+                  transform: [{ translateX: obstaclePosition_1 }, { translateY: obstacleYPos_1 }],
                 },
               ]}
             >
@@ -684,7 +782,7 @@ export const Game = (props) => {
             </View>
             <TouchableOpacity
               style={[Styling.modal_button]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => {setModalVisible(!modalVisible); setDisplayPlaybutton(true);}}
             >
               <Text style={Styling.modal_text_style}>Close</Text>
             </TouchableOpacity>
@@ -710,7 +808,7 @@ export const Game = (props) => {
         {/* <View style={{position: 'absolute', zIndex: -5, backgroundColor: 'red', height: 10, width: 10, top: windowHeight / 2, left: windowWidth / 2}} /> */}
 
         <Image
-          source={require('../../assets/background_2.png')}
+          source={require('../../assets/background_0.png')}
           style={{ position: 'absolute', zIndex: -10, left: -10, top: -200 }}
         />
         {loadingComplete ?
@@ -730,7 +828,7 @@ export const Game = (props) => {
 
             {/* Zone Box */}
             
-            <View style={{ 
+            {/* <View style={{ 
               // backgroundColor: 'rgba(0, 0, 0, 0.25)', 
               width: 1, 
               height: (364 + charHeight), 
@@ -743,7 +841,7 @@ export const Game = (props) => {
               borderTopWidth: 1,
               borderBottomWidth: 1,
               borderColor: 'rgba(0, 255, 255, 0.50)' 
-            }} />
+            }} /> */}
              <View style={{ 
               backgroundColor: 'rgba(0, 0, 0, 0.5)', 
               borderRadius: 0,

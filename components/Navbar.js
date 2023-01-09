@@ -68,9 +68,9 @@ export const Navbar = (props) => {
     // CheckAuthState()
 
     const buttons = [
-        { key: 0, icon: faHouse, label: `${getTerm('home', props.language, 'title')}`, backgroundColor: homeBg, iconColor: 'white', onPress: () => { props.nav.dispatch(resetActionHome); } }, 
-        { key: 1, icon: faFlagCheckered, label: `${getTerm('game', props.language, 'title')}`, backgroundColor: gameBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionGame); } },
-        { key: 2,icon: faUser, label: `${getTerm('profile', props.language, 'title')}`, backgroundColor: profileBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionProfile); } }
+        { key: 0, image: '../assets/button_game_nav.png', label: `${getTerm('home', props.language, 'title')}`, backgroundColor: homeBg, iconColor: 'white', onPress: () => { props.nav.dispatch(resetActionHome); } }, 
+        { key: 1, image: '../assets/button_game_nav.png', label: `${getTerm('game', props.language, 'title')}`, backgroundColor: gameBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionGame); } },
+        { key: 2, image: '../assets/button_profile_nav.png', label: `${getTerm('profile', props.language, 'title')}`, backgroundColor: profileBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionProfile); } }
     ];
 
     useEffect(() => {
@@ -98,41 +98,15 @@ export const Navbar = (props) => {
                 width: windowWidth
             }}
             >
-            {buttons.map(button => (
-                <TouchableOpacity onPress={button.onPress} key={button.key}>
-                <View
-                    style={{
-                    backgroundColor: button.backgroundColor,
-                    padding: WidthRatio(3),
-                    borderRadius: 10,
-                    width: windowWidth / 8,
-                    flexDirection: "column",
-                    borderWidth: 2,
-                    borderColor: '#fa1f5a', marginLeft: WidthRatio(3), marginRight: WidthRatio(3)
-                    }}
-                    accessible
-                    accessibilityLabel={button.label}
-                >
-                    {/* <FontAwesomeIcon
-                    icon={faSolid, button.icon}
-                    style={{ color: button.iconColor, alignSelf: "center" }}
-                    size={25}
-                    /> */}
-                    <Text
-                    style={{
-                        color: '#3aff00',
-                        // marginTop: 6,
-                        alignSelf: "center",
-                        fontSize: HeightRatio(40),
-                        // fontFamily: "Inter_900Black"
-                    }}
-                    allowFontScaling={false}
-                    >
-                    {button.label}
-                    </Text>
-                </View>
-                </TouchableOpacity>
-            ))}
+            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionHome); }} >
+                <Image source={require('../assets/button_home_nav.png')} style={{height: 50, width: 50}} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionGame); }} >
+                <Image source={require('../assets/button_game_nav.png')} style={{height: 50, width: 50}} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionProfile); }} >
+                <Image source={require('../assets/button_profile_nav.png')} style={{height: 50, width: 50}} />
+            </TouchableOpacity>
             </View>
     )
 }
