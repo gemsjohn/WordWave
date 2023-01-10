@@ -45,6 +45,8 @@ export const Projectile = (props) => {
     const position = useRef(new Animated.Value(1000)).current;
     const [yPos, setYPos] = useState(0);
 
+
+
     // Obstacle Position
     let timeoutId_0;
     let timeoutId_1;
@@ -68,6 +70,10 @@ export const Projectile = (props) => {
     const powerPosition_0 = useRef({ x: 0, y: HeightRatio(140) });
     const [powerColorPositionTimer_0, setPowerColorPositionTimer_0] = useState(null);
     const retainPower_0 = useRef(false);
+    let powerTimeoutId_0;
+    const powerProjectile_0 = useRef(null)
+    const hasUpdatedPowerProjectile_0 = useRef(false);
+    const powerProjectilePosition_0 = useRef(new Animated.ValueXY({ x: props.charX, y: props.charY })).current;
 
     const [powerColor_1, setPowerColor_1] = useState('transparent')
     const powerPosition_1 = useRef({ x: 0, y: HeightRatio(260) });
@@ -180,6 +186,7 @@ export const Projectile = (props) => {
             runObstacleAnimation_0();
             runObstacleAnimation_1();
             runObstacleAnimation_large();
+            
             setHasGameBeenStarted(true)
             setDisplayPlaybutton(false)
           }
@@ -226,6 +233,44 @@ export const Projectile = (props) => {
       }
 
     };
+
+    const runPowerProjectileAnimation_0 = () => {
+        // console.log("#7a Run Obstacle Animation")
+        if (isGameInProgress.current) {
+          hasUpdatedPowerProjectile_0.current = false;
+          let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
+          let localYPos_1 = Math.floor(Math.random() * windowHeight * 0.78);
+  
+          powerProjectilePosition_0.setValue({ x: props.charX, y: props.charY });
+  
+          powerProjectile_0.current = Animated.parallel([
+            Animated.timing(powerProjectilePosition_0.x, {
+              toValue: 1000,
+              duration: 3000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(powerProjectilePosition_0.y, {
+              toValue: localYPos_1,
+              duration: 3000,
+              useNativeDriver: true,
+            }),
+  
+          ]);
+  
+          powerProjectile_0.current.start(() => {
+            if (powerTimeoutId_0) {
+              clearTimeout(powerTimeoutId_0);
+            }
+            powerTimeoutId_0 = setTimeout(() => {
+              // console.log("#7b Re-run")
+              runPowerProjectileAnimation_0();
+            }, 200)
+          });
+        } else {
+          return;
+        }
+      };
+    
 
 
 
@@ -424,6 +469,7 @@ export const Projectile = (props) => {
           clearTimeout(powerColorPositionTimer_0);
         }
         const timer = setTimeout(() => {
+            runPowerProjectileAnimation_0();
           retainPower_0.current = !retainPower_0.current;
           retainPower_1.current = false;
           retainPower_2.current = false;
@@ -587,6 +633,7 @@ export const Projectile = (props) => {
       // setObstacleYPos_1(0)
 
       obstaclePosition_large.setValue({ x: 1000, y: 0 })
+      powerProjectilePosition_0.setValue({x: position.x, y: yPos})
 
 
       // Clear Game Logic
@@ -653,7 +700,17 @@ export const Projectile = (props) => {
             </>
           }
 
-
+          {/* Power _ 0 */}
+          <Animated.View
+            style={[
+              Styling.projectile_obstacle_block,
+              {
+                transform: [{ translateX: powerProjectilePosition_0.x }, { translateY: powerProjectilePosition_0.y }],
+              },
+            ]}
+          >
+            <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 10, width: 10 }} />
+          </Animated.View>
 
           {/* Letter Blocks */}
           <Animated.View
