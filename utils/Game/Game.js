@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1 } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import {
   Text,
@@ -189,18 +189,20 @@ export const Game = (props) => {
     // Obstacle Position
     let timeoutId_0;
     let timeoutId_1;
+    let timeoutId_large;
+
 
     const obstacle_0 = useRef(null)
-    const obstaclePosition_0 = useRef(new Animated.Value(1000)).current;
-    const [obstacleYPos_0, setObstacleYPos_0] = useState(0)
     const hasUpdatedObstacle_0 = useRef(false);
+    const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
 
     const obstacle_1 = useRef(null)
-    // const obstaclePosition_1 = useRef(new Animated.Value(1000)).current;
-    // const [obstacleYPos_1, setObstacleYPos_1] = useState(0)
     const hasUpdatedObstacle_1 = useRef(false);
-
     const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+
+    const obstacle_large = useRef(null)
+    const hasUpdatedObstacle_large = useRef(false);
+    const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
     
 
     // Collision Detection Variables
@@ -298,6 +300,7 @@ export const Game = (props) => {
             runAnimation();
             runObstacleAnimation_0();
             runObstacleAnimation_1();
+            runObstacleAnimation_large();
             setHasGameBeenStarted(true)
             setDisplayPlaybutton(false)
           }
@@ -349,34 +352,34 @@ export const Game = (props) => {
 
 
     const runObstacleAnimation_0 = () => {
-      console.log("#6a Run Obstacle Animation")
+      // console.log("#7a Run Obstacle Animation")
       if (isGameInProgress.current) {
         hasUpdatedObstacle_0.current = false;
-        // setObstacleYPos_0(Math.floor(Math.random() * 310));
+        let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
+        let localYPos_1 = Math.floor(Math.random() * windowHeight * 0.78);
 
-        // [Detect Close Objects]
-        let localYPos = Math.floor(Math.random() * 310);
-        if (localYPos >= position && localYPos <= position + props.charHeight) {
-          console.log("--- Close Objects ---")
-          let delta = localYPos - position;
-          let randomBinary = Math.round(Math.random());
-          if (randomBinary == 0) { setObstacleYPos_0(delta - 50); }
-          else if (randomBinary == 1) { setObstacleYPos_0(delta + 50); }
-        } else {
-          setObstacleYPos_0(localYPos);
-        }
-        obstaclePosition_0.setValue(1000);
-        obstacle_0.current = Animated.timing(obstaclePosition_0, {
-          toValue: -80,
-          duration: 2500,
-          useNativeDriver: true,
-        })
+        obstaclePosition_0.setValue({ x: 1000, y: localYPos_0 });
+
+        obstacle_0.current = Animated.parallel([
+          Animated.timing(obstaclePosition_0.x, {
+            toValue: -80,
+            duration: 3000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(obstaclePosition_0.y, {
+              toValue: localYPos_1,
+              duration: 3000,
+              useNativeDriver: true,
+          }),
+          
+        ]);
+
         obstacle_0.current.start(() => {
           if (timeoutId_0) {
             clearTimeout(timeoutId_0);
           }
           timeoutId_0 = setTimeout(() => {
-            console.log("#6b Re-run")
+            // console.log("#7b Re-run")
             runObstacleAnimation_0();
           }, 200)
         });
@@ -397,7 +400,7 @@ export const Game = (props) => {
         obstacle_1.current = Animated.parallel([
           Animated.timing(obstaclePosition_1.x, {
             toValue: -80,
-            duration: 3000,
+            duration: 2500,
             useNativeDriver: true,
           }),
           Animated.timing(obstaclePosition_1.y, {
@@ -415,6 +418,43 @@ export const Game = (props) => {
           timeoutId_1 = setTimeout(() => {
             console.log("#7b Re-run")
             runObstacleAnimation_1();
+          }, 200)
+        });
+      } else {
+        return;
+      }
+    };
+
+    const runObstacleAnimation_large = () => {
+      console.log("#7a Run Obstacle Animation")
+      if (isGameInProgress.current) {
+        hasUpdatedObstacle_large.current = false;
+        let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
+        let localYPos_1 = Math.floor(Math.random() * windowHeight * 0.78);
+
+        obstaclePosition_large.setValue({ x: 1000, y: localYPos_0 });
+
+        obstacle_large.current = Animated.parallel([
+          Animated.timing(obstaclePosition_large.x, {
+            toValue: -80,
+            duration: 5000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(obstaclePosition_large.y, {
+              toValue: localYPos_1,
+              duration: 5000,
+              useNativeDriver: true,
+          }),
+          
+        ]);
+
+        obstacle_large.current.start(() => {
+          if (timeoutId_large) {
+            clearTimeout(timeoutId_large);
+          }
+          timeoutId_large = setTimeout(() => {
+            console.log("#7b Re-run")
+            runObstacleAnimation_large();
           }, 200)
         });
       } else {
@@ -456,7 +496,7 @@ export const Game = (props) => {
       });
 
       const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-        let obj2 = { x: value.value, y: obstacleYPos_0, width: 30, height: 30 }
+        let obj2 = { x: value.x, y: value.y, width: 0, height: 30 }
 
         if (isObstacleColliding_0(obj1, obj2)) {
           if (!hasUpdatedObstacle_0.current) {
@@ -479,10 +519,24 @@ export const Game = (props) => {
         }
       });
 
+      const obstacleListener_large = obstaclePosition_large.addListener((value) => {
+        let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
+
+        if (isObstacleColliding_large(obj1, obj2)) {
+          if (!hasUpdatedObstacle_large.current) {
+            crashes.current += 1;
+            hasUpdatedObstacle_large.current = true;
+          }
+          obstacle_large.current.reset()
+        }
+      });
+
       return () => {
         position.removeListener(wordBlockListener);
         obstaclePosition_0.removeListener(obstacleListener_0)
         obstaclePosition_1.removeListener(obstacleListener_1)
+        obstaclePosition_large.removeListener(obstacleListener_large)
+
       }
     }, [obj1]);
 
@@ -541,6 +595,8 @@ export const Game = (props) => {
         animation.current.stop();
         obstacle_0.current.stop();
         obstacle_1.current.stop();
+        obstacle_large.current.stop();
+
       }
 
       // Clear Letters
@@ -560,11 +616,14 @@ export const Game = (props) => {
 
       // Clear Obstacle's
 
-      obstaclePosition_0.setValue(1000)
-      setObstacleYPos_0(0)
+      obstaclePosition_0.setValue({x: 1000, y: 0})
+      // setObstacleYPos_0(0)
 
       obstaclePosition_1.setValue({x: 1000, y: 0})
       // setObstacleYPos_1(0)
+
+      obstaclePosition_large.setValue({x: 1000, y: 0})
+
 
       // Clear Game Logic
       crashes.current = 0;
@@ -573,6 +632,8 @@ export const Game = (props) => {
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
       hasUpdatedObstacle_1.current = false;
+      hasUpdatedObstacle_large.current = false;
+
 
 
 
@@ -656,7 +717,7 @@ export const Game = (props) => {
             style={[
               Styling.projectile_obstacle_block,
               {
-                transform: [{ translateX: obstaclePosition_0 }, { translateY: obstacleYPos_0 }],
+                transform: [{ translateX: obstaclePosition_0.x }, { translateY: obstaclePosition_0.y }],
               },
             ]}
           >
@@ -672,6 +733,17 @@ export const Game = (props) => {
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 30, width: 30 }} />
+          </Animated.View>
+
+          <Animated.View
+            style={[
+              Styling.projectile_obstacle_block,
+              {
+                transform: [{ translateX: obstaclePosition_large.x }, { translateY: obstaclePosition_large.y }],
+              },
+            ]}
+          >
+            <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 80, width: 80 }} />
           </Animated.View>
 
           {/* <MovementD /> */}
