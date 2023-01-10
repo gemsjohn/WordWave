@@ -141,6 +141,10 @@ export const Styling = StyleSheet.create({
     textAlign: "center",
     fontSize: 40,
     fontWeight: 'bold'
-  }
+  },
+
+  // Powers
+  power_block: {}
+  
 
 });

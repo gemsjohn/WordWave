@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3 } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import {
   Text,
@@ -23,8 +23,7 @@ import {
   TouchableOpacity,
   Modal,
   Alert,
-  StyleSheet,
-  TouchableOpacityBase
+  StyleSheet
 } from 'react-native';
 
 
@@ -89,7 +88,6 @@ export const Game = (props) => {
     );
 
 
-
     const panResponder = useRef(
       PanResponder.create({
         onMoveShouldSetPanResponder: (evt, gestureState) => {
@@ -113,8 +111,8 @@ export const Game = (props) => {
             newY = (windowHeight * 0.78);
           }
 
-          if (newX <= -(windowWidth * 0.207)) {
-            newX = -(windowWidth * 0.207);
+          if (newX <= -(windowWidth * 0.162)) {
+            newX = -(windowWidth * 0.162);
           } else if (newX >= 0) {
             newX = 0;
           }
@@ -141,15 +139,13 @@ export const Game = (props) => {
       })
     ).current;
 
+
     return (
       <View style={Styling.joystick_container}>
         <View style={Styling.joystick_inner_container}>
           <Animated.View
             style={{
-              transform: [
-                { translateX: posX + 480 }, 
-                { translateY: posY + 10 }
-              ]
+              transform: [{ translateX: posX + 480 }, { translateY: posY + 10 }]
 
 
             }}
@@ -166,7 +162,6 @@ export const Game = (props) => {
           </Animated.View>
 
         </View>
-        
         <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
       </View>
     );
@@ -208,20 +203,6 @@ export const Game = (props) => {
     const obstacle_large = useRef(null)
     const hasUpdatedObstacle_large = useRef(false);
     const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-
-    // Powers
-    const [powerColor_0, setPowerColor_0] = useState('transparent')
-    const  powerPosition_0 = useRef({x: 0, y: HeightRatio(140)});
-    const [positionTimer, setPositionTimer] = useState(null);
-
-    const [powerColor_1, setPowerColor_1] = useState('transparent')
-    const  powerPosition_1 = useRef({x: 0, y: HeightRatio(260)});
-
-    const [powerColor_2, setPowerColor_2] = useState('transparent')
-    const  powerPosition_2 = useRef({x: 0, y: HeightRatio(380)});
-
-    const [powerColor_3, setPowerColor_3] = useState('transparent')
-    const  powerPosition_3 = useRef({x: 0, y: HeightRatio(500)});
     
 
     // Collision Detection Variables
@@ -493,7 +474,6 @@ export const Game = (props) => {
       height: props.charHeight
     });
 
-
     useEffect(() => {
       setObj1({
         x: localCharXPos.current,
@@ -551,63 +531,11 @@ export const Game = (props) => {
         }
       });
 
-      // const powerListener_0 = powerPosition_0.addListener((value) => {
-      //   let obj2 = { x: 0, y: 32, width: charWidth, height: charWidth }
-
-      //   if (isPowerColliding_0(obj1, obj2)) {
-      //     setPowerColor('blue')
-      //     console.log("blue")
-      //   } else {
-      //     setPowerColor('transparent')
-      //     console.log("tansparent")
-
-      //   }
-      // });
-      let power_0 = { x: powerPosition_0.current.x, y: powerPosition_0.current.y, width: charWidth, height: charWidth }
-      let power_1 = { x: powerPosition_1.current.x, y: powerPosition_1.current.y, width: charWidth, height: charWidth }
-      let power_2 = { x: powerPosition_2.current.x, y: powerPosition_2.current.y, width: charWidth, height: charWidth }
-      let power_3 = { x: powerPosition_3.current.x, y: powerPosition_3.current.y, width: charWidth, height: charWidth }
-
-      if (isPowerColliding_0(obj1, power_0)) {
-        setPowerColor_0('blue')
-        if (positionTimer) {
-          clearTimeout(positionTimer);
-        }
-        const timer = setTimeout(() => {
-          console.log("Object has been in this position for 1 second");
-        }, 1000);
-        setPositionTimer(timer);
-
-      } else {
-        setPowerColor_0('transparent')
-      }
-
-      if (isPowerColliding_1(obj1, power_1)) {
-        setPowerColor_1('blue')
-      } else {
-        setPowerColor_1('transparent')
-      }
-
-      if (isPowerColliding_2(obj1, power_2)) {
-        setPowerColor_2('blue')
-      } else {
-        setPowerColor_2('transparent')
-      }
-
-      if (isPowerColliding_3(obj1, power_3)) {
-        setPowerColor_3('blue')
-      } else {
-        setPowerColor_3('transparent')
-      }
-      
-
       return () => {
         position.removeListener(wordBlockListener);
         obstaclePosition_0.removeListener(obstacleListener_0)
         obstaclePosition_1.removeListener(obstacleListener_1)
         obstaclePosition_large.removeListener(obstacleListener_large)
-        // powerPosition_0.removeListener(powerListener_0)
-
 
       }
     }, [obj1]);
@@ -819,11 +747,6 @@ export const Game = (props) => {
           </Animated.View>
 
           {/* <MovementD /> */}
-
-          <View style={{ backgroundColor: powerColor_0, height: charWidth, width: charWidth, position: 'absolute', zIndex: -5, top: HeightRatio(140), borderRadius: 10, borderWidth: 1, borderColor: 'white' }} /> 
-          <View style={{ backgroundColor: powerColor_1, height: charWidth, width: charWidth, position: 'absolute', zIndex: -5, top: HeightRatio(260), borderRadius: 10, borderWidth: 1, borderColor: 'white' }} /> 
-          <View style={{ backgroundColor: powerColor_2, height: charWidth, width: charWidth, position: 'absolute', zIndex: -5, top: HeightRatio(380), borderRadius: 10, borderWidth: 1, borderColor: 'white' }} /> 
-          <View style={{ backgroundColor: powerColor_3, height: charWidth, width: charWidth, position: 'absolute', zIndex: -5, top: HeightRatio(500), borderRadius: 10, borderWidth: 1, borderColor: 'white' }} /> 
 
 
 
