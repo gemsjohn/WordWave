@@ -6,6 +6,7 @@ import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
 import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1 } from './CollisionHandler';
+import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import {
   Text,
   View,
@@ -21,7 +22,8 @@ import {
   UIManager,
   TouchableOpacity,
   Modal,
-  Alert
+  Alert,
+  StyleSheet
 } from 'react-native';
 
 
@@ -194,9 +196,12 @@ export const Game = (props) => {
     const hasUpdatedObstacle_0 = useRef(false);
 
     const obstacle_1 = useRef(null)
-    const obstaclePosition_1 = useRef(new Animated.Value(1000)).current;
-    const [obstacleYPos_1, setObstacleYPos_1] = useState(0)
+    // const obstaclePosition_1 = useRef(new Animated.Value(1000)).current;
+    // const [obstacleYPos_1, setObstacleYPos_1] = useState(0)
     const hasUpdatedObstacle_1 = useRef(false);
+
+    const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+    
 
     // Collision Detection Variables
     let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.272));
@@ -219,6 +224,7 @@ export const Game = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     // In Test
+    
 
 
     useLayoutEffect(() => {
@@ -383,25 +389,25 @@ export const Game = (props) => {
       console.log("#7a Run Obstacle Animation")
       if (isGameInProgress.current) {
         hasUpdatedObstacle_1.current = false;
-        // setObstacleYPos_1(Math.floor(Math.random() * 310));
+        let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
+        let localYPos_1 = Math.floor(Math.random() * windowHeight * 0.78);
 
-        // [Detect Close Objects]
-        let localYPos = Math.floor(Math.random() * 310);
-        if (localYPos >= position && localYPos <= position + props.charHeight) {
-          console.log("--- Close Objects ---")
-          let delta = localYPos - position;
-          let randomBinary = Math.round(Math.random());
-          if (randomBinary == 0) { setObstacleYPos_1(delta - 50); }
-          else if (randomBinary == 1) { setObstacleYPos_1(delta + 50); }
-        } else {
-          setObstacleYPos_1(localYPos);
-        }
-        obstaclePosition_1.setValue(1000);
-        obstacle_1.current = Animated.timing(obstaclePosition_1, {
-          toValue: -80,
-          duration: 3000,
-          useNativeDriver: true,
-        })
+        obstaclePosition_1.setValue({ x: 1000, y: localYPos_0 });
+
+        obstacle_1.current = Animated.parallel([
+          Animated.timing(obstaclePosition_1.x, {
+            toValue: -80,
+            duration: 3000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(obstaclePosition_1.y, {
+              toValue: localYPos_1,
+              duration: 2500,
+              useNativeDriver: true,
+          }),
+          
+        ]);
+
         obstacle_1.current.start(() => {
           if (timeoutId_1) {
             clearTimeout(timeoutId_1);
@@ -415,6 +421,7 @@ export const Game = (props) => {
         return;
       }
     };
+
 
     localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
     localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
@@ -461,7 +468,7 @@ export const Game = (props) => {
       });
 
       const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-        let obj2 = { x: value.value, y: obstacleYPos_1, width: 30, height: 30 }
+        let obj2 = { x: value.x, y: value.y, width: 30, height: 30 }
 
         if (isObstacleColliding_1(obj1, obj2)) {
           if (!hasUpdatedObstacle_1.current) {
@@ -556,8 +563,8 @@ export const Game = (props) => {
       obstaclePosition_0.setValue(1000)
       setObstacleYPos_0(0)
 
-      obstaclePosition_1.setValue(1000)
-      setObstacleYPos_1(0)
+      obstaclePosition_1.setValue({x: 1000, y: 0})
+      // setObstacleYPos_1(0)
 
       // Clear Game Logic
       crashes.current = 0;
@@ -592,10 +599,7 @@ export const Game = (props) => {
 
 
     }
-
-
-
-
+    
 
     return (
       <View>
@@ -663,12 +667,14 @@ export const Game = (props) => {
             style={[
               Styling.projectile_obstacle_block,
               {
-                transform: [{ translateX: obstaclePosition_1 }, { translateY: obstacleYPos_1 }],
+                transform: [{ translateX: obstaclePosition_1.x }, { translateY: obstaclePosition_1.y }],
               },
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 30, width: 30 }} />
           </Animated.View>
+
+          {/* <MovementD /> */}
 
 
 

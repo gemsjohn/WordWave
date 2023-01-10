@@ -305,7 +305,7 @@ export const Game = (props) => {
       if (isGameInProgress.current) {
         // console.log("#5b Letters Array: " + wordPlusSeven.current)
         hasUpdatedLetterBlock.current = false;
-        setYPos(Math.floor(Math.random() * 310))
+        setYPos(Math.floor(Math.random() * (windowHeight * 0.78)))
         setLetter(wordPlusSeven.current[count._value]);
         position.setValue(1000);
         animation.current = Animated.timing(position, {
@@ -349,7 +349,7 @@ export const Game = (props) => {
         // setObstacleYPos_0(Math.floor(Math.random() * 310));
 
         // [Detect Close Objects]
-        let localYPos = Math.floor(Math.random() * 310);
+        let localYPos = Math.floor(Math.random() * (windowHeight * 0.78));
         if (localYPos >= position && localYPos <= position + props.charHeight) {
           console.log("--- Close Objects ---")
           let delta = localYPos - position;
@@ -386,7 +386,7 @@ export const Game = (props) => {
         // setObstacleYPos_1(Math.floor(Math.random() * 310));
 
         // [Detect Close Objects]
-        let localYPos = Math.floor(Math.random() * 310);
+        let localYPos = Math.floor(Math.random() * (windowHeight * 0.78));
         if (localYPos >= position && localYPos <= position + props.charHeight) {
           console.log("--- Close Objects ---")
           let delta = localYPos - position;
