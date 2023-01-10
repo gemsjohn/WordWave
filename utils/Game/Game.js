@@ -5,6 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
+import { GifActivityIndicator } from '../../components/GifActivityIndicator';
 import {
   Text,
   View,
@@ -481,7 +482,7 @@ export const Game = (props) => {
 
     useLayoutEffect(() => {
       const wordBlockListener = position.addListener((value) => {
-        let obj2 = { x: value.value, y: yPos, width: 50, height: 50 }
+        let obj2 = { x: value.value, y: yPos, width: 30, height: 30 }
 
         if (isLetterBlockColliding(obj1, obj2)) {
           if (!hasUpdatedLetterBlock.current) {
@@ -492,7 +493,7 @@ export const Game = (props) => {
       });
 
       const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-        let obj2 = { x: value.value, y: obstacleYPos_0, width: 50, height: 50 }
+        let obj2 = { x: value.value, y: obstacleYPos_0, width: 30, height: 30 }
 
         if (isObstacleColliding_0(obj1, obj2)) {
           if (!hasUpdatedObstacle_0.current) {
@@ -504,7 +505,7 @@ export const Game = (props) => {
       });
 
       const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-        let obj2 = { x: value.value, y: obstacleYPos_1, width: 50, height: 50 }
+        let obj2 = { x: value.value, y: obstacleYPos_1, width: 30, height: 30 }
 
         if (isObstacleColliding_1(obj1, obj2)) {
           if (!hasUpdatedObstacle_1.current) {
@@ -655,12 +656,12 @@ export const Game = (props) => {
             :
             <>
             {score.current > 0 ?
-              <View style={{ position: 'absolute', top: windowHeight/2 - 60, left: windowWidth / 2 - WidthRatio(50), zIndex: -7, backgroundColor: 'blue', padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
-                <Text style={{ color: 'rgba(255, 255, 255, 1.0)', fontSize: 60, fontWeight: 'bold' }}>Score: {score.current}</Text>
+              <View style={{ position: 'absolute', top: windowHeight/2, left: WidthRatio(0), zIndex: -7, padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
+                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: HeightRatio(50), fontWeight: 'bold' }}>Score: {score.current}</Text>
               </View>
               :
-              <View style={{ position: 'absolute', top: windowHeight/2 - 60, left: windowWidth / 2 - WidthRatio(50), zIndex: -7, backgroundColor: 'blue', padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
-                <Text style={{ color: 'rgba(255, 255, 255, 1.0)', fontSize: 60, fontWeight: 'bold' }}>Score: 0</Text>
+              <View style={{ position: 'absolute', top: windowHeight/2, left: WidthRatio(0), zIndex: -7, padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
+                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: HeightRatio(50), fontWeight: 'bold' }}>Score: 0</Text>
               </View>
             }
             </>
@@ -698,7 +699,7 @@ export const Game = (props) => {
                 },
               ]}
             >
-              <Image source={require('../../assets/enemy_0.png')} style={{ height: 50, width: 50 }} />
+              <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 30, width: 30 }} />
             </Animated.View>
 
             <Animated.View
@@ -709,7 +710,7 @@ export const Game = (props) => {
                 },
               ]}
             >
-              <Image source={require('../../assets/enemy_0.png')} style={{ height: 50, width: 50 }} />
+              <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 30, width: 30 }} />
             </Animated.View>
 
 
