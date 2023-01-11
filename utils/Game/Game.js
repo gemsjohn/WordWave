@@ -82,7 +82,7 @@ export const Game = (props) => {
     let xInit = [];
     const xValue = useRef(new Animated.Value(0)).current;
     const yValue = useRef(new Animated.Value(0)).current;
-    const powerup_0 = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+    const powerup_0 = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
     const powerupAnimation_0 = useRef(null);
     const isPowerInProgress_0 = useRef(false)
     const [posY, setPosY] = useState(0);
@@ -168,18 +168,18 @@ export const Game = (props) => {
 
     const runPowerupAnimation_0 = (x, y) => {
       if (isPowerInProgress_0.current) {
-        console.log("x: " +  x + " y: " + y)
+        // console.log("x: " +  x + " y: " + y)
         // console.log("runPowerupAnimation_0")
         powerup_0.setValue({ x: x - WidthRatio(65), y: y });
         powerupAnimation_0.current = Animated.parallel([
           Animated.timing(powerup_0.x, {
             toValue: 1000, // or any other value you want to animate to
-            duration: 1000,
+            duration: 2000,
             useNativeDriver: false
           }),
           Animated.timing(powerup_0.y, {
-            toValue: 200, // or any other value you want to animate to
-            duration: 1000,
+            toValue: posYRef.current, // or any other value you want to animate to
+            duration: 2000,
             useNativeDriver: false
           })
         ]).start(() => {
@@ -208,16 +208,35 @@ export const Game = (props) => {
           } else if (!sharedStateRef.current.powerupActive_0) {
             console.log("Stopping")
             isPowerInProgress_0.current = false;
-            // powerupAnimation_0.current.stop();
-            // if (powerupAnimation_0.current != null) {
-            //   console.log("Stopping")
-            //   isPowerInProgress_0.current = false;
-            //   powerupAnimation_0.current.stop();
-            // }
             
           }
       }
     }, [sharedStateRef.current]);
+
+    // console.log(powerup_0)
+    // const [objPower_0, setObjPower_0] = useState({
+    //   x: powerup_0.x,
+    //   y: powerup_0.y,
+    //   width: 15,
+    //   height: 15
+    // });
+
+
+    // useEffect(() => {
+    //   setObjPower_0({
+    //     x: powerup_0.x,
+    //     y: powerup_0.y,
+    //     width: 15,
+    //     height: 15
+    //   });
+    // }, [powerup_0]);
+
+    
+
+    // useLayoutEffect(() => {
+    //   console.log(objPower_0)
+    // }, [objPower_0]);
+
 
     return (
       <View style={Styling.joystick_container}>
@@ -250,7 +269,7 @@ export const Game = (props) => {
               },
             ]}
           >
-            <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 30, width: 30 }} />
+            <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 15, width: 15 }} />
           </Animated.View>
 
         </View>
