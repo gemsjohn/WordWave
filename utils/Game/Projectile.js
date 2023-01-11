@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 'react';
 // import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
@@ -7,6 +7,7 @@ import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
 import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3 } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
+import { SharedStateContext } from './Game';
 import {
   Text,
   View,
@@ -84,7 +85,15 @@ export const Projectile = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     // In Test
+    const { sharedState } = useContext(SharedStateContext);
 
+
+    useEffect(() => {
+        if (sharedState.current) {
+            console.log("Shared: ")
+            console.log(sharedState.current)
+        }
+      }, [sharedState.current]);
 
 
     useLayoutEffect(() => {

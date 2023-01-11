@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 'react';
 // import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
@@ -7,6 +7,7 @@ import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
 import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3 } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
+import { SharedStateContext } from './Game';
 import {
   Text,
   View,
@@ -29,6 +30,7 @@ import {
 
 export const PowerUps = (props) => {
     const isGameInProgress = useRef(false);
+    const { sharedState, setSharedState } = useContext(SharedStateContext);
     
     // Powers
     const [powerColor_0, setPowerColor_0] = useState('transparent')
@@ -83,7 +85,7 @@ export const PowerUps = (props) => {
     }, [localCharXPos.current, localCharYPos.current, props.charWidth, props.charHeight]);
 
     useLayoutEffect(() => { 
-        console.log(obj1)
+        // console.log(obj1)
         let power_0 = { x: powerPosition_0.current.x, y: powerPosition_0.current.y, width: props.charWidth, height: props.charWidth }
         let power_1 = { x: powerPosition_1.current.x, y: powerPosition_1.current.y, width: props.charWidth, height: props.charWidth }
         let power_2 = { x: powerPosition_2.current.x, y: powerPosition_2.current.y, width: props.charWidth, height: props.charWidth }
@@ -96,6 +98,8 @@ export const PowerUps = (props) => {
             clearTimeout(powerColorPositionTimer_0);
           }
           const timer = setTimeout(() => {
+            // setSharedState({...sharedState, powerupActive: true });
+            setSharedState({powerupActive: true });
             retainPower_0.current = !retainPower_0.current;
             retainPower_1.current = false;
             retainPower_2.current = false;
@@ -116,6 +120,7 @@ export const PowerUps = (props) => {
             clearTimeout(powerColorPositionTimer_1);
           }
           const timer = setTimeout(() => {
+            setSharedState({powerupActive: false });
             retainPower_0.current = false;
             retainPower_1.current = !retainPower_1.current;
             retainPower_2.current = false;
@@ -156,6 +161,7 @@ export const PowerUps = (props) => {
             clearTimeout(powerColorPositionTimer_3);
           }
           const timer = setTimeout(() => {
+            // setSharedState({...sharedState, powerupActive_0: false });
             retainPower_0.current = false;
             retainPower_1.current = false;
             retainPower_2.current = false;

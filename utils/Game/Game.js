@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, createContext } from 'react';
 // import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
@@ -37,8 +37,12 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+export const SharedStateContext = createContext();
+
 export const Game = (props) => {
   // Setup
+  // const [sharedState, setSharedState] = useState({status: "a"});
+  const sharedStateRef = useRef({});
   const [loadingComplete, setLoadingComplete] = useState(false)
   let newY;
   let newX;
@@ -62,6 +66,10 @@ export const Game = (props) => {
       clearTimeout(timeoutId);
     };
   }, []);
+
+  const setSharedState = (newState) => {
+    sharedStateRef.current = {...sharedStateRef.current, ...newState};
+  };
 
 
   const CharacterAndJoystick = () => {
@@ -168,8 +176,10 @@ export const Game = (props) => {
           </Animated.View>
 
         </View>
-        <PowerUps charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
-        <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+        <SharedStateContext.Provider value={{ sharedState: sharedStateRef, setSharedState }}>
+          <PowerUps charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+          <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+        </SharedStateContext.Provider>
       </View>
     );
   }
