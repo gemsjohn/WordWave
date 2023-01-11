@@ -8,6 +8,7 @@ import { shuffle } from 'lodash';
 import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3 } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { Projectile } from './Projectile';
+import { PowerUps } from './PowerUps';
 import {
   Text,
   View,
@@ -167,8 +168,8 @@ export const Game = (props) => {
           </Animated.View>
 
         </View>
-
-        <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+        <PowerUps charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+        {/* <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} /> */}
       </View>
     );
   }
