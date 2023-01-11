@@ -63,27 +63,6 @@ export const Projectile = (props) => {
     const hasUpdatedObstacle_large = useRef(false);
     const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
 
-    // Powers
-    const [powerColor_0, setPowerColor_0] = useState('transparent')
-    const powerPosition_0 = useRef({ x: 0, y: HeightRatio(140) });
-    const [powerColorPositionTimer_0, setPowerColorPositionTimer_0] = useState(null);
-    const retainPower_0 = useRef(false);
-
-    const [powerColor_1, setPowerColor_1] = useState('transparent')
-    const powerPosition_1 = useRef({ x: 0, y: HeightRatio(260) });
-    const [powerColorPositionTimer_1, setPowerColorPositionTimer_1] = useState(null);
-    const retainPower_1 = useRef(false);
-
-    const [powerColor_2, setPowerColor_2] = useState('transparent')
-    const powerPosition_2 = useRef({ x: 0, y: HeightRatio(380) });
-    const [powerColorPositionTimer_2, setPowerColorPositionTimer_2] = useState(null);
-    const retainPower_2 = useRef(false);
-
-    const [powerColor_3, setPowerColor_3] = useState('transparent')
-    const powerPosition_3 = useRef({ x: 0, y: HeightRatio(500) });
-    const [powerColorPositionTimer_3, setPowerColorPositionTimer_3] = useState(null);
-    const retainPower_3 = useRef(false);
-
     // Collision Detection Variables
     let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.313));
     let localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
@@ -226,8 +205,6 @@ export const Projectile = (props) => {
       }
 
     };
-
-
 
 
     const runObstacleAnimation_0 = () => {
@@ -410,91 +387,6 @@ export const Projectile = (props) => {
           obstacle_large.current.reset()
         }
       });
-
-
-      let power_0 = { x: powerPosition_0.current.x, y: powerPosition_0.current.y, width: props.charWidth, height: props.charWidth }
-      let power_1 = { x: powerPosition_1.current.x, y: powerPosition_1.current.y, width: props.charWidth, height: props.charWidth }
-      let power_2 = { x: powerPosition_2.current.x, y: powerPosition_2.current.y, width: props.charWidth, height: props.charWidth }
-      let power_3 = { x: powerPosition_3.current.x, y: powerPosition_3.current.y, width: props.charWidth, height: props.charWidth }
-
-      // Power _ 0
-      if (isPowerColliding_0(obj1, power_0)) {
-        setPowerColor_0('rgba(255, 255, 255, 0.25)')
-        if (powerColorPositionTimer_0) {
-          clearTimeout(powerColorPositionTimer_0);
-        }
-        const timer = setTimeout(() => {
-          retainPower_0.current = !retainPower_0.current;
-          retainPower_1.current = false;
-          retainPower_2.current = false;
-          retainPower_3.current = false;
-
-
-        }, 100);
-        setPowerColorPositionTimer_0(timer);
-
-      } else {
-        setPowerColor_0('transparent')
-      }
-
-      // Power _ 1
-      if (isPowerColliding_1(obj1, power_1)) {
-        setPowerColor_1('rgba(255, 255, 255, 0.25)')
-        if (powerColorPositionTimer_1) {
-          clearTimeout(powerColorPositionTimer_1);
-        }
-        const timer = setTimeout(() => {
-          retainPower_0.current = false;
-          retainPower_1.current = !retainPower_1.current;
-          retainPower_2.current = false;
-          retainPower_3.current = false;
-
-
-        }, 100);
-        setPowerColorPositionTimer_1(timer);
-      } else {
-        setPowerColor_1('transparent')
-      }
-
-      // Power _ 2
-
-      if (isPowerColliding_2(obj1, power_2)) {
-        setPowerColor_2('rgba(255, 255, 255, 0.25)')
-        if (powerColorPositionTimer_2) {
-          clearTimeout(powerColorPositionTimer_2);
-        }
-        const timer = setTimeout(() => {
-          retainPower_0.current = false;
-          retainPower_1.current = false;
-          retainPower_2.current = !retainPower_2.current;
-          retainPower_3.current = false;
-
-
-        }, 100);
-        setPowerColorPositionTimer_2(timer);
-      } else {
-        setPowerColor_2('transparent')
-      }
-
-      // Power _ 3
-
-      if (isPowerColliding_3(obj1, power_3)) {
-        setPowerColor_3('rgba(255, 255, 255, 0.25)')
-        if (powerColorPositionTimer_3) {
-          clearTimeout(powerColorPositionTimer_3);
-        }
-        const timer = setTimeout(() => {
-          retainPower_0.current = false;
-          retainPower_1.current = false;
-          retainPower_2.current = false;
-          retainPower_3.current = !retainPower_3.current;
-
-
-        }, 100);
-        setPowerColorPositionTimer_3(timer);
-      } else {
-        setPowerColor_3('transparent')
-      }
 
       return () => {
         position.removeListener(wordBlockListener);
@@ -709,26 +601,6 @@ export const Projectile = (props) => {
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 80, width: 80 }} />
           </Animated.View>
-
-          {/* <MovementD /> */}
-
-          <View style={{ backgroundColor: powerColor_0, height: props.charWidth, width: props.charWidth, position: 'absolute', zIndex: -5, top: HeightRatio(140), borderRadius: 10, borderWidth: 1, borderColor: 'white' }} />
-          <View style={{ backgroundColor: powerColor_1, height: props.charWidth, width: props.charWidth, position: 'absolute', zIndex: -5, top: HeightRatio(260), borderRadius: 10, borderWidth: 1, borderColor: 'white' }} />
-          <View style={{ backgroundColor: powerColor_2, height: props.charWidth, width: props.charWidth, position: 'absolute', zIndex: -5, top: HeightRatio(380), borderRadius: 10, borderWidth: 1, borderColor: 'white' }} />
-          <View style={{ backgroundColor: powerColor_3, height: props.charWidth, width: props.charWidth, position: 'absolute', zIndex: -5, top: HeightRatio(500), borderRadius: 10, borderWidth: 1, borderColor: 'white' }} />
-
-          {retainPower_0.current &&
-            <View style={{ backgroundColor: 'transparent', height: props.charWidth, width: props.charWidth, position: 'absolute', zIndex: -2, top: HeightRatio(140), borderRadius: 10, borderWidth: 2, borderColor: 'yellow' }} />
-          }
-          {retainPower_1.current &&
-            <View style={{ backgroundColor: 'transparent', height: props.charWidth, width: props.charWidth, position: 'absolute', zIndex: -2, top: HeightRatio(260), borderRadius: 10, borderWidth: 2, borderColor: 'yellow' }} />
-          }
-          {retainPower_2.current &&
-            <View style={{ backgroundColor: 'transparent', height: props.charWidth, width: props.charWidth, position: 'absolute', zIndex: -2, top: HeightRatio(380), borderRadius: 10, borderWidth: 2, borderColor: 'yellow' }} />
-          }
-          {retainPower_3.current &&
-            <View style={{ backgroundColor: 'transparent', height: props.charWidth, width: props.charWidth, position: 'absolute', zIndex: -2, top: HeightRatio(500), borderRadius: 10, borderWidth: 2, borderColor: 'yellow' }} />
-          }
 
 
 

@@ -169,7 +169,7 @@ export const Game = (props) => {
 
         </View>
         <PowerUps charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
-        {/* <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} /> */}
+        <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
       </View>
     );
   }
