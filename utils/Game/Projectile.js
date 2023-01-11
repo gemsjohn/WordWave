@@ -88,12 +88,12 @@ export const Projectile = (props) => {
     const { sharedState } = useContext(SharedStateContext);
 
 
-    useEffect(() => {
-        if (sharedState.current) {
-            console.log("Shared: ")
-            console.log(sharedState.current)
-        }
-      }, [sharedState.current]);
+    // useEffect(() => {
+    //     if (sharedState.current) {
+    //         console.log("Shared: ")
+    //         console.log(sharedState.current)
+    //     }
+    //   }, [sharedState.current]);
 
 
     useLayoutEffect(() => {
@@ -361,47 +361,47 @@ export const Projectile = (props) => {
         }
       });
 
-      const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-        let obj2 = { x: value.x, y: value.y, width: 0, height: 30 }
+    //   const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
+    //     let obj2 = { x: value.x, y: value.y, width: 0, height: 30 }
 
-        if (isObstacleColliding_0(obj1, obj2)) {
-          if (!hasUpdatedObstacle_0.current) {
-            crashes.current += 1;
-            hasUpdatedObstacle_0.current = true;
-          }
-          obstacle_0.current.reset()
-        }
-      });
+    //     if (isObstacleColliding_0(obj1, obj2)) {
+    //       if (!hasUpdatedObstacle_0.current) {
+    //         crashes.current += 1;
+    //         hasUpdatedObstacle_0.current = true;
+    //       }
+    //       obstacle_0.current.reset()
+    //     }
+    //   });
 
-      const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-        let obj2 = { x: value.x, y: value.y, width: 30, height: 30 }
+    //   const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
+    //     let obj2 = { x: value.x, y: value.y, width: 30, height: 30 }
 
-        if (isObstacleColliding_1(obj1, obj2)) {
-          if (!hasUpdatedObstacle_1.current) {
-            crashes.current += 1;
-            hasUpdatedObstacle_1.current = true;
-          }
-          obstacle_1.current.reset()
-        }
-      });
+    //     if (isObstacleColliding_1(obj1, obj2)) {
+    //       if (!hasUpdatedObstacle_1.current) {
+    //         crashes.current += 1;
+    //         hasUpdatedObstacle_1.current = true;
+    //       }
+    //       obstacle_1.current.reset()
+    //     }
+    //   });
 
-      const obstacleListener_large = obstaclePosition_large.addListener((value) => {
-        let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
+    //   const obstacleListener_large = obstaclePosition_large.addListener((value) => {
+    //     let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
 
-        if (isObstacleColliding_large(obj1, obj2)) {
-          if (!hasUpdatedObstacle_large.current) {
-            crashes.current += 1;
-            hasUpdatedObstacle_large.current = true;
-          }
-          obstacle_large.current.reset()
-        }
-      });
+    //     if (isObstacleColliding_large(obj1, obj2)) {
+    //       if (!hasUpdatedObstacle_large.current) {
+    //         crashes.current += 1;
+    //         hasUpdatedObstacle_large.current = true;
+    //       }
+    //       obstacle_large.current.reset()
+    //     }
+    //   });
 
       return () => {
         position.removeListener(wordBlockListener);
-        obstaclePosition_0.removeListener(obstacleListener_0)
-        obstaclePosition_1.removeListener(obstacleListener_1)
-        obstaclePosition_large.removeListener(obstacleListener_large)
+        // obstaclePosition_0.removeListener(obstacleListener_0)
+        // obstaclePosition_1.removeListener(obstacleListener_1)
+        // obstaclePosition_large.removeListener(obstacleListener_large)
       }
     }, [obj1]);
 
@@ -578,7 +578,7 @@ export const Projectile = (props) => {
           </Animated.View>
 
           {/* Obstacles */}
-          <Animated.View
+          {/* <Animated.View
             style={[
               Styling.projectile_obstacle_block,
               {
@@ -609,7 +609,7 @@ export const Projectile = (props) => {
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 80, width: 80 }} />
-          </Animated.View>
+          </Animated.View> */}
 
 
 

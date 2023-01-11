@@ -48,6 +48,9 @@ export const Game = (props) => {
   let newX;
   let charHeight = 38;
   let charWidth = 62;
+  const powerup_0 = useRef(null);
+  let timeoutId_0;
+  
 
 
   setTimeout(() => {
@@ -77,9 +80,15 @@ export const Game = (props) => {
     const objectPosition = useRef({ x: 0, y: 0 });
     let yInit = [];
     let xInit = [];
-
+    const xValue = useRef(new Animated.Value(0)).current;
+    const yValue = useRef(new Animated.Value(0)).current;
+    const powerup_0 = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+    const powerupAnimation_0 = useRef(null);
+    const isPowerInProgress_0 = useRef(false)
     const [posY, setPosY] = useState(0);
     const [posX, setPosX] = useState(0);
+    const posYRef = useRef(0);
+    const posXRef = useRef(0);
     const pan = useRef(new Animated.ValueXY()).current;
 
     const dx = new Animated.Value(0);
@@ -116,6 +125,8 @@ export const Game = (props) => {
         onPanResponderMove: (e, gestureState) => {
           newY = gestureState.moveY - yInit[0];
           newX = gestureState.moveX - xInit[0];
+          xValue.current = newX;
+          yValue.current = newY;
 
           if (newY <= 0) {
             newY = 0;
@@ -134,6 +145,9 @@ export const Game = (props) => {
           setPosY(Math.trunc(objectPosition.current.y));
           setPosX(Math.trunc(objectPosition.current.x))
 
+          posYRef.current = Math.trunc(objectPosition.current.y);
+          posXRef.current = Math.trunc(objectPosition.current.x)
+
           Animated.event(
             [
               null,
@@ -144,12 +158,66 @@ export const Game = (props) => {
             ],
             { useNativeDriver: false }
           )(e, gestureState);
+
         },
         onPanResponderRelease: (e, gestureState) => {
           pan.flattenOffset();
         }
       })
     ).current;
+
+    const runPowerupAnimation_0 = (x, y) => {
+      if (isPowerInProgress_0.current) {
+        console.log("x: " +  x + " y: " + y)
+        // console.log("runPowerupAnimation_0")
+        powerup_0.setValue({ x: x - WidthRatio(65), y: y });
+        powerupAnimation_0.current = Animated.parallel([
+          Animated.timing(powerup_0.x, {
+            toValue: 1000, // or any other value you want to animate to
+            duration: 1000,
+            useNativeDriver: false
+          }),
+          Animated.timing(powerup_0.y, {
+            toValue: 200, // or any other value you want to animate to
+            duration: 1000,
+            useNativeDriver: false
+          })
+        ]).start(() => {
+          if (timeoutId_0) {
+            clearTimeout(timeoutId_0);
+          }
+          timeoutId_0 = setTimeout(() => {
+            runPowerupAnimation_0(posXRef.current, posYRef.current);
+          }, 200)
+        });
+      } else {
+        clearTimeout(timeoutId_0);
+        return;
+      }
+    };
+
+    
+
+    useEffect(() => {
+      if (sharedStateRef.current) {
+          console.log("Shared from Game: ")
+          console.log(sharedStateRef.current)
+          if (sharedStateRef.current.powerupActive_0) {
+            isPowerInProgress_0.current = true;
+            runPowerupAnimation_0(posXRef.current, posYRef.current);
+          } else if (!sharedStateRef.current.powerupActive_0) {
+            console.log("Stopping")
+            isPowerInProgress_0.current = false;
+            // powerupAnimation_0.current.stop();
+            // if (powerupAnimation_0.current != null) {
+            //   console.log("Stopping")
+            //   isPowerInProgress_0.current = false;
+            //   powerupAnimation_0.current.stop();
+            // }
+            
+          }
+      }
+    }, [sharedStateRef.current]);
 
     return (
       <View style={Styling.joystick_container}>
@@ -173,6 +241,16 @@ export const Game = (props) => {
             </View>
             <View style={Styling.joystick_knob} />
 
+          </Animated.View>
+          <Animated.View
+            style={[
+              Styling.projectile_obstacle_block,
+              {
+                transform: [{ translateX: powerup_0.x }, { translateY: powerup_0.y }],
+              },
+            ]}
+          >
+            <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 30, width: 30 }} />
           </Animated.View>
 
         </View>

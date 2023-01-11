@@ -99,7 +99,12 @@ export const PowerUps = (props) => {
           }
           const timer = setTimeout(() => {
             // setSharedState({...sharedState, powerupActive: true });
-            setSharedState({powerupActive: true });
+            setSharedState({
+                powerupActive_0: !retainPower_0.current,
+                powerupActive_1: false,
+                powerupActive_2: false,
+                powerupActive_3: false
+            });
             retainPower_0.current = !retainPower_0.current;
             retainPower_1.current = false;
             retainPower_2.current = false;
@@ -120,7 +125,12 @@ export const PowerUps = (props) => {
             clearTimeout(powerColorPositionTimer_1);
           }
           const timer = setTimeout(() => {
-            setSharedState({powerupActive: false });
+            setSharedState({
+                powerupActive_0: false,
+                powerupActive_1: !retainPower_1.current,
+                powerupActive_2: false,
+                powerupActive_3: false
+            });
             retainPower_0.current = false;
             retainPower_1.current = !retainPower_1.current;
             retainPower_2.current = false;
@@ -141,6 +151,12 @@ export const PowerUps = (props) => {
             clearTimeout(powerColorPositionTimer_2);
           }
           const timer = setTimeout(() => {
+            setSharedState({
+                powerupActive_0: false,
+                powerupActive_1: false,
+                powerupActive_2: !retainPower_2.current,
+                powerupActive_3: false
+            });
             retainPower_0.current = false;
             retainPower_1.current = false;
             retainPower_2.current = !retainPower_2.current;
@@ -161,7 +177,12 @@ export const PowerUps = (props) => {
             clearTimeout(powerColorPositionTimer_3);
           }
           const timer = setTimeout(() => {
-            // setSharedState({...sharedState, powerupActive_0: false });
+            setSharedState({
+                powerupActive_0: false,
+                powerupActive_1: false,
+                powerupActive_2: false,
+                powerupActive_3: !retainPower_3.current
+            });
             retainPower_0.current = false;
             retainPower_1.current = false;
             retainPower_2.current = false;
