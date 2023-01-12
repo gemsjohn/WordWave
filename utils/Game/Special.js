@@ -180,21 +180,25 @@ export const Special = (props) => {
 
     const data = [
         { 
+            id: 0,
             select: retainSpecial_0.current, 
             backgroundColor: specialColor_0, 
             top: HeightRatio(140) 
         },
         { 
+            id: 1,
             select: retainSpecial_1.current, 
             backgroundColor: specialColor_1, 
             top: HeightRatio(260) 
         },
         { 
+            id: 2,
             select: retainSpecial_2.current, 
             backgroundColor: specialColor_2, 
             top: HeightRatio(380) 
         },
         { 
+            id: 3,
             select: retainSpecial_3.current, 
             backgroundColor: specialColor_3, 
             top: HeightRatio(500) 
@@ -208,7 +212,7 @@ export const Special = (props) => {
                     <>
                         {item.select ?
                             <View
-                                key={index}
+                                key={item.id}
                                 style={[
                                     Styling.special_block,
                                     {
@@ -225,7 +229,7 @@ export const Special = (props) => {
                             </View>
                             :
                             <View
-                                key={index}
+                                key={item.id}
                                 style={[
                                     Styling.special_block,
                                     {

@@ -24,64 +24,66 @@ import {
   TouchableOpacityBase
 } from 'react-native';
 
-export const SpecialAnimation = () => {
+export const SpecialAnimation = (props) => {
     const { sharedState } = useContext(SharedStateContext);
     const special_0 = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
     const specialAnimation_0 = useRef(null);
     const isPowerInProgress_0 = useRef(false)
     let timeoutId_0;
+    const posYRef = useRef(0);
+    const posXRef = useRef(0);
 
-    useEffect(() => {
-        if (sharedState.current) {
-          // do something
-          console.log(sharedState.current)
+
+    const runSpecialAnimation_0 = (x, y) => {
+        if (isPowerInProgress_0.current) {
+          special_0.setValue({ x: x - WidthRatio(65), y: y });
+          specialAnimation_0.current = Animated.parallel([
+            Animated.timing(special_0.x, {
+              toValue: 1000, // or any other value you want to animate to
+              duration: 2000,
+              useNativeDriver: false
+            }),
+            Animated.timing(special_0.y, {
+              toValue: posYRef.current, // or any other value you want to animate to
+              duration: 2000,
+              useNativeDriver: false
+            })
+          ]).start(() => {
+            if (timeoutId_0) {
+              clearTimeout(timeoutId_0);
+            }
+            timeoutId_0 = setTimeout(() => {
+              runSpecialAnimation_0(posXRef.current, posYRef.current);
+            }, 200)
+          });
+        } else {
+          clearTimeout(timeoutId_0);
+          return;
         }
-    }, [sharedState.current]);
-
-    // const runSpecialAnimation_0 = (x, y) => {
-    //     if (isPowerInProgress_0.current) {
-    //       special_0.setValue({ x: x - WidthRatio(65), y: y });
-    //       specialAnimation_0.current = Animated.parallel([
-    //         Animated.timing(special_0.x, {
-    //           toValue: 1000, // or any other value you want to animate to
-    //           duration: 2000,
-    //           useNativeDriver: false
-    //         }),
-    //         Animated.timing(special_0.y, {
-    //           toValue: posYRef.current, // or any other value you want to animate to
-    //           duration: 2000,
-    //           useNativeDriver: false
-    //         })
-    //       ]).start(() => {
-    //         if (timeoutId_0) {
-    //           clearTimeout(timeoutId_0);
-    //         }
-    //         timeoutId_0 = setTimeout(() => {
-    //           runSpecialAnimation_0(posXRef.current, posYRef.current);
-    //         }, 200)
-    //       });
-    //     } else {
-    //       clearTimeout(timeoutId_0);
-    //       return;
-    //     }
-    //   };
+      };
   
       
   
-    //   useEffect(() => {
-    //     if (sharedStateRef.current) {
-    //         console.log("Shared from Game: ")
-    //         console.log(sharedStateRef.current)
-    //         if (sharedStateRef.current.specialActive_0) {
-    //           isPowerInProgress_0.current = true;
-    //           runSpecialAnimation_0(posXRef.current, posYRef.current);
-    //         } else if (!sharedStateRef.current.specialActive_0) {
-    //           console.log("Stopping")
-    //           isPowerInProgress_0.current = false;
+      useEffect(() => {
+        if (sharedState.current) {
+            console.log("Shared from Game: ")
+            console.log(sharedState.current)
+            if (sharedState.current.specialActive_0) {
+              isPowerInProgress_0.current = true;
+              runSpecialAnimation_0(posXRef.current, posYRef.current);
+            } else if (!sharedState.current.specialActive_0) {
+              console.log("Stopping")
+              isPowerInProgress_0.current = false;
               
-    //         }
-    //     }
-    //   }, [sharedStateRef.current]);
+            }
+        }
+      }, [sharedState.current]);
+
+      useEffect(() => {
+        posXRef.current = props.charX;
+        posYRef.current = props.charY;  
+
+    }, [props])
   
     //   console.log(special_0)
     //   const [objPower_0, setObjPower_0] = useState({
@@ -109,7 +111,7 @@ export const SpecialAnimation = () => {
 
       return (
           <>
-          {/* <Animated.View
+          <Animated.View
             style={[
               Styling.projectile_obstacle_block,
               {
@@ -118,7 +120,7 @@ export const SpecialAnimation = () => {
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 15, width: 15 }} />
-          </Animated.View> */}
+          </Animated.View>
           <View></View>
           </>
       )

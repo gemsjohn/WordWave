@@ -39,18 +39,12 @@ export const CharacterAndJoystick = () => {
     let xInit = [];
     const xValue = useRef(new Animated.Value(0)).current;
     const yValue = useRef(new Animated.Value(0)).current;
-    // const special_0 = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
-    // const specialAnimation_0 = useRef(null);
-    // const isPowerInProgress_0 = useRef(false)
     const [posY, setPosY] = useState(0);
     const [posX, setPosX] = useState(0);
     let newY;
     let newX;
     let charHeight = 38;
     let charWidth = 62;
-    // let timeoutId_0;
-    // const posYRef = useRef(0);
-    // const posXRef = useRef(0);
     const pan = useRef(new Animated.ValueXY()).current;
 
     const dx = new Animated.Value(0);
@@ -107,9 +101,6 @@ export const CharacterAndJoystick = () => {
           setPosY(Math.trunc(objectPosition.current.y));
           setPosX(Math.trunc(objectPosition.current.x))
 
-        //   posYRef.current = Math.trunc(objectPosition.current.y);
-        //   posXRef.current = Math.trunc(objectPosition.current.x)
-
           Animated.event(
             [
               null,
@@ -159,22 +150,26 @@ export const CharacterAndJoystick = () => {
             <View style={Styling.joystick_knob} />
 
           </Animated.View>
-          {/* <Animated.View
-            style={[
-              Styling.projectile_obstacle_block,
-              {
-                transform: [{ translateX: special_0.x }, { translateY: special_0.y }],
-              },
-            ]}
-          >
-            <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 15, width: 15 }} />
-          </Animated.View> */}
 
         </View>
         
-          <Special charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
-          <SpecialAnimation />
-          <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+          <Special 
+            charY={posY + 10} 
+            charX={posX + 480} 
+            charHeight={charHeight} 
+            charWidth={charWidth} />
+
+          <SpecialAnimation 
+            charY={posY + 10} 
+            charX={posX + 480} 
+            charHeight={charHeight} 
+            charWidth={charWidth} />
+            
+          <Projectile 
+            charY={posY + 10} 
+            charX={posX + 480} 
+            charHeight={charHeight} 
+            charWidth={charWidth} />
       </View>
     );
   }
