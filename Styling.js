@@ -143,8 +143,8 @@ export const Styling = StyleSheet.create({
     fontWeight: 'bold'
   },
 
-  // Powers
-  power_block: {
+  // Special
+  special_block: {
     position: 'absolute',
     zIndex: -5,
     top: HeightRatio(140),

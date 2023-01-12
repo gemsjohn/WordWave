@@ -369,80 +369,49 @@ export const Projectile = (props) => {
           }
         });
   
-      //   const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-      //     let obj2 = { x: value.x, y: value.y, width: 0, height: 30 }
+        // const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
+        //   let obj2 = { x: value.x, y: value.y, width: 0, height: 30 }
   
-      //     if (isObstacleColliding_0(obj1, obj2)) {
-      //       if (!hasUpdatedObstacle_0.current) {
-      //         crashes.current += 1;
-      //         hasUpdatedObstacle_0.current = true;
-      //       }
-      //       obstacle_0.current.reset()
-      //     }
-      //   });
+        //   if (isObstacleColliding_0(obj1, obj2)) {
+        //     if (!hasUpdatedObstacle_0.current) {
+        //       crashes.current += 1;
+        //       hasUpdatedObstacle_0.current = true;
+        //     }
+        //     obstacle_0.current.reset()
+        //   }
+        // });
   
-      //   const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-      //     let obj2 = { x: value.x, y: value.y, width: 30, height: 30 }
+        // const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
+        //   let obj2 = { x: value.x, y: value.y, width: 30, height: 30 }
   
-      //     if (isObstacleColliding_1(obj1, obj2)) {
-      //       if (!hasUpdatedObstacle_1.current) {
-      //         crashes.current += 1;
-      //         hasUpdatedObstacle_1.current = true;
-      //       }
-      //       obstacle_1.current.reset()
-      //     }
-      //   });
+        //   if (isObstacleColliding_1(obj1, obj2)) {
+        //     if (!hasUpdatedObstacle_1.current) {
+        //       crashes.current += 1;
+        //       hasUpdatedObstacle_1.current = true;
+        //     }
+        //     obstacle_1.current.reset()
+        //   }
+        // });
   
-      //   const obstacleListener_large = obstaclePosition_large.addListener((value) => {
-      //     let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
+        const obstacleListener_large = obstaclePosition_large.addListener((value) => {
+          let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
   
-      //     if (isObstacleColliding_large(obj1, obj2)) {
-      //       if (!hasUpdatedObstacle_large.current) {
-      //         crashes.current += 1;
-      //         hasUpdatedObstacle_large.current = true;
-      //       }
-      //       obstacle_large.current.reset()
-      //     }
-      //   });
+          if (isObstacleColliding_large(obj1, obj2)) {
+            if (!hasUpdatedObstacle_large.current) {
+              crashes.current += 1;
+              hasUpdatedObstacle_large.current = true;
+            }
+            obstacle_large.current.reset()
+          }
+        });
   
         return () => {
           position.removeListener(wordBlockListener);
           // obstaclePosition_0.removeListener(obstacleListener_0)
           // obstaclePosition_1.removeListener(obstacleListener_1)
-          // obstaclePosition_large.removeListener(obstacleListener_large)
+          obstaclePosition_large.removeListener(obstacleListener_large)
         }
-      }, [obj1]);
-
-
-    // Powerup_0 Position
-    // localPowerup_0XPos.current = props.powerup_0.x; 
-    // localPowerup_0YPos.current = props.powerup_0.y; 
-    // console.log(localPowerup_0XPos)
-
-    // const [objPower_0, setObjPower_0] = useState({
-    //     x: localPowerup_0XPos.current,
-    //     y: localPowerup_0YPos.current,
-    //     width: 15,
-    //     height: 15
-    //   });
-  
-  
-    //   useEffect(() => {
-    //     setObjPower_0({
-    //       x: localPowerup_0XPos.current,
-    //       y: localPowerup_0YPos.current,
-    //       width: 15,
-    //         height: 15
-    //     });
-    //   }, [localCharXPos.current, localCharYPos.current]);
-
-      
-
-    //   useLayoutEffect(() => {
-    //     // console.log(objPower_0)
-    //   }, [objPower_0]);
-
-
+    }, [obj1]);
 
     useEffect(() => {
       let uniqueLetterPocket = Array.from(new Set(letterPocket));

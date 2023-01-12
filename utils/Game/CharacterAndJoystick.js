@@ -8,8 +8,9 @@ import { shuffle } from 'lodash';
 import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3 } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { Projectile } from './Projectile';
-import { PowerUps } from './PowerUps';
+import { Special } from './Special';
 import { SharedStateContext } from './Game';
+import { SpecialAnimation } from './SpecialAnimation';
 import {
   Text,
   View,
@@ -38,18 +39,18 @@ export const CharacterAndJoystick = () => {
     let xInit = [];
     const xValue = useRef(new Animated.Value(0)).current;
     const yValue = useRef(new Animated.Value(0)).current;
-    const powerup_0 = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
-    const powerupAnimation_0 = useRef(null);
-    const isPowerInProgress_0 = useRef(false)
+    // const special_0 = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
+    // const specialAnimation_0 = useRef(null);
+    // const isPowerInProgress_0 = useRef(false)
     const [posY, setPosY] = useState(0);
     const [posX, setPosX] = useState(0);
     let newY;
     let newX;
     let charHeight = 38;
     let charWidth = 62;
-    let timeoutId_0;
-    const posYRef = useRef(0);
-    const posXRef = useRef(0);
+    // let timeoutId_0;
+    // const posYRef = useRef(0);
+    // const posXRef = useRef(0);
     const pan = useRef(new Animated.ValueXY()).current;
 
     const dx = new Animated.Value(0);
@@ -106,8 +107,8 @@ export const CharacterAndJoystick = () => {
           setPosY(Math.trunc(objectPosition.current.y));
           setPosX(Math.trunc(objectPosition.current.x))
 
-          posYRef.current = Math.trunc(objectPosition.current.y);
-          posXRef.current = Math.trunc(objectPosition.current.x)
+        //   posYRef.current = Math.trunc(objectPosition.current.y);
+        //   posXRef.current = Math.trunc(objectPosition.current.x)
 
           Animated.event(
             [
@@ -127,81 +128,12 @@ export const CharacterAndJoystick = () => {
       })
     ).current;
 
-    useEffect(() => {
-        if (sharedState.current) {
-          // do something
-          console.log(sharedState.current)
-        }
-    }, [sharedState.current]);
-
-    // const runPowerupAnimation_0 = (x, y) => {
-    //   if (isPowerInProgress_0.current) {
-    //     powerup_0.setValue({ x: x - WidthRatio(65), y: y });
-    //     powerupAnimation_0.current = Animated.parallel([
-    //       Animated.timing(powerup_0.x, {
-    //         toValue: 1000, // or any other value you want to animate to
-    //         duration: 2000,
-    //         useNativeDriver: false
-    //       }),
-    //       Animated.timing(powerup_0.y, {
-    //         toValue: posYRef.current, // or any other value you want to animate to
-    //         duration: 2000,
-    //         useNativeDriver: false
-    //       })
-    //     ]).start(() => {
-    //       if (timeoutId_0) {
-    //         clearTimeout(timeoutId_0);
-    //       }
-    //       timeoutId_0 = setTimeout(() => {
-    //         runPowerupAnimation_0(posXRef.current, posYRef.current);
-    //       }, 200)
-    //     });
-    //   } else {
-    //     clearTimeout(timeoutId_0);
-    //     return;
-    //   }
-    // };
-
-    
-
     // useEffect(() => {
-    //   if (sharedStateRef.current) {
-    //       console.log("Shared from Game: ")
-    //       console.log(sharedStateRef.current)
-    //       if (sharedStateRef.current.powerupActive_0) {
-    //         isPowerInProgress_0.current = true;
-    //         runPowerupAnimation_0(posXRef.current, posYRef.current);
-    //       } else if (!sharedStateRef.current.powerupActive_0) {
-    //         console.log("Stopping")
-    //         isPowerInProgress_0.current = false;
-            
-    //       }
-    //   }
-    // }, [sharedStateRef.current]);
-
-    // console.log(powerup_0)
-    // const [objPower_0, setObjPower_0] = useState({
-    //   x: powerup_0.x,
-    //   y: powerup_0.y,
-    //   width: 15,
-    //   height: 15
-    // });
-
-
-    // useEffect(() => {
-    //   setObjPower_0({
-    //     x: powerup_0.x,
-    //     y: powerup_0.y,
-    //     width: 15,
-    //     height: 15
-    //   });
-    // }, [powerup_0]);
-
-    
-
-    // useLayoutEffect(() => {
-    //   console.log(objPower_0)
-    // }, [objPower_0]);
+    //     if (sharedState.current) {
+    //       // do something
+    //       console.log(sharedState.current)
+    //     }
+    // }, [sharedState.current]);
 
 
     return (
@@ -227,20 +159,21 @@ export const CharacterAndJoystick = () => {
             <View style={Styling.joystick_knob} />
 
           </Animated.View>
-          <Animated.View
+          {/* <Animated.View
             style={[
               Styling.projectile_obstacle_block,
               {
-                transform: [{ translateX: powerup_0.x }, { translateY: powerup_0.y }],
+                transform: [{ translateX: special_0.x }, { translateY: special_0.y }],
               },
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 15, width: 15 }} />
-          </Animated.View>
+          </Animated.View> */}
 
         </View>
         
-          <PowerUps charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+          <Special charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
+          <SpecialAnimation />
           <Projectile charY={posY + 10} charX={posX + 480} charHeight={charHeight} charWidth={charWidth} />
       </View>
     );
