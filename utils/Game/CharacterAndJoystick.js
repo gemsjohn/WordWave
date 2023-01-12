@@ -33,7 +33,7 @@ import {
 
 export const CharacterAndJoystick = () => {
     // const sharedStateRef = useRef({});
-    const { sharedState } = useContext(SharedStateContext);
+    const { sharedState, setSharedState } = useContext(SharedStateContext);
     const objectPosition = useRef({ x: 0, y: 0 });
     let yInit = [];
     let xInit = [];
@@ -126,6 +126,15 @@ export const CharacterAndJoystick = () => {
     //     }
     // }, [sharedState.current]);
 
+    useEffect(() => {
+        setSharedState({
+            charX: posX,
+            charY: posY,
+            charHeight: charHeight,
+            charWidth: charWidth
+        })
+    }, [posY, posX])
+
 
     return (
       <View style={Styling.joystick_container}>
@@ -153,23 +162,23 @@ export const CharacterAndJoystick = () => {
 
         </View>
         
-          <Special 
+          {/* <Special 
             charY={posY + 10} 
             charX={posX + 480} 
             charHeight={charHeight} 
-            charWidth={charWidth} />
+            charWidth={charWidth} /> */}
 
-          <SpecialAnimation 
+          {/* <SpecialAnimation 
             charY={posY + 10} 
             charX={posX + 480} 
             charHeight={charHeight} 
-            charWidth={charWidth} />
+            charWidth={charWidth} /> */}
             
-          <Projectile 
+          {/* <Projectile 
             charY={posY + 10} 
             charX={posX + 480} 
             charHeight={charHeight} 
-            charWidth={charWidth} />
+            charWidth={charWidth} /> */}
       </View>
     );
   }

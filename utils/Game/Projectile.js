@@ -90,25 +90,15 @@ export const Projectile = (props) => {
     let timeoutId_b;
     const [modalVisible, setModalVisible] = useState(false);
 
+    // useContext API
+    const { sharedState, setSharedState } = useContext(SharedStateContext);
+
     // In Test
-    const { sharedState } = useContext(SharedStateContext);
-
-
-    // useEffect(() => {
-    //     if (sharedState.current) {
-    //         console.log("Shared: ")
-    //         console.log(sharedState.current)
-    //     }
-    //   }, [sharedState.current]);
-
 
     useLayoutEffect(() => {
       isGameInProgress.current = false;
       localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
       localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
-
-    //   localPowerup_0XPos.current = props.powerup_0.x;
-    //   localPowerup_0YPos.current = props.powerup_0.y; 
     }, [])
 
     useEffect(() => {
@@ -263,7 +253,7 @@ export const Projectile = (props) => {
     };
 
     const runObstacleAnimation_1 = () => {
-      console.log("#7a Run Obstacle Animation")
+      // console.log("#7a Run Obstacle Animation")
       if (isGameInProgress.current) {
         hasUpdatedObstacle_1.current = false;
         let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
@@ -290,7 +280,7 @@ export const Projectile = (props) => {
             clearTimeout(timeoutId_1);
           }
           timeoutId_1 = setTimeout(() => {
-            console.log("#7b Re-run")
+            // console.log("#7b Re-run")
             runObstacleAnimation_1();
           }, 200)
         });
@@ -300,7 +290,7 @@ export const Projectile = (props) => {
     };
 
     const runObstacleAnimation_large = () => {
-      console.log("#7a Run Obstacle Animation")
+      // console.log("#7a Run Obstacle Animation")
       if (isGameInProgress.current) {
         hasUpdatedObstacle_large.current = false;
         let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
@@ -327,7 +317,7 @@ export const Projectile = (props) => {
             clearTimeout(timeoutId_large);
           }
           timeoutId_large = setTimeout(() => {
-            console.log("#7b Re-run")
+            // console.log("#7b Re-run")
             runObstacleAnimation_large();
           }, 200)
         });
@@ -335,6 +325,10 @@ export const Projectile = (props) => {
         return;
       }
     };
+
+    // useEffect(() => {
+    //   console.log(sharedState.special_0)
+    // }, [sharedState])
 
     // CHARACTER Position
     localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);

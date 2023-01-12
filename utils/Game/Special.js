@@ -12,7 +12,7 @@ export const Special = (props) => {
 
     // Specials
     const [specialColor_0, setSpecialColor_0] = useState('transparent')
-    const specialPosition_0 = useRef({ x: 0, y: HeightRatio(140) });
+    const specialPosition_0 = useRef({ x: 0, y: 70 });
     const [specialColorPositionTimer_0, setSpecialColorPositionTimer_0] = useState(null);
     const retainSpecial_0 = useRef(false);
 
@@ -32,21 +32,41 @@ export const Special = (props) => {
     const retainSpecial_3 = useRef(false);
 
     // Collision Detection Variables
-    let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.313));
-    let localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
+    // let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.313));
+    // let localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
 
-    useLayoutEffect(() => {
-        isGameInProgress.current = false;
-        localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
-        localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
-    }, [])
+    // useLayoutEffect(() => {
+    //     isGameInProgress.current = false;
+    //     localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
+    //     localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
 
-    localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
-    localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
+    // }, [])
+
+
+    // localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
+    // localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
+
+    // const [obj1, setObj1] = useState({
+    //     x: localCharXPos.current,
+    //     y: localCharYPos.current,
+    //     width: props.charWidth,
+    //     height: props.charHeight
+    // });
+
+
+
+    // useEffect(() => {
+    //     setObj1({
+    //         x: localCharXPos.current,
+    //         y: localCharYPos.current,
+    //         width: props.charWidth,
+    //         height: props.charHeight
+    //     });
+    // }, [localCharXPos.current, localCharYPos.current, props.charWidth, props.charHeight]);
 
     const [obj1, setObj1] = useState({
-        x: localCharXPos.current,
-        y: localCharYPos.current,
+        x: props.charX,
+        y: props.charY,
         width: props.charWidth,
         height: props.charHeight
     });
@@ -55,12 +75,15 @@ export const Special = (props) => {
 
     useEffect(() => {
         setObj1({
-            x: localCharXPos.current,
-            y: localCharYPos.current,
+            x: props.charX,
+            y: props.charY,
             width: props.charWidth,
             height: props.charHeight
         });
-    }, [localCharXPos.current, localCharYPos.current, props.charWidth, props.charHeight]);
+    }, [props.charX, props.charY, props.charWidth, props.charHeight]);
+
+
+
 
     useLayoutEffect(() => {
         // console.log(obj1)
@@ -97,81 +120,81 @@ export const Special = (props) => {
         }
 
         // Special _ 1
-        if (isSpecialColliding_1(obj1, special_1)) {
-            setSpecialColor_1('rgba(255, 255, 255, 0.25)')
-            if (specialColorPositionTimer_1) {
-                clearTimeout(specialColorPositionTimer_1);
-            }
-            const timer = setTimeout(() => {
-                setSharedState({
-                    specialActive_0: false,
-                    specialActive_1: !retainSpecial_1.current,
-                    specialActive_2: false,
-                    specialActive_3: false
-                });
-                retainSpecial_0.current = false;
-                retainSpecial_1.current = !retainSpecial_1.current;
-                retainSpecial_2.current = false;
-                retainSpecial_3.current = false;
+        // if (isSpecialColliding_1(obj1, special_1)) {
+        //     setSpecialColor_1('rgba(255, 255, 255, 0.25)')
+        //     if (specialColorPositionTimer_1) {
+        //         clearTimeout(specialColorPositionTimer_1);
+        //     }
+        //     const timer = setTimeout(() => {
+        //         setSharedState({
+        //             specialActive_0: false,
+        //             specialActive_1: !retainSpecial_1.current,
+        //             specialActive_2: false,
+        //             specialActive_3: false
+        //         });
+        //         retainSpecial_0.current = false;
+        //         retainSpecial_1.current = !retainSpecial_1.current;
+        //         retainSpecial_2.current = false;
+        //         retainSpecial_3.current = false;
 
 
-            }, 100);
-            setSpecialColorPositionTimer_1(timer);
-        } else {
-            setSpecialColor_1('transparent')
-        }
+        //     }, 100);
+        //     setSpecialColorPositionTimer_1(timer);
+        // } else {
+        //     setSpecialColor_1('transparent')
+        // }
 
-        // Special _ 2
+        // // Special _ 2
 
-        if (isSpecialColliding_2(obj1, special_2)) {
-            setSpecialColor_2('rgba(255, 255, 255, 0.25)')
-            if (specialColorPositionTimer_2) {
-                clearTimeout(specialColorPositionTimer_2);
-            }
-            const timer = setTimeout(() => {
-                setSharedState({
-                    specialActive_0: false,
-                    specialActive_1: false,
-                    specialActive_2: !retainSpecial_2.current,
-                    specialActive_3: false
-                });
-                retainSpecial_0.current = false;
-                retainSpecial_1.current = false;
-                retainSpecial_2.current = !retainSpecial_2.current;
-                retainSpecial_3.current = false;
-
-
-            }, 100);
-            setSpecialColorPositionTimer_2(timer);
-        } else {
-            setSpecialColor_2('transparent')
-        }
-
-        // Special _ 3
-
-        if (isSpecialColliding_3(obj1, special_3)) {
-            setSpecialColor_3('rgba(255, 255, 255, 0.25)')
-            if (specialColorPositionTimer_3) {
-                clearTimeout(specialColorPositionTimer_3);
-            }
-            const timer = setTimeout(() => {
-                setSharedState({
-                    specialActive_0: false,
-                    specialActive_1: false,
-                    specialActive_2: false,
-                    specialActive_3: !retainSpecial_3.current
-                });
-                retainSpecial_0.current = false;
-                retainSpecial_1.current = false;
-                retainSpecial_2.current = false;
-                retainSpecial_3.current = !retainSpecial_3.current;
+        // if (isSpecialColliding_2(obj1, special_2)) {
+        //     setSpecialColor_2('rgba(255, 255, 255, 0.25)')
+        //     if (specialColorPositionTimer_2) {
+        //         clearTimeout(specialColorPositionTimer_2);
+        //     }
+        //     const timer = setTimeout(() => {
+        //         setSharedState({
+        //             specialActive_0: false,
+        //             specialActive_1: false,
+        //             specialActive_2: !retainSpecial_2.current,
+        //             specialActive_3: false
+        //         });
+        //         retainSpecial_0.current = false;
+        //         retainSpecial_1.current = false;
+        //         retainSpecial_2.current = !retainSpecial_2.current;
+        //         retainSpecial_3.current = false;
 
 
-            }, 100);
-            setSpecialColorPositionTimer_3(timer);
-        } else {
-            setSpecialColor_3('transparent')
-        }
+        //     }, 100);
+        //     setSpecialColorPositionTimer_2(timer);
+        // } else {
+        //     setSpecialColor_2('transparent')
+        // }
+
+        // // Special _ 3
+
+        // if (isSpecialColliding_3(obj1, special_3)) {
+        //     setSpecialColor_3('rgba(255, 255, 255, 0.25)')
+        //     if (specialColorPositionTimer_3) {
+        //         clearTimeout(specialColorPositionTimer_3);
+        //     }
+        //     const timer = setTimeout(() => {
+        //         setSharedState({
+        //             specialActive_0: false,
+        //             specialActive_1: false,
+        //             specialActive_2: false,
+        //             specialActive_3: !retainSpecial_3.current
+        //         });
+        //         retainSpecial_0.current = false;
+        //         retainSpecial_1.current = false;
+        //         retainSpecial_2.current = false;
+        //         retainSpecial_3.current = !retainSpecial_3.current;
+
+
+        //     }, 100);
+        //     setSpecialColorPositionTimer_3(timer);
+        // } else {
+        //     setSpecialColor_3('transparent')
+        // }
 
         return () => {
             null
@@ -183,26 +206,26 @@ export const Special = (props) => {
             id: 0,
             select: retainSpecial_0.current, 
             backgroundColor: specialColor_0, 
-            top: HeightRatio(140) 
+            top: 70 
         },
-        { 
-            id: 1,
-            select: retainSpecial_1.current, 
-            backgroundColor: specialColor_1, 
-            top: HeightRatio(260) 
-        },
-        { 
-            id: 2,
-            select: retainSpecial_2.current, 
-            backgroundColor: specialColor_2, 
-            top: HeightRatio(380) 
-        },
-        { 
-            id: 3,
-            select: retainSpecial_3.current, 
-            backgroundColor: specialColor_3, 
-            top: HeightRatio(500) 
-        },
+        // { 
+        //     id: 1,
+        //     select: retainSpecial_1.current, 
+        //     backgroundColor: specialColor_1, 
+        //     top: HeightRatio(260) 
+        // },
+        // { 
+        //     id: 2,
+        //     select: retainSpecial_2.current, 
+        //     backgroundColor: specialColor_2, 
+        //     top: HeightRatio(380) 
+        // },
+        // { 
+        //     id: 3,
+        //     select: retainSpecial_3.current, 
+        //     backgroundColor: specialColor_3, 
+        //     top: HeightRatio(500) 
+        // },
     ]
 
     const SpecialBlocks = ({ data }) => {
@@ -249,6 +272,9 @@ export const Special = (props) => {
     };
 
     return (
+        <>
+        <View style={{backgroundColor: 'red', position: 'absolute', zIndex: 10, left: 0, top: HeightRatio(140), height: 20, width: 20 }} />
         <SpecialBlocks data={data} />
+        </>
     )
 }

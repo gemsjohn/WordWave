@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, createContext } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, createContext, useContext } from 'react';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { CharacterAndJoystick } from './CharacterAndJoystick';
+import { Special } from './Special';
+import { Simple } from './Simple';
 import {
   View,
   StatusBar,
@@ -24,6 +26,17 @@ export const SharedStateContext = createContext();
 export const Game = (props) => {
   const sharedStateRef = useRef({});
   const [loadingComplete, setLoadingComplete] = useState(false)
+
+  // const charX = useRef(0);
+  // const charY = useRef(0);
+  // const charHeight = useRef(0);
+  // const charWidth = useRef(0);
+
+  const [charX, setCharX] = useState(0)
+  const [charY, setCharY] = useState(0)
+  const [charHeight, setCharHeight] = useState(0)
+  const [charWidth, setCharWidth] = useState(0)
+
   
   setTimeout(() => {
     setLoadingComplete(true)
@@ -42,9 +55,32 @@ export const Game = (props) => {
     };
   }, []);
 
+  const characterInterval = useRef(null);
+  useEffect(() => {
+    characterInterval.current = setInterval(() => {
+      setCharX(sharedStateRef.current.charX)
+      setCharY(sharedStateRef.current.charY)
+      setCharHeight(sharedStateRef.current.charHeight)
+      setCharWidth(sharedStateRef.current.charWidth)
+
+  }, 1)
+
+    // Return a function that cleans up the effect
+    return () => {
+      clearInterval(characterInterval.current);
+    };
+  }, []);
+
+
+
   const setSharedState = (newState) => {
     sharedStateRef.current = {...sharedStateRef.current, ...newState};
   };
+
+
+  // useEffect(() => {
+  //   console.log(sharedStateRef.current)
+  // }, [sharedStateRef.current])
 
   return (
     <>
@@ -90,6 +126,18 @@ export const Game = (props) => {
               value={{ sharedState: sharedStateRef, setSharedState }}
             >
               <CharacterAndJoystick />
+              {/* <Simple 
+                charX={charX + 191} 
+                charY={charY} 
+                charHeight={charHeight}
+                charWidth={charWidth}
+              /> */}
+              <Special 
+                charX={charX + 191} 
+                charY={charY} 
+                charHeight={charHeight}
+                charWidth={charWidth}
+              />
             </SharedStateContext.Provider>
           </>
           :
