@@ -179,10 +179,26 @@ export const PowerUps = (props) => {
     }, [obj1]);
 
     const data = [
-        { select: retainPower_0.current, backgroundColor: powerColor_0, top: HeightRatio(140) },
-        { select: retainPower_1.current, backgroundColor: powerColor_1, top: HeightRatio(260) },
-        { select: retainPower_2.current, backgroundColor: powerColor_2, top: HeightRatio(380) },
-        { select: retainPower_3.current, backgroundColor: powerColor_3, top: HeightRatio(500) },
+        { 
+            select: retainPower_0.current, 
+            backgroundColor: powerColor_0, 
+            top: HeightRatio(140) 
+        },
+        { 
+            select: retainPower_1.current, 
+            backgroundColor: powerColor_1, 
+            top: HeightRatio(260) 
+        },
+        { 
+            select: retainPower_2.current, 
+            backgroundColor: powerColor_2, 
+            top: HeightRatio(380) 
+        },
+        { 
+            select: retainPower_3.current, 
+            backgroundColor: powerColor_3, 
+            top: HeightRatio(500) 
+        },
     ]
 
     const PowerUpBlocks = ({ data }) => {
@@ -229,8 +245,6 @@ export const PowerUps = (props) => {
     };
 
     return (
-        <>
-            <PowerUpBlocks data={data} />
-        </>
+        <PowerUpBlocks data={data} />
     )
 }
