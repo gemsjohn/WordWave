@@ -51,9 +51,9 @@ export const Styling = StyleSheet.create({
     top: 0
   },
   joystick_inner_container: {
-    position: 'absolute', 
-    bottom: HeightRatio(windowHeight), 
-    left: WidthRatio(151), 
+    position: 'absolute',
+    bottom: HeightRatio(windowHeight),
+    left: WidthRatio(151),
     zIndex: 20, top: 0
   },
 
@@ -144,7 +144,14 @@ export const Styling = StyleSheet.create({
   },
 
   // Powers
-  power_block: {}
-  
+  power_block: {
+    position: 'absolute',
+    zIndex: -5,
+    top: HeightRatio(140),
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'white'
+  }
+
 
 });

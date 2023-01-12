@@ -213,29 +213,29 @@ export const Game = (props) => {
       }
     }, [sharedStateRef.current]);
 
-    // console.log(powerup_0)
-    // const [objPower_0, setObjPower_0] = useState({
-    //   x: powerup_0.x,
-    //   y: powerup_0.y,
-    //   width: 15,
-    //   height: 15
-    // });
+    console.log(powerup_0)
+    const [objPower_0, setObjPower_0] = useState({
+      x: powerup_0.x,
+      y: powerup_0.y,
+      width: 15,
+      height: 15
+    });
 
 
-    // useEffect(() => {
-    //   setObjPower_0({
-    //     x: powerup_0.x,
-    //     y: powerup_0.y,
-    //     width: 15,
-    //     height: 15
-    //   });
-    // }, [powerup_0]);
+    useEffect(() => {
+      setObjPower_0({
+        x: powerup_0.x,
+        y: powerup_0.y,
+        width: 15,
+        height: 15
+      });
+    }, [powerup_0]);
 
     
 
-    // useLayoutEffect(() => {
-    //   console.log(objPower_0)
-    // }, [objPower_0]);
+    useLayoutEffect(() => {
+      console.log(objPower_0)
+    }, [objPower_0]);
 
 
     return (
