@@ -354,8 +354,8 @@ export const Projectile = (props) => {
               setSpecial_0({
                 x: sharedState.current.s0_x,
                 y: sharedState.current.s0_y,
-                width: 300,
-                height: 300
+                width: sharedState.current.s0_Width,
+                height: sharedState.current.s0_Height
               });
             }
 
@@ -431,10 +431,27 @@ export const Projectile = (props) => {
 
     useLayoutEffect(() => {
       if (sharedState.current.specialActive_0) {
-        console.log(special_0.x)
-        if (special_0.x > 300) {
-          console.log("Direct Hit")
-        }
+        const obstacleListener_large = obstaclePosition_large.addListener((value) => {
+          let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
+          
+          if (isSpecial_0_Colliding_0(special_0, obj2)) {
+            if (!hasUpdatedObstacle_large.current) {
+              // crashes.current += 1;
+              hasUpdatedObstacle_large.current = true;
+            }
+            obstacle_large.current.reset()
+          }
+        });
+
+        // let obj2 = { x: 400, y: 100, width: 100, height: 100 }
+
+        // if (isSpecial_0_Colliding_0(special_0, obj2)) {
+        //   console.log(special_0)
+        //   console.log("Direct Hit")
+        // } else {
+        //   console.log(special_0)
+        //   console.log("Miss")
+        // }
       }
     }, [special_0])
 
