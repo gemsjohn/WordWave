@@ -23,18 +23,20 @@ import {
 
 export const CharacterAndJoystick = () => {
     // const sharedStateRef = useRef({});
+    let newY;
+    let newX;
+    let charHeight = HeightRatio(68);
+    let charWidth = WidthRatio(24);
+    let offset = WidthRatio(190);
     const { sharedState, setSharedState } = useContext(SharedStateContext);
     const objectPosition = useRef({ x: 0, y: 0 });
     let yInit = [];
     let xInit = [];
     const xValue = useRef(new Animated.Value(0)).current;
     const yValue = useRef(new Animated.Value(0)).current;
-    const [posY, setPosY] = useState(0);
+    const [posY, setPosY] = useState(charHeight/2);
     const [posX, setPosX] = useState(0);
-    let newY;
-    let newX;
-    let charHeight = 38;
-    let charWidth = 62;
+    
     const pan = useRef(new Animated.ValueXY()).current;
 
     const dx = new Animated.Value(0);
@@ -74,14 +76,14 @@ export const CharacterAndJoystick = () => {
           xValue.current = newX;
           yValue.current = newY;
 
-          if (newY <= 0) {
-            newY = 0;
-          } else if (newY >= (windowHeight * 0.78)) {
-            newY = (windowHeight * 0.78);
+          if (newY <= charHeight/2) {
+            newY = charHeight/2;
+          } else if (newY >= HeightRatio(670)) {
+            newY = HeightRatio(670);
           }
 
-          if (newX <= -(windowWidth * 0.207)) {
-            newX = -(windowWidth * 0.207);
+          if (newX <= -WidthRatio(64)) {
+            newX = -WidthRatio(64);
           } else if (newX >= 0) {
             newX = 0;
           }
@@ -109,13 +111,6 @@ export const CharacterAndJoystick = () => {
       })
     ).current;
 
-    // useEffect(() => {
-    //     if (sharedState.current) {
-    //       // do something
-    //       console.log(sharedState.current)
-    //     }
-    // }, [sharedState.current]);
-
     useEffect(() => {
         setSharedState({
             charX: posX,
@@ -132,23 +127,26 @@ export const CharacterAndJoystick = () => {
           <Animated.View
             style={{
               transform: [
-                { translateX: posX + 480 },
-                { translateY: posY + 10 }
+                { translateX: ((posX - charWidth/2) + offset) },
+                { translateY: posY - charHeight/2 }
               ]
 
 
             }}
             {...panResponder.panHandlers}
           >
-            <View style={{ right: windowWidth - 250, top: 0, flexDirection: 'row' }} >
+            <View style={{ right: windowWidth - WidthRatio(98), top: 0, flexDirection: 'row' }} >
               <Image source={require('../../assets/Char_0.png')} style={{ height: charHeight, width: charWidth }} />
               {/* <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', padding: 4, height: 23, width: 29, borderRadius: 10, left: -95, top: 16 }}>
-                <Text style={{ color: '#ccff33', fontSize: 10 }}>{posY}</Text>
+                <Text style={{ color: '#ccff33', fontSize: 10 }}>{posY - charHeight/2}</Text>
               </View> */}
             </View>
             <View style={Styling.joystick_knob} />
 
           </Animated.View>
+          <View style={{borderColor: 'white', borderWidth: 1, position: 'absolute', width: windowWidth, top: posY, left: -400}} />
+          <View style={{borderColor: 'white', borderWidth: 1, position: 'absolute', height: windowHeight, top: 0, left: posX - WidthRatio(64) - charWidth/2}} />
+
 
         </View>
       </View>

@@ -42,10 +42,10 @@ export const Special = (props) => {
         // This function will be called on every animation frame
         const update = () => {
             setObj1({
-                x: sharedState.current.charX + 191,
+                x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
                 y: sharedState.current.charY,
-                width: sharedState.current.charHeight,
-                height: sharedState.current.charWidth
+                width: sharedState.current.charWidth,
+                height: sharedState.current.charHeight/2
             });
 
             requestAnimationFrame(update);

@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3, isSpecial_0_Colliding_0 } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3, isSpecial_0a_Colliding_0, isSpecial_0b_Colliding_0 } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
 import {
@@ -334,7 +334,13 @@ export const Projectile = (props) => {
       width: 0,
       height: 0
     });
-    const [special_0, setSpecial_0] = useState({
+    const [special_0a, setSpecial_0a] = useState({
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+    });
+    const [special_0b, setSpecial_0b] = useState({
       x: 0,
       y: 0,
       width: 0,
@@ -345,17 +351,23 @@ export const Projectile = (props) => {
         // This function will be called on every animation frame
         const update = () => {
             setObj1({
-                x: sharedState.current.charX + 191,
+                x: sharedState.current.charX,
                 y: sharedState.current.charY,
-                width: sharedState.current.charHeight,
-                height: sharedState.current.charWidth
+                width: sharedState.current.charWidth,
+                height: sharedState.current.charHeight
             });
             if (sharedState.current.specialActive_0) {
-              setSpecial_0({
-                x: sharedState.current.s0_x,
-                y: sharedState.current.s0_y,
-                width: sharedState.current.s0_Width,
-                height: sharedState.current.s0_Height
+              setSpecial_0a({
+                x: sharedState.current.s0a_x,
+                y: sharedState.current.s0a_y,
+                width: sharedState.current.s0a_Width,
+                height: sharedState.current.s0a_Height
+              });
+              setSpecial_0b({
+                x: sharedState.current.s0b_x,
+                y: sharedState.current.s0b_y,
+                width: sharedState.current.s0b_Width,
+                height: sharedState.current.s0b_Height
               });
             }
 
@@ -372,7 +384,7 @@ export const Projectile = (props) => {
     
 
     useLayoutEffect(() => {
-        // console.log(special_0)
+        // console.log(special_0a)
         // const wordBlockListener = position.addListener((value) => {
         //   let obj2 = { x: value.value, y: yPos, width: 30, height: 30 }
   
@@ -417,6 +429,20 @@ export const Projectile = (props) => {
               hasUpdatedObstacle_large.current = true;
             }
             obstacle_large.current.reset()
+          } 
+          
+          if (isSpecial_0a_Colliding_0(special_0a, obj2)) {
+            if (!hasUpdatedObstacle_large.current) {
+              hasUpdatedObstacle_large.current = true;
+            }
+            obstacle_large.current.reset()
+          }
+
+          if (isSpecial_0b_Colliding_0(special_0b, obj2)) {
+            if (!hasUpdatedObstacle_large.current) {
+              hasUpdatedObstacle_large.current = true;
+            }
+            obstacle_large.current.reset()
           }
         });
 
@@ -427,35 +453,7 @@ export const Projectile = (props) => {
           // obstaclePosition_1.removeListener(obstacleListener_1)
           obstaclePosition_large.removeListener(obstacleListener_large)
         }
-    }, [obj1]);
-
-    useLayoutEffect(() => {
-      if (sharedState.current.specialActive_0) {
-        const obstacleListener_large = obstaclePosition_large.addListener((value) => {
-          let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
-          
-          if (isSpecial_0_Colliding_0(special_0, obj2)) {
-            if (!hasUpdatedObstacle_large.current) {
-              // crashes.current += 1;
-              hasUpdatedObstacle_large.current = true;
-            }
-            obstacle_large.current.reset()
-          }
-        });
-
-        // let obj2 = { x: 400, y: 100, width: 100, height: 100 }
-
-        // if (isSpecial_0_Colliding_0(special_0, obj2)) {
-        //   console.log(special_0)
-        //   console.log("Direct Hit")
-        // } else {
-        //   console.log(special_0)
-        //   console.log("Miss")
-        // }
-      }
-    }, [special_0])
-
-
+    }, [obj1, special_0a, special_0b]);
 
     useEffect(() => {
       let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -600,6 +598,10 @@ export const Projectile = (props) => {
             </>
           }
 
+          {/* <View style={{borderColor: 'white', borderWidth: 1, position: 'absolute', width: windowWidth, top: obj1.y, left: 0}} />
+          <View style={{borderColor: 'white', borderWidth: 1, position: 'absolute', height: windowHeight, top: 0, left: obj1.x + WidthRatio(64) + obj1.width/2}} /> */}
+
+
 
 
           {/* Letter Blocks */}
@@ -656,9 +658,6 @@ export const Projectile = (props) => {
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 80, width: 80 }} />
           </Animated.View>
-          <View style={{backgroundColor: 'blue', height: 100, width: 100, position: 'absolute', top: 100, left: 400}} ></View>
-
-
 
           {displayLetters.map((l, i) => (
             <View style={{

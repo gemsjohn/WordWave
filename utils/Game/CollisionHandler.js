@@ -66,7 +66,16 @@ export const isSpecialColliding_3 = (obj1, obj2) => {
     );
 }
 
-export const isSpecial_0_Colliding_0 = (obj1, obj2) => {
+export const isSpecial_0a_Colliding_0 = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+
+export const isSpecial_0b_Colliding_0 = (obj1, obj2) => {
     return (
         obj1.x < obj2.x + obj2.width &&
         obj1.x + obj1.width > obj2.x &&

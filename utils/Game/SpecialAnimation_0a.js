@@ -24,23 +24,21 @@ import {
     TouchableOpacityBase
 } from 'react-native';
 
-export const SpecialAnimation = () => {
+export const SpecialAnimation_0a = () => {
     // useContext API
     const { sharedState, setSharedState } = useContext(SharedStateContext);
 
     // Special _ 0
-    const special_0 = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
-    const [posY, setPosY] = useState(0);
-    const [posX, setPosX] = useState(0);
-    const specialAnimation_0 = useRef(null);
-    const isPowerInProgress_0 = useRef(false)
-    let timeoutId_0;
+    const special_0a = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
+    const [posY_0a, setPosY_0a] = useState(0);
+    const [posX_0a, setPosX_0a] = useState(0);
+    const [opacityAnim_0a] = useState(new Animated.Value(1));
+    const specialAnimation_0a = useRef(null);
+    const isPowerInProgress_0a = useRef(false)
+    let timeoutId_0a;
 
 
-    const [obj1, setObj1] = useState({
-        x: 0,
-        y: 0,
-    });
+    const [obj1, setObj1] = useState({x: 0, y: 0});
 
     useEffect(() => {
         // This function will be called on every animation frame
@@ -52,39 +50,39 @@ export const SpecialAnimation = () => {
 
             requestAnimationFrame(update);
         };
-
         update();
-
-        // Return a function that cleans up the effect
-        return () => {
-            // No need to do anything here
-        };
     }, [])
 
-    const runSpecialAnimation_0 = (x, y) => {
-        if (isPowerInProgress_0.current) {
-            special_0.setValue({ x: x - WidthRatio(65), y: y });
-            specialAnimation_0.current = Animated.parallel([
-                Animated.timing(special_0.x, {
-                    toValue: 1000, // or any other value you want to animate to
-                    duration: 2000,
+    const runspecialAnimation_0a = (x, y) => {
+        if (isPowerInProgress_0a.current) {
+            special_0a.setValue({ x: x - WidthRatio(65), y: y });
+            opacityAnim_0a.setValue(1)
+            specialAnimation_0a.current = Animated.parallel([
+                Animated.timing(special_0a.x, {
+                    toValue: 500, // or any other value you want to animate to
+                    duration: 500,
                     useNativeDriver: false
                 }),
-                Animated.timing(special_0.y, {
+                Animated.timing(special_0a.y, {
                     toValue: sharedState.current.charY, // or any other value you want to animate to
-                    duration: 2000,
+                    duration: 500,
+                    useNativeDriver: false
+                }),
+                Animated.timing(opacityAnim_0a, {
+                    toValue: 0,
+                    duration: 500,
                     useNativeDriver: false
                 })
             ]).start(() => {
-                if (timeoutId_0) {
-                    clearTimeout(timeoutId_0);
+                if (timeoutId_0a) {
+                    clearTimeout(timeoutId_0a);
                 }
-                timeoutId_0 = setTimeout(() => {
-                    runSpecialAnimation_0(sharedState.current.charX + 300, sharedState.current.charY);
+                timeoutId_0a = setTimeout(() => {
+                    runspecialAnimation_0a(sharedState.current.charX + 300, sharedState.current.charY);
                 }, 200)
             });
         } else {
-            clearTimeout(timeoutId_0);
+            clearTimeout(timeoutId_0a);
             return;
         }
     };
@@ -92,52 +90,53 @@ export const SpecialAnimation = () => {
     useEffect(() => {
         if (sharedState.current.specialActive_0) {
             console.log("specialActive_0")
-            isPowerInProgress_0.current = true;
-            runSpecialAnimation_0(sharedState.current.charX + 300, sharedState.current.charY);
+            isPowerInProgress_0a.current = true;
+            runspecialAnimation_0a(sharedState.current.charX + 300, sharedState.current.charY);
         } else {
             console.log("Stopping")
-            isPowerInProgress_0.current = false;
+            isPowerInProgress_0a.current = false;
+            setSharedState({
+                s0a_x: null,
+                s0a_y: null,
+                s0a_Height: null,
+                s0a_Width: null
+            })
         }
     }, [sharedState.current.specialActive_0]);
     
 
     useEffect(() => {
-
-        special_0.addListener((value) => {
-            setPosX(value.x)
-            setPosY(value.y)
+        // Only way to pass posX_0a and posY_0a as integers 
+        special_0a.addListener((value) => {
+            setPosX_0a(value.x)
+            setPosY_0a(value.y)
         });
-
-
-        
-    }, [special_0])
+    }, [special_0a])
 
     useEffect(() => {
         setSharedState({
-            s0_x: posX,
-            s0_y: posY,
-            s0_Height: 15,
-            s0_Width: 15
+            s0a_x: posX_0a,
+            s0a_y: posY_0a,
+            s0a_Height: 15,
+            s0a_Width: 15
         })
-    }, [posX, posY])
+    }, [posX_0a, posY_0a])
 
     return (
         <>
+        {isPowerInProgress_0a.current &&
             <Animated.View
                 style={[
-                    Styling.projectile_obstacle_block,
+                    {...Styling.projectile_obstacle_block, opacity: opacityAnim_0a},
                     {
-                        transform: [{ translateX: special_0.x }, { translateY: special_0.y }],
+                        transform: [{ translateX: special_0a.x }, { translateY: special_0a.y }],
                     },
                 ]}
             >
                 <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 15, width: 15 }} />
             </Animated.View>
+        }
             <View></View>
         </>
     )
 }
-
-
-
-
