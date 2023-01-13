@@ -332,6 +332,12 @@ export const Projectile = (props) => {
       width: 0,
       height: 0
     });
+    const [special_0, setSpecial_0] = useState({
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+    });
 
     useEffect(() => {
         // This function will be called on every animation frame
@@ -341,6 +347,12 @@ export const Projectile = (props) => {
                 y: sharedState.current.charY,
                 width: sharedState.current.charHeight,
                 height: sharedState.current.charWidth
+            });
+            setSpecial_0({
+              x: sharedState.current.s0_x,
+              y: sharedState.current.s0_y,
+              width: sharedState.current.s0_Height,
+              height: sharedState.current.s0_Width
             });
 
             requestAnimationFrame(update);
@@ -355,7 +367,7 @@ export const Projectile = (props) => {
     }, [])
 
     useLayoutEffect(() => {
-      console.log(sharedState.current.s0_x)
+      
         const wordBlockListener = position.addListener((value) => {
           let obj2 = { x: value.value, y: yPos, width: 30, height: 30 }
   
