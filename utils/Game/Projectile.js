@@ -334,22 +334,51 @@ export const Projectile = (props) => {
     localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
     localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
 
+    // const [obj1, setObj1] = useState({
+    //   x: localCharXPos.current,
+    //   y: localCharYPos.current,
+    //   width: props.charWidth,
+    //   height: props.charHeight
+    // });
+
+
+    // useEffect(() => {
+    //   setObj1({
+    //     x: localCharXPos.current,
+    //     y: localCharYPos.current,
+    //     width: props.charWidth,
+    //     height: props.charHeight
+    //   });
+    // }, [localCharXPos.current, localCharYPos.current, props.charWidth, props.charHeight]);
+
+
     const [obj1, setObj1] = useState({
-      x: localCharXPos.current,
-      y: localCharYPos.current,
-      width: props.charWidth,
-      height: props.charHeight
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
     });
 
-
     useEffect(() => {
-      setObj1({
-        x: localCharXPos.current,
-        y: localCharYPos.current,
-        width: props.charWidth,
-        height: props.charHeight
-      });
-    }, [localCharXPos.current, localCharYPos.current, props.charWidth, props.charHeight]);
+        // This function will be called on every animation frame
+        const update = () => {
+            setObj1({
+                x: sharedState.current.charX + 191,
+                y: sharedState.current.charY,
+                width: sharedState.current.charHeight,
+                height: sharedState.current.charWidth
+            });
+
+            requestAnimationFrame(update);
+        };
+
+        update();
+
+        // Return a function that cleans up the effect
+        return () => {
+            // No need to do anything here
+        };
+    }, [])
 
     useLayoutEffect(() => {
         const wordBlockListener = position.addListener((value) => {
