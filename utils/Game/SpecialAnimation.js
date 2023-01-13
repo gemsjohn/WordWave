@@ -30,6 +30,8 @@ export const SpecialAnimation = () => {
 
     // Special _ 0
     const special_0 = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
+    const [posY, setPosY] = useState(0);
+    const [posX, setPosX] = useState(0);
     const specialAnimation_0 = useRef(null);
     const isPowerInProgress_0 = useRef(false)
     let timeoutId_0;
@@ -97,15 +99,27 @@ export const SpecialAnimation = () => {
             isPowerInProgress_0.current = false;
         }
     }, [sharedState.current.specialActive_0]);
+    
+
+    useEffect(() => {
+
+        special_0.addListener((value) => {
+            setPosX(value.x)
+            setPosY(value.y)
+        });
+
+
+        
+    }, [special_0])
 
     useEffect(() => {
         setSharedState({
-            s0_x: special_0.x,
-            s0_y: special_0.y,
+            s0_x: posX,
+            s0_y: posY,
             s0_Height: 15,
             s0_Width: 15
         })
-    }, [special_0.x, special_0.y])
+    }, [posX, posY])
 
     return (
         <>

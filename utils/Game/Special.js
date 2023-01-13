@@ -245,7 +245,7 @@ export const Special = (props) => {
 
     return (
         <>
-        <View style={{backgroundColor: 'red', position: 'absolute', zIndex: 10, left: 0, top: HeightRatio(125), height: 20, width: 20 }} />
+        {/* <View style={{backgroundColor: 'red', position: 'absolute', zIndex: 10, left: 0, top: HeightRatio(125), height: 20, width: 20 }} /> */}
         <SpecialBlocks data={data} />
         </>
     )

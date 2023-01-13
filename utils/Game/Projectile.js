@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3 } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3, isSpecial_0_Colliding_0 } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
 import {
@@ -94,6 +94,8 @@ export const Projectile = (props) => {
     const { sharedState, setSharedState } = useContext(SharedStateContext);
 
     // In Test
+    const placeholderPosition = useRef(new Animated.ValueXY({ x: 400, y: 0 })).current;
+
 
     useLayoutEffect(() => {
       isGameInProgress.current = false;
@@ -348,12 +350,14 @@ export const Projectile = (props) => {
                 width: sharedState.current.charHeight,
                 height: sharedState.current.charWidth
             });
-            setSpecial_0({
-              x: sharedState.current.s0_x,
-              y: sharedState.current.s0_y,
-              width: sharedState.current.s0_Height,
-              height: sharedState.current.s0_Width
-            });
+            if (sharedState.current.specialActive_0) {
+              setSpecial_0({
+                x: sharedState.current.s0_x,
+                y: sharedState.current.s0_y,
+                width: 300,
+                height: 300
+              });
+            }
 
             requestAnimationFrame(update);
         };
@@ -365,6 +369,7 @@ export const Projectile = (props) => {
             // No need to do anything here
         };
     }, [])
+    
 
     useLayoutEffect(() => {
         // console.log(special_0)
@@ -423,6 +428,16 @@ export const Projectile = (props) => {
           obstaclePosition_large.removeListener(obstacleListener_large)
         }
     }, [obj1]);
+
+    useLayoutEffect(() => {
+      if (sharedState.current.specialActive_0) {
+        console.log(special_0.x)
+        if (special_0.x > 300) {
+          console.log("Direct Hit")
+        }
+      }
+    }, [special_0])
+
 
 
     useEffect(() => {
@@ -624,6 +639,7 @@ export const Projectile = (props) => {
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 80, width: 80 }} />
           </Animated.View>
+          <View style={{backgroundColor: 'blue', height: 100, width: 100, position: 'absolute', top: 100, left: 400}} ></View>
 
 
 

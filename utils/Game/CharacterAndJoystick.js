@@ -64,7 +64,7 @@ export const CharacterAndJoystick = () => {
         },
         onPanResponderGrant: () => {
           pan.setOffset({
-            x: pan.x.value,
+            x: pan.x._value,
             y: pan.y._value
           });
         },
