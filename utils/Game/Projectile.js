@@ -176,7 +176,7 @@ export const Projectile = (props) => {
 
 
     const runAnimation = () => {
-      console.log("#5a Run Animation")
+      // console.log("#5a Run Animation")
       if (isGameInProgress.current) {
         // console.log("#5b Letters Array: " + wordPlusSeven.current)
         hasUpdatedLetterBlock.current = false;
@@ -203,7 +203,7 @@ export const Projectile = (props) => {
           })
 
           timeoutId_a = setTimeout(() => {
-            console.log("#5b Re-run")
+            // console.log("#5b Re-run")
             runAnimation();
           }, 500)
         });
@@ -326,32 +326,6 @@ export const Projectile = (props) => {
       }
     };
 
-    // useEffect(() => {
-    //   console.log(sharedState.special_0)
-    // }, [sharedState])
-
-    // CHARACTER Position
-    localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
-    localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
-
-    // const [obj1, setObj1] = useState({
-    //   x: localCharXPos.current,
-    //   y: localCharYPos.current,
-    //   width: props.charWidth,
-    //   height: props.charHeight
-    // });
-
-
-    // useEffect(() => {
-    //   setObj1({
-    //     x: localCharXPos.current,
-    //     y: localCharYPos.current,
-    //     width: props.charWidth,
-    //     height: props.charHeight
-    //   });
-    // }, [localCharXPos.current, localCharYPos.current, props.charWidth, props.charHeight]);
-
-
     const [obj1, setObj1] = useState({
       x: 0,
       y: 0,
@@ -381,6 +355,7 @@ export const Projectile = (props) => {
     }, [])
 
     useLayoutEffect(() => {
+      console.log(sharedState.current.s0_x)
         const wordBlockListener = position.addListener((value) => {
           let obj2 = { x: value.value, y: yPos, width: 30, height: 30 }
   
@@ -511,11 +486,7 @@ export const Projectile = (props) => {
       // Clear Obstacle's
 
       obstaclePosition_0.setValue({ x: 1000, y: 0 })
-      // setObstacleYPos_0(0)
-
       obstaclePosition_1.setValue({ x: 1000, y: 0 })
-      // setObstacleYPos_1(0)
-
       obstaclePosition_large.setValue({ x: 1000, y: 0 })
 
 

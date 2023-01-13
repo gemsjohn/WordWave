@@ -60,7 +60,7 @@ export const Special = (props) => {
     }, [])
 
     useLayoutEffect(() => {
-        console.log(obj1)
+        // console.log(obj1)
         let special_0 = { x: specialPosition_0.current.x, y: specialPosition_0.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
         let special_1 = { x: specialPosition_1.current.x, y: specialPosition_1.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
         let special_2 = { x: specialPosition_2.current.x, y: specialPosition_2.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }

@@ -1,16 +1,6 @@
 import React, { useState, useRef, useEffect, useContext, useLayoutEffect, createContext } from 'react';
-// import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
-import { Navbar } from '../../components/Navbar';
-import { getTerm } from '../../Localization';
-import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3 } from './CollisionHandler';
-import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
-import { Projectile } from './Projectile';
-import { Special } from './Special';
 import { SharedStateContext } from './Game';
-import { SpecialAnimation } from './SpecialAnimation';
 import {
   Text,
   View,
@@ -161,24 +151,6 @@ export const CharacterAndJoystick = () => {
           </Animated.View>
 
         </View>
-        
-          {/* <Special 
-            charY={posY + 10} 
-            charX={posX + 480} 
-            charHeight={charHeight} 
-            charWidth={charWidth} /> */}
-
-          {/* <SpecialAnimation 
-            charY={posY + 10} 
-            charX={posX + 480} 
-            charHeight={charHeight} 
-            charWidth={charWidth} /> */}
-            
-          {/* <Projectile 
-            charY={posY + 10} 
-            charX={posX + 480} 
-            charHeight={charHeight} 
-            charWidth={charWidth} /> */}
       </View>
     );
   }

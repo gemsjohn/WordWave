@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   UIManager,
 } from 'react-native';
+import { SpecialAnimation } from './SpecialAnimation';
 
 if (
   Platform.OS === "android" &&
@@ -73,6 +74,7 @@ export const Game = (props) => {
               <CharacterAndJoystick />
               {/* <Simple /> */}
               <Special />
+              <SpecialAnimation />
               <Projectile />
             </SharedStateContext.Provider>
           </>

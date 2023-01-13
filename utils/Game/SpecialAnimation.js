@@ -24,7 +24,7 @@ import {
     TouchableOpacityBase
 } from 'react-native';
 
-export const SpecialAnimation = (props) => {
+export const SpecialAnimation = () => {
     // useContext API
     const { sharedState, setSharedState } = useContext(SharedStateContext);
 
@@ -32,17 +32,32 @@ export const SpecialAnimation = (props) => {
     const special_0 = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
     const specialAnimation_0 = useRef(null);
     const isPowerInProgress_0 = useRef(false)
-    const posYRef_0 = useRef(0);
-    const posXRef_0 = useRef(0);
     let timeoutId_0;
-    const specialPosInterval_0 = useRef(null);
+
+
+    const [obj1, setObj1] = useState({
+        x: 0,
+        y: 0,
+    });
 
     useEffect(() => {
-        posXRef_0.current = props.charX - 100;
-        posYRef_0.current = props.charY;
+        // This function will be called on every animation frame
+        const update = () => {
+            setObj1({
+                x: sharedState.current.charX + 300,
+                y: sharedState.current.charY,
+            });
 
-    }, [props])
+            requestAnimationFrame(update);
+        };
 
+        update();
+
+        // Return a function that cleans up the effect
+        return () => {
+            // No need to do anything here
+        };
+    }, [])
 
     const runSpecialAnimation_0 = (x, y) => {
         if (isPowerInProgress_0.current) {
@@ -54,7 +69,7 @@ export const SpecialAnimation = (props) => {
                     useNativeDriver: false
                 }),
                 Animated.timing(special_0.y, {
-                    toValue: posYRef_0.current, // or any other value you want to animate to
+                    toValue: sharedState.current.charY, // or any other value you want to animate to
                     duration: 2000,
                     useNativeDriver: false
                 })
@@ -63,7 +78,7 @@ export const SpecialAnimation = (props) => {
                     clearTimeout(timeoutId_0);
                 }
                 timeoutId_0 = setTimeout(() => {
-                    runSpecialAnimation_0(posXRef_0.current, posYRef_0.current);
+                    runSpecialAnimation_0(sharedState.current.charX + 300, sharedState.current.charY);
                 }, 200)
             });
         } else {
@@ -72,64 +87,25 @@ export const SpecialAnimation = (props) => {
         }
     };
 
-
+    useEffect(() => {
+        if (sharedState.current.specialActive_0) {
+            console.log("specialActive_0")
+            isPowerInProgress_0.current = true;
+            runSpecialAnimation_0(sharedState.current.charX + 300, sharedState.current.charY);
+        } else {
+            console.log("Stopping")
+            isPowerInProgress_0.current = false;
+        }
+    }, [sharedState.current.specialActive_0]);
 
     useEffect(() => {
-        if (sharedState.current) {
-            console.log("Shared from Game: ")
-            console.log(sharedState.current)
-            if (sharedState.current.specialActive_0) {
-                isPowerInProgress_0.current = true;
-                runSpecialAnimation_0(posXRef_0.current, posYRef_0.current);
-                // specialPosInterval_0.current = setInterval(() => {
-                //     // console.log(special_0)
-                //     setSharedState({
-                //         special_0: special_0
-                //     })
-                // }, 20)
-            } else if (!sharedState.current.specialActive_0) {
-                console.log("Stopping")
-                isPowerInProgress_0.current = false;
-                // clearInterval(specialPosInterval_0.current);
-                // specialPosInterval_0.current = null;
-
-            }
-        }
-    }, [sharedState.current]);
-
-    // useEffect(() => {
-    //     setSharedState({
-    //         special_0_x: special_0.x,
-    //         special_0_y: special_0.y
-    //     })
-    //     console.log(special_0)
-    // }, [special_0])
-
-
-
-    //   console.log(special_0)
-    //   const [objPower_0, setObjPower_0] = useState({
-    //     x: special_0.x,
-    //     y: special_0.y,
-    //     width: 15,
-    //     height: 15
-    //   });
-
-
-    //   useEffect(() => {
-    //     setObjPower_0({
-    //       x: special_0.x,
-    //       y: special_0.y,
-    //       width: 15,
-    //       height: 15
-    //     });
-    //   }, [special_0]);
-
-
-
-    //   useLayoutEffect(() => {
-    //     console.log(objPower_0)
-    //   }, [objPower_0]);
+        setSharedState({
+            s0_x: special_0.x,
+            s0_y: special_0.y,
+            s0_Height: 15,
+            s0_Width: 15
+        })
+    }, [special_0.x, special_0.y])
 
     return (
         <>
@@ -147,3 +123,7 @@ export const SpecialAnimation = (props) => {
         </>
     )
 }
+
+
+
+
