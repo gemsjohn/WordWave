@@ -367,17 +367,17 @@ export const Projectile = (props) => {
     }, [])
 
     useLayoutEffect(() => {
-      
-        const wordBlockListener = position.addListener((value) => {
-          let obj2 = { x: value.value, y: yPos, width: 30, height: 30 }
+        // console.log(special_0)
+        // const wordBlockListener = position.addListener((value) => {
+        //   let obj2 = { x: value.value, y: yPos, width: 30, height: 30 }
   
-          if (isLetterBlockColliding(obj1, obj2)) {
-            if (!hasUpdatedLetterBlock.current) {
-              setLetterPocket(prevItems => [...prevItems, letter])
-              hasUpdatedLetterBlock.current = true;
-            }
-          }
-        });
+        //   if (isLetterBlockColliding(obj1, obj2)) {
+        //     if (!hasUpdatedLetterBlock.current) {
+        //       setLetterPocket(prevItems => [...prevItems, letter])
+        //       hasUpdatedLetterBlock.current = true;
+        //     }
+        //   }
+        // });
   
         // const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
         //   let obj2 = { x: value.x, y: value.y, width: 0, height: 30 }
@@ -405,7 +405,7 @@ export const Projectile = (props) => {
   
         const obstacleListener_large = obstaclePosition_large.addListener((value) => {
           let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
-  
+          
           if (isObstacleColliding_large(obj1, obj2)) {
             if (!hasUpdatedObstacle_large.current) {
               crashes.current += 1;
@@ -414,14 +414,16 @@ export const Projectile = (props) => {
             obstacle_large.current.reset()
           }
         });
+
   
         return () => {
-          position.removeListener(wordBlockListener);
+          // position.removeListener(wordBlockListener);
           // obstaclePosition_0.removeListener(obstacleListener_0)
           // obstaclePosition_1.removeListener(obstacleListener_1)
           obstaclePosition_large.removeListener(obstacleListener_large)
         }
     }, [obj1]);
+
 
     useEffect(() => {
       let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -569,7 +571,7 @@ export const Projectile = (props) => {
 
 
           {/* Letter Blocks */}
-          <Animated.View
+          {/* <Animated.View
             style={[
               Styling.projectile_word_block,
               {
@@ -587,7 +589,7 @@ export const Projectile = (props) => {
             </Text>
             <Image source={require('../../assets/block_keyboard_key.png')} style={{ height: 50, width: 50 }} />
 
-          </Animated.View>
+          </Animated.View> */}
 
           {/* Obstacles */}
           {/* <Animated.View
