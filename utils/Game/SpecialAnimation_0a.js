@@ -30,8 +30,7 @@ export const SpecialAnimation_0a = () => {
 
     // Special _ 0
     const special_0a = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
-    const [posY_0a, setPosY_0a] = useState(0);
-    const [posX_0a, setPosX_0a] = useState(0);
+    const [pos_0a, setPos_0a] = useState({x: 0, y: 0});
     const [opacityAnim_0a] = useState(new Animated.Value(1));
     const specialAnimation_0a = useRef(null);
     const isPowerInProgress_0a = useRef(false)
@@ -44,7 +43,7 @@ export const SpecialAnimation_0a = () => {
         // This function will be called on every animation frame
         const update = () => {
             setObj1({
-                x: sharedState.current.charX + 300,
+                x: sharedState.current.charX + WidthRatio(64),
                 y: sharedState.current.charY,
             });
 
@@ -108,19 +107,19 @@ export const SpecialAnimation_0a = () => {
     useEffect(() => {
         // Only way to pass posX_0a and posY_0a as integers 
         special_0a.addListener((value) => {
-            setPosX_0a(value.x)
-            setPosY_0a(value.y)
+            setPos_0a({x: value.x, y: value.y})
+            // setPosY_0a(value.y)
         });
     }, [special_0a])
 
     useEffect(() => {
         setSharedState({
-            s0a_x: posX_0a,
-            s0a_y: posY_0a,
+            s0a_x: pos_0a.x,
+            s0a_y: pos_0a.y,
             s0a_Height: 15,
             s0a_Width: 15
         })
-    }, [posX_0a, posY_0a])
+    }, [pos_0a])
 
     return (
         <>
