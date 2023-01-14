@@ -72,7 +72,7 @@ export const Styling = StyleSheet.create({
     width: WidthRatio(24),
     height: WidthRatio(24),
     // borderRadius: 10,
-    backgroundColor: 'red',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',

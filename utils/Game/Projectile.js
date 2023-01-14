@@ -182,11 +182,11 @@ export const Projectile = () => {
       if (isGameInProgress.current) {
         // console.log("#5b Letters Array: " + wordPlusSeven.current)
         hasUpdatedLetterBlock.current = false;
-        setYPos(Math.floor(Math.random() * 310))
+        setYPos(Math.floor(Math.random() * HeightRatio(670)))
         setLetter(wordPlusSeven.current[count._value]);
-        position.setValue(1000);
+        position.setValue(WidthRatio(400));
         animation.current = Animated.timing(position, {
-          toValue: -80,
+          toValue: -WidthRatio(40),
           duration: 4000,
           useNativeDriver: true,
         })
@@ -221,14 +221,14 @@ export const Projectile = () => {
       // console.log("#7a Run Obstacle Animation")
       if (isGameInProgress.current) {
         hasUpdatedObstacle_0.current = false;
-        let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
-        let localYPos_1 = Math.floor(Math.random() * windowHeight * 0.78);
+        let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+        let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-        obstaclePosition_0.setValue({ x: 1000, y: localYPos_0 });
+        obstaclePosition_0.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
         obstacle_0.current = Animated.parallel([
           Animated.timing(obstaclePosition_0.x, {
-            toValue: -80,
+            toValue: -WidthRatio(40),
             duration: 3000,
             useNativeDriver: true,
           }),
@@ -328,11 +328,18 @@ export const Projectile = () => {
       }
     };
 
+    // const [obj1, setObj1] = useState({
+    //   x: 0,
+    //   y: 0,
+    //   width: 0,
+    //   height: 0
+    // });
     const [obj1, setObj1] = useState({
       x: 0,
       y: 0,
       width: 0,
-      height: 0
+      height: 0,
+      radius: 0
     });
     const [special_0a, setSpecial_0a] = useState({
       x: 0,
@@ -350,11 +357,18 @@ export const Projectile = () => {
     useEffect(() => {
         // This function will be called on every animation frame
         const update = () => {
+            // setObj1({
+            //   x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
+            //   y: sharedState.current.charY,
+            //   width: sharedState.current.charWidth,
+            //   height: sharedState.current.charHeight/2
+            // });
             setObj1({
               x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
-              y: sharedState.current.charY,
+              y: sharedState.current.charY - sharedState.current.charHeight/1.2,
               width: sharedState.current.charWidth,
-              height: sharedState.current.charHeight/2
+              height: sharedState.current.charHeight/2,
+              radius: sharedState.current.charHeight/2,
             });
             if (sharedState.current.specialActive_0) {
               setSpecial_0a({
@@ -385,43 +399,43 @@ export const Projectile = () => {
 
     useLayoutEffect(() => {
         // console.log(special_0a)
-        // const wordBlockListener = position.addListener((value) => {
-        //   let obj2 = { x: value.value, y: yPos, width: 30, height: 30 }
+        const wordBlockListener = position.addListener((value) => {
+          let obj2 = { x: value.value, y: yPos - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
   
-        //   if (isLetterBlockColliding(obj1, obj2)) {
-        //     if (!hasUpdatedLetterBlock.current) {
-        //       setLetterPocket(prevItems => [...prevItems, letter])
-        //       hasUpdatedLetterBlock.current = true;
-        //     }
-        //   }
-        // });
+          if (isLetterBlockColliding(obj1, obj2)) {
+            if (!hasUpdatedLetterBlock.current) {
+              setLetterPocket(prevItems => [...prevItems, letter])
+              hasUpdatedLetterBlock.current = true;
+            }
+          }
+        });
   
-        // const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-        //   let obj2 = { x: value.x, y: value.y, width: 0, height: 30 }
+        const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
+          let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
   
-        //   if (isObstacleColliding_0(obj1, obj2)) {
-        //     if (!hasUpdatedObstacle_0.current) {
-        //       crashes.current += 1;
-        //       hasUpdatedObstacle_0.current = true;
-        //     }
-        //     obstacle_0.current.reset()
-        //   }
-        // });
+          if (isObstacleColliding_0(obj1, obj2)) {
+            if (!hasUpdatedObstacle_0.current) {
+              crashes.current += 1;
+              hasUpdatedObstacle_0.current = true;
+            }
+            obstacle_0.current.reset()
+          }
+        });
   
-        // const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-        //   let obj2 = { x: value.x, y: value.y, width: 30, height: 30 }
+        const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
+          let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
   
-        //   if (isObstacleColliding_1(obj1, obj2)) {
-        //     if (!hasUpdatedObstacle_1.current) {
-        //       crashes.current += 1;
-        //       hasUpdatedObstacle_1.current = true;
-        //     }
-        //     obstacle_1.current.reset()
-        //   }
-        // });
+          if (isObstacleColliding_1(obj1, obj2)) {
+            if (!hasUpdatedObstacle_1.current) {
+              crashes.current += 1;
+              hasUpdatedObstacle_1.current = true;
+            }
+            obstacle_1.current.reset()
+          }
+        });
   
         const obstacleListener_large = obstaclePosition_large.addListener((value) => {
-          let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
+          let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12) }
           
           if (isObstacleColliding_large(obj1, obj2)) {
             if (!hasUpdatedObstacle_large.current) {
@@ -431,26 +445,26 @@ export const Projectile = () => {
             obstacle_large.current.reset()
           } 
           
-          if (isSpecial_0a_Colliding_0(special_0a, obj2)) {
-            if (!hasUpdatedObstacle_large.current) {
-              hasUpdatedObstacle_large.current = true;
-            }
-            obstacle_large.current.reset()
-          }
+          // if (isSpecial_0a_Colliding_0(special_0a, obj2)) {
+          //   if (!hasUpdatedObstacle_large.current) {
+          //     hasUpdatedObstacle_large.current = true;
+          //   }
+          //   obstacle_large.current.reset()
+          // }
 
-          if (isSpecial_0b_Colliding_0(special_0b, obj2)) {
-            if (!hasUpdatedObstacle_large.current) {
-              hasUpdatedObstacle_large.current = true;
-            }
-            obstacle_large.current.reset()
-          }
+          // if (isSpecial_0b_Colliding_0(special_0b, obj2)) {
+          //   if (!hasUpdatedObstacle_large.current) {
+          //     hasUpdatedObstacle_large.current = true;
+          //   }
+          //   obstacle_large.current.reset()
+          // }
         });
 
   
         return () => {
-          // position.removeListener(wordBlockListener);
-          // obstaclePosition_0.removeListener(obstacleListener_0)
-          // obstaclePosition_1.removeListener(obstacleListener_1)
+          position.removeListener(wordBlockListener);
+          obstaclePosition_0.removeListener(obstacleListener_0)
+          obstaclePosition_1.removeListener(obstacleListener_1)
           obstaclePosition_large.removeListener(obstacleListener_large)
         }
     }, [obj1, special_0a, special_0b]);
@@ -605,7 +619,7 @@ export const Projectile = () => {
 
 
           {/* Letter Blocks */}
-          {/* <Animated.View
+          <Animated.View
             style={[
               Styling.projectile_word_block,
               {
@@ -621,12 +635,12 @@ export const Projectile = () => {
             <Text style={Styling.projectile_letter}>
               {letter.toUpperCase()}
             </Text>
-            <Image source={require('../../assets/block_keyboard_key.png')} style={{ height: 50, width: 50 }} />
+            <Image source={require('../../assets/block_keyboard_key.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
 
-          </Animated.View> */}
+          </Animated.View>
 
           {/* Obstacles */}
-          {/* <Animated.View
+          <Animated.View
             style={[
               Styling.projectile_obstacle_block,
               {
@@ -634,7 +648,7 @@ export const Projectile = () => {
               },
             ]}
           >
-            <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 30, width: 30 }} />
+            <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
           </Animated.View>
 
           <Animated.View
@@ -645,8 +659,8 @@ export const Projectile = () => {
               },
             ]}
           >
-            <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 30, width: 30 }} />
-          </Animated.View> */}
+            <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
+          </Animated.View>
 
           <Animated.View
             style={[
@@ -658,6 +672,14 @@ export const Projectile = () => {
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
           </Animated.View>
+          
+          {/* CHARACTER GUIDELINES */}
+          {/* <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: obj1.x}} />
+          <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: obj1.y}} /> */}
+          {/* <View style={{borderWidth: 5, borderColor: 'blue', height: WidthRatio(12), width: WidthRatio(24), position: 'absolute', top: obj1.y+WidthRatio(6), left: obj1.x-WidthRatio(12)}} /> */}
+          {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
+
+
 
           {displayLetters.map((l, i) => (
             <View style={{
