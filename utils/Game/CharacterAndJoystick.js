@@ -135,8 +135,15 @@ export const CharacterAndJoystick = () => {
             }}
             {...panResponder.panHandlers}
           >
-            <View style={{ right: windowWidth - WidthRatio(98), top: 0, flexDirection: 'row' }} >
-              <Image source={require('../../assets/Char_0.png')} style={{ height: charHeight, width: charWidth }} />
+            <View 
+              style={{ 
+                right: windowWidth - WidthRatio(98), 
+                top: 0, 
+                flexDirection: 'row' 
+              }}>
+              <Image 
+                source={require('../../assets/Char_0.png')} 
+                style={{ height: charHeight, width: charWidth }} />
               {/* <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', padding: 4, height: 23, width: 29, borderRadius: 10, left: -95, top: 16 }}>
                 <Text style={{ color: '#ccff33', fontSize: 10 }}>{posY - charHeight/2}</Text>
               </View> */}
@@ -144,8 +151,24 @@ export const CharacterAndJoystick = () => {
             <View style={Styling.joystick_knob} />
 
           </Animated.View>
-          <View style={{borderColor: 'white', borderWidth: 1, position: 'absolute', width: windowWidth, top: posY, left: -400}} />
-          <View style={{borderColor: 'white', borderWidth: 1, position: 'absolute', height: windowHeight, top: 0, left: posX - WidthRatio(64) - charWidth/2}} />
+          <View 
+            style={{
+              borderColor: 'white', 
+              borderWidth: 1, 
+              position: 'absolute', 
+              width: windowWidth, 
+              top: posY, 
+              left: -400
+            }} />
+          <View 
+            style={{
+              borderColor: 'white', 
+              borderWidth: 1, 
+              position: 'absolute', 
+              height: windowHeight, 
+              top: 0, 
+              left: posX - WidthRatio(64) - charWidth/2
+            }} />
 
 
         </View>

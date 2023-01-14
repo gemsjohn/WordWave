@@ -12,7 +12,7 @@ export const Special = (props) => {
 
     // Specials
     const [specialColor_0, setSpecialColor_0] = useState('transparent')
-    const specialPosition_0 = useRef({ x: 0, y: 70 });
+    const specialPosition_0 = useRef({ x: 0, y: HeightRatio(140) });
     const [specialColorPositionTimer_0, setSpecialColorPositionTimer_0] = useState(null);
     const retainSpecial_0 = useRef(false);
 

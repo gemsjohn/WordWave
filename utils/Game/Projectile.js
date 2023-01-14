@@ -29,7 +29,7 @@ import {
 } from 'react-native';
 
 
-export const Projectile = (props) => {
+export const Projectile = () => {
     // Letter
     // const letterRef = useRef(null);
     const [letter, setLetter] = useState('');
@@ -66,8 +66,8 @@ export const Projectile = (props) => {
     const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
 
     // Collision Detection Variables
-    let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.313));
-    let localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
+    // let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.313));
+    // let localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
 
     // let localPowerup_0XPos = useRef(props.powerup_0.x);
     // let localPowerup_0YPos = useRef(props.powerup_0.y);
@@ -99,8 +99,8 @@ export const Projectile = (props) => {
 
     useLayoutEffect(() => {
       isGameInProgress.current = false;
-      localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
-      localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
+      // localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
+      // localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
     }, [])
 
     useEffect(() => {
@@ -295,14 +295,14 @@ export const Projectile = (props) => {
       // console.log("#7a Run Obstacle Animation")
       if (isGameInProgress.current) {
         hasUpdatedObstacle_large.current = false;
-        let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
-        let localYPos_1 = Math.floor(Math.random() * windowHeight * 0.78);
+        let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+        let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-        obstaclePosition_large.setValue({ x: 1000, y: localYPos_0 });
+        obstaclePosition_large.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
         obstacle_large.current = Animated.parallel([
           Animated.timing(obstaclePosition_large.x, {
-            toValue: -80,
+            toValue: -WidthRatio(40),
             duration: 5000,
             useNativeDriver: true,
           }),
@@ -351,10 +351,10 @@ export const Projectile = (props) => {
         // This function will be called on every animation frame
         const update = () => {
             setObj1({
-                x: sharedState.current.charX,
-                y: sharedState.current.charY,
-                width: sharedState.current.charWidth,
-                height: sharedState.current.charHeight
+              x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
+              y: sharedState.current.charY,
+              width: sharedState.current.charWidth,
+              height: sharedState.current.charHeight/2
             });
             if (sharedState.current.specialActive_0) {
               setSpecial_0a({
@@ -421,7 +421,7 @@ export const Projectile = (props) => {
         // });
   
         const obstacleListener_large = obstaclePosition_large.addListener((value) => {
-          let obj2 = { x: value.x, y: value.y, width: 80, height: 80 }
+          let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
           
           if (isObstacleColliding_large(obj1, obj2)) {
             if (!hasUpdatedObstacle_large.current) {
@@ -656,7 +656,7 @@ export const Projectile = (props) => {
               },
             ]}
           >
-            <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: 80, width: 80 }} />
+            <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
           </Animated.View>
 
           {displayLetters.map((l, i) => (
