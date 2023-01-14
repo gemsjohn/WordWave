@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext, useLayoutEffect, createContext } from 'react';
+import React, { useState, useRef, useEffect, useContext, useCallback, useLayoutEffect, createContext, useMemo } from 'react';
 // import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
@@ -29,28 +29,12 @@ export const SpecialAnimation_0a = () => {
     const { sharedState, setSharedState } = useContext(SharedStateContext);
 
     // Special _ 0
-    const special_0a = useRef(new Animated.ValueXY({ x: -1000, y: 0 })).current;
+    const special_0a = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
     const [pos_0a, setPos_0a] = useState({x: 0, y: 0});
     const [opacityAnim_0a] = useState(new Animated.Value(1));
     const specialAnimation_0a = useRef(null);
     const isPowerInProgress_0a = useRef(false)
     const timeoutId_0a = useRef(null);
-
-
-    const [obj1, setObj1] = useState({x: 0, y: 0});
-
-    useEffect(() => {
-        // This function will be called on every animation frame
-        const update = () => {
-            setObj1({
-                x: sharedState.current.charX + WidthRatio(64),
-                y: sharedState.current.charY,
-            });
-
-            requestAnimationFrame(update);
-        };
-        update();
-    }, [])
 
     const runspecialAnimation_0a = (x, y) => {
         if (isPowerInProgress_0a.current) {
@@ -58,20 +42,20 @@ export const SpecialAnimation_0a = () => {
             opacityAnim_0a.setValue(1)
             specialAnimation_0a.current = Animated.parallel([
                 Animated.timing(special_0a.x, {
-                    toValue: 500, // or any other value you want to animate to
-                    duration: 500,
-                    useNativeDriver: false
+                    toValue: WidthRatio(200), // or any other value you want to animate to
+                    duration: 200,
+                    useNativeDriver: true
                 }),
-                Animated.timing(special_0a.y, {
-                    toValue: sharedState.current.charY, // or any other value you want to animate to
-                    duration: 500,
-                    useNativeDriver: false
-                }),
-                Animated.timing(opacityAnim_0a, {
-                    toValue: 0,
-                    duration: 500,
-                    useNativeDriver: false
-                })
+                // Animated.timing(special_0a.y, {
+                //     toValue: sharedState.current.charY, // or any other value you want to animate to
+                //     duration: 200,
+                //     useNativeDriver: true
+                // }),
+                // Animated.timing(opacityAnim_0a, {
+                //     toValue: 0,
+                //     duration: 200,
+                //     useNativeDriver: true
+                // })
             ]).start(() => {
                 if (timeoutId_0a.current) {
                     clearTimeout(timeoutId_0a.current);
@@ -86,40 +70,53 @@ export const SpecialAnimation_0a = () => {
         }
     };
 
+    const runSpecialAnimationCallback = useCallback(runspecialAnimation_0a, []);
+
     useEffect(() => {
-        if (sharedState.current.specialActive_0) {
-            console.log("specialActive_0")
-            isPowerInProgress_0a.current = true;
-            runspecialAnimation_0a(sharedState.current.charX + 300, sharedState.current.charY);
-        } else {
-            console.log("Stopping")
-            isPowerInProgress_0a.current = false;
-            setSharedState({
-                s0a_x: null,
-                s0a_y: null,
-                s0a_Height: null,
-                s0a_Width: null
-            })
-        }
-    }, [sharedState.current.specialActive_0]);
-    
+        const update = () => {
+            // console.log("alt: " + sharedState.current.specialActive_0)
+
+            if (sharedState.current.specialActive_0 && !isPowerInProgress_0a.current) {
+                console.log("specialActive_0")
+                isPowerInProgress_0a.current = true;
+                // runspecialAnimation_0a(sharedState.current.charX + 300, sharedState.current.charY);
+                runSpecialAnimationCallback(sharedState.current.charX + 300, sharedState.current.charY);
+            } else if (!sharedState.current.specialActive_0 && isPowerInProgress_0a.current) {
+                console.log("Stopping")
+                isPowerInProgress_0a.current = false;
+                setSharedState({
+                    s0a_x: null,
+                    s0a_y: null,
+                    s0a_Height: null,
+                    s0a_Width: null
+                })
+            }
+            
+
+            requestAnimationFrame(update);
+        };
+        update();
+    }, [])
+   
 
     useEffect(() => {
         // Only way to pass posX_0a and posY_0a as integers 
         special_0a.addListener((value) => {
             setPos_0a({x: value.x, y: value.y})
-            // setPosY_0a(value.y)
         });
     }, [special_0a])
 
+    const sharedStateProps = useMemo(() => ({
+        s0a_x: pos_0a.x,
+        s0a_y: pos_0a.y,
+        s0a_Height: 15,
+        s0a_Width: 15
+    }), [pos_0a])
+
     useEffect(() => {
-        setSharedState({
-            s0a_x: pos_0a.x,
-            s0a_y: pos_0a.y,
-            s0a_Height: 15,
-            s0a_Width: 15
-        })
-    }, [pos_0a])
+        setSharedState(sharedStateProps)
+    }, [sharedStateProps])
+
 
     return (
         <>
@@ -132,7 +129,8 @@ export const SpecialAnimation_0a = () => {
                     },
                 ]}
             >
-                <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: 15, width: 15 }} />
+                <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: WidthRatio(7), width: WidthRatio(7) }} />
+
             </Animated.View>
         }
             <View></View>

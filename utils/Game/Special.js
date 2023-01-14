@@ -66,6 +66,13 @@ export const Special = (props) => {
         let special_2 = { x: specialPosition_2.current.x, y: specialPosition_2.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
         let special_3 = { x: specialPosition_3.current.x, y: specialPosition_3.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
 
+        // setSharedState({
+        //     specialActive_0: false,
+        //     specialActive_1: false,
+        //     specialActive_2: false,
+        //     specialActive_3: false
+        // });
+
         // Special _ 0
         if (isSpecialColliding_0(obj1, special_0)) {
             setSpecialColor_0('rgba(255, 255, 255, 0.25)')
@@ -166,6 +173,15 @@ export const Special = (props) => {
             setSpecialColorPositionTimer_3(timer);
         } else {
             setSpecialColor_3('transparent')
+        }
+
+        if (!retainSpecial_0.current && !retainSpecial_1.current && !retainSpecial_2.current &&!retainSpecial_3.current) {
+            setSharedState({
+                specialActive_0: false,
+                specialActive_1: false,
+                specialActive_2: false,
+                specialActive_3: false
+            });
         }
 
         return () => {

@@ -258,14 +258,14 @@ export const Projectile = () => {
       // console.log("#7a Run Obstacle Animation")
       if (isGameInProgress.current) {
         hasUpdatedObstacle_1.current = false;
-        let localYPos_0 = Math.floor(Math.random() * windowHeight * 0.78);
-        let localYPos_1 = Math.floor(Math.random() * windowHeight * 0.78);
+        let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+        let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-        obstaclePosition_1.setValue({ x: 1000, y: localYPos_0 });
+        obstaclePosition_1.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
         obstacle_1.current = Animated.parallel([
           Animated.timing(obstaclePosition_1.x, {
-            toValue: -80,
+            toValue: -WidthRatio(40),
             duration: 2500,
             useNativeDriver: true,
           }),
@@ -328,12 +328,6 @@ export const Projectile = () => {
       }
     };
 
-    // const [obj1, setObj1] = useState({
-    //   x: 0,
-    //   y: 0,
-    //   width: 0,
-    //   height: 0
-    // });
     const [obj1, setObj1] = useState({
       x: 0,
       y: 0,
@@ -357,12 +351,6 @@ export const Projectile = () => {
     useEffect(() => {
         // This function will be called on every animation frame
         const update = () => {
-            // setObj1({
-            //   x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
-            //   y: sharedState.current.charY,
-            //   width: sharedState.current.charWidth,
-            //   height: sharedState.current.charHeight/2
-            // });
             setObj1({
               x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
               y: sharedState.current.charY - sharedState.current.charHeight/1.2,
@@ -399,40 +387,40 @@ export const Projectile = () => {
 
     useLayoutEffect(() => {
         // console.log(special_0a)
-        const wordBlockListener = position.addListener((value) => {
-          let obj2 = { x: value.value, y: yPos - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
+        // const wordBlockListener = position.addListener((value) => {
+        //   let obj2 = { x: value.value, y: yPos - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
   
-          if (isLetterBlockColliding(obj1, obj2)) {
-            if (!hasUpdatedLetterBlock.current) {
-              setLetterPocket(prevItems => [...prevItems, letter])
-              hasUpdatedLetterBlock.current = true;
-            }
-          }
-        });
+        //   if (isLetterBlockColliding(obj1, obj2)) {
+        //     if (!hasUpdatedLetterBlock.current) {
+        //       setLetterPocket(prevItems => [...prevItems, letter])
+        //       hasUpdatedLetterBlock.current = true;
+        //     }
+        //   }
+        // });
   
-        const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-          let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
+        // const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
+        //   let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
   
-          if (isObstacleColliding_0(obj1, obj2)) {
-            if (!hasUpdatedObstacle_0.current) {
-              crashes.current += 1;
-              hasUpdatedObstacle_0.current = true;
-            }
-            obstacle_0.current.reset()
-          }
-        });
+        //   if (isObstacleColliding_0(obj1, obj2)) {
+        //     if (!hasUpdatedObstacle_0.current) {
+        //       crashes.current += 1;
+        //       hasUpdatedObstacle_0.current = true;
+        //     }
+        //     obstacle_0.current.reset()
+        //   }
+        // });
   
-        const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-          let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
+        // const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
+        //   let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
   
-          if (isObstacleColliding_1(obj1, obj2)) {
-            if (!hasUpdatedObstacle_1.current) {
-              crashes.current += 1;
-              hasUpdatedObstacle_1.current = true;
-            }
-            obstacle_1.current.reset()
-          }
-        });
+        //   if (isObstacleColliding_1(obj1, obj2)) {
+        //     if (!hasUpdatedObstacle_1.current) {
+        //       crashes.current += 1;
+        //       hasUpdatedObstacle_1.current = true;
+        //     }
+        //     obstacle_1.current.reset()
+        //   }
+        // });
   
         const obstacleListener_large = obstaclePosition_large.addListener((value) => {
           let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12) }
@@ -462,9 +450,9 @@ export const Projectile = () => {
 
   
         return () => {
-          position.removeListener(wordBlockListener);
-          obstaclePosition_0.removeListener(obstacleListener_0)
-          obstaclePosition_1.removeListener(obstacleListener_1)
+          // position.removeListener(wordBlockListener);
+          // obstaclePosition_0.removeListener(obstacleListener_0)
+          // obstaclePosition_1.removeListener(obstacleListener_1)
           obstaclePosition_large.removeListener(obstacleListener_large)
         }
     }, [obj1, special_0a, special_0b]);
@@ -612,14 +600,8 @@ export const Projectile = () => {
             </>
           }
 
-          {/* <View style={{borderColor: 'white', borderWidth: 1, position: 'absolute', width: windowWidth, top: obj1.y, left: 0}} />
-          <View style={{borderColor: 'white', borderWidth: 1, position: 'absolute', height: windowHeight, top: 0, left: obj1.x + WidthRatio(64) + obj1.width/2}} /> */}
-
-
-
-
           {/* Letter Blocks */}
-          <Animated.View
+          {/* <Animated.View
             style={[
               Styling.projectile_word_block,
               {
@@ -637,10 +619,10 @@ export const Projectile = () => {
             </Text>
             <Image source={require('../../assets/block_keyboard_key.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
 
-          </Animated.View>
+          </Animated.View> */}
 
           {/* Obstacles */}
-          <Animated.View
+          {/* <Animated.View
             style={[
               Styling.projectile_obstacle_block,
               {
@@ -649,9 +631,9 @@ export const Projectile = () => {
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
-          </Animated.View>
+          </Animated.View> */}
 
-          <Animated.View
+          {/* <Animated.View
             style={[
               Styling.projectile_obstacle_block,
               {
@@ -660,7 +642,7 @@ export const Projectile = () => {
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
-          </Animated.View>
+          </Animated.View> */}
 
           <Animated.View
             style={[
@@ -735,9 +717,7 @@ export const Projectile = () => {
             animationType="slide"
             transparent={true}
             visible={modalVisible}
-            // visible={true}
             onRequestClose={() => {
-              // Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
               isGameInProgress.current = false;
             }}
