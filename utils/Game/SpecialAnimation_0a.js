@@ -34,7 +34,7 @@ export const SpecialAnimation_0a = () => {
     const [opacityAnim_0a] = useState(new Animated.Value(1));
     const specialAnimation_0a = useRef(null);
     const isPowerInProgress_0a = useRef(false)
-    let timeoutId_0a;
+    const timeoutId_0a = useRef(null);
 
 
     const [obj1, setObj1] = useState({x: 0, y: 0});
@@ -73,15 +73,15 @@ export const SpecialAnimation_0a = () => {
                     useNativeDriver: false
                 })
             ]).start(() => {
-                if (timeoutId_0a) {
-                    clearTimeout(timeoutId_0a);
+                if (timeoutId_0a.current) {
+                    clearTimeout(timeoutId_0a.current);
                 }
-                timeoutId_0a = setTimeout(() => {
+                timeoutId_0a.current = setTimeout(() => {
                     runspecialAnimation_0a(sharedState.current.charX + 300, sharedState.current.charY);
                 }, 200)
             });
         } else {
-            clearTimeout(timeoutId_0a);
+            clearTimeout(timeoutId_0a.current);
             return;
         }
     };
