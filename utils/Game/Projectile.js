@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isSpecialColliding_0 } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3 } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
 import {
@@ -359,11 +359,36 @@ export const Projectile = () => {
     width: 0,
     height: 0
   });
+  const [specialDefense_1, setSpecialDefense_1] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+  });
+  const [specialDefense_2, setSpecialDefense_2] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+  });
+  const [specialDefense_3, setSpecialDefense_3] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+  });
 
   const prevRetainSpecialDefense_0x = useRef(specialDefense_0.x);
-  
+  const prevRetainSpecialDefense_1x = useRef(specialDefense_1.x);
+  const prevRetainSpecialDefense_2x = useRef(specialDefense_2.x);
+  const prevRetainSpecialDefense_3x = useRef(specialDefense_3.x);
+
   useEffect(() => {
     let localSpecialDefense_0x;
+    let localSpecialDefense_1x;
+    let localSpecialDefense_2x;
+    let localSpecialDefense_3x;
+
     // This function will be called on every animation frame
     const update = () => {
       setObj1({
@@ -373,27 +398,89 @@ export const Projectile = () => {
         height: sharedState.current.charHeight / 2,
         radius: sharedState.current.charHeight / 2,
       });
-        if (prevRetainSpecialDefense_0x.current === 0 && sharedState.current.specialActive_0) {
-          setSpecialDefense_0({
-            x: sharedState.current.specialSizeLocation_0.x,
-            y: sharedState.current.specialSizeLocation_0.y,
-            width: sharedState.current.specialSizeLocation_0.height,
-            height: sharedState.current.specialSizeLocation_0.width
-          });
-          localSpecialDefense_0x = sharedState.current.specialSizeLocation_0.x;
-          console.log("#1")
+      // Special Defense 0 Update
+      if (prevRetainSpecialDefense_0x.current === 0 && sharedState.current.specialActive_0) {
+        setSpecialDefense_0({
+          x: sharedState.current.specialSizeLocation_0.x,
+          y: sharedState.current.specialSizeLocation_0.y,
+          width: sharedState.current.specialSizeLocation_0.height,
+          height: sharedState.current.specialSizeLocation_0.width
+        });
+        localSpecialDefense_0x = sharedState.current.specialSizeLocation_0.x;
 
-        } else if (prevRetainSpecialDefense_0x.current != 0 && !sharedState.current.specialActive_0) {
-          localSpecialDefense_0x = 0;
-          console.log("#2")
-          setSpecialDefense_0({
-            x: 0,
-            y: HeightRatio(125),
-            width: sharedState.current.charWidth,
-            height: sharedState.current.charWidth
-          });
-        }
-        prevRetainSpecialDefense_0x.current = localSpecialDefense_0x;
+      } else if (prevRetainSpecialDefense_0x.current != 0 && !sharedState.current.specialActive_0) {
+        localSpecialDefense_0x = 0;
+        setSpecialDefense_0({
+          x: 0,
+          y: HeightRatio(125),
+          width: sharedState.current.charWidth,
+          height: sharedState.current.charWidth
+        });
+      }
+      prevRetainSpecialDefense_0x.current = localSpecialDefense_0x;
+
+      // Special Defense 1 Update
+      if (prevRetainSpecialDefense_1x.current === 0 && sharedState.current.specialActive_1) {
+        setSpecialDefense_1({
+          x: sharedState.current.specialSizeLocation_1.x,
+          y: sharedState.current.specialSizeLocation_1.y,
+          width: sharedState.current.specialSizeLocation_1.height,
+          height: sharedState.current.specialSizeLocation_1.width
+        });
+        localSpecialDefense_1x = sharedState.current.specialSizeLocation_1.x;
+
+      } else if (prevRetainSpecialDefense_1x.current != 0 && !sharedState.current.specialActive_1) {
+        localSpecialDefense_1x = 0;
+        setSpecialDefense_1({
+          x: 0,
+          y: HeightRatio(245),
+          width: sharedState.current.charWidth,
+          height: sharedState.current.charWidth
+        });
+      }
+      prevRetainSpecialDefense_1x.current = localSpecialDefense_1x;
+
+      // Special Defense 2 Update
+      if (prevRetainSpecialDefense_2x.current === 0 && sharedState.current.specialActive_2) {
+        setSpecialDefense_2({
+          x: sharedState.current.specialSizeLocation_2.x,
+          y: sharedState.current.specialSizeLocation_2.y,
+          width: sharedState.current.specialSizeLocation_2.height,
+          height: sharedState.current.specialSizeLocation_2.width
+        });
+        localSpecialDefense_2x = sharedState.current.specialSizeLocation_2.x;
+
+      } else if (prevRetainSpecialDefense_2x.current != 0 && !sharedState.current.specialActive_2) {
+        localSpecialDefense_2x = 0;
+        setSpecialDefense_2({
+          x: 0,
+          y: HeightRatio(365),
+          width: sharedState.current.charWidth,
+          height: sharedState.current.charWidth
+        });
+      }
+      prevRetainSpecialDefense_2x.current = localSpecialDefense_2x;
+
+      // Special Defense 3 Update
+      if (prevRetainSpecialDefense_3x.current === 0 && sharedState.current.specialActive_3) {
+        setSpecialDefense_3({
+          x: sharedState.current.specialSizeLocation_3.x,
+          y: sharedState.current.specialSizeLocation_3.y,
+          width: sharedState.current.specialSizeLocation_3.height,
+          height: sharedState.current.specialSizeLocation_3.width
+        });
+        localSpecialDefense_3x = sharedState.current.specialSizeLocation_3.x;
+
+      } else if (prevRetainSpecialDefense_3x.current != 0 && !sharedState.current.specialActive_3) {
+        localSpecialDefense_3x = 0;
+        setSpecialDefense_3({
+          x: 0,
+          y: HeightRatio(485),
+          width: sharedState.current.charWidth,
+          height: sharedState.current.charWidth
+        });
+      }
+      prevRetainSpecialDefense_3x.current = localSpecialDefense_3x;
 
       requestAnimationFrame(update);
     };
@@ -405,11 +492,6 @@ export const Projectile = () => {
       // No need to do anything here
     };
   }, [])
-
-  // useEffect(() => {
-  //   console.log("- - - -") 
-  //   console.log(specialDefense_0)
-  // }, [specialDefense_0])
 
   useLayoutEffect(() => {
     // console.log(specialDefense_0a)
@@ -465,10 +547,28 @@ export const Projectile = () => {
         }
         obstacle_large.current.reset()
       }
+
+      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
+        if (!hasUpdatedObstacle_large.current) {
+          hasUpdatedObstacle_large.current = true;
+        }
+        obstacle_large.current.reset()
+      }
+
+      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
+        if (!hasUpdatedObstacle_large.current) {
+          hasUpdatedObstacle_large.current = true;
+        }
+        obstacle_large.current.reset()
+      }
+
+      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
+        if (!hasUpdatedObstacle_large.current) {
+          hasUpdatedObstacle_large.current = true;
+        }
+        obstacle_large.current.reset()
+      }
     });
-
-
-
 
     return () => {
       position.removeListener(wordBlockListener);
@@ -476,7 +576,7 @@ export const Projectile = () => {
       obstaclePosition_1.removeListener(obstacleListener_1)
       obstaclePosition_large.removeListener(obstacleListener_large)
     }
-  }, [obj1, specialDefense_0]);
+  }, [obj1, specialDefense_0, specialDefense_1, specialDefense_2, specialDefense_3]);
 
   useEffect(() => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -543,7 +643,6 @@ export const Projectile = () => {
     }
 
     // Clear Letters
-    // letterRef.current = null;
     setLetter('');
     setLetterPocket([]);
     setDisplayLetters([]);

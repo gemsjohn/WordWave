@@ -81,10 +81,33 @@ export const Special = (props) => {
                 // setSharedState({...sharedState, specialActive: true });
                 setSharedState({
                     specialActive_0: !retainSpecial_0.current,
-                    specialSizeLocation_0: {x: WidthRatio(80), y: HeightRatio(125), height: sharedState.current.charWidth, width: sharedState.current.charWidth,},
                     specialActive_1: false,
                     specialActive_2: false,
-                    specialActive_3: false
+                    specialActive_3: false,
+                    specialSizeLocation_0: {
+                        x: WidthRatio(80), 
+                        y: HeightRatio(125), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_1: {
+                        x: 0, 
+                        y: HeightRatio(245), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_2: {
+                        x: 0, 
+                        y: HeightRatio(365), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_3: {
+                        x: 0, 
+                        y: HeightRatio(485), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
                 });
                 retainSpecial_0.current = !retainSpecial_0.current;
                 retainSpecial_1.current = false;
@@ -110,7 +133,31 @@ export const Special = (props) => {
                     specialActive_0: false,
                     specialActive_1: !retainSpecial_1.current,
                     specialActive_2: false,
-                    specialActive_3: false
+                    specialActive_3: false,
+                    specialSizeLocation_0: {
+                        x: 0, 
+                        y: HeightRatio(125), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_1: {
+                        x: WidthRatio(80), 
+                        y: HeightRatio(245), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_2: {
+                        x: 0, 
+                        y: HeightRatio(365), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_3: {
+                        x: 0, 
+                        y: HeightRatio(485), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
                 });
                 retainSpecial_0.current = false;
                 retainSpecial_1.current = !retainSpecial_1.current;
@@ -135,7 +182,31 @@ export const Special = (props) => {
                     specialActive_0: false,
                     specialActive_1: false,
                     specialActive_2: !retainSpecial_2.current,
-                    specialActive_3: false
+                    specialActive_3: false,
+                    specialSizeLocation_0: {
+                        x: 0, 
+                        y: HeightRatio(125), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_1: {
+                        x: 0, 
+                        y: HeightRatio(245), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_2: {
+                        x: WidthRatio(80), 
+                        y: HeightRatio(365), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_3: {
+                        x: 0, 
+                        y: HeightRatio(485), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
                 });
                 retainSpecial_0.current = false;
                 retainSpecial_1.current = false;
@@ -160,7 +231,31 @@ export const Special = (props) => {
                     specialActive_0: false,
                     specialActive_1: false,
                     specialActive_2: false,
-                    specialActive_3: !retainSpecial_3.current
+                    specialActive_3: !retainSpecial_3.current,
+                    specialSizeLocation_0: {
+                        x: 0, 
+                        y: HeightRatio(125), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_1: {
+                        x: 0, 
+                        y: HeightRatio(245), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_2: {
+                        x: 0, 
+                        y: HeightRatio(365), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
+                    specialSizeLocation_3: {
+                        x: WidthRatio(80), 
+                        y: HeightRatio(485), 
+                        height: sharedState.current.charWidth, 
+                        width: sharedState.current.charWidth,
+                    },
                 });
                 retainSpecial_0.current = false;
                 retainSpecial_1.current = false;
@@ -182,10 +277,33 @@ export const Special = (props) => {
         if (!retainSpecial_0.current && !retainSpecial_1.current && !retainSpecial_2.current &&!retainSpecial_3.current) {
             setSharedState({
                 specialActive_0: false,
-                specialSizeLocation_0: {x: 0, y: HeightRatio(125), height: sharedState.current.charWidth, width: sharedState.current.charWidth,},
                 specialActive_1: false,
                 specialActive_2: false,
-                specialActive_3: false
+                specialActive_3: false,
+                specialSizeLocation_0: {
+                    x: 0, 
+                    y: HeightRatio(125), 
+                    height: sharedState.current.charWidth, 
+                    width: sharedState.current.charWidth,
+                },
+                specialSizeLocation_1: {
+                    x: 0, 
+                    y: HeightRatio(245), 
+                    height: sharedState.current.charWidth, 
+                    width: sharedState.current.charWidth,
+                },
+                specialSizeLocation_2: {
+                    x: 0, 
+                    y: HeightRatio(365), 
+                    height: sharedState.current.charWidth, 
+                    width: sharedState.current.charWidth,
+                },
+                specialSizeLocation_3: {
+                    x: 0, 
+                    y: HeightRatio(485), 
+                    height: sharedState.current.charWidth, 
+                    width: sharedState.current.charWidth,
+                },
             });
         }
         prevRetainSpecial_0.current = retainSpecial_0.current;
