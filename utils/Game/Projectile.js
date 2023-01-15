@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3, isSpecial_0a_Colliding_0, isSpecial_0b_Colliding_0 } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isSpecialColliding_0 } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
 import {
@@ -30,381 +30,389 @@ import {
 
 
 export const Projectile = () => {
-    // Letter
-    // const letterRef = useRef(null);
-    const [letter, setLetter] = useState('');
-    const [letterPocket, setLetterPocket] = useState([]);
-    const [displayLetters, setDisplayLetters] = useState([])
-    const count = new Animated.Value(0);
+  // Letter
+  // const letterRef = useRef(null);
+  const [letter, setLetter] = useState('');
+  const [letterPocket, setLetterPocket] = useState([]);
+  const [displayLetters, setDisplayLetters] = useState([])
+  const count = new Animated.Value(0);
 
-    // Letter Array
-    const [randomWord, setRandomWord] = useState('')
-    const wordPlusSeven = useRef([])
-    const [prevWrongElements, setPrevWrongElements] = useState(0);
+  // Letter Array
+  const [randomWord, setRandomWord] = useState('')
+  const wordPlusSeven = useRef([])
+  const [prevWrongElements, setPrevWrongElements] = useState(0);
 
-    // Letter Position
-    const animation = useRef(null)
-    const position = useRef(new Animated.Value(1000)).current;
-    const [yPos, setYPos] = useState(0);
+  // Letter Position
+  const animation = useRef(null)
+  const position = useRef(new Animated.Value(1000)).current;
+  const [yPos, setYPos] = useState(0);
 
-    // Obstacle Position
-    let timeoutId_0;
-    let timeoutId_1;
-    let timeoutId_large;
-
-
-    const obstacle_0 = useRef(null)
-    const hasUpdatedObstacle_0 = useRef(false);
-    const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-
-    const obstacle_1 = useRef(null)
-    const hasUpdatedObstacle_1 = useRef(false);
-    const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-
-    const obstacle_large = useRef(null)
-    const hasUpdatedObstacle_large = useRef(false);
-    const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-
-    // Game Logic
-    const crashes = useRef(0);
-    const prevCrashes = useRef(0);
-    const isGameInProgress = useRef(false);
-
-    const score = useRef(0);
-    const hasUpdatedLetterBlock = useRef(false);
-    const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
-    const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
-    const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
-
-    // Auxilliary
-    let timeoutId_a;
-    let timeoutId_b;
-    const [modalVisible, setModalVisible] = useState(false);
-
-    // useContext API
-    const { sharedState, setSharedState } = useContext(SharedStateContext);
-
-    // In Test
-    const placeholderPosition = useRef(new Animated.ValueXY({ x: 400, y: 0 })).current;
+  // Obstacle Position
+  let timeoutId_0;
+  let timeoutId_1;
+  let timeoutId_large;
 
 
-    useLayoutEffect(() => {
-      isGameInProgress.current = false;
-    }, [])
+  const obstacle_0 = useRef(null)
+  const hasUpdatedObstacle_0 = useRef(false);
+  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
 
-    useEffect(() => {
-      // This is the effect that should be cleaned up when the component is unmounted
-      const timeoutId = setTimeout(() => {
-        console.log("MOUNTED_INNER")
-      }, 1000);
+  const obstacle_1 = useRef(null)
+  const hasUpdatedObstacle_1 = useRef(false);
+  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
 
-      // Return a function that cleans up the effect
-      return () => {
-        console.log("UNMOUNTED_INNER")
-        endGame({ continue: false, local: "c", crashes: 0, score: 0 });
-        clearTimeout(timeoutId);
-      };
-    }, []);
+  const obstacle_large = useRef(null)
+  const hasUpdatedObstacle_large = useRef(false);
+  const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
 
-    const Generate = (prevC) => {
-      console.log("#1: Start Generate")
-      setContinuousEndGameCall(false)
-      clearTimeout(timeoutId_b);
-      if (prevC > 0) {
-        crashes.current = prevC;
-      } else {
-        crashes.current = 0;
-      }
+  // Game Logic
+  const crashes = useRef(0);
+  const prevCrashes = useRef(0);
+  const isGameInProgress = useRef(false);
 
-      const data = require('./output.json');
-      const index = Math.floor(Math.random() * data.length);
-      const word = data[index].word;
-      const letters = word.split('');
+  const score = useRef(0);
+  const hasUpdatedLetterBlock = useRef(false);
+  const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
+  const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
+  const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
 
-      const randomLetters = [];
-      for (let i = 0; i < 7; i++) {
-        const letterCode = Math.floor(Math.random() * 26) + 65;
-        const letter = String.fromCharCode(letterCode);
-        let lowerCaseLetter = letter.toLowerCase();
-        randomLetters.push(lowerCaseLetter);
-      }
+  // Auxilliary
+  let timeoutId_a;
+  let timeoutId_b;
+  const [modalVisible, setModalVisible] = useState(false);
 
-      let combined = letters.concat(randomLetters);
-      let uniqueCombined = [...new Set(combined)];
-      let scambledCombined = shuffle(uniqueCombined);
-      console.log(scambledCombined)
+  // useContext API
+  const { sharedState, setSharedState } = useContext(SharedStateContext);
+
+  // In Test
+  const placeholderPosition = useRef(new Animated.ValueXY({ x: 400, y: 0 })).current;
 
 
-      setRandomWord(word);
-      setDisplayLetters(letters)
+  useLayoutEffect(() => {
+    isGameInProgress.current = false;
+  }, [])
 
-      wordPlusSeven.current = scambledCombined; // Must be last
-      console.log("#2 Finish Generate")
+  useEffect(() => {
+    // This is the effect that should be cleaned up when the component is unmounted
+    const timeoutId = setTimeout(() => {
+      console.log("MOUNTED_INNER")
+    }, 1000);
+
+    // Return a function that cleans up the effect
+    return () => {
+      console.log("UNMOUNTED_INNER")
+      endGame({ continue: false, local: "c", crashes: 0, score: 0 });
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  const Generate = (prevC) => {
+    console.log("#1: Start Generate")
+    setContinuousEndGameCall(false)
+    clearTimeout(timeoutId_b);
+    if (prevC > 0) {
+      crashes.current = prevC;
+    } else {
+      crashes.current = 0;
     }
 
-    useEffect(() => {
+    const data = require('./output.json');
+    const index = Math.floor(Math.random() * data.length);
+    const word = data[index].word;
+    const letters = word.split('');
 
-      if (wordPlusSeven.current.length > 0) {
-        console.log("#3 Word Plus 7 useEffect")
-        isGameInProgress.current = true;
-        console.log("[STATUS - hasGameBeenStarted]  :: " + hasGameBeenStarted)
-        console.log("[STATUS - isGameInProgress.current]  :: " + isGameInProgress.current)
+    const randomLetters = [];
+    for (let i = 0; i < 7; i++) {
+      const letterCode = Math.floor(Math.random() * 26) + 65;
+      const letter = String.fromCharCode(letterCode);
+      let lowerCaseLetter = letter.toLowerCase();
+      randomLetters.push(lowerCaseLetter);
+    }
 
-        if (!hasGameBeenStarted) {
-          if (isGameInProgress.current) {
-            console.log("#4 About to run animations.")
-            if (score.current >= 0) {
-              letterAnimation();
-              runObstacleAnimation_large();
-            } 
-            if (score.current >= 1) {
-              runObstacleAnimation_0();
-            }
-            if (score.current >= 2) {
-              runObstacleAnimation_1();
-            }
-          
-            setHasGameBeenStarted(true)
-            setDisplayPlaybutton(false)
+    let combined = letters.concat(randomLetters);
+    let uniqueCombined = [...new Set(combined)];
+    let scambledCombined = shuffle(uniqueCombined);
+    console.log(scambledCombined)
+
+
+    setRandomWord(word);
+    setDisplayLetters(letters)
+
+    wordPlusSeven.current = scambledCombined; // Must be last
+    console.log("#2 Finish Generate")
+  }
+
+  useEffect(() => {
+
+    if (wordPlusSeven.current.length > 0) {
+      console.log("#3 Word Plus 7 useEffect")
+      isGameInProgress.current = true;
+      console.log("[STATUS - hasGameBeenStarted]  :: " + hasGameBeenStarted)
+      console.log("[STATUS - isGameInProgress.current]  :: " + isGameInProgress.current)
+
+      if (!hasGameBeenStarted) {
+        if (isGameInProgress.current) {
+          console.log("#4 About to run animations.")
+          if (score.current >= 0) {
+            letterAnimation();
+            runObstacleAnimation_large();
           }
+          if (score.current >= 1) {
+            runObstacleAnimation_0();
+          }
+          if (score.current >= 2) {
+            runObstacleAnimation_1();
+          }
+
+          setHasGameBeenStarted(true)
+          setDisplayPlaybutton(false)
         }
       }
-    }, [wordPlusSeven.current])
+    }
+  }, [wordPlusSeven.current])
 
 
-    const letterAnimation = () => {
-      // console.log("#5a Run Animation")
-      if (isGameInProgress.current) {
-        // console.log("#5b Letters Array: " + wordPlusSeven.current)
-        hasUpdatedLetterBlock.current = false;
-        setYPos(Math.floor(Math.random() * HeightRatio(670)))
-        setLetter(wordPlusSeven.current[count._value]);
-        position.setValue(WidthRatio(400));
-        animation.current = Animated.timing(position, {
-          toValue: -WidthRatio(40),
-          duration: 4000,
-          useNativeDriver: true,
+  const letterAnimation = () => {
+    // console.log("#5a Run Animation")
+    if (isGameInProgress.current) {
+      // console.log("#5b Letters Array: " + wordPlusSeven.current)
+      hasUpdatedLetterBlock.current = false;
+      setYPos(Math.floor(Math.random() * HeightRatio(670)))
+      setLetter(wordPlusSeven.current[count._value]);
+      position.setValue(WidthRatio(400));
+      animation.current = Animated.timing(position, {
+        toValue: -WidthRatio(40),
+        duration: 4000,
+        useNativeDriver: true,
+      })
+
+      animation.current.start(() => {
+
+        if (count._value >= wordPlusSeven.current.length - 1) {
+          count.setValue(0)
+        } else {
+          count.setValue(count._value + 1)
+        }
+
+        animation.current.stop((value) => {
+          position.setValue(value)
+
         })
 
-        animation.current.start(() => {
+        timeoutId_a = setTimeout(() => {
+          // console.log("#5b Re-run")
+          letterAnimation();
+        }, 500)
+      });
+    } else {
+      clearTimeout(timeoutId_a);
+      return;
+    }
 
-          if (count._value >= wordPlusSeven.current.length - 1) {
-            count.setValue(0)
-          } else {
-            count.setValue(count._value + 1)
-          }
-
-          animation.current.stop((value) => {
-            position.setValue(value)
-
-          })
-
-          timeoutId_a = setTimeout(() => {
-            // console.log("#5b Re-run")
-            letterAnimation();
-          }, 500)
-        });
-      } else {
-        clearTimeout(timeoutId_a);
-        return;
-      }
-
-    };
+  };
 
 
-    const runObstacleAnimation_0 = () => {
-      // console.log("#7a Run Obstacle Animation")
-      if (isGameInProgress.current) {
-        hasUpdatedObstacle_0.current = false;
-        let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-        let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+  const runObstacleAnimation_0 = () => {
+    // console.log("#7a Run Obstacle Animation")
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_0.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-        obstaclePosition_0.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_0.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
-        obstacle_0.current = Animated.parallel([
-          Animated.timing(obstaclePosition_0.x, {
-            toValue: -WidthRatio(40),
-            duration: 3000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_0.y, {
-            toValue: localYPos_1,
-            duration: 3000,
-            useNativeDriver: true,
-          }),
+      obstacle_0.current = Animated.parallel([
+        Animated.timing(obstaclePosition_0.x, {
+          toValue: -WidthRatio(40),
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstaclePosition_0.y, {
+          toValue: localYPos_1,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
 
-        ]);
+      ]);
 
-        obstacle_0.current.start(() => {
-          if (timeoutId_0) {
-            clearTimeout(timeoutId_0);
-          }
-          timeoutId_0 = setTimeout(() => {
-            // console.log("#7b Re-run")
-            runObstacleAnimation_0();
-          }, 200)
-        });
-      } else {
-        return;
-      }
-    };
+      obstacle_0.current.start(() => {
+        if (timeoutId_0) {
+          clearTimeout(timeoutId_0);
+        }
+        timeoutId_0 = setTimeout(() => {
+          // console.log("#7b Re-run")
+          runObstacleAnimation_0();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
 
-    const runObstacleAnimation_1 = () => {
-      // console.log("#7a Run Obstacle Animation")
-      if (isGameInProgress.current) {
-        hasUpdatedObstacle_1.current = false;
-        let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-        let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+  const runObstacleAnimation_1 = () => {
+    // console.log("#7a Run Obstacle Animation")
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_1.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-        obstaclePosition_1.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_1.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
-        obstacle_1.current = Animated.parallel([
-          Animated.timing(obstaclePosition_1.x, {
-            toValue: -WidthRatio(40),
-            duration: 2500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_1.y, {
-            toValue: localYPos_1,
-            duration: 2500,
-            useNativeDriver: true,
-          }),
+      obstacle_1.current = Animated.parallel([
+        Animated.timing(obstaclePosition_1.x, {
+          toValue: -WidthRatio(40),
+          duration: 2500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstaclePosition_1.y, {
+          toValue: localYPos_1,
+          duration: 2500,
+          useNativeDriver: true,
+        }),
 
-        ]);
+      ]);
 
-        obstacle_1.current.start(() => {
-          if (timeoutId_1) {
-            clearTimeout(timeoutId_1);
-          }
-          timeoutId_1 = setTimeout(() => {
-            // console.log("#7b Re-run")
-            runObstacleAnimation_1();
-          }, 200)
-        });
-      } else {
-        return;
-      }
-    };
+      obstacle_1.current.start(() => {
+        if (timeoutId_1) {
+          clearTimeout(timeoutId_1);
+        }
+        timeoutId_1 = setTimeout(() => {
+          // console.log("#7b Re-run")
+          runObstacleAnimation_1();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
 
-    const runObstacleAnimation_large = () => {
-      // console.log("#7a Run Obstacle Animation")
-      if (isGameInProgress.current) {
-        hasUpdatedObstacle_large.current = false;
-        let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-        let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+  const runObstacleAnimation_large = () => {
+    // console.log("#7a Run Obstacle Animation")
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_large.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-        obstaclePosition_large.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_large.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
-        obstacle_large.current = Animated.parallel([
-          Animated.timing(obstaclePosition_large.x, {
-            toValue: -WidthRatio(40),
-            duration: 5000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_large.y, {
-            toValue: localYPos_1,
-            duration: 5000,
-            useNativeDriver: true,
-          }),
+      obstacle_large.current = Animated.parallel([
+        Animated.timing(obstaclePosition_large.x, {
+          toValue: -WidthRatio(40),
+          duration: 5000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstaclePosition_large.y, {
+          toValue: localYPos_1,
+          duration: 5000,
+          useNativeDriver: true,
+        }),
 
-        ]);
+      ]);
 
-        obstacle_large.current.start(() => {
-          if (timeoutId_large) {
-            clearTimeout(timeoutId_large);
-          }
-          timeoutId_large = setTimeout(() => {
-            // console.log("#7b Re-run")
-            runObstacleAnimation_large();
-          }, 200)
-        });
-      } else {
-        return;
-      }
-    };
+      obstacle_large.current.start(() => {
+        if (timeoutId_large) {
+          clearTimeout(timeoutId_large);
+        }
+        timeoutId_large = setTimeout(() => {
+          // console.log("#7b Re-run")
+          runObstacleAnimation_large();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
 
 
-//   useEffect(() => {
-//     const intervalId = setInterval(() => {
-//         // console.log("alt: " + sharedState.current.s0a_x)
-//         let obj1 = {
-//           x: sharedState.current.s0a_x,
-//           y: sharedState.current.s0a_y,
-//           radius: sharedState.current.s0a_Width/2,
-//           width: sharedState.current.s0a_Width,
-//           height: sharedState.current.s0a_Height
-//         }
-        
-//         if (obj1.x != null && obj1.x != 0) {
-//           console.log(obj1)
-//         }
-//     }, 1);
-//     return () => clearInterval(intervalId);
-// }, []);
+  //   useEffect(() => {
+  //     const intervalId = setInterval(() => {
+  //         // console.log("alt: " + sharedState.current.s0a_x)
+  //         let obj1 = {
+  //           x: sharedState.current.s0a_x,
+  //           y: sharedState.current.s0a_y,
+  //           radius: sharedState.current.s0a_Width/2,
+  //           width: sharedState.current.s0a_Width,
+  //           height: sharedState.current.s0a_Height
+  //         }
+
+  //         if (obj1.x != null && obj1.x != 0) {
+  //           console.log(obj1)
+  //         }
+  //     }, 1);
+  //     return () => clearInterval(intervalId);
+  // }, []);
 
 
 
-    
 
-const [obj1, setObj1] = useState({
-  x: 0,
-  y: 0,
-  width: 0,
-  height: 0,
-  radius: 0
-});
-const [special_0a, setSpecial_0a] = useState({
-  x: 0,
-  y: 0,
-  width: 0,
-  height: 0
-});
-const [special_0b, setSpecial_0b] = useState({
-  x: 0,
-  y: 0,
-  width: 0,
-  height: 0
-});
 
-useEffect(() => {
+  const [obj1, setObj1] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    radius: 0
+  });
+  const [specialDefense_0, setSpecialDefense_0] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+  });
+
+  const prevRetainSpecialDefense_0x = useRef(specialDefense_0.x);
+  
+  useEffect(() => {
+    let localSpecialDefense_0x;
     // This function will be called on every animation frame
     const update = () => {
-        setObj1({
-          x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
-          y: sharedState.current.charY - sharedState.current.charHeight/1.2,
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charHeight/2,
-          radius: sharedState.current.charHeight/2,
-        });
-        // if (sharedState.current.specialActive_0) {
-        //   setSpecial_0a({
-        //     x: sharedState.current.s0a_x,
-        //     y: sharedState.current.s0a_y,
-        //     width: sharedState.current.s0a_Width,
-        //     height: sharedState.current.s0a_Height
-        //   });
-        //   setSpecial_0b({
-        //     x: sharedState.current.s0b_x,
-        //     y: sharedState.current.s0b_y,
-        //     width: sharedState.current.s0b_Width,
-        //     height: sharedState.current.s0b_Height
-        //   });
-        // }
+      setObj1({
+        x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth / 2,
+        y: sharedState.current.charY - sharedState.current.charHeight / 1.2,
+        width: sharedState.current.charWidth,
+        height: sharedState.current.charHeight / 2,
+        radius: sharedState.current.charHeight / 2,
+      });
+        if (prevRetainSpecialDefense_0x.current === 0 && sharedState.current.specialActive_0) {
+          setSpecialDefense_0({
+            x: sharedState.current.specialSizeLocation_0.x,
+            y: sharedState.current.specialSizeLocation_0.y,
+            width: sharedState.current.specialSizeLocation_0.height,
+            height: sharedState.current.specialSizeLocation_0.width
+          });
+          localSpecialDefense_0x = sharedState.current.specialSizeLocation_0.x;
+          console.log("#1")
 
-        requestAnimationFrame(update);
+        } else if (prevRetainSpecialDefense_0x.current != 0 && !sharedState.current.specialActive_0) {
+          localSpecialDefense_0x = 0;
+          console.log("#2")
+          setSpecialDefense_0({
+            x: 0,
+            y: HeightRatio(125),
+            width: sharedState.current.charWidth,
+            height: sharedState.current.charWidth
+          });
+        }
+        prevRetainSpecialDefense_0x.current = localSpecialDefense_0x;
+
+      requestAnimationFrame(update);
     };
 
     update();
 
     // Return a function that cleans up the effect
     return () => {
-        // No need to do anything here
+      // No need to do anything here
     };
-}, [])
+  }, [])
 
+  // useEffect(() => {
+  //   console.log("- - - -") 
+  //   console.log(specialDefense_0)
+  // }, [specialDefense_0])
 
-useLayoutEffect(() => {
-    // console.log(special_0a)
+  useLayoutEffect(() => {
+    // console.log(specialDefense_0a)
     const wordBlockListener = position.addListener((value) => {
       let obj2 = { x: value.value, y: yPos - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
 
@@ -441,30 +449,25 @@ useLayoutEffect(() => {
     });
 
     const obstacleListener_large = obstaclePosition_large.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12) }
-      
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12), height: WidthRatio(24), width: WidthRatio(24) }
+
       if (isObstacleColliding_large(obj1, obj2)) {
         if (!hasUpdatedObstacle_large.current) {
           crashes.current += 1;
           hasUpdatedObstacle_large.current = true;
         }
         obstacle_large.current.reset()
-      } 
-      
-      // if (isSpecial_0a_Colliding_0(special_0a, obj2)) {
-      //   if (!hasUpdatedObstacle_large.current) {
-      //     hasUpdatedObstacle_large.current = true;
-      //   }
-      //   obstacle_large.current.reset()
-      // }
+      }
 
-      // if (isSpecial_0b_Colliding_0(special_0b, obj2)) {
-      //   if (!hasUpdatedObstacle_large.current) {
-      //     hasUpdatedObstacle_large.current = true;
-      //   }
-      //   obstacle_large.current.reset()
-      // }
+      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
+        if (!hasUpdatedObstacle_large.current) {
+          hasUpdatedObstacle_large.current = true;
+        }
+        obstacle_large.current.reset()
+      }
     });
+
+
 
 
     return () => {
@@ -473,299 +476,299 @@ useLayoutEffect(() => {
       obstaclePosition_1.removeListener(obstacleListener_1)
       obstaclePosition_large.removeListener(obstacleListener_large)
     }
-}, [obj1, special_0a, special_0b]);
+  }, [obj1, specialDefense_0]);
 
-    useEffect(() => {
-      let uniqueLetterPocket = Array.from(new Set(letterPocket));
-      let letters = randomWord.split('');
-      let uniqueLetters = Array.from(new Set(letters));
+  useEffect(() => {
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+    let letters = randomWord.split('');
+    let uniqueLetters = Array.from(new Set(letters));
 
-      const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
-      const wrongElements = letterPocket.filter((element) => !letters.includes(element));
-      if (wrongElements.length > prevWrongElements) {
-        crashes.current += 1;
+    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+    const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+    if (wrongElements.length > prevWrongElements) {
+      crashes.current += 1;
+    }
+    setPrevWrongElements(wrongElements.length)
+
+    if (!continuousEndGameCall) {
+      if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
+        // youWin(crashes.current)
+        console.log("CURRENT SCORE:   " + score.current)
+        endGame({ continue: true, local: "a", crashes: crashes.current, score: score.current });
       }
-      setPrevWrongElements(wrongElements.length)
+    }
+    if (letterPocket.length > 0) {
+      animation.current.reset()
+    }
 
-      if (!continuousEndGameCall) {
-        if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
-          // youWin(crashes.current)
-          console.log("CURRENT SCORE:   " + score.current)
-          endGame({ continue: true, local: "a", crashes: crashes.current, score: score.current });
-        }
+  }, [letterPocket])
+
+  useEffect(() => {
+    if (crashes.current >= 3) {
+      setTimeout(() => {
+        endGame({ continue: false, local: "b", crashes: 0, score: 0 });
+      }, 200);
+
+    }
+  }, [crashes.current])
+
+  const getBackgroundColor = (input) => {
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+    if (uniqueLetterPocket.includes(input)) {
+      return '#43bccd';
+    } else {
+      return '#ffffff';
+    }
+  }
+
+  const endGame = (input) => {
+    console.log("COMPLETE")
+    console.log(input)
+    setContinuousEndGameCall(true)
+    // Stop Game
+    isGameInProgress.current = false;
+    if (input.local != "c") {
+      if (score.current >= 0) {
+        animation.current.stop();
+        obstacle_large.current.stop();
       }
-      if (letterPocket.length > 0) {
-        animation.current.reset()
+
+      if (score.current >= 1) {
+        obstacle_0.current.stop();
+      }
+      if (score.current >= 2) {
+        obstacle_1.current.stop();
       }
 
-    }, [letterPocket])
+    }
 
-    useEffect(() => {
-      if (crashes.current >= 3) {
+    // Clear Letters
+    // letterRef.current = null;
+    setLetter('');
+    setLetterPocket([]);
+    setDisplayLetters([]);
+    count.setValue(0)
+
+    // Clear Word
+    setRandomWord('');
+    wordPlusSeven.current = [];
+
+    // Clear Letter Position
+    position.setValue(1000);
+    setYPos(0)
+
+    // Clear Obstacle's
+
+    obstaclePosition_0.setValue({ x: 1000, y: 0 })
+    obstaclePosition_1.setValue({ x: 1000, y: 0 })
+    obstaclePosition_large.setValue({ x: 1000, y: 0 })
+
+
+    // Clear Game Logic
+    crashes.current = 0;
+    prevCrashes.current = 0
+    score.current = 0;
+    hasUpdatedLetterBlock.current = false;
+    hasUpdatedObstacle_0.current = false;
+    hasUpdatedObstacle_1.current = false;
+    hasUpdatedObstacle_large.current = false;
+
+
+
+
+    if (input.continue) {
+      setHasGameBeenStarted(false);
+      let localScore = input.score + 1;
+      console.log("LOCAL:   " + localScore)
+      score.current = localScore;
+      timeoutId_b = setTimeout(() => {
+        Generate(input.crashes)
+      }, 500)
+
+    } else {
+
+      if (input.local == "b") {
         setTimeout(() => {
-          endGame({ continue: false, local: "b", crashes: 0, score: 0 });
-        }, 200);
-
-      }
-    }, [crashes.current])
-
-    const getBackgroundColor = (input) => {
-      let uniqueLetterPocket = Array.from(new Set(letterPocket));
-      if (uniqueLetterPocket.includes(input)) {
-        return '#43bccd';
-      } else {
-        return '#ffffff';
-      }
-    }
-
-    const endGame = (input) => {
-      console.log("COMPLETE")
-      console.log(input)
-      setContinuousEndGameCall(true)
-      // Stop Game
-      isGameInProgress.current = false;
-      if (input.local != "c") {
-        if (score.current >= 0) {
-          animation.current.stop();
-          obstacle_large.current.stop();
-        }
-
-        if (score.current >= 1) {
-          obstacle_0.current.stop();
-        }
-        if (score.current >=2) {
-          obstacle_1.current.stop();
-        }
-
-      }
-
-      // Clear Letters
-      // letterRef.current = null;
-      setLetter('');
-      setLetterPocket([]);
-      setDisplayLetters([]);
-      count.setValue(0)
-
-      // Clear Word
-      setRandomWord('');
-      wordPlusSeven.current = [];
-
-      // Clear Letter Position
-      position.setValue(1000);
-      setYPos(0)
-
-      // Clear Obstacle's
-
-      obstaclePosition_0.setValue({ x: 1000, y: 0 })
-      obstaclePosition_1.setValue({ x: 1000, y: 0 })
-      obstaclePosition_large.setValue({ x: 1000, y: 0 })
-
-
-      // Clear Game Logic
-      crashes.current = 0;
-      prevCrashes.current = 0
-      score.current = 0;
-      hasUpdatedLetterBlock.current = false;
-      hasUpdatedObstacle_0.current = false;
-      hasUpdatedObstacle_1.current = false;
-      hasUpdatedObstacle_large.current = false;
-
-
-
-
-      if (input.continue) {
-        setHasGameBeenStarted(false);
-        let localScore = input.score + 1;
-        console.log("LOCAL:   " + localScore)
-        score.current = localScore;
-        timeoutId_b = setTimeout(() => {
-          Generate(input.crashes)
-        }, 500)
-
-      } else {
-
-        if (input.local == "b") {
-          setTimeout(() => {
-            setHasGameBeenStarted(false);
-            setModalVisible(true)
-          }, 100);
-        } else if (input.local == "c") {
           setHasGameBeenStarted(false);
-        }
+          setModalVisible(true)
+        }, 100);
+      } else if (input.local == "c") {
+        setHasGameBeenStarted(false);
       }
-
-
     }
 
 
-    return (
-      <View>
-        <>
-          {displayPlaybutton ?
-            <TouchableOpacity
-              onPress={() => { Generate() }}
-              style={{ position: 'absolute', left: windowWidth / 2 - 125, top: windowHeight / 2 - 125, zIndex: -5 }}
-            >
-              <Image
-                source={require('../../assets/button_play.png')}
-                style={{ height: 250, width: 250 }}
-              />
-            </TouchableOpacity>
-            :
-            <>
-              {score.current > 0 ?
-                <View style={{ position: 'absolute', top: windowHeight / 1.35, left: WidthRatio(0), zIndex: -7, padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
-                  <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: HeightRatio(50), fontWeight: 'bold' }}>Score: {score.current}</Text>
-                </View>
-                :
-                <View style={{ position: 'absolute', top: windowHeight / 1.35, left: WidthRatio(0), zIndex: -7, padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
-                  <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: HeightRatio(50), fontWeight: 'bold' }}>Score: 0</Text>
-                </View>
-              }
-            </>
-          }
+  }
 
-          {/* Letter Blocks */}
-          <Animated.View
-            style={[
-              Styling.projectile_word_block,
-              {
-                // transform: [{ translateX: position }, { translateY: yPos + yCalibrated }],
-                transform: [
-                  { translateX: position },
-                  { translateY: yPos }
-                ],
 
-              },
-            ]}
+  return (
+    <View>
+      <>
+        {displayPlaybutton ?
+          <TouchableOpacity
+            onPress={() => { Generate() }}
+            style={{ position: 'absolute', left: windowWidth / 2 - 125, top: windowHeight / 2 - 125, zIndex: -5 }}
           >
-            <Text style={Styling.projectile_letter}>
-              {letter.toUpperCase()}
-            </Text>
-            <Image source={require('../../assets/block_keyboard_key.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-
-          </Animated.View>
-
-          {/* Obstacles */}
-          <Animated.View
-            style={[
-              Styling.projectile_obstacle_block,
-              {
-                transform: [{ translateX: obstaclePosition_0.x }, { translateY: obstaclePosition_0.y }],
-              },
-            ]}
-          >
-            <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
-          </Animated.View>
-
-          <Animated.View
-            style={[
-              Styling.projectile_obstacle_block,
-              {
-                transform: [{ translateX: obstaclePosition_1.x }, { translateY: obstaclePosition_1.y }],
-              },
-            ]}
-          >
-            <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
-          </Animated.View>
-
-          <Animated.View
-            style={[
-              Styling.projectile_obstacle_block,
-              {
-                transform: [{ translateX: obstaclePosition_large.x }, { translateY: obstaclePosition_large.y }],
-              },
-            ]}
-          >
-            <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
-          
-          {/* CHARACTER GUIDELINES */}
-          {/* <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: obj1.x}} />
-          <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: obj1.y}} /> */}
-          {/* <View style={{borderWidth: 5, borderColor: 'blue', height: WidthRatio(12), width: WidthRatio(24), position: 'absolute', top: obj1.y+WidthRatio(6), left: obj1.x-WidthRatio(12)}} /> */}
-          {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
-
-
-
-          {displayLetters.map((l, i) => (
-            <View style={{
-              width: 40, position: 'absolute', top: windowHeight - 60, left: (10 + (i * 45)),
-              height: 40,
-              borderRadius: 10,
-              backgroundColor: getBackgroundColor(l),
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-              key={i}
-            >
-              <Text style={Styling.projectile_random_word_letter}>{l.toUpperCase()}</Text>
-            </View>
-          ))}
-          {crashes.current > 0 ?
-            <>
-              {Array.from(Array(crashes.current).keys()).map((n, i) => (
-                <View style={{
-                  width: 40, position: 'absolute', top: windowHeight - 60, left: (windowWidth / 2 + 200 + (i * 50)),
-                  height: 40,
-                  borderRadius: 10,
-                  backgroundColor: 'transparent',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-                  key={i}
-                >
-                  <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
-                </View>
-              ))}
-            </>
-            :
-            <>
-              {Array.from(Array(prevCrashes.current).keys()).map((n, i) => (
-                <View style={{
-                  width: 50, position: 'absolute', top: -40, left: (550 + (i * 50)),
-                  height: 50,
-                  borderRadius: 10,
-                  backgroundColor: 'transparent',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-                  key={i}
-                >
-                  <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
-                </View>
-              ))}
-            </>
-          }
-
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-              isGameInProgress.current = false;
-            }}
-          >
-            <View style={Styling.modal_centered_view}>
-              <View style={Styling.modal_view}>
-                <Text style={Styling.modal_text}>Game Over</Text>
-                <View style={{ margin: HeightRatio(20) }}>
-                  <Text style={Styling.modal_text_style}>Score</Text>
-                  <Text style={Styling.modal_text_style}>Time</Text>
-                  <Text style={Styling.modal_text_style}>Words</Text>
-                </View>
-                <TouchableOpacity
-                  style={[Styling.modal_button]}
-                  onPress={() => { setModalVisible(!modalVisible); setDisplayPlaybutton(true); }}
-                >
-                  <Text style={Styling.modal_text_style}>Close</Text>
-                </TouchableOpacity>
+            <Image
+              source={require('../../assets/button_play.png')}
+              style={{ height: 250, width: 250 }}
+            />
+          </TouchableOpacity>
+          :
+          <>
+            {score.current > 0 ?
+              <View style={{ position: 'absolute', top: windowHeight / 1.35, left: WidthRatio(0), zIndex: -7, padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
+                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: HeightRatio(50), fontWeight: 'bold' }}>Score: {score.current}</Text>
               </View>
-            </View>
-          </Modal>
+              :
+              <View style={{ position: 'absolute', top: windowHeight / 1.35, left: WidthRatio(0), zIndex: -7, padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
+                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: HeightRatio(50), fontWeight: 'bold' }}>Score: 0</Text>
+              </View>
+            }
+          </>
+        }
 
-        </>
-      </View>
-    );
-  };
+        {/* Letter Blocks */}
+        <Animated.View
+          style={[
+            Styling.projectile_word_block,
+            {
+              // transform: [{ translateX: position }, { translateY: yPos + yCalibrated }],
+              transform: [
+                { translateX: position },
+                { translateY: yPos }
+              ],
+
+            },
+          ]}
+        >
+          <Text style={Styling.projectile_letter}>
+            {letter.toUpperCase()}
+          </Text>
+          <Image source={require('../../assets/block_keyboard_key.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+
+        </Animated.View>
+
+        {/* Obstacles */}
+        <Animated.View
+          style={[
+            Styling.projectile_obstacle_block,
+            {
+              transform: [{ translateX: obstaclePosition_0.x }, { translateY: obstaclePosition_0.y }],
+            },
+          ]}
+        >
+          <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
+        </Animated.View>
+
+        <Animated.View
+          style={[
+            Styling.projectile_obstacle_block,
+            {
+              transform: [{ translateX: obstaclePosition_1.x }, { translateY: obstaclePosition_1.y }],
+            },
+          ]}
+        >
+          <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
+        </Animated.View>
+
+        <Animated.View
+          style={[
+            Styling.projectile_obstacle_block,
+            {
+              transform: [{ translateX: obstaclePosition_large.x }, { translateY: obstaclePosition_large.y }],
+            },
+          ]}
+        >
+          <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+
+        {/* CHARACTER GUIDELINES */}
+        {/* <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: obj1.x}} />
+          <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: obj1.y}} /> */}
+        {/* <View style={{borderWidth: 5, borderColor: 'blue', height: WidthRatio(12), width: WidthRatio(24), position: 'absolute', top: obj1.y+WidthRatio(6), left: obj1.x-WidthRatio(12)}} /> */}
+        {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
+
+
+
+        {displayLetters.map((l, i) => (
+          <View style={{
+            width: 40, position: 'absolute', top: windowHeight - 60, left: (10 + (i * 45)),
+            height: 40,
+            borderRadius: 10,
+            backgroundColor: getBackgroundColor(l),
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+            key={i}
+          >
+            <Text style={Styling.projectile_random_word_letter}>{l.toUpperCase()}</Text>
+          </View>
+        ))}
+        {crashes.current > 0 ?
+          <>
+            {Array.from(Array(crashes.current).keys()).map((n, i) => (
+              <View style={{
+                width: 40, position: 'absolute', top: windowHeight - 60, left: (windowWidth / 2 + 200 + (i * 50)),
+                height: 40,
+                borderRadius: 10,
+                backgroundColor: 'transparent',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+                key={i}
+              >
+                <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
+              </View>
+            ))}
+          </>
+          :
+          <>
+            {Array.from(Array(prevCrashes.current).keys()).map((n, i) => (
+              <View style={{
+                width: 50, position: 'absolute', top: -40, left: (550 + (i * 50)),
+                height: 50,
+                borderRadius: 10,
+                backgroundColor: 'transparent',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+                key={i}
+              >
+                <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
+              </View>
+            ))}
+          </>
+        }
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+            isGameInProgress.current = false;
+          }}
+        >
+          <View style={Styling.modal_centered_view}>
+            <View style={Styling.modal_view}>
+              <Text style={Styling.modal_text}>Game Over</Text>
+              <View style={{ margin: HeightRatio(20) }}>
+                <Text style={Styling.modal_text_style}>Score</Text>
+                <Text style={Styling.modal_text_style}>Time</Text>
+                <Text style={Styling.modal_text_style}>Words</Text>
+              </View>
+              <TouchableOpacity
+                style={[Styling.modal_button]}
+                onPress={() => { setModalVisible(!modalVisible); setDisplayPlaybutton(true); }}
+              >
+                <Text style={Styling.modal_text_style}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+      </>
+    </View>
+  );
+};

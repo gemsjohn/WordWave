@@ -59,19 +59,17 @@ export const Special = (props) => {
         };
     }, [])
 
+    const prevRetainSpecial_0 = useRef(retainSpecial_0.current);
+    const prevRetainSpecial_1 = useRef(retainSpecial_1.current);
+    const prevRetainSpecial_2 = useRef(retainSpecial_2.current);
+    const prevRetainSpecial_3 = useRef(retainSpecial_3.current);
+
     useLayoutEffect(() => {
         // console.log(obj1)
         let special_0 = { x: specialPosition_0.current.x, y: specialPosition_0.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
         let special_1 = { x: specialPosition_1.current.x, y: specialPosition_1.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
         let special_2 = { x: specialPosition_2.current.x, y: specialPosition_2.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
         let special_3 = { x: specialPosition_3.current.x, y: specialPosition_3.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
-
-        // setSharedState({
-        //     specialActive_0: false,
-        //     specialActive_1: false,
-        //     specialActive_2: false,
-        //     specialActive_3: false
-        // });
 
         // Special _ 0
         if (isSpecialColliding_0(obj1, special_0)) {
@@ -83,6 +81,7 @@ export const Special = (props) => {
                 // setSharedState({...sharedState, specialActive: true });
                 setSharedState({
                     specialActive_0: !retainSpecial_0.current,
+                    specialSizeLocation_0: {x: WidthRatio(80), y: HeightRatio(125), height: sharedState.current.charWidth, width: sharedState.current.charWidth,},
                     specialActive_1: false,
                     specialActive_2: false,
                     specialActive_3: false
@@ -174,15 +173,25 @@ export const Special = (props) => {
         } else {
             setSpecialColor_3('transparent')
         }
-
+        if (prevRetainSpecial_0.current === retainSpecial_0.current &&
+            prevRetainSpecial_1.current === retainSpecial_1.current &&
+            prevRetainSpecial_2.current === retainSpecial_2.current &&
+            prevRetainSpecial_3.current === retainSpecial_3.current) {
+          return;
+        }
         if (!retainSpecial_0.current && !retainSpecial_1.current && !retainSpecial_2.current &&!retainSpecial_3.current) {
             setSharedState({
                 specialActive_0: false,
+                specialSizeLocation_0: {x: 0, y: HeightRatio(125), height: sharedState.current.charWidth, width: sharedState.current.charWidth,},
                 specialActive_1: false,
                 specialActive_2: false,
                 specialActive_3: false
             });
         }
+        prevRetainSpecial_0.current = retainSpecial_0.current;
+        prevRetainSpecial_1.current = retainSpecial_1.current;
+        prevRetainSpecial_2.current = retainSpecial_2.current;
+        prevRetainSpecial_3.current = retainSpecial_3.current;
 
         return () => {
             null
@@ -227,13 +236,14 @@ export const Special = (props) => {
                                 style={[
                                     Styling.special_block,
                                     {
-                                        backgroundColor: 'transparent',
+                                        backgroundColor: 'rgba(255, 255, 0, 0.10)',
                                         height: sharedState.current.charWidth,
                                         width: sharedState.current.charWidth,
                                         zIndex: -2,
                                         top: item.top,
+                                        left: WidthRatio(80),
                                         borderWidth: 2, 
-                                        borderColor: 'yellow'
+                                        borderColor: 'rgba(255, 255, 0, 1.00)'
                                     }
                                 ]}
                             >
