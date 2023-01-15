@@ -58,25 +58,25 @@ export const Projectile = () => {
   const animation = useRef(null)
   const count = new Animated.Value(0);
   const wordPlusSeven = useRef([])
-  let timeoutId_a;
+  let timeoutLetter_ID;
 
   // [OBSTACLE ANIMATION 0] - - - - - 
   const hasUpdatedObstacle_0 = useRef(false);
   const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
   const obstacle_0 = useRef(null)
-  let timeoutId_0;
+  let timeoutObstacle_0_ID;
 
   // [OBSTACLE ANIMATION 1] - - - - - 
   const hasUpdatedObstacle_1 = useRef(false);
   const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
   const obstacle_1 = useRef(null)
-  let timeoutId_1;
+  let timeoutObstacle_1_ID;
 
   // [OBSTACLE ANIMATION LARGE] - - - - - 
   const hasUpdatedObstacle_large = useRef(false);
   const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
   const obstacle_large = useRef(null)
-  let timeoutId_large;
+  let timeoutObstacle_Large_ID;
 
   // [TESTING]
 
@@ -193,13 +193,13 @@ export const Projectile = () => {
 
         })
 
-        timeoutId_a = setTimeout(() => {
+        timeoutLetter_ID = setTimeout(() => {
           // console.log("#5b Re-run")
           letterAnimation();
         }, 500)
       });
     } else {
-      clearTimeout(timeoutId_a);
+      clearTimeout(timeoutLetter_ID);
       return;
     }
 
@@ -230,10 +230,10 @@ export const Projectile = () => {
       ]);
 
       obstacle_0.current.start(() => {
-        if (timeoutId_0) {
-          clearTimeout(timeoutId_0);
+        if (timeoutObstacle_0_ID) {
+          clearTimeout(timeoutObstacle_0_ID);
         }
-        timeoutId_0 = setTimeout(() => {
+        timeoutObstacle_0_ID = setTimeout(() => {
           // console.log("#7b Re-run")
           runObstacleAnimation_0();
         }, 200)
@@ -267,10 +267,10 @@ export const Projectile = () => {
       ]);
 
       obstacle_1.current.start(() => {
-        if (timeoutId_1) {
-          clearTimeout(timeoutId_1);
+        if (timeoutObstacle_1_ID) {
+          clearTimeout(timeoutObstacle_1_ID);
         }
-        timeoutId_1 = setTimeout(() => {
+        timeoutObstacle_1_ID = setTimeout(() => {
           // console.log("#7b Re-run")
           runObstacleAnimation_1();
         }, 200)
@@ -304,10 +304,10 @@ export const Projectile = () => {
       ]);
 
       obstacle_large.current.start(() => {
-        if (timeoutId_large) {
-          clearTimeout(timeoutId_large);
+        if (timeoutObstacle_Large_ID) {
+          clearTimeout(timeoutObstacle_Large_ID);
         }
-        timeoutId_large = setTimeout(() => {
+        timeoutObstacle_Large_ID = setTimeout(() => {
           // console.log("#7b Re-run")
           runObstacleAnimation_large();
         }, 200)
