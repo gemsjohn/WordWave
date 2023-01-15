@@ -43,7 +43,7 @@ export const SpecialAnimation_0a = () => {
             specialAnimation_0a.current = Animated.parallel([
                 Animated.timing(special_0a.x, {
                     toValue: WidthRatio(200), // or any other value you want to animate to
-                    duration: 200,
+                    duration: 500,
                     useNativeDriver: true
                 }),
                 // Animated.timing(special_0a.y, {
@@ -109,8 +109,8 @@ export const SpecialAnimation_0a = () => {
     const sharedStateProps = useMemo(() => ({
         s0a_x: pos_0a.x,
         s0a_y: pos_0a.y,
-        s0a_Height: 15,
-        s0a_Width: 15
+        s0a_Height: WidthRatio(7),
+        s0a_Width: WidthRatio(7)
     }), [pos_0a])
 
     useEffect(() => {

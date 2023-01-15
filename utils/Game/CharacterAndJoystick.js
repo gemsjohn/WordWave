@@ -151,7 +151,8 @@ export const CharacterAndJoystick = () => {
             <View style={Styling.joystick_knob} />
 
           </Animated.View>
-          <View 
+          {/* GUIDELINES */}
+          {/* <View 
             style={{
               borderColor: 'white', 
               borderWidth: 1, 
@@ -168,7 +169,7 @@ export const CharacterAndJoystick = () => {
               height: windowHeight, 
               top: 0, 
               left: posX - WidthRatio(64) - charWidth/2
-            }} />
+            }} /> */}
 
 
         </View>

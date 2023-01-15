@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useContext, useMemo } from 'react';
 // import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
@@ -328,134 +328,157 @@ export const Projectile = () => {
       }
     };
 
-    const [obj1, setObj1] = useState({
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      radius: 0
-    });
-    const [special_0a, setSpecial_0a] = useState({
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0
-    });
-    const [special_0b, setSpecial_0b] = useState({
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0
-    });
 
-    useEffect(() => {
-        // This function will be called on every animation frame
-        const update = () => {
-            setObj1({
-              x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
-              y: sharedState.current.charY - sharedState.current.charHeight/1.2,
-              width: sharedState.current.charWidth,
-              height: sharedState.current.charHeight/2,
-              radius: sharedState.current.charHeight/2,
-            });
-            if (sharedState.current.specialActive_0) {
-              setSpecial_0a({
-                x: sharedState.current.s0a_x,
-                y: sharedState.current.s0a_y,
-                width: sharedState.current.s0a_Width,
-                height: sharedState.current.s0a_Height
-              });
-              setSpecial_0b({
-                x: sharedState.current.s0b_x,
-                y: sharedState.current.s0b_y,
-                width: sharedState.current.s0b_Width,
-                height: sharedState.current.s0b_Height
-              });
-            }
+//   useEffect(() => {
+//     const intervalId = setInterval(() => {
+//         // console.log("alt: " + sharedState.current.s0a_x)
+//         let obj1 = {
+//           x: sharedState.current.s0a_x,
+//           y: sharedState.current.s0a_y,
+//           radius: sharedState.current.s0a_Width/2,
+//           width: sharedState.current.s0a_Width,
+//           height: sharedState.current.s0a_Height
+//         }
+        
+//         if (obj1.x != null && obj1.x != 0) {
+//           console.log(obj1)
+//         }
+//     }, 1);
+//     return () => clearInterval(intervalId);
+// }, []);
 
-            requestAnimationFrame(update);
-        };
 
-        update();
 
-        // Return a function that cleans up the effect
-        return () => {
-            // No need to do anything here
-        };
-    }, [])
     
 
-    useLayoutEffect(() => {
-        // console.log(special_0a)
-        // const wordBlockListener = position.addListener((value) => {
-        //   let obj2 = { x: value.value, y: yPos - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
-  
-        //   if (isLetterBlockColliding(obj1, obj2)) {
-        //     if (!hasUpdatedLetterBlock.current) {
-        //       setLetterPocket(prevItems => [...prevItems, letter])
-        //       hasUpdatedLetterBlock.current = true;
-        //     }
-        //   }
-        // });
-  
-        // const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-        //   let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
-  
-        //   if (isObstacleColliding_0(obj1, obj2)) {
-        //     if (!hasUpdatedObstacle_0.current) {
-        //       crashes.current += 1;
-        //       hasUpdatedObstacle_0.current = true;
-        //     }
-        //     obstacle_0.current.reset()
-        //   }
-        // });
-  
-        // const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-        //   let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
-  
-        //   if (isObstacleColliding_1(obj1, obj2)) {
-        //     if (!hasUpdatedObstacle_1.current) {
-        //       crashes.current += 1;
-        //       hasUpdatedObstacle_1.current = true;
-        //     }
-        //     obstacle_1.current.reset()
-        //   }
-        // });
-  
-        const obstacleListener_large = obstaclePosition_large.addListener((value) => {
-          let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12) }
-          
-          if (isObstacleColliding_large(obj1, obj2)) {
-            if (!hasUpdatedObstacle_large.current) {
-              crashes.current += 1;
-              hasUpdatedObstacle_large.current = true;
-            }
-            obstacle_large.current.reset()
-          } 
-          
-          // if (isSpecial_0a_Colliding_0(special_0a, obj2)) {
-          //   if (!hasUpdatedObstacle_large.current) {
-          //     hasUpdatedObstacle_large.current = true;
-          //   }
-          //   obstacle_large.current.reset()
-          // }
+const [obj1, setObj1] = useState({
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+  radius: 0
+});
+const [special_0a, setSpecial_0a] = useState({
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0
+});
+const [special_0b, setSpecial_0b] = useState({
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0
+});
 
-          // if (isSpecial_0b_Colliding_0(special_0b, obj2)) {
-          //   if (!hasUpdatedObstacle_large.current) {
-          //     hasUpdatedObstacle_large.current = true;
-          //   }
-          //   obstacle_large.current.reset()
-          // }
+useEffect(() => {
+    // This function will be called on every animation frame
+    const update = () => {
+        setObj1({
+          x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth/2,
+          y: sharedState.current.charY - sharedState.current.charHeight/1.2,
+          width: sharedState.current.charWidth,
+          height: sharedState.current.charHeight/2,
+          radius: sharedState.current.charHeight/2,
         });
+        // if (sharedState.current.specialActive_0) {
+        //   setSpecial_0a({
+        //     x: sharedState.current.s0a_x,
+        //     y: sharedState.current.s0a_y,
+        //     width: sharedState.current.s0a_Width,
+        //     height: sharedState.current.s0a_Height
+        //   });
+        //   setSpecial_0b({
+        //     x: sharedState.current.s0b_x,
+        //     y: sharedState.current.s0b_y,
+        //     width: sharedState.current.s0b_Width,
+        //     height: sharedState.current.s0b_Height
+        //   });
+        // }
 
-  
-        return () => {
-          // position.removeListener(wordBlockListener);
-          // obstaclePosition_0.removeListener(obstacleListener_0)
-          // obstaclePosition_1.removeListener(obstacleListener_1)
-          obstaclePosition_large.removeListener(obstacleListener_large)
+        requestAnimationFrame(update);
+    };
+
+    update();
+
+    // Return a function that cleans up the effect
+    return () => {
+        // No need to do anything here
+    };
+}, [])
+
+
+useLayoutEffect(() => {
+    // console.log(special_0a)
+    const wordBlockListener = position.addListener((value) => {
+      let obj2 = { x: value.value, y: yPos - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
+
+      if (isLetterBlockColliding(obj1, obj2)) {
+        if (!hasUpdatedLetterBlock.current) {
+          setLetterPocket(prevItems => [...prevItems, letter])
+          hasUpdatedLetterBlock.current = true;
         }
-    }, [obj1, special_0a, special_0b]);
+      }
+    });
+
+    const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
+
+      if (isObstacleColliding_0(obj1, obj2)) {
+        if (!hasUpdatedObstacle_0.current) {
+          crashes.current += 1;
+          hasUpdatedObstacle_0.current = true;
+        }
+        obstacle_0.current.reset()
+      }
+    });
+
+    const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
+
+      if (isObstacleColliding_1(obj1, obj2)) {
+        if (!hasUpdatedObstacle_1.current) {
+          crashes.current += 1;
+          hasUpdatedObstacle_1.current = true;
+        }
+        obstacle_1.current.reset()
+      }
+    });
+
+    const obstacleListener_large = obstaclePosition_large.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12) }
+      
+      if (isObstacleColliding_large(obj1, obj2)) {
+        if (!hasUpdatedObstacle_large.current) {
+          crashes.current += 1;
+          hasUpdatedObstacle_large.current = true;
+        }
+        obstacle_large.current.reset()
+      } 
+      
+      // if (isSpecial_0a_Colliding_0(special_0a, obj2)) {
+      //   if (!hasUpdatedObstacle_large.current) {
+      //     hasUpdatedObstacle_large.current = true;
+      //   }
+      //   obstacle_large.current.reset()
+      // }
+
+      // if (isSpecial_0b_Colliding_0(special_0b, obj2)) {
+      //   if (!hasUpdatedObstacle_large.current) {
+      //     hasUpdatedObstacle_large.current = true;
+      //   }
+      //   obstacle_large.current.reset()
+      // }
+    });
+
+
+    return () => {
+      position.removeListener(wordBlockListener);
+      obstaclePosition_0.removeListener(obstacleListener_0)
+      obstaclePosition_1.removeListener(obstacleListener_1)
+      obstaclePosition_large.removeListener(obstacleListener_large)
+    }
+}, [obj1, special_0a, special_0b]);
 
     useEffect(() => {
       let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -601,7 +624,7 @@ export const Projectile = () => {
           }
 
           {/* Letter Blocks */}
-          {/* <Animated.View
+          <Animated.View
             style={[
               Styling.projectile_word_block,
               {
@@ -619,10 +642,10 @@ export const Projectile = () => {
             </Text>
             <Image source={require('../../assets/block_keyboard_key.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
 
-          </Animated.View> */}
+          </Animated.View>
 
           {/* Obstacles */}
-          {/* <Animated.View
+          <Animated.View
             style={[
               Styling.projectile_obstacle_block,
               {
@@ -631,9 +654,9 @@ export const Projectile = () => {
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
-          </Animated.View> */}
+          </Animated.View>
 
-          {/* <Animated.View
+          <Animated.View
             style={[
               Styling.projectile_obstacle_block,
               {
@@ -642,7 +665,7 @@ export const Projectile = () => {
             ]}
           >
             <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
-          </Animated.View> */}
+          </Animated.View>
 
           <Animated.View
             style={[

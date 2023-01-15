@@ -76,8 +76,8 @@ export const Game = (props) => {
               <CharacterAndJoystick />
               {/* <Simple /> */}
               <Special />
-              <SpecialAnimation_0a />
-              <SpecialAnimation_0b />
+              {/* <SpecialAnimation_0a />
+              <SpecialAnimation_0b /> */}
               <Projectile />
             </SharedStateContext.Provider>
           </>

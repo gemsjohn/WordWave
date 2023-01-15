@@ -109,8 +109,8 @@ export const SpecialAnimation_0b = () => {
     const sharedStateProps = useMemo(() => ({
         s0b_x: pos_0b.x,
         s0b_y: pos_0b.y,
-        s0b_Height: 15,
-        s0b_Width: 15
+        s0b_Height: WidthRatio(7),
+        s0b_Width: WidthRatio(7)
     }), [pos_0b])
 
     useEffect(() => {
