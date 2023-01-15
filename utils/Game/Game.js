@@ -53,6 +53,45 @@ export const Game = (props) => {
     sharedStateRef.current = {...sharedStateRef.current, ...newState};
   };
 
+  const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
+  //   useEffect (() => {
+  //     let localRetainUpgradeToSpecial_0;
+
+  //     if (retainUpgradeToSpecial_0 == true){
+  //       console.log("retainUpgradeToSpecial_0 == true")
+  //       return;
+  //     } else {
+  //       const update = () => {
+  //         console.log("retainUpgradeToSpecial_0 == false")
+  //         localRetainUpgradeToSpecial_0 = sharedStateRef.current.upgradeToSpecial_0
+  //         if (localRetainUpgradeToSpecial_0) {
+  //           setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
+  //         }
+  
+  //         requestAnimationFrame(update);
+  //       };
+        
+  //       update();
+  //     }
+      
+      
+      
+  //   }, [])
+
+  useEffect(() => {
+    const intervalCheckUpgradeToSpecial_0 = setInterval(() => {
+      console.log(sharedStateRef.current.upgradeToSpecial_0)
+      if (sharedStateRef.current.upgradeToSpecial_0) {
+        setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
+        clearInterval(intervalCheckUpgradeToSpecial_0);
+      }
+    }, 250)
+
+    
+  }, [])
+
+  
+
   return (
     <>
       <StatusBar
@@ -75,7 +114,9 @@ export const Game = (props) => {
             >
               <CharacterAndJoystick />
               {/* <Simple /> */}
-              <Special />
+              {retainUpgradeToSpecial_0 &&
+                <Special />
+              }
               {/* <SpecialAnimation_0a />
               <SpecialAnimation_0b /> */}
               <Projectile />

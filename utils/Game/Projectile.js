@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3 } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3, isUpgradeToSpecial_0_Colliding } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
 import {
@@ -52,9 +52,8 @@ export const Projectile = () => {
 
   // [LETTER ANIMATION] - - - - - 
   const hasUpdatedLetterBlock = useRef(false);
-  const [yPos, setYPos] = useState(0);
   const [letter, setLetter] = useState('');
-  const position = useRef(new Animated.Value(1000)).current;
+  const letterPosition = useRef(new Animated.ValueXY({x: 1000, y: 0})).current
   const animation = useRef(null)
   const count = new Animated.Value(0);
   const wordPlusSeven = useRef([])
@@ -78,12 +77,21 @@ export const Projectile = () => {
   const obstacle_large = useRef(null)
   let timeoutObstacle_Large_ID;
 
+  // [UPGRADE TO SPECIAL 0 ANIMATION] - - - - - 
+  const hasUpdatedUpgradeToSpecial_0 = useRef(false);
+  const upgradeToSpecial_0_Position = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const upgradeToSpecial_0 = useRef(null)
+  let timeoutUpgradeToSpecial_0_ID;
+  const retainUpgradeToSpecial_0 = useRef(false);
+
   // [TESTING]
 
 
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
+    setSharedState({upgradeToSpecial_0: false})
+
   }, [])
 
   useEffect(() => {
@@ -153,6 +161,7 @@ export const Projectile = () => {
           }
           if (score.current >= 1) {
             runObstacleAnimation_0();
+            runUpgradeToSpecial_0();
           }
           if (score.current >= 2) {
             runObstacleAnimation_1();
@@ -171,14 +180,21 @@ export const Projectile = () => {
     if (isGameInProgress.current) {
       // console.log("#5b Letters Array: " + wordPlusSeven.current)
       hasUpdatedLetterBlock.current = false;
-      setYPos(Math.floor(Math.random() * HeightRatio(670)))
       setLetter(wordPlusSeven.current[count._value]);
-      position.setValue(WidthRatio(400));
-      animation.current = Animated.timing(position, {
-        toValue: -WidthRatio(40),
-        duration: 4000,
-        useNativeDriver: true,
-      })
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      letterPosition.setValue({x: WidthRatio(400), y: localYPos_0})
+      animation.current = Animated.parallel([
+        Animated.timing(letterPosition.x, {
+          toValue: -WidthRatio(40),
+          duration: 4000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(letterPosition.y, {
+          toValue: localYPos_0,
+          duration: 4000,
+          useNativeDriver: true,
+        })
+      ]);
 
       animation.current.start(() => {
 
@@ -189,7 +205,7 @@ export const Projectile = () => {
         }
 
         animation.current.stop((value) => {
-          position.setValue(value)
+          letterPosition.setValue(value)
 
         })
 
@@ -308,6 +324,43 @@ export const Projectile = () => {
           clearTimeout(timeoutObstacle_Large_ID);
         }
         timeoutObstacle_Large_ID = setTimeout(() => {
+          // console.log("#7b Re-run")
+          runObstacleAnimation_large();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
+  const runUpgradeToSpecial_0 = () => {
+    // console.log("#7a Run Obstacle Animation")
+    if (isGameInProgress.current && !retainUpgradeToSpecial_0.current) {
+      hasUpdatedUpgradeToSpecial_0.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+
+      upgradeToSpecial_0_Position.setValue({ x: WidthRatio(400), y: localYPos_0 });
+
+      upgradeToSpecial_0.current = Animated.parallel([
+        Animated.timing(upgradeToSpecial_0_Position.x, {
+          toValue: -WidthRatio(40),
+          duration: 8000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(upgradeToSpecial_0_Position.y, {
+          toValue: localYPos_1,
+          duration: 8000,
+          useNativeDriver: true,
+        }),
+
+      ]);
+
+      upgradeToSpecial_0.current.start(() => {
+        if (timeoutUpgradeToSpecial_0_ID) {
+          clearTimeout(timeoutUpgradeToSpecial_0_ID);
+        }
+        timeoutUpgradeToSpecial_0_ID = setTimeout(() => {
           // console.log("#7b Re-run")
           runObstacleAnimation_large();
         }, 200)
@@ -467,8 +520,8 @@ export const Projectile = () => {
   }, [])
 
   useLayoutEffect(() => {
-    const wordBlockListener = position.addListener((value) => {
-      let obj2 = { x: value.value, y: yPos - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
+    const wordBlockListener = letterPosition.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
 
       if (isLetterBlockColliding(obj1, obj2)) {
         if (!hasUpdatedLetterBlock.current) {
@@ -601,11 +654,26 @@ export const Projectile = () => {
       }
     });
 
+    const upgradeToSpecial_0Listener = upgradeToSpecial_0_Position.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
+
+      if (isUpgradeToSpecial_0_Colliding(obj1, obj2)) {
+        console.log("UPGRADE COLLISION!!!!!!")
+        if (!hasUpdatedUpgradeToSpecial_0.current) {
+          retainUpgradeToSpecial_0.current = true;
+          setSharedState({upgradeToSpecial_0: true})
+          hasUpdatedUpgradeToSpecial_0.current = true;
+        }
+        upgradeToSpecial_0.current.reset();
+      }
+    });
+
     return () => {
-      position.removeListener(wordBlockListener);
-      obstaclePosition_0.removeListener(obstacleListener_0)
-      obstaclePosition_1.removeListener(obstacleListener_1)
-      obstaclePosition_large.removeListener(obstacleListener_large)
+      letterPosition.removeListener(wordBlockListener);
+      obstaclePosition_0.removeListener(obstacleListener_0);
+      obstaclePosition_1.removeListener(obstacleListener_1);
+      obstaclePosition_large.removeListener(obstacleListener_large);
+      upgradeToSpecial_0_Position.removeListener(upgradeToSpecial_0Listener);
     }
   }, [obj1, specialDefense_0, specialDefense_1, specialDefense_2, specialDefense_3]);
 
@@ -662,7 +730,7 @@ export const Projectile = () => {
         animation.current.stop();
         obstacle_large.current.stop();
       }
-      if (score.current >= 1) { obstacle_0.current.stop(); }
+      if (score.current >= 1) { obstacle_0.current.stop(); upgradeToSpecial_0.current.stop(); }
       if (score.current >= 2) { obstacle_1.current.stop(); }
     }
 
@@ -671,8 +739,7 @@ export const Projectile = () => {
     setLetter('');
     setLetterPocket([]);
     setDisplayLetters([]);
-    position.setValue(1000);
-    setYPos(0)
+    letterPosition.setValue({x: 1000, y: 0});
     // -Word
     setRandomWord('');
     wordPlusSeven.current = [];
@@ -705,9 +772,12 @@ export const Projectile = () => {
         setTimeout(() => {
           setHasGameBeenStarted(false);
           setGameOverModalVisible(true)
+          setSharedState({upgradeToSpecial_0: false})
+
         }, 100);
       } else if (input.local == "c") {
         setHasGameBeenStarted(false);
+        setSharedState({upgradeToSpecial_0: false})
       }
     }
   }
@@ -773,8 +843,8 @@ export const Projectile = () => {
             Styling.projectile_word_block,
             {
               transform: [
-                { translateX: position },
-                { translateY: yPos }
+                { translateX: letterPosition.x },
+                { translateY: letterPosition.y }
               ],
 
             },
@@ -829,6 +899,19 @@ export const Projectile = () => {
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
+        {/* Upgrade To Special 0 */}
+        <Animated.View
+          style={[
+            Styling.projectile_obstacle_block,
+            {
+              transform: [{ translateX: upgradeToSpecial_0_Position.x }, { translateY: upgradeToSpecial_0_Position.y }],
+            },
+          ]}
+        >
+          <Image 
+            source={require('../../assets/upgrade_to_special_0.png')} 
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
         {/* CHARACTER GUIDELINES */}
         {/* <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: obj1.x}} />
           <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: obj1.y}} /> */}
