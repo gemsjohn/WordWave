@@ -65,15 +65,6 @@ export const Projectile = () => {
     const hasUpdatedObstacle_large = useRef(false);
     const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
 
-    // Collision Detection Variables
-    // let localCharXPos = useRef(props.charX - Math.trunc(windowWidth * 0.313));
-    // let localCharYPos = useRef(props.charY - Math.trunc(windowHeight * 0.022));
-
-    // let localPowerup_0XPos = useRef(props.powerup_0.x);
-    // let localPowerup_0YPos = useRef(props.powerup_0.y);
-    // console.log(props.powerup_0)
-
-
     // Game Logic
     const crashes = useRef(0);
     const prevCrashes = useRef(0);
@@ -99,8 +90,6 @@ export const Projectile = () => {
 
     useLayoutEffect(() => {
       isGameInProgress.current = false;
-      // localCharXPos.current = props.charX - Math.trunc(windowWidth * 0.313);
-      // localCharYPos.current = props.charY - Math.trunc(windowHeight * 0.022);
     }, [])
 
     useEffect(() => {
@@ -158,17 +147,23 @@ export const Projectile = () => {
       if (wordPlusSeven.current.length > 0) {
         console.log("#3 Word Plus 7 useEffect")
         isGameInProgress.current = true;
-        // setHasContinuousGameBeenInitiated(false);
         console.log("[STATUS - hasGameBeenStarted]  :: " + hasGameBeenStarted)
         console.log("[STATUS - isGameInProgress.current]  :: " + isGameInProgress.current)
 
         if (!hasGameBeenStarted) {
           if (isGameInProgress.current) {
             console.log("#4 About to run animations.")
-            runAnimation();
-            runObstacleAnimation_0();
-            runObstacleAnimation_1();
-            runObstacleAnimation_large();
+            if (score.current >= 0) {
+              letterAnimation();
+              runObstacleAnimation_large();
+            } 
+            if (score.current >= 1) {
+              runObstacleAnimation_0();
+            }
+            if (score.current >= 2) {
+              runObstacleAnimation_1();
+            }
+          
             setHasGameBeenStarted(true)
             setDisplayPlaybutton(false)
           }
@@ -177,7 +172,7 @@ export const Projectile = () => {
     }, [wordPlusSeven.current])
 
 
-    const runAnimation = () => {
+    const letterAnimation = () => {
       // console.log("#5a Run Animation")
       if (isGameInProgress.current) {
         // console.log("#5b Letters Array: " + wordPlusSeven.current)
@@ -206,7 +201,7 @@ export const Projectile = () => {
 
           timeoutId_a = setTimeout(() => {
             // console.log("#5b Re-run")
-            runAnimation();
+            letterAnimation();
           }, 500)
         });
       } else {
@@ -530,10 +525,17 @@ useLayoutEffect(() => {
       // Stop Game
       isGameInProgress.current = false;
       if (input.local != "c") {
-        animation.current.stop();
-        obstacle_0.current.stop();
-        obstacle_1.current.stop();
-        obstacle_large.current.stop();
+        if (score.current >= 0) {
+          animation.current.stop();
+          obstacle_large.current.stop();
+        }
+
+        if (score.current >= 1) {
+          obstacle_0.current.stop();
+        }
+        if (score.current >=2) {
+          obstacle_1.current.stop();
+        }
 
       }
 
