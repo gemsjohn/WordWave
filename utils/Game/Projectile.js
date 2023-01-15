@@ -30,62 +30,56 @@ import {
 
 
 export const Projectile = () => {
-  // Letter
-  // const letterRef = useRef(null);
-  const [letter, setLetter] = useState('');
+  // [USE CONTEXT API] - - - - - 
+  const { sharedState, setSharedState } = useContext(SharedStateContext);
+
+  // [WORDS AND LETTERS] - - - - - 
+  const [randomWord, setRandomWord] = useState('')
+  const [prevWrongElements, setPrevWrongElements] = useState(0);
   const [letterPocket, setLetterPocket] = useState([]);
   const [displayLetters, setDisplayLetters] = useState([])
-  const count = new Animated.Value(0);
-
-  // Letter Array
-  const [randomWord, setRandomWord] = useState('')
-  const wordPlusSeven = useRef([])
-  const [prevWrongElements, setPrevWrongElements] = useState(0);
-
-  // Letter Position
-  const animation = useRef(null)
-  const position = useRef(new Animated.Value(1000)).current;
-  const [yPos, setYPos] = useState(0);
-
-  // Obstacle Position
-  let timeoutId_0;
-  let timeoutId_1;
-  let timeoutId_large;
-
-
-  const obstacle_0 = useRef(null)
-  const hasUpdatedObstacle_0 = useRef(false);
-  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-
-  const obstacle_1 = useRef(null)
-  const hasUpdatedObstacle_1 = useRef(false);
-  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-
-  const obstacle_large = useRef(null)
-  const hasUpdatedObstacle_large = useRef(false);
-  const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-
-  // Game Logic
-  const crashes = useRef(0);
-  const prevCrashes = useRef(0);
+  
+  // [GAME LOGIC] - - - - - 
   const isGameInProgress = useRef(false);
-
-  const score = useRef(0);
-  const hasUpdatedLetterBlock = useRef(false);
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
+  const crashes = useRef(0);
+  const prevCrashes = useRef(0);
+  const score = useRef(0);
+  const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
+  let timeoutCallGenerateID;
 
-  // Auxilliary
+  // [LETTER ANIMATION] - - - - - 
+  const hasUpdatedLetterBlock = useRef(false);
+  const [yPos, setYPos] = useState(0);
+  const [letter, setLetter] = useState('');
+  const position = useRef(new Animated.Value(1000)).current;
+  const animation = useRef(null)
+  const count = new Animated.Value(0);
+  const wordPlusSeven = useRef([])
   let timeoutId_a;
-  let timeoutId_b;
-  const [modalVisible, setModalVisible] = useState(false);
 
-  // useContext API
-  const { sharedState, setSharedState } = useContext(SharedStateContext);
+  // [OBSTACLE ANIMATION 0] - - - - - 
+  const hasUpdatedObstacle_0 = useRef(false);
+  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const obstacle_0 = useRef(null)
+  let timeoutId_0;
 
-  // In Test
-  const placeholderPosition = useRef(new Animated.ValueXY({ x: 400, y: 0 })).current;
+  // [OBSTACLE ANIMATION 1] - - - - - 
+  const hasUpdatedObstacle_1 = useRef(false);
+  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const obstacle_1 = useRef(null)
+  let timeoutId_1;
+
+  // [OBSTACLE ANIMATION LARGE] - - - - - 
+  const hasUpdatedObstacle_large = useRef(false);
+  const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const obstacle_large = useRef(null)
+  let timeoutId_large;
+
+  // [TESTING]
+
 
 
   useLayoutEffect(() => {
@@ -106,12 +100,12 @@ export const Projectile = () => {
     };
   }, []);
 
-  const Generate = (prevC) => {
+  const Generate = (localPrevCrashes) => {
     console.log("#1: Start Generate")
     setContinuousEndGameCall(false)
-    clearTimeout(timeoutId_b);
-    if (prevC > 0) {
-      crashes.current = prevC;
+    clearTimeout(timeoutCallGenerateID);
+    if (localPrevCrashes > 0) {
+      crashes.current = localPrevCrashes;
     } else {
       crashes.current = 0;
     }
@@ -324,28 +318,6 @@ export const Projectile = () => {
   };
 
 
-  //   useEffect(() => {
-  //     const intervalId = setInterval(() => {
-  //         // console.log("alt: " + sharedState.current.s0a_x)
-  //         let obj1 = {
-  //           x: sharedState.current.s0a_x,
-  //           y: sharedState.current.s0a_y,
-  //           radius: sharedState.current.s0a_Width/2,
-  //           width: sharedState.current.s0a_Width,
-  //           height: sharedState.current.s0a_Height
-  //         }
-
-  //         if (obj1.x != null && obj1.x != 0) {
-  //           console.log(obj1)
-  //         }
-  //     }, 1);
-  //     return () => clearInterval(intervalId);
-  // }, []);
-
-
-
-
-
   const [obj1, setObj1] = useState({
     x: 0,
     y: 0,
@@ -398,6 +370,7 @@ export const Projectile = () => {
         height: sharedState.current.charHeight / 2,
         radius: sharedState.current.charHeight / 2,
       });
+
       // Special Defense 0 Update
       if (prevRetainSpecialDefense_0x.current === 0 && sharedState.current.specialActive_0) {
         setSpecialDefense_0({
@@ -494,7 +467,6 @@ export const Projectile = () => {
   }, [])
 
   useLayoutEffect(() => {
-    // console.log(specialDefense_0a)
     const wordBlockListener = position.addListener((value) => {
       let obj2 = { x: value.value, y: yPos - WidthRatio(12), width: WidthRatio(24), height: WidthRatio(24) }
 
@@ -506,8 +478,9 @@ export const Projectile = () => {
       }
     });
 
+    // Obstacle 0
     const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
 
       if (isObstacleColliding_0(obj1, obj2)) {
         if (!hasUpdatedObstacle_0.current) {
@@ -516,10 +489,39 @@ export const Projectile = () => {
         }
         obstacle_0.current.reset()
       }
+
+      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
+        if (!hasUpdatedObstacle_0.current) {
+          hasUpdatedObstacle_0.current = true;
+        }
+        obstacle_0.current.reset()
+      }
+
+      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
+        if (!hasUpdatedObstacle_0.current) {
+          hasUpdatedObstacle_0.current = true;
+        }
+        obstacle_0.current.reset()
+      }
+
+      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
+        if (!hasUpdatedObstacle_0.current) {
+          hasUpdatedObstacle_0.current = true;
+        }
+        obstacle_0.current.reset()
+      }
+
+      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
+        if (!hasUpdatedObstacle_0.current) {
+          hasUpdatedObstacle_0.current = true;
+        }
+        obstacle_0.current.reset()
+      }
     });
 
+    // Obstacle 1
     const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
 
       if (isObstacleColliding_1(obj1, obj2)) {
         if (!hasUpdatedObstacle_1.current) {
@@ -528,8 +530,37 @@ export const Projectile = () => {
         }
         obstacle_1.current.reset()
       }
+
+      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
+        if (!hasUpdatedObstacle_1.current) {
+          hasUpdatedObstacle_1.current = true;
+        }
+        obstacle_1.current.reset()
+      }
+
+      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
+        if (!hasUpdatedObstacle_1.current) {
+          hasUpdatedObstacle_1.current = true;
+        }
+        obstacle_1.current.reset()
+      }
+
+      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
+        if (!hasUpdatedObstacle_1.current) {
+          hasUpdatedObstacle_1.current = true;
+        }
+        obstacle_1.current.reset()
+      }
+
+      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
+        if (!hasUpdatedObstacle_1.current) {
+          hasUpdatedObstacle_1.current = true;
+        }
+        obstacle_1.current.reset()
+      }
     });
 
+    // Obstacle Large
     const obstacleListener_large = obstaclePosition_large.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12), height: WidthRatio(24), width: WidthRatio(24) }
 
@@ -622,48 +653,35 @@ export const Projectile = () => {
   }
 
   const endGame = (input) => {
-    console.log("COMPLETE")
-    console.log(input)
+    // console.log("COMPLETE")
+    // console.log(input)
     setContinuousEndGameCall(true)
-    // Stop Game
     isGameInProgress.current = false;
     if (input.local != "c") {
       if (score.current >= 0) {
         animation.current.stop();
         obstacle_large.current.stop();
       }
-
-      if (score.current >= 1) {
-        obstacle_0.current.stop();
-      }
-      if (score.current >= 2) {
-        obstacle_1.current.stop();
-      }
-
+      if (score.current >= 1) { obstacle_0.current.stop(); }
+      if (score.current >= 2) { obstacle_1.current.stop(); }
     }
 
-    // Clear Letters
+    // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
+    // - Letters
     setLetter('');
     setLetterPocket([]);
     setDisplayLetters([]);
-    count.setValue(0)
-
-    // Clear Word
-    setRandomWord('');
-    wordPlusSeven.current = [];
-
-    // Clear Letter Position
     position.setValue(1000);
     setYPos(0)
-
-    // Clear Obstacle's
-
+    // -Word
+    setRandomWord('');
+    wordPlusSeven.current = [];
+    // - Obstacles
     obstaclePosition_0.setValue({ x: 1000, y: 0 })
     obstaclePosition_1.setValue({ x: 1000, y: 0 })
     obstaclePosition_large.setValue({ x: 1000, y: 0 })
-
-
-    // Clear Game Logic
+    // - Game Logic
+    count.setValue(0)
     crashes.current = 0;
     prevCrashes.current = 0
     score.current = 0;
@@ -672,15 +690,12 @@ export const Projectile = () => {
     hasUpdatedObstacle_1.current = false;
     hasUpdatedObstacle_large.current = false;
 
-
-
-
+    // [HANDLE GAME RESTART]
     if (input.continue) {
       setHasGameBeenStarted(false);
       let localScore = input.score + 1;
-      console.log("LOCAL:   " + localScore)
       score.current = localScore;
-      timeoutId_b = setTimeout(() => {
+      timeoutCallGenerateID = setTimeout(() => {
         Generate(input.crashes)
       }, 500)
 
@@ -689,14 +704,12 @@ export const Projectile = () => {
       if (input.local == "b") {
         setTimeout(() => {
           setHasGameBeenStarted(false);
-          setModalVisible(true)
+          setGameOverModalVisible(true)
         }, 100);
       } else if (input.local == "c") {
         setHasGameBeenStarted(false);
       }
     }
-
-
   }
 
 
@@ -706,7 +719,12 @@ export const Projectile = () => {
         {displayPlaybutton ?
           <TouchableOpacity
             onPress={() => { Generate() }}
-            style={{ position: 'absolute', left: windowWidth / 2 - 125, top: windowHeight / 2 - 125, zIndex: -5 }}
+            style={{ 
+              position: 'absolute', 
+              left: windowWidth / 2 - 125, 
+              top: windowHeight / 2 - 125, 
+              zIndex: -5 
+            }}
           >
             <Image
               source={require('../../assets/button_play.png')}
@@ -716,12 +734,34 @@ export const Projectile = () => {
           :
           <>
             {score.current > 0 ?
-              <View style={{ position: 'absolute', top: windowHeight / 1.35, left: WidthRatio(0), zIndex: -7, padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
-                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: HeightRatio(50), fontWeight: 'bold' }}>Score: {score.current}</Text>
+              <View style={{ 
+                position: 'absolute', 
+                top: windowHeight / 1.35, 
+                left: WidthRatio(0), 
+                zIndex: -7, padding: 
+                HeightRatio(20), 
+                borderRadius: HeightRatio(20) 
+              }}>
+                <Text style={{ 
+                  color: 'rgba(255, 255, 255, 0.5)', 
+                  fontSize: HeightRatio(50), 
+                  fontWeight: 'bold' 
+                }}>Score: {score.current}</Text>
               </View>
               :
-              <View style={{ position: 'absolute', top: windowHeight / 1.35, left: WidthRatio(0), zIndex: -7, padding: HeightRatio(20), borderRadius: HeightRatio(20) }}>
-                <Text style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: HeightRatio(50), fontWeight: 'bold' }}>Score: 0</Text>
+              <View style={{ 
+                position: 'absolute', 
+                top: windowHeight / 1.35, 
+                left: WidthRatio(0), 
+                zIndex: -7, 
+                padding: HeightRatio(20), 
+                borderRadius: HeightRatio(20) 
+              }}>
+                <Text style={{ 
+                  color: 'rgba(255, 255, 255, 0.5)', 
+                  fontSize: HeightRatio(50), 
+                  fontWeight: 'bold' 
+                }}>Score: 0</Text>
               </View>
             }
           </>
@@ -732,7 +772,6 @@ export const Projectile = () => {
           style={[
             Styling.projectile_word_block,
             {
-              // transform: [{ translateX: position }, { translateY: yPos + yCalibrated }],
               transform: [
                 { translateX: position },
                 { translateY: yPos }
@@ -744,7 +783,9 @@ export const Projectile = () => {
           <Text style={Styling.projectile_letter}>
             {letter.toUpperCase()}
           </Text>
-          <Image source={require('../../assets/block_keyboard_key.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+          <Image 
+            source={require('../../assets/block_keyboard_key.png')} 
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
 
         </Animated.View>
 
@@ -757,7 +798,9 @@ export const Projectile = () => {
             },
           ]}
         >
-          <Image source={require('../../assets/projectile_fire_ball_1.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
+          <Image 
+            source={require('../../assets/projectile_fire_ball_1.png')} 
+            style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
         <Animated.View
@@ -768,7 +811,9 @@ export const Projectile = () => {
             },
           ]}
         >
-          <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
+          <Image 
+            source={require('../../assets/projectile_fire_ball.png')} 
+            style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
         <Animated.View
@@ -779,7 +824,9 @@ export const Projectile = () => {
             },
           ]}
         >
-          <Image source={require('../../assets/projectile_fire_ball.png')} style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+          <Image 
+            source={require('../../assets/projectile_fire_ball.png')} 
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
         {/* CHARACTER GUIDELINES */}
@@ -843,9 +890,9 @@ export const Projectile = () => {
         <Modal
           animationType="slide"
           transparent={true}
-          visible={modalVisible}
+          visible={gameOverModalVisible}
           onRequestClose={() => {
-            setModalVisible(!modalVisible);
+            setGameOverModalVisible(!gameOverModalVisible);
             isGameInProgress.current = false;
           }}
         >
@@ -859,7 +906,7 @@ export const Projectile = () => {
               </View>
               <TouchableOpacity
                 style={[Styling.modal_button]}
-                onPress={() => { setModalVisible(!modalVisible); setDisplayPlaybutton(true); }}
+                onPress={() => { setGameOverModalVisible(!gameOverModalVisible); setDisplayPlaybutton(true); }}
               >
                 <Text style={Styling.modal_text_style}>Close</Text>
               </TouchableOpacity>
