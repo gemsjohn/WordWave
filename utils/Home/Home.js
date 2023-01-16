@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
+import { CountdownTimer } from '../Game/CountdownTimer';
 
 export const Home = (props) => {
     return (
@@ -23,8 +24,7 @@ export const Home = (props) => {
           {/* BODY */}
           <SafeAreaView style={Styling.container}>
             <ScrollView style={Styling.scrollView}>
-              
-              
+
             </ScrollView>
           </SafeAreaView>
           

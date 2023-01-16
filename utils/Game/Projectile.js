@@ -158,10 +158,12 @@ export const Projectile = () => {
           if (score.current >= 0) {
             letterAnimation();
             runObstacleAnimation_large();
+            runUpgradeToSpecial_0();
+
           }
           if (score.current >= 1) {
             runObstacleAnimation_0();
-            runUpgradeToSpecial_0();
+            // runUpgradeToSpecial_0();
           }
           if (score.current >= 2) {
             runObstacleAnimation_1();
@@ -729,8 +731,9 @@ export const Projectile = () => {
       if (score.current >= 0) {
         animation.current.stop();
         obstacle_large.current.stop();
+        upgradeToSpecial_0.current.stop();
       }
-      if (score.current >= 1) { obstacle_0.current.stop(); upgradeToSpecial_0.current.stop(); }
+      if (score.current >= 1) { obstacle_0.current.stop(); }
       if (score.current >= 2) { obstacle_1.current.stop(); }
     }
 

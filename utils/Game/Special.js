@@ -2,8 +2,11 @@ import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
 import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3 } from './CollisionHandler';
 import { SharedStateContext } from './Game';
+import { CountdownTimer } from './CountdownTimer';
+import moment  from 'moment';
 import {
     View,
+    Text
 } from 'react-native';
 
 export const Special = (props) => {
@@ -30,6 +33,11 @@ export const Special = (props) => {
     const specialPosition_3 = useRef({ x: 0, y: HeightRatio(500) });
     const [specialColorPositionTimer_3, setSpecialColorPositionTimer_3] = useState(null);
     const retainSpecial_3 = useRef(false);
+
+    const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
+
+    
+
 
     const [obj1, setObj1] = useState({
         x: 0,
@@ -74,6 +82,9 @@ export const Special = (props) => {
         // Special _ 0
         if (isSpecialColliding_0(obj1, special_0)) {
             setSpecialColor_0('rgba(255, 255, 255, 0.25)')
+            setInterval(() => {
+                setCurrentTime(moment().format('HH:mm:ss'));
+            }, 1000);
             if (specialColorPositionTimer_0) {
                 clearTimeout(specialColorPositionTimer_0);
             }
@@ -316,27 +327,35 @@ export const Special = (props) => {
         }
     }, [obj1]);
 
+    useEffect(() => {
+        console.log(currentTime)
+    }, [currentTime])
+
     const data = [
         { 
-            id: 0,
+            id_0: "0_0",
+            id_1: "0_1",
             select: retainSpecial_0.current, 
             backgroundColor: specialColor_0, 
             top: HeightRatio(125)
         },
         { 
-            id: 1,
+            id_0: "1_0",
+            id_1: "1_1",
             select: retainSpecial_1.current, 
             backgroundColor: specialColor_1, 
             top: HeightRatio(245) 
         },
         { 
-            id: 2,
+            id_0: "2_0",
+            id_1: "2_1",
             select: retainSpecial_2.current, 
             backgroundColor: specialColor_2, 
             top: HeightRatio(365) 
         },
         { 
-            id: 3,
+            id_0: "3_0",
+            id_1: "3_1",
             select: retainSpecial_3.current, 
             backgroundColor: specialColor_3, 
             top: HeightRatio(485) 
@@ -350,7 +369,7 @@ export const Special = (props) => {
                     <>
                         {item.select ?
                             <View
-                                key={item.id}
+                                key={item.id_1}
                                 style={[
                                     Styling.special_block,
                                     {
@@ -365,10 +384,11 @@ export const Special = (props) => {
                                     }
                                 ]}
                             >
+                                {/* <CountdownTimer /> */}
                             </View>
                             :
                             <View
-                                key={item.id}
+                                key={item.id_0}
                                 style={[
                                     Styling.special_block,
                                     {
