@@ -13,7 +13,7 @@ import { useMemo } from 'react/cjs/react.development';
 export const Special = (props) => {
     const isGameInProgress = useRef(false);
     const { sharedState, setSharedState } = useContext(SharedStateContext);
-
+    const defenseTimeMaximum = 2;
     // [SPECIALS]
     // Special 0
     const [specialColor_0, setSpecialColor_0] = useState('transparent')
@@ -23,7 +23,7 @@ export const Special = (props) => {
     // Special 0 - Timing
     const [startDefenseTimer_0, setStartDefenseTimer_0] = useState(false);
     const intervalDefenseTimerID_0 = useRef(null);
-    const countRefDefenseTimer_0 = useRef(10); // Initial value of 10
+    const countRefDefenseTimer_0 = useRef(defenseTimeMaximum); // Initial value of 10
     const [startCooldownTimer, setStartCooldownTimer] = useState(false);
     const intervalCooldownId = useRef(null);
 
@@ -35,7 +35,7 @@ export const Special = (props) => {
     // Special 1 - Timing
     const [startDefenseTimer_1, setStartDefenseTimer_1] = useState(false);
     const intervalDefenseTimerID_1 = useRef(null);
-    const countRefDefenseTimer_1 = useRef(10); // Initial value of 10
+    const countRefDefenseTimer_1 = useRef(defenseTimeMaximum); // Initial value of defenseTimeMaximum
 
     // Special 2
     const [specialColor_2, setSpecialColor_2] = useState('transparent')
@@ -45,7 +45,7 @@ export const Special = (props) => {
     // Special 2 - Timing
     const [startDefenseTimer_2, setStartDefenseTimer_2] = useState(false);
     const intervalDefenseTimerID_2 = useRef(null);
-    const countRefDefenseTimer_2 = useRef(10); // Initial value of 10
+    const countRefDefenseTimer_2 = useRef(defenseTimeMaximum); // Initial value of defenseTimeMaximum
 
     // Special 3
     const [specialColor_3, setSpecialColor_3] = useState('transparent')
@@ -55,7 +55,7 @@ export const Special = (props) => {
     // Special 3 - Timing
     const [startDefenseTimer_3, setStartDefenseTimer_3] = useState(false);
     const intervalDefenseTimerID_3 = useRef(null);
-    const countRefDefenseTimer_3 = useRef(10); // Initial value of 10
+    const countRefDefenseTimer_3 = useRef(defenseTimeMaximum); // Initial value of defenseTimeMaximum
     
 
     const areDefenseTimersAvailable = useRef({
@@ -76,6 +76,18 @@ export const Special = (props) => {
     });
 
     useEffect(() => {
+        console.log("Start !!!!!!")
+        countRefDefenseTimer_0.current = defenseTimeMaximum;
+        countRefDefenseTimer_1.current = defenseTimeMaximum;
+        countRefDefenseTimer_2.current = defenseTimeMaximum;
+        countRefDefenseTimer_3.current = defenseTimeMaximum;
+
+        areDefenseTimersAvailable.current._0 = true;
+        areDefenseTimersAvailable.current._1 = true; 
+        areDefenseTimersAvailable.current._2 = true; 
+        areDefenseTimersAvailable.current._3 = true; 
+        setSharedState({deployUpgradeToSpecialAnimation: false})
+
         // This function will be called on every animation frame
         const update = () => {
             setObj1({
@@ -397,7 +409,7 @@ export const Special = (props) => {
             return;
         } else {
             intervalDefenseTimerID_0.current = setInterval(() => {
-                console.log(countRefDefenseTimer_0.current);
+                // console.log(countRefDefenseTimer_0.current);
                 if (countRefDefenseTimer_0.current > 0) {
                     countRefDefenseTimer_0.current--;
                 } else {
@@ -420,7 +432,7 @@ export const Special = (props) => {
             return;
         } else {
             intervalDefenseTimerID_1.current = setInterval(() => {
-                console.log(countRefDefenseTimer_1.current);
+                // console.log(countRefDefenseTimer_1.current);
                 if (countRefDefenseTimer_1.current > 0) {
                     countRefDefenseTimer_1.current--;
                 } else {
@@ -444,7 +456,7 @@ export const Special = (props) => {
             return;
         } else {
             intervalDefenseTimerID_2.current = setInterval(() => {
-                console.log(countRefDefenseTimer_2.current);
+                // console.log(countRefDefenseTimer_2.current);
                 if (countRefDefenseTimer_2.current > 0) {
                     countRefDefenseTimer_2.current--;
                 } else {
@@ -468,7 +480,7 @@ export const Special = (props) => {
             return;
         } else {
             intervalDefenseTimerID_3.current = setInterval(() => {
-                console.log(countRefDefenseTimer_3.current);
+                // console.log(countRefDefenseTimer_3.current);
                 if (countRefDefenseTimer_3.current > 0) {
                     countRefDefenseTimer_3.current--;
                 } else {

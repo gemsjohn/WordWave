@@ -32,6 +32,7 @@ export const Game = (props) => {
   const sharedStateRef = useRef({});
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
+  const upgradeToSpecial_0 = useRef(null);
 
   setTimeout(() => {
     setLoadingComplete(true)
@@ -55,24 +56,27 @@ export const Game = (props) => {
     sharedStateRef.current = {...sharedStateRef.current, ...newState};
   };
 
-  const [count, setCount] = useState(15);
-  let intervalId;
-
   useEffect(() => {
     const intervalCheckUpgradeToSpecial_0 = setInterval(() => {
-      if (sharedStateRef.current.upgradeToSpecial_0) {
-        setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
-        clearInterval(intervalCheckUpgradeToSpecial_0);
-      }
+      console.log(sharedStateRef.current.upgradeToSpecial_0)
+      setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
+      // if (upgradeToSpecial_0.current != sharedStateRef.current.upgradeToSpecial_0) {
+      //   console.log("Hanlde Special Display")
+      //   setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
+      //   upgradeToSpecial_0.current = sharedStateRef.current.upgradeToSpecial_0;
+      // }
+      // if (sharedStateRef.current.upgradeToSpecial_0) {
+      //   setRetainUpgradeToSpecial_0(true);
+      //   // clearInterval(intervalCheckUpgradeToSpecial_0);
+      // } else {
+      //   setRetainUpgradeToSpecial_0(false);
+
+      // }
     }, 250)
 
     
   }, [])
 
-  // useEffect(() => {
-  //   let now = moment();
-  //   console.log(now)
-  // }, [retainUpgradeToSpecial_0])
 
   return (
     <>

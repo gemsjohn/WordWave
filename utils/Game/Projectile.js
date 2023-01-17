@@ -91,7 +91,7 @@ export const Projectile = () => {
   useLayoutEffect(() => {
     isGameInProgress.current = false;
     setSharedState({upgradeToSpecial_0: false})
-
+    setSharedState({deployUpgradeToSpecialAnimation: false})
   }, [])
 
   useEffect(() => {
@@ -409,6 +409,7 @@ export const Projectile = () => {
   const prevRetainSpecialDefense_1x = useRef(specialDefense_1.x);
   const prevRetainSpecialDefense_2x = useRef(specialDefense_2.x);
   const prevRetainSpecialDefense_3x = useRef(specialDefense_3.x);
+  const deployUpgradeToSpecialAnimation = useRef(null);
 
   useEffect(() => {
     let localSpecialDefense_0x;
@@ -425,7 +426,21 @@ export const Projectile = () => {
         height: sharedState.current.charHeight / 2,
         radius: sharedState.current.charHeight / 2,
       });
-      console.log("Deploy? " + sharedState.current.deployUpgradeToSpecialAnimation)
+      
+      if (deployUpgradeToSpecialAnimation.current != sharedState.current.deployUpgradeToSpecialAnimation) {
+        deployUpgradeToSpecialAnimation.current = !deployUpgradeToSpecialAnimation.current
+        console.log("- - - - -  -")
+        console.log(sharedState.current.deployUpgradeToSpecialAnimation)
+        if (sharedState.current.deployUpgradeToSpecialAnimation) {
+          console.log("runUpgradeToSpecial_0 GO")
+          setSharedState({upgradeToSpecial_0: false})
+          retainUpgradeToSpecial_0.current = false;
+          runUpgradeToSpecial_0();
+        }
+      }
+  
+
+
       // Special Defense 0 Update
       if (prevRetainSpecialDefense_0x.current === 0 && sharedState.current.specialActive_0) {
         setSpecialDefense_0({
