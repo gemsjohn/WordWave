@@ -58,20 +58,13 @@ export const Game = (props) => {
 
   useEffect(() => {
     const intervalCheckUpgradeToSpecial_0 = setInterval(() => {
-      console.log(sharedStateRef.current.upgradeToSpecial_0)
       setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
       // if (upgradeToSpecial_0.current != sharedStateRef.current.upgradeToSpecial_0) {
       //   console.log("Hanlde Special Display")
       //   setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
       //   upgradeToSpecial_0.current = sharedStateRef.current.upgradeToSpecial_0;
       // }
-      // if (sharedStateRef.current.upgradeToSpecial_0) {
-      //   setRetainUpgradeToSpecial_0(true);
-      //   // clearInterval(intervalCheckUpgradeToSpecial_0);
-      // } else {
-      //   setRetainUpgradeToSpecial_0(false);
 
-      // }
     }, 250)
 
     

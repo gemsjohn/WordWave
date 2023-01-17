@@ -149,8 +149,8 @@ export const Projectile = () => {
     if (wordPlusSeven.current.length > 0) {
       console.log("#3 Word Plus 7 useEffect")
       isGameInProgress.current = true;
-      console.log("[STATUS - hasGameBeenStarted]  :: " + hasGameBeenStarted)
-      console.log("[STATUS - isGameInProgress.current]  :: " + isGameInProgress.current)
+      // console.log("[STATUS - hasGameBeenStarted]  :: " + hasGameBeenStarted)
+      // console.log("[STATUS - isGameInProgress.current]  :: " + isGameInProgress.current)
 
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
