@@ -36,11 +36,13 @@ export const Special = (props) => {
     const retainSpecial_3 = useRef(false);
 
     
-    const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
-    // const startTimer_0 = useRef(false);
+    
     const [startTimer_0, setStartTimer_0] = useState(false);
-    // const [count, setCount] = useState(15)
-
+    const intervalId = useRef(null);
+    const countRef = useRef(10); // Initial value of 10
+    const [startCooldownTimer_0, setStartCooldownTimer_0] = useState(false);
+    const intervalCooldownId = useRef(null);
+ 
     
 
 
@@ -87,7 +89,7 @@ export const Special = (props) => {
         let special_3 = { x: specialPosition_3.current.x, y: specialPosition_3.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
 
         // Special _ 0
-        if (isSpecialColliding_0(obj1, special_0)) {
+        if (isSpecialColliding_0(obj1, special_0) && !startCooldownTimer_0) {
             setSpecialColor_0('rgba(255, 255, 255, 0.25)')
             if (specialColorPositionTimer_0) {
                 clearTimeout(specialColorPositionTimer_0);
@@ -337,8 +339,7 @@ export const Special = (props) => {
         }
     }, [obj1]);
 
-    const intervalId = useRef(null);
-    const countRef = useRef(10); // Initial value of 10
+    
 
 
     useEffect(() => {
@@ -354,6 +355,8 @@ export const Special = (props) => {
                 } else {
                     clearInterval(intervalId.current);
                     countRef.current = 0;
+                    retainSpecial_0.current = false;
+                    setStartCooldownTimer_0(true)
                 }
             }, 1000);
         }
@@ -361,6 +364,28 @@ export const Special = (props) => {
         return () => clearInterval(intervalId.current);
 
     }, [startTimer_0])
+
+    useEffect(() => {
+        // intervalCooldownId
+        if (!startCooldownTimer_0) {
+            clearInterval(intervalCooldownId.current);
+            return;
+        } else {
+            intervalCooldownId.current = setInterval(() => {
+                console.log(countRef.current);
+                if (countRef.current < 10) {
+                    countRef.current++;
+                } else {
+                    clearInterval(intervalCooldownId.current);
+                    countRef.current = 10;
+                    // retainSpecial_0.current = false;
+                    setStartCooldownTimer_0(false)
+                }
+            }, 1000);
+        }
+
+        return () => clearInterval(intervalCooldownId.current);
+    }, [startCooldownTimer_0])
 
     const data = [
         { 
@@ -415,7 +440,13 @@ export const Special = (props) => {
                                     }
                                 ]}
                             >
-                                {/* <CountdownTimer /> */}
+                                <Text style={{
+                                    alignSelf: 'center',
+                                    fontSize: 20, 
+                                    fontWeight: 'bold', 
+                                    color: 'white'
+                                }}>{countRef.current}</Text>
+
                             </View>
                             :
                             <View
@@ -430,6 +461,12 @@ export const Special = (props) => {
                                     }
                                 ]}
                             >
+                                <Text style={{
+                                    alignSelf: 'center',
+                                    fontSize: 20, 
+                                    fontWeight: 'bold', 
+                                    color: 'white'
+                                }}>{countRef.current}</Text>
                             </View>
                         }
                     </>
@@ -440,7 +477,6 @@ export const Special = (props) => {
 
     return (
         <>
-        <Text style={{position: 'absolute', left: windowWidth/2, fontSize: 20, fontWeight: 'bold', color: 'white'}}>{countRef.current} Sec</Text>
         {/* <View style={{backgroundColor: 'red', position: 'absolute', zIndex: 10, left: 0, top: HeightRatio(125), height: 20, width: 20 }} /> */}
         <SpecialBlocks data={data} />
         </>
