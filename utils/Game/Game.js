@@ -69,10 +69,10 @@ export const Game = (props) => {
     
   }, [])
 
-  useEffect(() => {
-    let now = moment();
-    console.log(now)
-  }, [retainUpgradeToSpecial_0])
+  // useEffect(() => {
+  //   let now = moment();
+  //   console.log(now)
+  // }, [retainUpgradeToSpecial_0])
 
   return (
     <>

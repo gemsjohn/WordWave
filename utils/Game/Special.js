@@ -8,6 +8,7 @@ import {
     View,
     Text
 } from 'react-native';
+import { useMemo } from 'react/cjs/react.development';
 
 export const Special = (props) => {
     const isGameInProgress = useRef(false);
@@ -34,7 +35,11 @@ export const Special = (props) => {
     const [specialColorPositionTimer_3, setSpecialColorPositionTimer_3] = useState(null);
     const retainSpecial_3 = useRef(false);
 
+    
     const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
+    // const startTimer_0 = useRef(false);
+    const [startTimer_0, setStartTimer_0] = useState(false);
+    // const [count, setCount] = useState(15)
 
     
 
@@ -55,7 +60,7 @@ export const Special = (props) => {
                 width: sharedState.current.charWidth,
                 height: sharedState.current.charHeight/2
             });
-
+            
             requestAnimationFrame(update);
         };
 
@@ -66,6 +71,8 @@ export const Special = (props) => {
             // No need to do anything here
         };
     }, [])
+
+    
 
     const prevRetainSpecial_0 = useRef(retainSpecial_0.current);
     const prevRetainSpecial_1 = useRef(retainSpecial_1.current);
@@ -82,12 +89,12 @@ export const Special = (props) => {
         // Special _ 0
         if (isSpecialColliding_0(obj1, special_0)) {
             setSpecialColor_0('rgba(255, 255, 255, 0.25)')
-            setInterval(() => {
-                setCurrentTime(moment().format('HH:mm:ss'));
-            }, 1000);
             if (specialColorPositionTimer_0) {
                 clearTimeout(specialColorPositionTimer_0);
             }
+
+            setStartTimer_0(true);
+
             const timer = setTimeout(() => {
                 // setSharedState({...sharedState, specialActive: true });
                 setSharedState({
@@ -286,6 +293,9 @@ export const Special = (props) => {
           return;
         }
         if (!retainSpecial_0.current && !retainSpecial_1.current && !retainSpecial_2.current &&!retainSpecial_3.current) {
+            setStartTimer_0(false);
+
+
             setSharedState({
                 specialActive_0: false,
                 specialActive_1: false,
@@ -327,9 +337,30 @@ export const Special = (props) => {
         }
     }, [obj1]);
 
+    const intervalId = useRef(null);
+    const countRef = useRef(10); // Initial value of 10
+
+
     useEffect(() => {
-        console.log(currentTime)
-    }, [currentTime])
+        console.log(startTimer_0)
+        if (!startTimer_0) {
+            clearInterval(intervalId.current);
+            return;
+        } else {
+            intervalId.current = setInterval(() => {
+                console.log(countRef.current);
+                if (countRef.current > 0) {
+                    countRef.current--;
+                } else {
+                    clearInterval(intervalId.current);
+                    countRef.current = 0;
+                }
+            }, 1000);
+        }
+
+        return () => clearInterval(intervalId.current);
+
+    }, [startTimer_0])
 
     const data = [
         { 
@@ -409,6 +440,7 @@ export const Special = (props) => {
 
     return (
         <>
+        <Text style={{position: 'absolute', left: windowWidth/2, fontSize: 20, fontWeight: 'bold', color: 'white'}}>{countRef.current} Sec</Text>
         {/* <View style={{backgroundColor: 'red', position: 'absolute', zIndex: 10, left: 0, top: HeightRatio(125), height: 20, width: 20 }} /> */}
         <SpecialBlocks data={data} />
         </>
