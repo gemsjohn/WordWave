@@ -338,6 +338,7 @@ export const Projectile = () => {
   const runUpgradeToSpecial_0 = () => {
     // console.log("#7a Run Obstacle Animation")
     if (isGameInProgress.current && !retainUpgradeToSpecial_0.current) {
+      console.log("#0")
       hasUpdatedUpgradeToSpecial_0.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
@@ -364,10 +365,11 @@ export const Projectile = () => {
         }
         timeoutUpgradeToSpecial_0_ID = setTimeout(() => {
           // console.log("#7b Re-run")
-          runObstacleAnimation_large();
+          runUpgradeToSpecial_0();
         }, 200)
       });
     } else {
+      console.log("#1")
       return;
     }
   };

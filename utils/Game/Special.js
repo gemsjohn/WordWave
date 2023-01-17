@@ -37,10 +37,10 @@ export const Special = (props) => {
 
     
     
-    const [startTimer_0, setStartTimer_0] = useState(false);
+    const [startDefenseTimer, setStartDefenseTimer] = useState(false);
     const intervalId = useRef(null);
     const countRef = useRef(10); // Initial value of 10
-    const [startCooldownTimer_0, setStartCooldownTimer_0] = useState(false);
+    const [startCooldownTimer, setStartCooldownTimer] = useState(false);
     const intervalCooldownId = useRef(null);
  
     
@@ -89,13 +89,13 @@ export const Special = (props) => {
         let special_3 = { x: specialPosition_3.current.x, y: specialPosition_3.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
 
         // Special _ 0
-        if (isSpecialColliding_0(obj1, special_0) && !startCooldownTimer_0) {
+        if (isSpecialColliding_0(obj1, special_0)) {
             setSpecialColor_0('rgba(255, 255, 255, 0.25)')
             if (specialColorPositionTimer_0) {
                 clearTimeout(specialColorPositionTimer_0);
             }
-
-            setStartTimer_0(true);
+            if (countRef.current > 0) {setStartCooldownTimer(false)}
+            setStartDefenseTimer(true);
 
             const timer = setTimeout(() => {
                 // setSharedState({...sharedState, specialActive: true });
@@ -148,6 +148,10 @@ export const Special = (props) => {
             if (specialColorPositionTimer_1) {
                 clearTimeout(specialColorPositionTimer_1);
             }
+
+            if (countRef.current > 0) {setStartCooldownTimer(false)}
+            setStartDefenseTimer(true);
+
             const timer = setTimeout(() => {
                 setSharedState({
                     specialActive_0: false,
@@ -197,6 +201,10 @@ export const Special = (props) => {
             if (specialColorPositionTimer_2) {
                 clearTimeout(specialColorPositionTimer_2);
             }
+
+            if (countRef.current > 0) {setStartCooldownTimer(false)}
+            setStartDefenseTimer(true);
+
             const timer = setTimeout(() => {
                 setSharedState({
                     specialActive_0: false,
@@ -246,6 +254,10 @@ export const Special = (props) => {
             if (specialColorPositionTimer_3) {
                 clearTimeout(specialColorPositionTimer_3);
             }
+
+            if (countRef.current > 0) {setStartCooldownTimer(false)}
+            setStartDefenseTimer(true);
+
             const timer = setTimeout(() => {
                 setSharedState({
                     specialActive_0: false,
@@ -295,7 +307,8 @@ export const Special = (props) => {
           return;
         }
         if (!retainSpecial_0.current && !retainSpecial_1.current && !retainSpecial_2.current &&!retainSpecial_3.current) {
-            setStartTimer_0(false);
+            setStartDefenseTimer(false);
+            setStartCooldownTimer(true)
 
 
             setSharedState({
@@ -343,8 +356,8 @@ export const Special = (props) => {
 
 
     useEffect(() => {
-        console.log(startTimer_0)
-        if (!startTimer_0) {
+        console.log(startDefenseTimer)
+        if (!startDefenseTimer) {
             clearInterval(intervalId.current);
             return;
         } else {
@@ -354,38 +367,38 @@ export const Special = (props) => {
                     countRef.current--;
                 } else {
                     clearInterval(intervalId.current);
-                    countRef.current = 0;
                     retainSpecial_0.current = false;
-                    setStartCooldownTimer_0(true)
+                    retainSpecial_1.current = false;
+                    retainSpecial_2.current = false;
+                    retainSpecial_3.current = false;
+
+                    setStartCooldownTimer(true)
                 }
             }, 1000);
         }
 
         return () => clearInterval(intervalId.current);
 
-    }, [startTimer_0])
+    }, [startDefenseTimer])
 
     useEffect(() => {
-        // intervalCooldownId
-        if (!startCooldownTimer_0) {
+        if (!startCooldownTimer) {
             clearInterval(intervalCooldownId.current);
             return;
         } else {
             intervalCooldownId.current = setInterval(() => {
-                console.log(countRef.current);
                 if (countRef.current < 10) {
                     countRef.current++;
                 } else {
                     clearInterval(intervalCooldownId.current);
                     countRef.current = 10;
-                    // retainSpecial_0.current = false;
-                    setStartCooldownTimer_0(false)
+                    setStartCooldownTimer(false)
                 }
             }, 1000);
         }
 
         return () => clearInterval(intervalCooldownId.current);
-    }, [startCooldownTimer_0])
+    }, [startCooldownTimer])
 
     const data = [
         { 
