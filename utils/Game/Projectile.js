@@ -29,6 +29,8 @@ import {
 } from 'react-native';
 
 
+
+
 export const Projectile = () => {
   // [USE CONTEXT API] - - - - - 
   const { sharedState, setSharedState } = useContext(SharedStateContext);
@@ -74,6 +76,7 @@ export const Projectile = () => {
   // [OBSTACLE ANIMATION LARGE] - - - - - 
   const hasUpdatedObstacle_large = useRef(false);
   const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const obstacleRotation_large = useRef(new Animated.Value(0)).current;
   const obstacle_large = useRef(null)
   let timeoutObstacle_Large_ID;
 
@@ -85,7 +88,10 @@ export const Projectile = () => {
   const retainUpgradeToSpecial_0 = useRef(false);
 
   // [TESTING]
-
+  const boxInterpolation = obstacleRotation_large.interpolate({
+    inputRange: [0, 5000],
+    outputRange: ['360deg', '0deg']
+  });
 
 
   useLayoutEffect(() => {
@@ -306,6 +312,7 @@ export const Projectile = () => {
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
       obstaclePosition_large.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstacleRotation_large.setValue(0);
 
       obstacle_large.current = Animated.parallel([
         Animated.timing(obstaclePosition_large.x, {
@@ -318,6 +325,11 @@ export const Projectile = () => {
           duration: 5000,
           useNativeDriver: true,
         }),
+        Animated.timing(obstacleRotation_large, {
+          toValue: 5000,
+          duration: 5000,
+          useNativeDriver: true
+        })
 
       ]);
 
@@ -334,6 +346,10 @@ export const Projectile = () => {
       return;
     }
   };
+
+  
+  
+  
 
   const runUpgradeToSpecial_0 = () => {
     // console.log("#7a Run Obstacle Animation")
@@ -905,15 +921,18 @@ export const Projectile = () => {
         </Animated.View>
 
         <Animated.View
-          style={[
-            Styling.projectile_obstacle_block,
-            {
-              transform: [{ translateX: obstaclePosition_large.x }, { translateY: obstaclePosition_large.y }],
-            },
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_large.x }, 
+              { translateY: obstaclePosition_large.y },
+              { rotate: boxInterpolation } 
+            ],
+            
+          },
           ]}
         >
           <Image 
-            source={require('../../assets/projectile_fire_ball.png')} 
+            source={require('../../assets/projectile_asteroid_2.png')} 
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
@@ -927,7 +946,7 @@ export const Projectile = () => {
           ]}
         >
           <Image 
-            source={require('../../assets/upgrade_to_special_0.png')} 
+            source={require('../../assets/upgrade_to_special_0.png')}  ///upgrade_to_special_0.png
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
         {/* CHARACTER GUIDELINES */}
