@@ -338,7 +338,6 @@ export const Projectile = () => {
   const runUpgradeToSpecial_0 = () => {
     // console.log("#7a Run Obstacle Animation")
     if (isGameInProgress.current && !retainUpgradeToSpecial_0.current) {
-      console.log("#0")
       hasUpdatedUpgradeToSpecial_0.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
@@ -369,7 +368,6 @@ export const Projectile = () => {
         }, 200)
       });
     } else {
-      console.log("#1")
       return;
     }
   };
@@ -427,7 +425,7 @@ export const Projectile = () => {
         height: sharedState.current.charHeight / 2,
         radius: sharedState.current.charHeight / 2,
       });
-
+      console.log("Deploy? " + sharedState.current.deployUpgradeToSpecialAnimation)
       // Special Defense 0 Update
       if (prevRetainSpecialDefense_0x.current === 0 && sharedState.current.specialActive_0) {
         setSpecialDefense_0({

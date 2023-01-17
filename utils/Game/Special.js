@@ -14,34 +14,56 @@ export const Special = (props) => {
     const isGameInProgress = useRef(false);
     const { sharedState, setSharedState } = useContext(SharedStateContext);
 
-    // Specials
+    // [SPECIALS]
+    // Special 0
     const [specialColor_0, setSpecialColor_0] = useState('transparent')
     const specialPosition_0 = useRef({ x: 0, y: HeightRatio(140) });
     const [specialColorPositionTimer_0, setSpecialColorPositionTimer_0] = useState(null);
     const retainSpecial_0 = useRef(false);
+    // Special 0 - Timing
+    const [startDefenseTimer_0, setStartDefenseTimer_0] = useState(false);
+    const intervalDefenseTimerID_0 = useRef(null);
+    const countRefDefenseTimer_0 = useRef(10); // Initial value of 10
+    const [startCooldownTimer, setStartCooldownTimer] = useState(false);
+    const intervalCooldownId = useRef(null);
 
+    // Special 1
     const [specialColor_1, setSpecialColor_1] = useState('transparent')
     const specialPosition_1 = useRef({ x: 0, y: HeightRatio(260) });
     const [specialColorPositionTimer_1, setSpecialColorPositionTimer_1] = useState(null);
     const retainSpecial_1 = useRef(false);
+    // Special 1 - Timing
+    const [startDefenseTimer_1, setStartDefenseTimer_1] = useState(false);
+    const intervalDefenseTimerID_1 = useRef(null);
+    const countRefDefenseTimer_1 = useRef(10); // Initial value of 10
 
+    // Special 2
     const [specialColor_2, setSpecialColor_2] = useState('transparent')
     const specialPosition_2 = useRef({ x: 0, y: HeightRatio(380) });
     const [specialColorPositionTimer_2, setSpecialColorPositionTimer_2] = useState(null);
     const retainSpecial_2 = useRef(false);
+    // Special 2 - Timing
+    const [startDefenseTimer_2, setStartDefenseTimer_2] = useState(false);
+    const intervalDefenseTimerID_2 = useRef(null);
+    const countRefDefenseTimer_2 = useRef(10); // Initial value of 10
 
+    // Special 3
     const [specialColor_3, setSpecialColor_3] = useState('transparent')
     const specialPosition_3 = useRef({ x: 0, y: HeightRatio(500) });
     const [specialColorPositionTimer_3, setSpecialColorPositionTimer_3] = useState(null);
     const retainSpecial_3 = useRef(false);
+    // Special 3 - Timing
+    const [startDefenseTimer_3, setStartDefenseTimer_3] = useState(false);
+    const intervalDefenseTimerID_3 = useRef(null);
+    const countRefDefenseTimer_3 = useRef(10); // Initial value of 10
+    
 
-    
-    
-    const [startDefenseTimer, setStartDefenseTimer] = useState(false);
-    const intervalId = useRef(null);
-    const countRef = useRef(10); // Initial value of 10
-    const [startCooldownTimer, setStartCooldownTimer] = useState(false);
-    const intervalCooldownId = useRef(null);
+    const areDefenseTimersAvailable = useRef({
+        _0: true,
+        _1: true,
+        _2: true,
+        _3: true,
+    });
  
     
 
@@ -89,13 +111,16 @@ export const Special = (props) => {
         let special_3 = { x: specialPosition_3.current.x, y: specialPosition_3.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
 
         // Special _ 0
-        if (isSpecialColliding_0(obj1, special_0)) {
+        if (isSpecialColliding_0(obj1, special_0) && countRefDefenseTimer_0.current > 0) {
             setSpecialColor_0('rgba(255, 255, 255, 0.25)')
             if (specialColorPositionTimer_0) {
                 clearTimeout(specialColorPositionTimer_0);
             }
-            if (countRef.current > 0) {setStartCooldownTimer(false)}
-            setStartDefenseTimer(true);
+            // if (countRefDefenseTimer_0.current > 0) {setStartCooldownTimer(false)}
+            setStartDefenseTimer_0(true);
+            setStartDefenseTimer_1(false);
+            setStartDefenseTimer_2(false);
+            setStartDefenseTimer_3(false);
 
             const timer = setTimeout(() => {
                 // setSharedState({...sharedState, specialActive: true });
@@ -143,14 +168,17 @@ export const Special = (props) => {
         }
 
         // Special _ 1
-        if (isSpecialColliding_1(obj1, special_1)) {
+        if (isSpecialColliding_1(obj1, special_1) && countRefDefenseTimer_1.current > 0) {
             setSpecialColor_1('rgba(255, 255, 255, 0.25)')
             if (specialColorPositionTimer_1) {
                 clearTimeout(specialColorPositionTimer_1);
             }
 
-            if (countRef.current > 0) {setStartCooldownTimer(false)}
-            setStartDefenseTimer(true);
+            // if (countRefDefenseTimer_0.current > 0) {setStartCooldownTimer(false)}
+            setStartDefenseTimer_0(false);
+            setStartDefenseTimer_1(true);
+            setStartDefenseTimer_2(false);
+            setStartDefenseTimer_3(false);
 
             const timer = setTimeout(() => {
                 setSharedState({
@@ -196,14 +224,17 @@ export const Special = (props) => {
         }
 
         // // Special _ 2
-        if (isSpecialColliding_2(obj1, special_2)) {
+        if (isSpecialColliding_2(obj1, special_2) && countRefDefenseTimer_2.current > 0) {
             setSpecialColor_2('rgba(255, 255, 255, 0.25)')
             if (specialColorPositionTimer_2) {
                 clearTimeout(specialColorPositionTimer_2);
             }
 
-            if (countRef.current > 0) {setStartCooldownTimer(false)}
-            setStartDefenseTimer(true);
+            // if (countRefDefenseTimer_0.current > 0) {setStartCooldownTimer(false)}
+            setStartDefenseTimer_0(false);
+            setStartDefenseTimer_1(false);
+            setStartDefenseTimer_2(true);
+            setStartDefenseTimer_3(false);
 
             const timer = setTimeout(() => {
                 setSharedState({
@@ -249,14 +280,17 @@ export const Special = (props) => {
         }
 
         // // Special _ 3
-        if (isSpecialColliding_3(obj1, special_3)) {
+        if (isSpecialColliding_3(obj1, special_3) && countRefDefenseTimer_3.current > 0) {
             setSpecialColor_3('rgba(255, 255, 255, 0.25)')
             if (specialColorPositionTimer_3) {
                 clearTimeout(specialColorPositionTimer_3);
             }
 
-            if (countRef.current > 0) {setStartCooldownTimer(false)}
-            setStartDefenseTimer(true);
+            // if (countRefDefenseTimer_0.current > 0) {setStartCooldownTimer(false)}
+            setStartDefenseTimer_0(false);
+            setStartDefenseTimer_1(false);
+            setStartDefenseTimer_2(false);
+            setStartDefenseTimer_3(true);
 
             const timer = setTimeout(() => {
                 setSharedState({
@@ -307,8 +341,12 @@ export const Special = (props) => {
           return;
         }
         if (!retainSpecial_0.current && !retainSpecial_1.current && !retainSpecial_2.current &&!retainSpecial_3.current) {
-            setStartDefenseTimer(false);
-            setStartCooldownTimer(true)
+            setStartDefenseTimer_0(false);
+            setStartDefenseTimer_1(false);
+            setStartDefenseTimer_2(false);
+            setStartDefenseTimer_3(false);
+
+            // setStartCooldownTimer(true)
 
 
             setSharedState({
@@ -353,52 +391,138 @@ export const Special = (props) => {
     }, [obj1]);
 
     
-
-
     useEffect(() => {
-        console.log(startDefenseTimer)
-        if (!startDefenseTimer) {
-            clearInterval(intervalId.current);
+        if (!startDefenseTimer_0) {
+            clearInterval(intervalDefenseTimerID_0.current);
             return;
         } else {
-            intervalId.current = setInterval(() => {
-                console.log(countRef.current);
-                if (countRef.current > 0) {
-                    countRef.current--;
+            intervalDefenseTimerID_0.current = setInterval(() => {
+                console.log(countRefDefenseTimer_0.current);
+                if (countRefDefenseTimer_0.current > 0) {
+                    countRefDefenseTimer_0.current--;
                 } else {
-                    clearInterval(intervalId.current);
+                    clearInterval(intervalDefenseTimerID_0.current);
                     retainSpecial_0.current = false;
-                    retainSpecial_1.current = false;
-                    retainSpecial_2.current = false;
-                    retainSpecial_3.current = false;
-
-                    setStartCooldownTimer(true)
+                    areDefenseTimersAvailable.current._0 = false;
+                    // setStartCooldownTimer(true)
                 }
             }, 1000);
         }
 
-        return () => clearInterval(intervalId.current);
+        return () => clearInterval(intervalDefenseTimerID_0.current);
 
-    }, [startDefenseTimer])
+    }, [startDefenseTimer_0])
 
     useEffect(() => {
-        if (!startCooldownTimer) {
-            clearInterval(intervalCooldownId.current);
+
+        if (!startDefenseTimer_1) {
+            clearInterval(intervalDefenseTimerID_1.current);
             return;
         } else {
-            intervalCooldownId.current = setInterval(() => {
-                if (countRef.current < 10) {
-                    countRef.current++;
+            intervalDefenseTimerID_1.current = setInterval(() => {
+                console.log(countRefDefenseTimer_1.current);
+                if (countRefDefenseTimer_1.current > 0) {
+                    countRefDefenseTimer_1.current--;
                 } else {
-                    clearInterval(intervalCooldownId.current);
-                    countRef.current = 10;
-                    setStartCooldownTimer(false)
+                    clearInterval(intervalDefenseTimerID_1.current);
+                    retainSpecial_1.current = false;
+                    areDefenseTimersAvailable.current._1 = false;
+                    // setStartCooldownTimer(true)
                 }
             }, 1000);
         }
 
-        return () => clearInterval(intervalCooldownId.current);
-    }, [startCooldownTimer])
+        return () => {
+            clearInterval(intervalDefenseTimerID_1.current)
+        };
+
+    }, [startDefenseTimer_1])
+
+    useEffect(() => {
+        if (!startDefenseTimer_2) {
+            clearInterval(intervalDefenseTimerID_2.current);
+            return;
+        } else {
+            intervalDefenseTimerID_2.current = setInterval(() => {
+                console.log(countRefDefenseTimer_2.current);
+                if (countRefDefenseTimer_2.current > 0) {
+                    countRefDefenseTimer_2.current--;
+                } else {
+                    clearInterval(intervalDefenseTimerID_2.current);
+                    retainSpecial_2.current = false;
+                    areDefenseTimersAvailable.current._2 = false;
+                    // setStartCooldownTimer(true)
+                }
+            }, 1000);
+        }
+
+        return () => {
+            clearInterval(intervalDefenseTimerID_2.current)
+        };
+
+    }, [startDefenseTimer_2])
+
+    useEffect(() => {
+        if (!startDefenseTimer_3) {
+            clearInterval(intervalDefenseTimerID_3.current);
+            return;
+        } else {
+            intervalDefenseTimerID_3.current = setInterval(() => {
+                console.log(countRefDefenseTimer_3.current);
+                if (countRefDefenseTimer_3.current > 0) {
+                    countRefDefenseTimer_3.current--;
+                } else {
+                    clearInterval(intervalDefenseTimerID_3.current);
+                    retainSpecial_3.current = false;
+                    areDefenseTimersAvailable.current._3 = false;
+                    // setStartCooldownTimer(true)
+                }
+            }, 1000);
+        }
+
+        return () => {
+            clearInterval(intervalDefenseTimerID_3.current)
+        };
+
+    }, [startDefenseTimer_3])
+
+    useEffect(() => {
+        console.log(areDefenseTimersAvailable.current)
+        if (
+            !areDefenseTimersAvailable.current._0 &&
+            !areDefenseTimersAvailable.current._1 &&
+            !areDefenseTimersAvailable.current._2 &&
+            !areDefenseTimersAvailable.current._3
+        ) {
+            setSharedState({deployUpgradeToSpecialAnimation: true})
+        } else {
+            setSharedState({deployUpgradeToSpecialAnimation: false})
+        }
+    }, [
+        areDefenseTimersAvailable.current._0, 
+        areDefenseTimersAvailable.current._1, 
+        areDefenseTimersAvailable.current._2, 
+        areDefenseTimersAvailable.current._3
+    ])
+
+    // useEffect(() => {
+    //     if (!startCooldownTimer) {
+    //         clearInterval(intervalCooldownId.current);
+    //         return;
+    //     } else {
+    //         intervalCooldownId.current = setInterval(() => {
+    //             if (countRefDefenseTimer_0.current < 10) {
+    //                 countRefDefenseTimer_0.current++;
+    //             } else {
+    //                 clearInterval(intervalCooldownId.current);
+    //                 countRefDefenseTimer_0.current = 10;
+    //                 setStartCooldownTimer(false)
+    //             }
+    //         }, 1000);
+    //     }
+
+    //     return () => clearInterval(intervalCooldownId.current);
+    // }, [startCooldownTimer])
 
     const data = [
         { 
@@ -406,28 +530,33 @@ export const Special = (props) => {
             id_1: "0_1",
             select: retainSpecial_0.current, 
             backgroundColor: specialColor_0, 
-            top: HeightRatio(125)
+            top: HeightRatio(125),
+            timer: countRefDefenseTimer_0.current
         },
         { 
             id_0: "1_0",
             id_1: "1_1",
             select: retainSpecial_1.current, 
             backgroundColor: specialColor_1, 
-            top: HeightRatio(245) 
+            top: HeightRatio(245),
+            timer: countRefDefenseTimer_1.current
         },
         { 
             id_0: "2_0",
             id_1: "2_1",
             select: retainSpecial_2.current, 
             backgroundColor: specialColor_2, 
-            top: HeightRatio(365) 
+            top: HeightRatio(365),
+            timer: countRefDefenseTimer_2.current
+
         },
         { 
             id_0: "3_0",
             id_1: "3_1",
             select: retainSpecial_3.current, 
             backgroundColor: specialColor_3, 
-            top: HeightRatio(485) 
+            top: HeightRatio(485),
+            timer: countRefDefenseTimer_3.current
         },
     ]
 
@@ -458,29 +587,33 @@ export const Special = (props) => {
                                     fontSize: 20, 
                                     fontWeight: 'bold', 
                                     color: 'white'
-                                }}>{countRef.current}</Text>
+                                }}>{item.timer}</Text>
 
                             </View>
                             :
-                            <View
-                                key={item.id_0}
-                                style={[
-                                    Styling.special_block,
-                                    {
-                                        backgroundColor: item.backgroundColor,
-                                        height: sharedState.current.charWidth,
-                                        width: sharedState.current.charWidth,
-                                        top: item.top
-                                    }
-                                ]}
-                            >
-                                <Text style={{
-                                    alignSelf: 'center',
-                                    fontSize: 20, 
-                                    fontWeight: 'bold', 
-                                    color: 'white'
-                                }}>{countRef.current}</Text>
-                            </View>
+                            <>
+                            {item.timer > 0 &&
+                                <View
+                                    key={item.id_0}
+                                    style={[
+                                        Styling.special_block,
+                                        {
+                                            backgroundColor: item.backgroundColor,
+                                            height: sharedState.current.charWidth,
+                                            width: sharedState.current.charWidth,
+                                            top: item.top
+                                        }
+                                    ]}
+                                >
+                                    <Text style={{
+                                        alignSelf: 'center',
+                                        fontSize: 20, 
+                                        fontWeight: 'bold', 
+                                        color: 'white'
+                                    }}>{item.timer}</Text>
+                                </View>
+                            }
+                            </>
                         }
                     </>
                 ))}
