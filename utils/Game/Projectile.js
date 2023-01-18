@@ -25,7 +25,8 @@ import {
   Modal,
   Alert,
   StyleSheet,
-  TouchableOpacityBase
+  TouchableOpacityBase,
+  Easing
 } from 'react-native';
 
 
@@ -89,6 +90,13 @@ export const Projectile = () => {
   const obstacle_right_angle = useRef(null)
   let timeoutObstacle_right_angle_ID;
 
+  // [OBSTACLE ANIMATION OPACITY BOT] - - - - - 
+  const hasUpdatedObstacle_opacity_bot = useRef(false);
+  const obstaclePosition_opacity_bot = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstacleOpacity_opacity_bot = useRef(new Animated.Value(0)).current;
+  const obstacle_opacity_bot = useRef(null)
+  let timeoutObstacle_opacity_bot_ID;
+
   // [UPGRADE TO SPECIAL 0 ANIMATION] - - - - - 
   const hasUpdatedUpgradeToSpecial_0 = useRef(false);
   const upgradeToSpecial_0_Position = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
@@ -105,9 +113,9 @@ export const Projectile = () => {
     inputRange: [0, 5000],
     outputRange: ['360deg', '0deg']
   });
-  const boxInterpolation_large = obstacleRotation_large.interpolate({
-    inputRange: [0, 5000],
-    outputRange: ['360deg', '0deg']
+  const boxInterpolation_opacity_bot = obstacleOpacity_opacity_bot.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.0, 1.0]
   });
 
 
@@ -182,7 +190,9 @@ export const Projectile = () => {
           if (score.current >= 0) {
             letterAnimation();
             runObstacleAnimation_large();
-            runObstacleAnimation_right_angle();
+            // runObstacleAnimation_right_angle();
+            runObstacleAnimation_opacity_bot();
+
             runUpgradeToSpecial_0();
 
           }
@@ -417,6 +427,111 @@ export const Projectile = () => {
         timeoutObstacle_right_angle_ID = setTimeout(() => {
           // console.log("#7b Re-run")
           runObstacleAnimation_right_angle();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
+  const runObstacleAnimation_opacity_bot = () => {
+    // console.log("#7a Run Obstacle Animation")
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_opacity_bot.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+
+      obstaclePosition_opacity_bot.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstacleOpacity_opacity_bot.setValue(0);
+
+      obstacle_opacity_bot.current = Animated.parallel([
+        
+        
+        Animated.sequence([
+          Animated.timing(obstaclePosition_opacity_bot.x, {
+            toValue: WidthRatio(400),
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(obstaclePosition_opacity_bot.y, {
+            toValue: localYPos_1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(obstaclePosition_opacity_bot.x, {
+            toValue: WidthRatio(200),
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(obstaclePosition_opacity_bot.y, {
+            toValue: localYPos_0,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(obstaclePosition_opacity_bot.x, {
+            toValue: -WidthRatio(40),
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.sequence([
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 1,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 0,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 1,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 0,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 1,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+        ])
+        
+
+      ]);
+
+      obstacle_opacity_bot.current.start(() => {
+        if (timeoutObstacle_opacity_bot_ID) {
+          clearTimeout(timeoutObstacle_opacity_bot_ID);
+        }
+        timeoutObstacle_opacity_bot_ID = setTimeout(() => {
+          // console.log("#7b Re-run")
+          runObstacleAnimation_opacity_bot();
         }, 200)
       });
     } else {
@@ -1019,7 +1134,7 @@ export const Projectile = () => {
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
-        {/* obstaclePosition_right_angle */}
+        {/* Right Angle */}
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
@@ -1033,6 +1148,24 @@ export const Projectile = () => {
         >
           <Image 
             source={require('../../assets/projectile_red_ufo.png')} 
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+
+        {/* Opacity Bot */}
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_opacity_bot.x }, 
+              { translateY: obstaclePosition_opacity_bot.y }
+              // { rotate: boxInterpolation_opacity_bot } 
+            ],
+            opacity: boxInterpolation_opacity_bot,
+            
+          },
+          ]}
+        >
+          <Image 
+            source={require('../../assets/projectile_enemy_3.png')} 
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
