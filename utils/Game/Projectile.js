@@ -64,12 +64,14 @@ export const Projectile = () => {
   // [OBSTACLE ANIMATION 0] - - - - - 
   const hasUpdatedObstacle_0 = useRef(false);
   const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const obstacleRotation_0 = useRef(new Animated.Value(0)).current;
   const obstacle_0 = useRef(null)
   let timeoutObstacle_0_ID;
 
   // [OBSTACLE ANIMATION 1] - - - - - 
   const hasUpdatedObstacle_1 = useRef(false);
   const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const obstacleRotation_1 = useRef(new Animated.Value(0)).current;
   const obstacle_1 = useRef(null)
   let timeoutObstacle_1_ID;
 
@@ -88,10 +90,19 @@ export const Projectile = () => {
   const retainUpgradeToSpecial_0 = useRef(false);
 
   // [TESTING]
-  const boxInterpolation = obstacleRotation_large.interpolate({
+  const boxInterpolation_0 = obstacleRotation_0.interpolate({
     inputRange: [0, 5000],
     outputRange: ['360deg', '0deg']
   });
+  const boxInterpolation_1 = obstacleRotation_1.interpolate({
+    inputRange: [0, 5000],
+    outputRange: ['360deg', '0deg']
+  });
+  const boxInterpolation_large = obstacleRotation_large.interpolate({
+    inputRange: [0, 5000],
+    outputRange: ['360deg', '0deg']
+  });
+
 
 
   useLayoutEffect(() => {
@@ -194,12 +205,12 @@ export const Projectile = () => {
       animation.current = Animated.parallel([
         Animated.timing(letterPosition.x, {
           toValue: -WidthRatio(40),
-          duration: 4000,
+          duration: 3000,
           useNativeDriver: true,
         }),
         Animated.timing(letterPosition.y, {
           toValue: localYPos_0,
-          duration: 4000,
+          duration: 3000,
           useNativeDriver: true,
         })
       ]);
@@ -238,6 +249,7 @@ export const Projectile = () => {
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
       obstaclePosition_0.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstacleRotation_0.setValue(0);
 
       obstacle_0.current = Animated.parallel([
         Animated.timing(obstaclePosition_0.x, {
@@ -250,6 +262,11 @@ export const Projectile = () => {
           duration: 3000,
           useNativeDriver: true,
         }),
+        Animated.timing(obstacleRotation_0, {
+          toValue: 5000,
+          duration: 5000,
+          useNativeDriver: true
+        })
 
       ]);
 
@@ -275,6 +292,7 @@ export const Projectile = () => {
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
       obstaclePosition_1.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstacleRotation_1.setValue(0);
 
       obstacle_1.current = Animated.parallel([
         Animated.timing(obstaclePosition_1.x, {
@@ -287,6 +305,11 @@ export const Projectile = () => {
           duration: 2500,
           useNativeDriver: true,
         }),
+        Animated.timing(obstacleRotation_1, {
+          toValue: 5000,
+          duration: 5000,
+          useNativeDriver: true
+        })
 
       ]);
 
@@ -312,7 +335,7 @@ export const Projectile = () => {
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
       obstaclePosition_large.setValue({ x: WidthRatio(400), y: localYPos_0 });
-      obstacleRotation_large.setValue(0);
+      // obstacleRotation_large.setValue(0);
 
       obstacle_large.current = Animated.parallel([
         Animated.timing(obstaclePosition_large.x, {
@@ -325,11 +348,11 @@ export const Projectile = () => {
           duration: 5000,
           useNativeDriver: true,
         }),
-        Animated.timing(obstacleRotation_large, {
-          toValue: 5000,
-          duration: 5000,
-          useNativeDriver: true
-        })
+        // Animated.timing(obstacleRotation_large, {
+        //   toValue: 5000,
+        //   duration: 5000,
+        //   useNativeDriver: true
+        // })
 
       ]);
 
@@ -898,12 +921,15 @@ export const Projectile = () => {
           style={[
             Styling.projectile_obstacle_block,
             {
-              transform: [{ translateX: obstaclePosition_0.x }, { translateY: obstaclePosition_0.y }],
+              transform: [
+                { translateX: obstaclePosition_0.x }, 
+                { translateY: obstaclePosition_0.y },
+                { rotate: boxInterpolation_0 }],
             },
           ]}
         >
           <Image 
-            source={require('../../assets/projectile_fire_ball_1.png')} 
+            source={require('../../assets/projectile_asteroid_2.png')} 
             style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
@@ -911,12 +937,15 @@ export const Projectile = () => {
           style={[
             Styling.projectile_obstacle_block,
             {
-              transform: [{ translateX: obstaclePosition_1.x }, { translateY: obstaclePosition_1.y }],
+              transform: [
+                { translateX: obstaclePosition_1.x }, 
+                { translateY: obstaclePosition_1.y },
+                { rotate: boxInterpolation_1 }],
             },
           ]}
         >
           <Image 
-            source={require('../../assets/projectile_fire_ball.png')} 
+            source={require('../../assets/projectile_asteroid_2.png')} 
             style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
@@ -925,14 +954,14 @@ export const Projectile = () => {
             transform: [
               { translateX: obstaclePosition_large.x }, 
               { translateY: obstaclePosition_large.y },
-              { rotate: boxInterpolation } 
+              // { rotate: boxInterpolation_large } 
             ],
             
           },
           ]}
         >
           <Image 
-            source={require('../../assets/projectile_asteroid_2.png')} 
+            source={require('../../assets/projectile_enemy_2.png')} 
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
@@ -946,7 +975,7 @@ export const Projectile = () => {
           ]}
         >
           <Image 
-            source={require('../../assets/upgrade_to_special_0.png')}  ///upgrade_to_special_0.png
+            source={require('../../assets/upgrade_to_special_1.png')}  ///upgrade_to_special_0.png
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
         {/* CHARACTER GUIDELINES */}

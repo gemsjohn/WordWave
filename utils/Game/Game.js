@@ -82,7 +82,7 @@ export const Game = (props) => {
       {/* BODY */}
       <View style={{}}>
         <Image
-          source={require('../../assets/background_0.png')}
+          source={require('../../assets/background_4.png')}
           style={{ position: 'absolute', zIndex: -10, left: -10, top: -200 }}
         />
         {loadingComplete ?
