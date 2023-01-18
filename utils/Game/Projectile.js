@@ -82,6 +82,13 @@ export const Projectile = () => {
   const obstacle_large = useRef(null)
   let timeoutObstacle_Large_ID;
 
+  // [OBSTACLE ANIMATION RIGHT ANGLE] - - - - - 
+  const hasUpdatedObstacle_right_angle = useRef(false);
+  const obstaclePosition_right_angle = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstacleRotation_right_angle = useRef(new Animated.Value(0)).current;
+  const obstacle_right_angle = useRef(null)
+  let timeoutObstacle_right_angle_ID;
+
   // [UPGRADE TO SPECIAL 0 ANIMATION] - - - - - 
   const hasUpdatedUpgradeToSpecial_0 = useRef(false);
   const upgradeToSpecial_0_Position = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
@@ -175,6 +182,7 @@ export const Projectile = () => {
           if (score.current >= 0) {
             letterAnimation();
             runObstacleAnimation_large();
+            runObstacleAnimation_right_angle();
             runUpgradeToSpecial_0();
 
           }
@@ -205,12 +213,12 @@ export const Projectile = () => {
       animation.current = Animated.parallel([
         Animated.timing(letterPosition.x, {
           toValue: -WidthRatio(40),
-          duration: 3000,
+          duration: 5000,
           useNativeDriver: true,
         }),
         Animated.timing(letterPosition.y, {
           toValue: localYPos_0,
-          duration: 3000,
+          duration: 5000,
           useNativeDriver: true,
         })
       ]);
@@ -363,6 +371,52 @@ export const Projectile = () => {
         timeoutObstacle_Large_ID = setTimeout(() => {
           // console.log("#7b Re-run")
           runObstacleAnimation_large();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
+  const runObstacleAnimation_right_angle = () => {
+    // console.log("#7a Run Obstacle Animation")
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_right_angle.current = false;
+      let localXPos_0 = Math.floor(Math.random() * (WidthRatio(300) - WidthRatio(200))) + WidthRatio(200);
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+
+      obstaclePosition_right_angle.setValue({ x: localXPos_0, y: -HeightRatio(100) });
+      // obstacleRotation_right_angle.setValue(0);
+
+      obstacle_right_angle.current = Animated.sequence([
+        // Animated.timing(obstaclePosition_right_angle.y, {
+        //   toValue: localYPos_0,
+        //   duration: 800,
+        //   useNativeDriver: true,
+        // }),
+        Animated.spring(obstaclePosition_right_angle.y, {
+          toValue: localYPos_0,
+          useNativeDriver: true,
+          // friction: 3,
+          // tension: 40,
+          speed: 8,
+          bounciness: 8
+        }),
+        Animated.timing(obstaclePosition_right_angle.x, {
+          toValue: -WidthRatio(40),
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        
+      ]);
+
+      obstacle_right_angle.current.start(() => {
+        if (timeoutObstacle_right_angle_ID) {
+          clearTimeout(timeoutObstacle_right_angle_ID);
+        }
+        timeoutObstacle_right_angle_ID = setTimeout(() => {
+          // console.log("#7b Re-run")
+          runObstacleAnimation_right_angle();
         }, 200)
       });
     } else {
@@ -962,6 +1016,23 @@ export const Projectile = () => {
         >
           <Image 
             source={require('../../assets/projectile_enemy_2.png')} 
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+
+        {/* obstaclePosition_right_angle */}
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_right_angle.x }, 
+              { translateY: obstaclePosition_right_angle.y },
+              // { rotate: boxInterpolation_large } 
+            ],
+            
+          },
+          ]}
+        >
+          <Image 
+            source={require('../../assets/projectile_red_ufo.png')} 
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
