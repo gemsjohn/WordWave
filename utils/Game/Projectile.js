@@ -97,6 +97,13 @@ export const Projectile = () => {
   const obstacle_opacity_bot = useRef(null)
   let timeoutObstacle_opacity_bot_ID;
 
+  // [OBSTACLE ANIMATION TWINS] - - - - - 
+  const hasUpdatedObstacle_twins = useRef(false);
+  const obstaclePosition_twins = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstacleOpacity_twins = useRef(new Animated.Value(0)).current;
+  const obstacle_twins = useRef(null)
+  let timeoutObstacle_twins_ID;
+
   // [UPGRADE TO SPECIAL 0 ANIMATION] - - - - - 
   const hasUpdatedUpgradeToSpecial_0 = useRef(false);
   const upgradeToSpecial_0_Position = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
@@ -117,6 +124,15 @@ export const Projectile = () => {
     inputRange: [0, 1],
     outputRange: [0.0, 1.0]
   });
+  const boxInterpolation_twins_a = obstacleOpacity_twins.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.5, 1.0]
+  });
+  const boxInterpolation_twins_b = obstacleOpacity_twins.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1.0, 0.5]
+  });
+  
 
 
 
@@ -191,7 +207,9 @@ export const Projectile = () => {
             letterAnimation();
             runObstacleAnimation_large();
             // runObstacleAnimation_right_angle();
-            runObstacleAnimation_opacity_bot();
+            // runObstacleAnimation_opacity_bot();
+            runObstacleAnimation_twins();
+
 
             runUpgradeToSpecial_0();
 
@@ -532,6 +550,82 @@ export const Projectile = () => {
         timeoutObstacle_opacity_bot_ID = setTimeout(() => {
           // console.log("#7b Re-run")
           runObstacleAnimation_opacity_bot();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
+  const runObstacleAnimation_twins = () => {
+    // console.log("#7a Run Obstacle Animation")
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_twins.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+
+      obstaclePosition_twins.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      // obstacleRotation_twins.setValue(0);
+
+      obstacle_twins.current = Animated.parallel([
+        Animated.timing(obstaclePosition_twins.x, {
+          toValue: -WidthRatio(40),
+          duration: 10000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstaclePosition_twins.y, {
+          toValue: localYPos_1,
+          duration: 10000,
+          useNativeDriver: true,
+        }),
+        Animated.sequence([
+          Animated.timing(obstacleOpacity_twins, {
+            toValue: 1,
+            duration: 2500,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_twins, {
+            toValue: 0.5,
+            duration: 2500,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_twins, {
+            toValue: 1,
+            duration: 2500,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_twins, {
+            toValue: 0.5,
+            duration: 2500,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+        ])
+
+      ]);
+
+      obstacle_twins.current.start(() => {
+        if (timeoutObstacle_twins_ID) {
+          clearTimeout(timeoutObstacle_twins_ID);
+        }
+        timeoutObstacle_twins_ID = setTimeout(() => {
+          // console.log("#7b Re-run")
+          runObstacleAnimation_twins();
         }, 200)
       });
     } else {
@@ -1153,7 +1247,7 @@ export const Projectile = () => {
 
         {/* Opacity Bot */}
         {/* - - - - - - - - - - */}
-          <Animated.View
+          {/* <Animated.View
             style={[Styling.projectile_obstacle_block, {
               transform: [
                 { translateX: obstaclePosition_opacity_bot.x }, 
@@ -1184,8 +1278,45 @@ export const Projectile = () => {
             <Image 
               source={require('../../assets/projectile_enemy_3.png')} 
               style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+          </Animated.View> */}
+        {/* - - - - - - - - - - */}
+
+        {/* Twins */}
+        {/* - - - - - - - - - - */}
+        {/* - - - - - - - - - - */}
+          <Animated.View
+            style={[Styling.projectile_obstacle_block, {
+              transform: [
+                { translateX: obstaclePosition_twins.x }, 
+                { translateY: obstaclePosition_twins.y }
+                // { rotate: boxInterpolation_twins } 
+              ],
+              opacity: boxInterpolation_twins_a,
+              
+            },
+            ]}
+          >
+            <Image 
+              source={require('../../assets/projectile_enemy_3.png')} 
+              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+          </Animated.View>
+          <Animated.View
+            style={[Styling.projectile_obstacle_block, {
+              transform: [
+                { translateX: obstaclePosition_twins.x }, 
+                { translateY: obstaclePosition_twins.y._value + WidthRatio(24) }
+                // { rotate: boxInterpolation_twins } 
+              ],
+              opacity: boxInterpolation_twins_b,
+            },
+            ]}
+          >
+            <Image 
+              source={require('../../assets/projectile_enemy_3.png')} 
+              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
           </Animated.View>
         {/* - - - - - - - - - - */}
+
 
         {/* Upgrade To Special 0 */}
         <Animated.View
