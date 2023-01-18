@@ -41,14 +41,19 @@ export const Projectile = () => {
   const [prevWrongElements, setPrevWrongElements] = useState(0);
   const [letterPocket, setLetterPocket] = useState([]);
   const [displayLetters, setDisplayLetters] = useState([])
-  
+  const [letterPositionNum, setLetterPositionNum] = useState(0)
+
   // [GAME LOGIC] - - - - - 
   const isGameInProgress = useRef(false);
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
-  const crashes = useRef(0);
+  const crashes = useRef(null);
   const prevCrashes = useRef(0);
+  const hideCrashesUntilUpdate = useRef(false);
+  const skullPlaceholder = useRef(3)
+  const skullMoneyPlaceholder = useRef(2)
+
   const score = useRef(0);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
@@ -56,7 +61,7 @@ export const Projectile = () => {
   // [LETTER ANIMATION] - - - - - 
   const hasUpdatedLetterBlock = useRef(false);
   const [letter, setLetter] = useState('');
-  const letterPosition = useRef(new Animated.ValueXY({x: 1000, y: 0})).current
+  const letterPosition = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current
   const animation = useRef(null)
   const count = new Animated.Value(0);
   const wordPlusSeven = useRef([])
@@ -83,12 +88,19 @@ export const Projectile = () => {
   const obstacle_large = useRef(null)
   let timeoutObstacle_Large_ID;
 
-  // [OBSTACLE ANIMATION RIGHT ANGLE] - - - - - 
-  const hasUpdatedObstacle_right_angle = useRef(false);
-  const obstaclePosition_right_angle = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
-  const obstacleRotation_right_angle = useRef(new Animated.Value(0)).current;
-  const obstacle_right_angle = useRef(null)
-  let timeoutObstacle_right_angle_ID;
+  // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
+  const hasUpdatedObstacle_right_angle_0 = useRef(false);
+  const obstaclePosition_right_angle_0 = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstacleRotation_right_angle_0 = useRef(new Animated.Value(0)).current;
+  const obstacle_right_angle_0 = useRef(null)
+  let timeoutObstacle_right_angle_0_ID;
+
+  // [OBSTACLE ANIMATION RIGHT ANGLE 1] - - - - - 
+  const hasUpdatedObstacle_right_angle_1 = useRef(false);
+  const obstaclePosition_right_angle_1 = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstacleRotation_right_angle_1 = useRef(new Animated.Value(0)).current;
+  const obstacle_right_angle_1 = useRef(null)
+  let timeoutObstacle_right_angle_1_ID;
 
   // [OBSTACLE ANIMATION OPACITY BOT] - - - - - 
   const hasUpdatedObstacle_opacity_bot = useRef(false);
@@ -132,14 +144,14 @@ export const Projectile = () => {
     inputRange: [0, 1],
     outputRange: [1.0, 0.5]
   });
-  
+
 
 
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
-    setSharedState({upgradeToSpecial_0: false})
-    setSharedState({deployUpgradeToSpecialAnimation: false})
+    setSharedState({ upgradeToSpecial_0: false })
+    setSharedState({ deployUpgradeToSpecialAnimation: false })
   }, [])
 
   useEffect(() => {
@@ -157,13 +169,13 @@ export const Projectile = () => {
   }, []);
 
   const Generate = (localPrevCrashes) => {
-    console.log("#1: Start Generate")
     setContinuousEndGameCall(false)
     clearTimeout(timeoutCallGenerateID);
     if (localPrevCrashes > 0) {
       crashes.current = localPrevCrashes;
-    } else {
-      crashes.current = 0;
+    } 
+    else {
+      crashes.current = null;
     }
 
     const data = require('./output.json');
@@ -178,17 +190,20 @@ export const Projectile = () => {
       let lowerCaseLetter = letter.toLowerCase();
       randomLetters.push(lowerCaseLetter);
     }
+    setLetterPositionNum(letters.length)
+
+
 
     let combined = letters.concat(randomLetters);
     let uniqueCombined = [...new Set(combined)];
     let scambledCombined = shuffle(uniqueCombined);
-    console.log(scambledCombined)
 
 
     setRandomWord(word);
     setDisplayLetters(letters)
 
     wordPlusSeven.current = scambledCombined; // Must be last
+    
     console.log("#2 Finish Generate")
   }
 
@@ -196,6 +211,7 @@ export const Projectile = () => {
 
     if (wordPlusSeven.current.length > 0) {
       console.log("#3 Word Plus 7 useEffect")
+      hideCrashesUntilUpdate.current = false;
       isGameInProgress.current = true;
       // console.log("[STATUS - hasGameBeenStarted]  :: " + hasGameBeenStarted)
       // console.log("[STATUS - isGameInProgress.current]  :: " + isGameInProgress.current)
@@ -206,9 +222,10 @@ export const Projectile = () => {
           if (score.current >= 0) {
             letterAnimation();
             runObstacleAnimation_large();
-            // runObstacleAnimation_right_angle();
+            // runObstacleAnimation_right_angle_0();
+            // runObstacleAnimation_right_angle_1();
             // runObstacleAnimation_opacity_bot();
-            runObstacleAnimation_twins();
+            // runObstacleAnimation_twins();
 
 
             runUpgradeToSpecial_0();
@@ -231,13 +248,11 @@ export const Projectile = () => {
 
 
   const letterAnimation = () => {
-    // console.log("#5a Run Animation")
     if (isGameInProgress.current) {
-      // console.log("#5b Letters Array: " + wordPlusSeven.current)
       hasUpdatedLetterBlock.current = false;
       setLetter(wordPlusSeven.current[count._value]);
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-      letterPosition.setValue({x: WidthRatio(400), y: localYPos_0})
+      letterPosition.setValue({ x: WidthRatio(400), y: localYPos_0 })
       animation.current = Animated.parallel([
         Animated.timing(letterPosition.x, {
           toValue: -WidthRatio(40),
@@ -265,7 +280,6 @@ export const Projectile = () => {
         })
 
         timeoutLetter_ID = setTimeout(() => {
-          // console.log("#5b Re-run")
           letterAnimation();
         }, 500)
       });
@@ -278,7 +292,6 @@ export const Projectile = () => {
 
 
   const runObstacleAnimation_0 = () => {
-    // console.log("#7a Run Obstacle Animation")
     if (isGameInProgress.current) {
       hasUpdatedObstacle_0.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -311,7 +324,6 @@ export const Projectile = () => {
           clearTimeout(timeoutObstacle_0_ID);
         }
         timeoutObstacle_0_ID = setTimeout(() => {
-          // console.log("#7b Re-run")
           runObstacleAnimation_0();
         }, 200)
       });
@@ -321,7 +333,6 @@ export const Projectile = () => {
   };
 
   const runObstacleAnimation_1 = () => {
-    // console.log("#7a Run Obstacle Animation")
     if (isGameInProgress.current) {
       hasUpdatedObstacle_1.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -354,7 +365,6 @@ export const Projectile = () => {
           clearTimeout(timeoutObstacle_1_ID);
         }
         timeoutObstacle_1_ID = setTimeout(() => {
-          // console.log("#7b Re-run")
           runObstacleAnimation_1();
         }, 200)
       });
@@ -364,7 +374,6 @@ export const Projectile = () => {
   };
 
   const runObstacleAnimation_large = () => {
-    // console.log("#7a Run Obstacle Animation")
     if (isGameInProgress.current) {
       hasUpdatedObstacle_large.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -397,7 +406,6 @@ export const Projectile = () => {
           clearTimeout(timeoutObstacle_Large_ID);
         }
         timeoutObstacle_Large_ID = setTimeout(() => {
-          // console.log("#7b Re-run")
           runObstacleAnimation_large();
         }, 200)
       });
@@ -406,23 +414,53 @@ export const Projectile = () => {
     }
   };
 
-  const runObstacleAnimation_right_angle = () => {
-    // console.log("#7a Run Obstacle Animation")
+  const runObstacleAnimation_right_angle_0 = () => {
     if (isGameInProgress.current) {
-      hasUpdatedObstacle_right_angle.current = false;
+      hasUpdatedObstacle_right_angle_0.current = false;
       let localXPos_0 = Math.floor(Math.random() * (WidthRatio(300) - WidthRatio(200))) + WidthRatio(200);
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_right_angle.setValue({ x: localXPos_0, y: -HeightRatio(100) });
-      // obstacleRotation_right_angle.setValue(0);
+      obstaclePosition_right_angle_0.setValue({ x: localXPos_0, y: -HeightRatio(100) });
+      obstacle_right_angle_0.current = Animated.sequence([
+   
+        Animated.spring(obstaclePosition_right_angle_0.y, {
+          toValue: localYPos_0,
+          useNativeDriver: true,
+          speed: 8,
+          bounciness: 8
+        }),
+        Animated.timing(obstaclePosition_right_angle_0.x, {
+          toValue: -WidthRatio(40),
+          duration: 1000,
+          useNativeDriver: true,
+        }),
 
-      obstacle_right_angle.current = Animated.sequence([
-        // Animated.timing(obstaclePosition_right_angle.y, {
-        //   toValue: localYPos_0,
-        //   duration: 800,
-        //   useNativeDriver: true,
-        // }),
-        Animated.spring(obstaclePosition_right_angle.y, {
+      ]);
+
+      obstacle_right_angle_0.current.start(() => {
+        if (timeoutObstacle_right_angle_0_ID) {
+          clearTimeout(timeoutObstacle_right_angle_0_ID);
+        }
+        timeoutObstacle_right_angle_0_ID = setTimeout(() => {
+          runObstacleAnimation_right_angle_0();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
+  const runObstacleAnimation_right_angle_1 = () => {
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_right_angle_1.current = false;
+      let localXPos_0 = Math.floor(Math.random() * (WidthRatio(300) - WidthRatio(200))) + WidthRatio(200);
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+
+      obstaclePosition_right_angle_1.setValue({ x: localXPos_0, y: -HeightRatio(100) });
+      // obstacleRotation_right_angle_1.setValue(0);
+
+      obstacle_right_angle_1.current = Animated.sequence([
+        Animated.spring(obstaclePosition_right_angle_1.y, {
           toValue: localYPos_0,
           useNativeDriver: true,
           // friction: 3,
@@ -430,21 +468,20 @@ export const Projectile = () => {
           speed: 8,
           bounciness: 8
         }),
-        Animated.timing(obstaclePosition_right_angle.x, {
+        Animated.timing(obstaclePosition_right_angle_1.x, {
           toValue: -WidthRatio(40),
           duration: 1000,
           useNativeDriver: true,
         }),
-        
+
       ]);
 
-      obstacle_right_angle.current.start(() => {
-        if (timeoutObstacle_right_angle_ID) {
-          clearTimeout(timeoutObstacle_right_angle_ID);
+      obstacle_right_angle_1.current.start(() => {
+        if (timeoutObstacle_right_angle_1_ID) {
+          clearTimeout(timeoutObstacle_right_angle_1_ID);
         }
-        timeoutObstacle_right_angle_ID = setTimeout(() => {
-          // console.log("#7b Re-run")
-          runObstacleAnimation_right_angle();
+        timeoutObstacle_right_angle_1_ID = setTimeout(() => {
+          runObstacleAnimation_right_angle_1();
         }, 200)
       });
     } else {
@@ -453,7 +490,6 @@ export const Projectile = () => {
   };
 
   const runObstacleAnimation_opacity_bot = () => {
-    // console.log("#7a Run Obstacle Animation")
     if (isGameInProgress.current) {
       hasUpdatedObstacle_opacity_bot.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -463,8 +499,8 @@ export const Projectile = () => {
       obstacleOpacity_opacity_bot.setValue(0);
 
       obstacle_opacity_bot.current = Animated.parallel([
-        
-        
+
+
         Animated.sequence([
           Animated.timing(obstaclePosition_opacity_bot.x, {
             toValue: WidthRatio(400),
@@ -539,7 +575,7 @@ export const Projectile = () => {
             delay: 0,
           }),
         ])
-        
+
 
       ]);
 
@@ -548,7 +584,6 @@ export const Projectile = () => {
           clearTimeout(timeoutObstacle_opacity_bot_ID);
         }
         timeoutObstacle_opacity_bot_ID = setTimeout(() => {
-          // console.log("#7b Re-run")
           runObstacleAnimation_opacity_bot();
         }, 200)
       });
@@ -558,7 +593,6 @@ export const Projectile = () => {
   };
 
   const runObstacleAnimation_twins = () => {
-    // console.log("#7a Run Obstacle Animation")
     if (isGameInProgress.current) {
       hasUpdatedObstacle_twins.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -624,7 +658,6 @@ export const Projectile = () => {
           clearTimeout(timeoutObstacle_twins_ID);
         }
         timeoutObstacle_twins_ID = setTimeout(() => {
-          // console.log("#7b Re-run")
           runObstacleAnimation_twins();
         }, 200)
       });
@@ -633,12 +666,11 @@ export const Projectile = () => {
     }
   };
 
-  
-  
-  
+
+
+
 
   const runUpgradeToSpecial_0 = () => {
-    // console.log("#7a Run Obstacle Animation")
     if (isGameInProgress.current && !retainUpgradeToSpecial_0.current) {
       hasUpdatedUpgradeToSpecial_0.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -665,7 +697,6 @@ export const Projectile = () => {
           clearTimeout(timeoutUpgradeToSpecial_0_ID);
         }
         timeoutUpgradeToSpecial_0_ID = setTimeout(() => {
-          // console.log("#7b Re-run")
           runUpgradeToSpecial_0();
         }, 200)
       });
@@ -728,19 +759,18 @@ export const Projectile = () => {
         height: sharedState.current.charHeight / 2,
         radius: sharedState.current.charHeight / 2,
       });
-      
+
       if (deployUpgradeToSpecialAnimation.current != sharedState.current.deployUpgradeToSpecialAnimation) {
         deployUpgradeToSpecialAnimation.current = !deployUpgradeToSpecialAnimation.current
-        console.log("- - - - -  -")
-        console.log(sharedState.current.deployUpgradeToSpecialAnimation)
+        // console.log("- - - - -  -")
+        // console.log(sharedState.current.deployUpgradeToSpecialAnimation)
         if (sharedState.current.deployUpgradeToSpecialAnimation) {
-          console.log("runUpgradeToSpecial_0 GO")
-          setSharedState({upgradeToSpecial_0: false})
+          setSharedState({ upgradeToSpecial_0: false })
           retainUpgradeToSpecial_0.current = false;
           runUpgradeToSpecial_0();
         }
       }
-  
+
 
 
       // Special Defense 0 Update
@@ -977,10 +1007,10 @@ export const Projectile = () => {
       let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
 
       if (isUpgradeToSpecial_0_Colliding(obj1, obj2)) {
-        console.log("UPGRADE COLLISION!!!!!!")
+        // console.log("UPGRADE COLLISION!!!!!!")
         if (!hasUpdatedUpgradeToSpecial_0.current) {
           retainUpgradeToSpecial_0.current = true;
-          setSharedState({upgradeToSpecial_0: true})
+          setSharedState({ upgradeToSpecial_0: true })
           hasUpdatedUpgradeToSpecial_0.current = true;
         }
         upgradeToSpecial_0.current.reset();
@@ -1012,6 +1042,8 @@ export const Projectile = () => {
       if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
         // youWin(crashes.current)
         console.log("CURRENT SCORE:   " + score.current)
+        console.log("CURRENT CRASHES:   " + crashes.current)
+
         endGame({ continue: true, local: "a", crashes: crashes.current, score: score.current });
       }
     }
@@ -1024,7 +1056,7 @@ export const Projectile = () => {
   useEffect(() => {
     if (crashes.current >= 3) {
       setTimeout(() => {
-        endGame({ continue: false, local: "b", crashes: 0, score: 0 });
+        endGame({ continue: false, local: "b", crashes: null, score: 0 });
       }, 200);
 
     }
@@ -1033,15 +1065,14 @@ export const Projectile = () => {
   const getBackgroundColor = (input) => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
     if (uniqueLetterPocket.includes(input)) {
-      return '#43bccd';
+      return 'rgba(67, 188, 205, 0.65)';
     } else {
-      return '#ffffff';
+      return 'rgba(255, 255, 255, 0.65)';
     }
   }
 
   const endGame = (input) => {
-    // console.log("COMPLETE")
-    // console.log(input)
+    hideCrashesUntilUpdate.current = true;
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
     if (input.local != "c") {
@@ -1051,7 +1082,7 @@ export const Projectile = () => {
         upgradeToSpecial_0.current.stop();
       }
       if (score.current >= 1) { obstacle_0.current.stop(); }
-      if (score.current >= 2) { obstacle_1.current.stop(); }
+      // if (score.current >= 2) { obstacle_1.current.stop(); }
     }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1059,7 +1090,7 @@ export const Projectile = () => {
     setLetter('');
     setLetterPocket([]);
     setDisplayLetters([]);
-    letterPosition.setValue({x: 1000, y: 0});
+    letterPosition.setValue({ x: 1000, y: 0 });
     // -Word
     setRandomWord('');
     wordPlusSeven.current = [];
@@ -1069,8 +1100,8 @@ export const Projectile = () => {
     obstaclePosition_large.setValue({ x: 1000, y: 0 })
     // - Game Logic
     count.setValue(0)
-    crashes.current = 0;
-    prevCrashes.current = 0
+    // crashes.current = 0;
+    // prevCrashes.current = 0
     score.current = 0;
     hasUpdatedLetterBlock.current = false;
     hasUpdatedObstacle_0.current = false;
@@ -1083,6 +1114,9 @@ export const Projectile = () => {
       let localScore = input.score + 1;
       score.current = localScore;
       timeoutCallGenerateID = setTimeout(() => {
+
+        
+        
         Generate(input.crashes)
       }, 500)
 
@@ -1092,12 +1126,12 @@ export const Projectile = () => {
         setTimeout(() => {
           setHasGameBeenStarted(false);
           setGameOverModalVisible(true)
-          setSharedState({upgradeToSpecial_0: false})
+          setSharedState({ upgradeToSpecial_0: false })
 
         }, 100);
       } else if (input.local == "c") {
         setHasGameBeenStarted(false);
-        setSharedState({upgradeToSpecial_0: false})
+        setSharedState({ upgradeToSpecial_0: false })
       }
     }
   }
@@ -1109,11 +1143,11 @@ export const Projectile = () => {
         {displayPlaybutton ?
           <TouchableOpacity
             onPress={() => { Generate() }}
-            style={{ 
-              position: 'absolute', 
-              left: windowWidth / 2 - 125, 
-              top: windowHeight / 2 - 125, 
-              zIndex: -5 
+            style={{
+              position: 'absolute',
+              left: windowWidth / 2 - 125,
+              top: windowHeight / 2 - 125,
+              zIndex: -5
             }}
           >
             <Image
@@ -1124,34 +1158,44 @@ export const Projectile = () => {
           :
           <>
             {score.current > 0 ?
-              <View style={{ 
-                position: 'absolute', 
-                top: windowHeight / 1.35, 
-                left: WidthRatio(0), 
-                zIndex: -7, padding: 
-                HeightRatio(20), 
-                borderRadius: HeightRatio(20) 
+              <View style={{
+                position: 'absolute',
+                top: windowHeight - HeightRatio(160),
+                left: WidthRatio(10),
+                zIndex: -7, padding:
+                  HeightRatio(20),
+                borderRadius: HeightRatio(20)
               }}>
-                <Text style={{ 
-                  color: 'rgba(255, 255, 255, 0.5)', 
-                  fontSize: HeightRatio(50), 
-                  fontWeight: 'bold' 
-                }}>Score: {score.current}</Text>
+                <Text style={{
+                  color: 'rgba(255, 255, 255, 0.5)',
+                  fontSize: HeightRatio(40),
+                  fontWeight: 'bold'
+                }}>Score:</Text>
+                <Text style={{
+                  color: 'rgba(255, 255, 255, 1.0)',
+                  fontSize: HeightRatio(70),
+                  fontWeight: 'bold'
+                }}>{score.current}</Text>
               </View>
               :
-              <View style={{ 
-                position: 'absolute', 
-                top: windowHeight / 1.35, 
-                left: WidthRatio(0), 
-                zIndex: -7, 
-                padding: HeightRatio(20), 
-                borderRadius: HeightRatio(20) 
+              <View style={{
+                position: 'absolute',
+                top: windowHeight - HeightRatio(160),
+                left: WidthRatio(10),
+                zIndex: -7,
+                padding: HeightRatio(20),
+                borderRadius: HeightRatio(20)
               }}>
-                <Text style={{ 
-                  color: 'rgba(255, 255, 255, 0.5)', 
-                  fontSize: HeightRatio(50), 
-                  fontWeight: 'bold' 
-                }}>Score: 0</Text>
+                <Text style={{
+                  color: 'rgba(255, 255, 255, 1.0)',
+                  fontSize: HeightRatio(40),
+                  fontWeight: 'bold'
+                }}>Score:</Text>
+                <Text style={{
+                  color: 'rgba(255, 255, 255, 1.0)',
+                  fontSize: HeightRatio(70),
+                  fontWeight: 'bold'
+                }}>0</Text>
               </View>
             }
           </>
@@ -1173,8 +1217,8 @@ export const Projectile = () => {
           <Text style={Styling.projectile_letter}>
             {letter.toUpperCase()}
           </Text>
-          <Image 
-            source={require('../../assets/block_keyboard_key.png')} 
+          <Image
+            source={require('../../assets/block_keyboard_key.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
 
         </Animated.View>
@@ -1185,14 +1229,14 @@ export const Projectile = () => {
             Styling.projectile_obstacle_block,
             {
               transform: [
-                { translateX: obstaclePosition_0.x }, 
+                { translateX: obstaclePosition_0.x },
                 { translateY: obstaclePosition_0.y },
                 { rotate: boxInterpolation_0 }],
             },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_asteroid_2.png')} 
+          <Image
+            source={require('../../assets/projectile_asteroid_2.png')}
             style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
@@ -1201,39 +1245,39 @@ export const Projectile = () => {
             Styling.projectile_obstacle_block,
             {
               transform: [
-                { translateX: obstaclePosition_1.x }, 
+                { translateX: obstaclePosition_1.x },
                 { translateY: obstaclePosition_1.y },
                 { rotate: boxInterpolation_1 }],
             },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_asteroid_2.png')} 
+          <Image
+            source={require('../../assets/projectile_asteroid_2.png')}
             style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
-              { translateX: obstaclePosition_large.x }, 
+              { translateX: obstaclePosition_large.x },
               { translateY: obstaclePosition_large.y },
               // { rotate: boxInterpolation_large } 
             ],
-            
+
           },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_enemy_2.png')} 
+          <Image
+            source={require('../../assets/projectile_enemy_2.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
-        {/* Right Angle */}
-        <Animated.View
+        {/* Right Angle 0 & 1 */}
+        {/* <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
-              { translateX: obstaclePosition_right_angle.x }, 
-              { translateY: obstaclePosition_right_angle.y },
+              { translateX: obstaclePosition_right_angle_0.x }, 
+              { translateY: obstaclePosition_right_angle_0.y },
               // { rotate: boxInterpolation_large } 
             ],
             
@@ -1244,10 +1288,25 @@ export const Projectile = () => {
             source={require('../../assets/projectile_red_ufo.png')} 
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_right_angle_1.x }, 
+              { translateY: obstaclePosition_right_angle_1.y },
+              // { rotate: boxInterpolation_large } 
+            ],
+            
+          },
+          ]}
+        >
+          <Image 
+            source={require('../../assets/projectile_red_ufo.png')} 
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View> */}
 
         {/* Opacity Bot */}
         {/* - - - - - - - - - - */}
-          {/* <Animated.View
+        {/* <Animated.View
             style={[Styling.projectile_obstacle_block, {
               transform: [
                 { translateX: obstaclePosition_opacity_bot.x }, 
@@ -1284,7 +1343,7 @@ export const Projectile = () => {
         {/* Twins */}
         {/* - - - - - - - - - - */}
         {/* - - - - - - - - - - */}
-          <Animated.View
+        {/* <Animated.View
             style={[Styling.projectile_obstacle_block, {
               transform: [
                 { translateX: obstaclePosition_twins.x }, 
@@ -1314,7 +1373,7 @@ export const Projectile = () => {
             <Image 
               source={require('../../assets/projectile_enemy_3.png')} 
               style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
+          </Animated.View> */}
         {/* - - - - - - - - - - */}
 
 
@@ -1327,7 +1386,7 @@ export const Projectile = () => {
             },
           ]}
         >
-          <Image 
+          <Image
             source={require('../../assets/upgrade_to_special_1.png')}  ///upgrade_to_special_0.png
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
@@ -1338,11 +1397,11 @@ export const Projectile = () => {
         {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
 
 
-
+        {/* <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: windowWidth/2}} /> */}
         {displayLetters.map((l, i) => (
           <View style={{
-            width: 40, position: 'absolute', top: windowHeight - 60, left: (10 + (i * 45)),
-            height: 40,
+            width: 60, position: 'absolute', top: 10, left: WidthRatio((50 - ((((letterPositionNum * 65) / windowWidth) * 100) / 2)) * 3.7) + ((i * 65)),
+            height: 60,
             borderRadius: 10,
             backgroundColor: getBackgroundColor(l),
             justifyContent: 'center',
@@ -1353,11 +1412,12 @@ export const Projectile = () => {
             <Text style={Styling.projectile_random_word_letter}>{l.toUpperCase()}</Text>
           </View>
         ))}
-        {crashes.current > 0 ?
+
+        {crashes.current > 0 && !hideCrashesUntilUpdate.current &&
           <>
             {Array.from(Array(crashes.current).keys()).map((n, i) => (
               <View style={{
-                width: 40, position: 'absolute', top: windowHeight - 60, left: (windowWidth / 2 + 200 + (i * 50)),
+                width: 40, position: 'absolute', zIndex: 0, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(60) + (i * 50)),
                 height: 40,
                 borderRadius: 10,
                 backgroundColor: 'transparent',
@@ -1370,24 +1430,39 @@ export const Projectile = () => {
               </View>
             ))}
           </>
-          :
-          <>
-            {Array.from(Array(prevCrashes.current).keys()).map((n, i) => (
-              <View style={{
-                width: 50, position: 'absolute', top: -40, left: (550 + (i * 50)),
-                height: 50,
-                borderRadius: 10,
-                backgroundColor: 'transparent',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-                key={i}
-              >
-                <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
-              </View>
-            ))}
-          </>
         }
+
+        {/* SKULLS */}
+        {Array.from(Array(skullPlaceholder.current).keys()).map((n, i) => (
+          <View style={{
+            width: 40, position: 'absolute', zIndex: -1, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(60) + (i * 50)),
+            height: 40,
+            borderRadius: 10,
+            backgroundColor: 'transparent',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+            key={i}
+          >
+            <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
+          </View>
+        ))}
+
+        {/* SKULL MONEY */}
+        {Array.from(Array(skullMoneyPlaceholder.current).keys()).map((n, i) => (
+          <View style={{
+            width: 40, position: 'absolute', zIndex: -1, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(70) + ((i + 3) * 50)),
+            height: 40,
+            borderRadius: 10,
+            backgroundColor: 'transparent',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+            key={i}
+          >
+            <Image source={require('../../assets/skull_money.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
+          </View>
+        ))}
 
         <Modal
           animationType="slide"

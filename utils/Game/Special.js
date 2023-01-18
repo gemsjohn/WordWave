@@ -76,7 +76,7 @@ export const Special = (props) => {
     });
 
     useEffect(() => {
-        console.log("Start !!!!!!")
+        // console.log("Start !!!!!!")
         countRefDefenseTimer_0.current = defenseTimeMaximum;
         countRefDefenseTimer_1.current = defenseTimeMaximum;
         countRefDefenseTimer_2.current = defenseTimeMaximum;
@@ -116,7 +116,6 @@ export const Special = (props) => {
     const prevRetainSpecial_3 = useRef(retainSpecial_3.current);
 
     useLayoutEffect(() => {
-        // console.log(obj1)
         let special_0 = { x: specialPosition_0.current.x, y: specialPosition_0.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
         let special_1 = { x: specialPosition_1.current.x, y: specialPosition_1.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
         let special_2 = { x: specialPosition_2.current.x, y: specialPosition_2.current.y, width: sharedState.current.charWidth, height: sharedState.current.charWidth }
@@ -409,7 +408,6 @@ export const Special = (props) => {
             return;
         } else {
             intervalDefenseTimerID_0.current = setInterval(() => {
-                // console.log(countRefDefenseTimer_0.current);
                 if (countRefDefenseTimer_0.current > 0) {
                     countRefDefenseTimer_0.current--;
                 } else {
@@ -432,7 +430,6 @@ export const Special = (props) => {
             return;
         } else {
             intervalDefenseTimerID_1.current = setInterval(() => {
-                // console.log(countRefDefenseTimer_1.current);
                 if (countRefDefenseTimer_1.current > 0) {
                     countRefDefenseTimer_1.current--;
                 } else {
@@ -456,7 +453,6 @@ export const Special = (props) => {
             return;
         } else {
             intervalDefenseTimerID_2.current = setInterval(() => {
-                // console.log(countRefDefenseTimer_2.current);
                 if (countRefDefenseTimer_2.current > 0) {
                     countRefDefenseTimer_2.current--;
                 } else {
@@ -480,7 +476,6 @@ export const Special = (props) => {
             return;
         } else {
             intervalDefenseTimerID_3.current = setInterval(() => {
-                // console.log(countRefDefenseTimer_3.current);
                 if (countRefDefenseTimer_3.current > 0) {
                     countRefDefenseTimer_3.current--;
                 } else {
@@ -499,7 +494,7 @@ export const Special = (props) => {
     }, [startDefenseTimer_3])
 
     useEffect(() => {
-        console.log(areDefenseTimersAvailable.current)
+        // console.log(areDefenseTimersAvailable.current)
         if (
             !areDefenseTimersAvailable.current._0 &&
             !areDefenseTimersAvailable.current._1 &&
@@ -583,20 +578,25 @@ export const Special = (props) => {
                                 style={[
                                     Styling.special_block,
                                     {
-                                        backgroundColor: 'rgba(255, 255, 0, 0.10)',
+                                        backgroundColor: 'rgba(0, 255, 255, 0.25)',
                                         height: sharedState.current.charWidth,
                                         width: sharedState.current.charWidth,
                                         zIndex: -2,
                                         top: item.top,
                                         left: WidthRatio(80),
-                                        borderWidth: 2, 
-                                        borderColor: 'rgba(255, 255, 0, 1.00)'
+                                        // borderWidth: 2, 
+                                        borderColor: 'rgba(0, 255, 255, 1.00)',
+                                        borderTopWidth: 2,
+                                        borderRightWidth: 2,
+                                        borderBottomWidth: 2,
+                                        borderLeftWidth: 0
+
                                     }
                                 ]}
                             >
                                 <Text style={{
                                     alignSelf: 'center',
-                                    fontSize: 20, 
+                                    fontSize: HeightRatio(70), 
                                     fontWeight: 'bold', 
                                     color: 'white'
                                 }}>{item.timer}</Text>
@@ -619,7 +619,7 @@ export const Special = (props) => {
                                 >
                                     <Text style={{
                                         alignSelf: 'center',
-                                        fontSize: 20, 
+                                        fontSize: HeightRatio(70), 
                                         fontWeight: 'bold', 
                                         color: 'white'
                                     }}>{item.timer}</Text>

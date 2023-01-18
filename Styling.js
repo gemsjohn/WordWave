@@ -89,7 +89,7 @@ export const Styling = StyleSheet.create({
     zIndex: 12,
   },
   projectile_random_word_letter: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: 'bold',
     color: 'black',
   },
