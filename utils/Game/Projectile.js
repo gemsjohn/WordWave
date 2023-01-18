@@ -1152,22 +1152,40 @@ export const Projectile = () => {
         </Animated.View>
 
         {/* Opacity Bot */}
-        <Animated.View
-          style={[Styling.projectile_obstacle_block, {
-            transform: [
-              { translateX: obstaclePosition_opacity_bot.x }, 
-              { translateY: obstaclePosition_opacity_bot.y }
-              // { rotate: boxInterpolation_opacity_bot } 
-            ],
-            opacity: boxInterpolation_opacity_bot,
-            
-          },
-          ]}
-        >
-          <Image 
-            source={require('../../assets/projectile_enemy_3.png')} 
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-        </Animated.View>
+        {/* - - - - - - - - - - */}
+          <Animated.View
+            style={[Styling.projectile_obstacle_block, {
+              transform: [
+                { translateX: obstaclePosition_opacity_bot.x }, 
+                { translateY: obstaclePosition_opacity_bot.y }
+                // { rotate: boxInterpolation_opacity_bot } 
+              ],
+              opacity: boxInterpolation_opacity_bot,
+              
+            },
+            ]}
+          >
+            <Image 
+              source={require('../../assets/projectile_enemy_3.png')} 
+              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+          </Animated.View>
+          <Animated.View
+            style={[Styling.projectile_obstacle_block, {
+              transform: [
+                { translateX: obstaclePosition_opacity_bot.x }, 
+                { translateY: obstaclePosition_opacity_bot.y._value + WidthRatio(24) }
+                // { rotate: boxInterpolation_opacity_bot } 
+              ],
+              opacity: boxInterpolation_opacity_bot,
+              
+            },
+            ]}
+          >
+            <Image 
+              source={require('../../assets/projectile_enemy_3.png')} 
+              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+          </Animated.View>
+        {/* - - - - - - - - - - */}
 
         {/* Upgrade To Special 0 */}
         <Animated.View
