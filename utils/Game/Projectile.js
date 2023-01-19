@@ -56,6 +56,7 @@ export const Projectile = () => {
   const skullMoneyPlaceholder = useRef(2)
 
   const score = useRef(0);
+  const scoreFlash = useRef(false);
   const level = useRef(0);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
@@ -1115,9 +1116,13 @@ export const Projectile = () => {
     console.log(similarElements)
     if (similarElements.length > prevSimilarElements){
       score.current += 100;
+      scoreFlash.current = true;
     }
     setPrevSimilarElements(similarElements.length)
     setPrevWrongElements(wrongElements.length)
+    setTimeout(() => {
+      scoreFlash.current = false;
+    }, 500)
 
     if (!continuousEndGameCall) {
       if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
@@ -1136,6 +1141,7 @@ export const Projectile = () => {
       }
     }
     if (letterPocket.length > 0) {
+      setLetterPocket([]);
       animation.current.reset()
     }
 
@@ -1258,6 +1264,7 @@ export const Projectile = () => {
           :
           <>
             {score.current > 0 ?
+            <>
               <View style={{
                 position: 'absolute',
                 top: windowHeight - HeightRatio(160),
@@ -1277,7 +1284,23 @@ export const Projectile = () => {
                   fontWeight: 'bold'
                 }}>{score.current}</Text>
               </View>
+              {scoreFlash.current &&
+                <View style={{
+                  position: 'absolute',
+                  top: windowHeight/2 - WidthRatio(30),
+                  left: windowWidth/2 - WidthRatio(30),
+                  zIndex: -7,
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }} >
+                  <Image 
+                    source={require('../../assets/reward_100_points.png')} 
+                    style={{height: WidthRatio(60), width: WidthRatio(60)}} />
+                </View>
+              }
+            </>
               :
+            <>
               <View style={{
                 position: 'absolute',
                 top: windowHeight - HeightRatio(160),
@@ -1297,6 +1320,8 @@ export const Projectile = () => {
                   fontWeight: 'bold'
                 }}>0</Text>
               </View>
+              
+            </>
             }
           </>
         }
