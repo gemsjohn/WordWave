@@ -239,6 +239,10 @@ export const Projectile = () => {
             runObstacleAnimation_right_angle_1();
           }
 
+          if (level.current >= 4) {
+            console.log("FOURTH")
+          }
+
           setHasGameBeenStarted(true)
           setDisplayPlaybutton(false)
         }
@@ -1129,7 +1133,6 @@ export const Projectile = () => {
         // youWin(crashes.current)
         console.log("CURRENT LEVEL:   " + level.current)
         console.log("CURRENT CRASHES:   " + crashes.current)
-        setLetterPocket([]);
 
         endGame({ 
           continue: true, 
@@ -1141,7 +1144,6 @@ export const Projectile = () => {
       }
     }
     if (letterPocket.length > 0) {
-      setLetterPocket([]);
       animation.current.reset()
     }
 
@@ -1179,14 +1181,14 @@ export const Projectile = () => {
         obstacle_0.current.stop();
         // obstacle_right_angle_0.current.stop();
       } 
-      if (level.current >= 1) { 
+      if (level.current >= 1 && obstacle_1.current != null) { 
         obstacle_1.current.stop();
       } 
-      if (level.current >= 2) { 
+      if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
         obstacle_right_angle_0.current.stop();
       }
 
-      if (level.current >= 3) { 
+      if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
         obstacle_right_angle_1.current.stop();
       }
     }
