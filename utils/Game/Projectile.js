@@ -239,10 +239,6 @@ export const Projectile = () => {
             runObstacleAnimation_right_angle_1();
           }
 
-          if (level.current >= 4) {
-            console.log("FOURTH")
-          }
-
           setHasGameBeenStarted(true)
           setDisplayPlaybutton(false)
         }
@@ -1175,7 +1171,7 @@ export const Projectile = () => {
     hideCrashesUntilUpdate.current = true;
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
-    if (input.local != "c") {
+    // if (input.local != "c") {
       if (level.current >= 0) {
         animation.current.stop();
         obstacle_0.current.stop();
@@ -1191,7 +1187,7 @@ export const Projectile = () => {
       if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
         obstacle_right_angle_1.current.stop();
       }
-    }
+    // }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
     // - Letters
