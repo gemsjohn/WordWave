@@ -459,7 +459,7 @@ export const Stage_2_Projectile = () => {
       obstaclePosition_right_angle_0.setValue({ x: localXPos_0, y: -HeightRatio(100) });
       obstacle_right_angle_0.current = Animated.sequence([
         Animated.spring(obstaclePosition_right_angle_0.y, {
-          toValue: localYPos_0,
+          toValue: localYPos_0, //letterPosition.y._value
           useNativeDriver: true,
           speed: 8,
           bounciness: 8
@@ -800,9 +800,6 @@ export const Stage_2_Projectile = () => {
           clearTimeout(timeoutObstacle_twins_1_ID);
         }
         timeoutObstacle_twins_1_ID = setTimeout(() => {
-          console.log("- - - - - - ")
-          console.log(flip.current)
-          console.log("- - - - - - ")
 
           if (flip.current) {
             runObstacleAnimation_twins_1();
@@ -1477,7 +1474,7 @@ export const Stage_2_Projectile = () => {
   useEffect(() => {
     if (crashes.current >= 3) {
       setTimeout(() => {
-        endGame({ continue: false, local: "b", crashes: null, score: 0, level: 0 });
+        endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
       }, 200);
 
     }
@@ -1554,6 +1551,10 @@ export const Stage_2_Projectile = () => {
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
+      console.log("- - - - - - ")
+      console.log("GAME ---> Continue")
+      console.log("- - - - - - ")
+
       setHasGameBeenStarted(false);
       let localLevel = input.level + 1;
       level.current = localLevel;
@@ -1569,6 +1570,9 @@ export const Stage_2_Projectile = () => {
     } else {
 
       if (input.local == "b") {
+        console.log("- - - - - - ")
+        console.log("GAME ---> Over")
+        console.log("- - - - - - ")
         setTimeout(() => {
           setHasGameBeenStarted(false);
           setGameOverModalVisible(true)
@@ -1576,6 +1580,9 @@ export const Stage_2_Projectile = () => {
 
         }, 100);
       } else if (input.local == "c") {
+        console.log("- - - - - - ")
+        console.log("GAME ---> Away")
+        console.log("- - - - - - ")
         setHasGameBeenStarted(false);
         setSharedState({ upgradeToSpecial_0: false })
       }
