@@ -215,34 +215,24 @@ export const Projectile = () => {
       console.log("#3 Word Plus 7 useEffect")
       hideCrashesUntilUpdate.current = false;
       isGameInProgress.current = true;
-      // console.log("[STATUS - hasGameBeenStarted]  :: " + hasGameBeenStarted)
-      // console.log("[STATUS - isGameInProgress.current]  :: " + isGameInProgress.current)
 
+      // [GAME LEVEL CONTROL]
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
           console.log("#4 About to run animations.")
+          console.log("LEVEL: " + level.current)
           if (level.current >= 0) {
             letterAnimation();
             runObstacleAnimation_0();
-            // runObstacleAnimation_large();
-            // runObstacleAnimation_right_angle_0();
-            // runObstacleAnimation_right_angle_1();
-            // runObstacleAnimation_opacity_bot();
-            // runObstacleAnimation_twins();
-
-
-            // runUpgradeToSpecial_0();
-
-          }
+          } 
+          
           if (level.current >= 1) {
             runObstacleAnimation_1();
-
-            // runObstacleAnimation_0();
-            // runUpgradeToSpecial_0();
+          } 
+          
+          if (level.current >= 2) {
+            runObstacleAnimation_right_angle_0();
           }
-          // if (level.current >= 2) {
-          //   runObstacleAnimation_1();
-          // }
 
           setHasGameBeenStarted(true)
           setDisplayPlaybutton(false)
@@ -398,12 +388,6 @@ export const Projectile = () => {
           duration: 5000,
           useNativeDriver: true,
         }),
-        // Animated.timing(obstacleRotation_large, {
-        //   toValue: 5000,
-        //   duration: 5000,
-        //   useNativeDriver: true
-        // })
-
       ]);
 
       obstacle_large.current.start(() => {
@@ -427,7 +411,6 @@ export const Projectile = () => {
 
       obstaclePosition_right_angle_0.setValue({ x: localXPos_0, y: -HeightRatio(100) });
       obstacle_right_angle_0.current = Animated.sequence([
-   
         Animated.spring(obstaclePosition_right_angle_0.y, {
           toValue: localYPos_0,
           useNativeDriver: true,
@@ -1098,11 +1081,13 @@ export const Projectile = () => {
     isGameInProgress.current = false;
     if (input.local != "c") {
       if (level.current >= 0) {
-        animation.current.stop()
-        obstacle_0.current.stop()
+        animation.current.stop();
+        obstacle_0.current.stop();
+      } else if (level.current >= 1) { 
+        obstacle_1.current.stop();
+      } else if (level.current >= 2) { 
+        obstacle_right_angle_0.current.stop();
       }
-      if (level.current >= 1) { obstacle_1.current.stop(); }
-      // if (level.current >= 2) { obstacle_1.current.stop(); }
     }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1293,7 +1278,7 @@ export const Projectile = () => {
         </Animated.View>
 
         {/* Right Angle 0 & 1 */}
-        {/* <Animated.View
+        <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
               { translateX: obstaclePosition_right_angle_0.x }, 
@@ -1322,7 +1307,7 @@ export const Projectile = () => {
           <Image 
             source={require('../../assets/projectile_red_ufo.png')} 
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-        </Animated.View> */}
+        </Animated.View>
 
         {/* Opacity Bot */}
         {/* - - - - - - - - - - */}
