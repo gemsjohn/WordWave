@@ -39,6 +39,7 @@ export const Projectile = () => {
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
   const [prevWrongElements, setPrevWrongElements] = useState(0);
+  const [prevSimilarElements, setPrevSimilarElements] = useState(0);
   const [letterPocket, setLetterPocket] = useState([]);
   const [displayLetters, setDisplayLetters] = useState([])
   const [letterPositionNum, setLetterPositionNum] = useState(0)
@@ -55,6 +56,7 @@ export const Projectile = () => {
   const skullMoneyPlaceholder = useRef(2)
 
   const score = useRef(0);
+  const level = useRef(0);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
 
@@ -163,7 +165,7 @@ export const Projectile = () => {
     // Return a function that cleans up the effect
     return () => {
       console.log("UNMOUNTED_INNER")
-      endGame({ continue: false, local: "c", crashes: 0, score: 0 });
+      endGame({ continue: false, local: "c", crashes: 0, score: 0, level: 0 });
       clearTimeout(timeoutId);
     };
   }, []);
@@ -219,7 +221,7 @@ export const Projectile = () => {
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
           console.log("#4 About to run animations.")
-          if (score.current >= 0) {
+          if (level.current >= 0) {
             letterAnimation();
             runObstacleAnimation_large();
             // runObstacleAnimation_right_angle_0();
@@ -231,11 +233,11 @@ export const Projectile = () => {
             runUpgradeToSpecial_0();
 
           }
-          if (score.current >= 1) {
+          if (level.current >= 1) {
             runObstacleAnimation_0();
             // runUpgradeToSpecial_0();
           }
-          if (score.current >= 2) {
+          if (level.current >= 2) {
             runObstacleAnimation_1();
           }
 
@@ -1035,16 +1037,27 @@ export const Projectile = () => {
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     if (wrongElements.length > prevWrongElements) {
       crashes.current += 1;
+    } 
+    console.log(similarElements)
+    if (similarElements.length > prevSimilarElements){
+      score.current += 100;
     }
+    setPrevSimilarElements(similarElements.length)
     setPrevWrongElements(wrongElements.length)
 
     if (!continuousEndGameCall) {
       if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
         // youWin(crashes.current)
-        console.log("CURRENT SCORE:   " + score.current)
+        console.log("CURRENT LEVEL:   " + level.current)
         console.log("CURRENT CRASHES:   " + crashes.current)
 
-        endGame({ continue: true, local: "a", crashes: crashes.current, score: score.current });
+        endGame({ 
+          continue: true, 
+          local: "a", crashes: 
+          crashes.current, 
+          score: score.current, 
+          level: level.current 
+        });
       }
     }
     if (letterPocket.length > 0) {
@@ -1056,7 +1069,7 @@ export const Projectile = () => {
   useEffect(() => {
     if (crashes.current >= 3) {
       setTimeout(() => {
-        endGame({ continue: false, local: "b", crashes: null, score: 0 });
+        endGame({ continue: false, local: "b", crashes: null, score: 0, level: 0 });
       }, 200);
 
     }
@@ -1076,13 +1089,13 @@ export const Projectile = () => {
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
     if (input.local != "c") {
-      if (score.current >= 0) {
+      if (level.current >= 0) {
         animation.current.stop();
         obstacle_large.current.stop();
         upgradeToSpecial_0.current.stop();
       }
-      if (score.current >= 1) { obstacle_0.current.stop(); }
-      // if (score.current >= 2) { obstacle_1.current.stop(); }
+      if (level.current >= 1) { obstacle_0.current.stop(); }
+      // if (level.current >= 2) { obstacle_1.current.stop(); }
     }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1102,7 +1115,7 @@ export const Projectile = () => {
     count.setValue(0)
     // crashes.current = 0;
     // prevCrashes.current = 0
-    score.current = 0;
+    level.current = 0;
     hasUpdatedLetterBlock.current = false;
     hasUpdatedObstacle_0.current = false;
     hasUpdatedObstacle_1.current = false;
@@ -1111,8 +1124,8 @@ export const Projectile = () => {
     // [HANDLE GAME RESTART]
     if (input.continue) {
       setHasGameBeenStarted(false);
-      let localScore = input.score + 1;
-      score.current = localScore;
+      let localLevel = input.level + 1;
+      level.current = localLevel;
       timeoutCallGenerateID = setTimeout(() => {
 
         
@@ -1478,6 +1491,7 @@ export const Projectile = () => {
               <Text style={Styling.modal_text}>Game Over</Text>
               <View style={{ margin: HeightRatio(20) }}>
                 <Text style={Styling.modal_text_style}>Score</Text>
+                <Text style={Styling.modal_text_style}>Level</Text>
                 <Text style={Styling.modal_text_style}>Time</Text>
                 <Text style={Styling.modal_text_style}>Words</Text>
               </View>
