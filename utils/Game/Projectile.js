@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3, isUpgradeToSpecial_0_Colliding } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isObstacleColliding_right_angle_0, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3, isUpgradeToSpecial_0_Colliding } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
 import {
@@ -991,6 +991,47 @@ export const Projectile = () => {
       }
     });
 
+    // Obstacle Right Angle 0
+    const obstacleListener_right_angle_0 = obstaclePosition_right_angle_0.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
+
+      if (isObstacleColliding_right_angle_0(obj1, obj2)) {
+        if (!hasUpdatedObstacle_right_angle_0.current) {
+          crashes.current += 1;
+          hasUpdatedObstacle_right_angle_0.current = true;
+        }
+        obstacle_right_angle_0.current.reset()
+      }
+
+      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
+        if (!hasUpdatedObstacle_right_angle_0.current) {
+          hasUpdatedObstacle_right_angle_0.current = true;
+        }
+        obstacle_right_angle_0.current.reset()
+      }
+
+      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
+        if (!hasUpdatedObstacle_right_angle_0.current) {
+          hasUpdatedObstacle_right_angle_0.current = true;
+        }
+        obstacle_right_angle_0.current.reset()
+      }
+
+      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
+        if (!hasUpdatedObstacle_right_angle_0.current) {
+          hasUpdatedObstacle_right_angle_0.current = true;
+        }
+        obstacle_right_angle_0.current.reset()
+      }
+
+      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
+        if (!hasUpdatedObstacle_right_angle_0.current) {
+          hasUpdatedObstacle_right_angle_0.current = true;
+        }
+        obstacle_right_angle_0.current.reset()
+      }
+    });
+
     const upgradeToSpecial_0Listener = upgradeToSpecial_0_Position.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
 
@@ -1010,6 +1051,7 @@ export const Projectile = () => {
       obstaclePosition_0.removeListener(obstacleListener_0);
       obstaclePosition_1.removeListener(obstacleListener_1);
       obstaclePosition_large.removeListener(obstacleListener_large);
+      obstaclePosition_right_angle_0.removeListener(obstacleListener_right_angle_0);
       upgradeToSpecial_0_Position.removeListener(upgradeToSpecial_0Listener);
     }
   }, [obj1, specialDefense_0, specialDefense_1, specialDefense_2, specialDefense_3]);
@@ -1083,9 +1125,12 @@ export const Projectile = () => {
       if (level.current >= 0) {
         animation.current.stop();
         obstacle_0.current.stop();
-      } else if (level.current >= 1) { 
+        // obstacle_right_angle_0.current.stop();
+      } 
+      if (level.current >= 1) { 
         obstacle_1.current.stop();
-      } else if (level.current >= 2) { 
+      } 
+      if (level.current >= 2) { 
         obstacle_right_angle_0.current.stop();
       }
     }
@@ -1279,19 +1324,20 @@ export const Projectile = () => {
 
         {/* Right Angle 0 & 1 */}
         <Animated.View
-          style={[Styling.projectile_obstacle_block, {
-            transform: [
-              { translateX: obstaclePosition_right_angle_0.x }, 
-              { translateY: obstaclePosition_right_angle_0.y },
-              // { rotate: boxInterpolation_large } 
-            ],
-            
-          },
+          style={[Styling.projectile_obstacle_block,
+            {width: WidthRatio(24), height: WidthRatio(24),}, 
+            {
+              transform: [
+                { translateX: obstaclePosition_right_angle_0.x }, 
+                { translateY: obstaclePosition_right_angle_0.y },
+                // { rotate: boxInterpolation_large } 
+              ],
+            },
           ]}
         >
           <Image 
             source={require('../../assets/projectile_red_ufo.png')} 
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+            style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
         <Animated.View
           style={[Styling.projectile_obstacle_block, {

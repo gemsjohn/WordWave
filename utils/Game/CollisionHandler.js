@@ -37,6 +37,16 @@ export const isObstacleColliding_large = (obj1, obj2) => {
     return distance < obj1.radius + obj2.radius;
 }
 
+export const isObstacleColliding_right_angle_0 = (obj1, obj2) => {
+    // Find the distance between the centers of the two objects
+    let xDistance = obj1.x - obj2.x;
+    let yDistance = obj1.y - obj2.y;
+    let distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+
+    // Compare the distance to the sum of the radii
+    return distance < obj1.radius + obj2.radius;
+}
+
 export const isSpecialColliding_0 = (obj1, obj2) => {
     return (
         obj1.x < obj2.x + obj2.width &&
