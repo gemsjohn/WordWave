@@ -5,7 +5,7 @@ import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isObstacleColliding_right_angle_0, isObstacleColliding_right_angle_1, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3, isUpgradeToSpecial_0_Colliding } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isObstacleColliding_right_angle_0, isObstacleColliding_right_angle_1, isObstacleColliding_twins, isObstacleColliding_twins_divgergence, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3, isUpgradeToSpecial_0_Colliding } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
 import {
@@ -32,7 +32,7 @@ import {
 
 
 
-export const Projectile = () => {
+export const Stage_2_Projectile = () => {
   // [USE CONTEXT API] - - - - - 
   const { sharedState, setSharedState } = useContext(SharedStateContext);
 
@@ -115,6 +115,7 @@ export const Projectile = () => {
   // [OBSTACLE ANIMATION TWINS] - - - - - 
   const hasUpdatedObstacle_twins = useRef(false);
   const obstaclePosition_twins = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstaclePosition_twins_divergence = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
   const obstacleOpacity_twins = useRef(new Animated.Value(0)).current;
   const obstacle_twins = useRef(null)
   let timeoutObstacle_twins_ID;
@@ -224,20 +225,20 @@ export const Projectile = () => {
           console.log("LEVEL: " + level.current)
           if (level.current >= 0) {
             letterAnimation();
-            runObstacleAnimation_0();
+            runObstacleAnimation_twins();
           } 
           
-          if (level.current >= 1) {
-            runObstacleAnimation_1();
-          } 
+          // if (level.current >= 1) {
+          //   runObstacleAnimation_1();
+          // } 
           
-          if (level.current >= 2) {
-            runObstacleAnimation_right_angle_0();
-          }
+          // if (level.current >= 2) {
+          //   runObstacleAnimation_right_angle_0();
+          // }
 
-          if (level.current >= 3) {
-            runObstacleAnimation_right_angle_1();
-          }
+          // if (level.current >= 3) {
+          //   runObstacleAnimation_right_angle_1();
+          // }
 
           setHasGameBeenStarted(true)
           setDisplayPlaybutton(false)
@@ -590,25 +591,41 @@ export const Projectile = () => {
       hasUpdatedObstacle_twins.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_2 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_3 = Math.floor(Math.random() * HeightRatio(670));
+
+
 
       obstaclePosition_twins.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_twins_divergence.setValue({ x: WidthRatio(370), y: localYPos_2 });
+
       // obstacleRotation_twins.setValue(0);
 
       obstacle_twins.current = Animated.parallel([
         Animated.timing(obstaclePosition_twins.x, {
           toValue: -WidthRatio(40),
-          duration: 10000,
+          duration: 6000,
           useNativeDriver: true,
         }),
         Animated.timing(obstaclePosition_twins.y, {
           toValue: localYPos_1,
-          duration: 10000,
+          duration: 6000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstaclePosition_twins_divergence.x, {
+          toValue: -WidthRatio(40),
+          duration: 6000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstaclePosition_twins_divergence.y, {
+          toValue: localYPos_3,
+          duration: 6000,
           useNativeDriver: true,
         }),
         Animated.sequence([
           Animated.timing(obstacleOpacity_twins, {
             toValue: 1,
-            duration: 2500,
+            duration: 1500,
             easing: Easing.linear,
             useNativeDriver: true,
             isInteraction: false,
@@ -617,7 +634,7 @@ export const Projectile = () => {
           }),
           Animated.timing(obstacleOpacity_twins, {
             toValue: 0.5,
-            duration: 2500,
+            duration: 1500,
             easing: Easing.linear,
             useNativeDriver: true,
             isInteraction: false,
@@ -626,7 +643,7 @@ export const Projectile = () => {
           }),
           Animated.timing(obstacleOpacity_twins, {
             toValue: 1,
-            duration: 2500,
+            duration: 1500,
             easing: Easing.linear,
             useNativeDriver: true,
             isInteraction: false,
@@ -635,16 +652,18 @@ export const Projectile = () => {
           }),
           Animated.timing(obstacleOpacity_twins, {
             toValue: 0.5,
-            duration: 2500,
+            duration: 1500,
             easing: Easing.linear,
             useNativeDriver: true,
             isInteraction: false,
             loop: true,
             delay: 0,
           }),
-        ])
-
-      ]);
+        ]),
+        
+        
+      ]),
+      
 
       obstacle_twins.current.start(() => {
         if (timeoutObstacle_twins_ID) {
@@ -1078,6 +1097,88 @@ export const Projectile = () => {
       }
     });
 
+    // Obstacle Right Twins
+    const obstacleListener_twins = obstaclePosition_twins.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
+      let obj3 = { x: value.x, y: value.y + WidthRatio(24), radius: WidthRatio(7.5), height: WidthRatio(24), width: WidthRatio(24) }
+
+      if (isObstacleColliding_twins(obj1, obj2, obj3)) {
+        if (!hasUpdatedObstacle_twins.current) {
+          crashes.current += 1;
+          hasUpdatedObstacle_twins.current = true;
+        }
+        obstacle_twins.current.reset()
+      }
+
+      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
+        if (!hasUpdatedObstacle_twins.current) {
+          hasUpdatedObstacle_twins.current = true;
+        }
+        obstacle_twins.current.reset()
+      }
+
+      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
+        if (!hasUpdatedObstacle_twins.current) {
+          hasUpdatedObstacle_twins.current = true;
+        }
+        obstacle_twins.current.reset()
+      }
+
+      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
+        if (!hasUpdatedObstacle_twins.current) {
+          hasUpdatedObstacle_twins.current = true;
+        }
+        obstacle_twins.current.reset()
+      }
+
+      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
+        if (!hasUpdatedObstacle_twins.current) {
+          hasUpdatedObstacle_twins.current = true;
+        }
+        obstacle_twins.current.reset()
+      }
+    });
+    // Obstacle Right Twins
+    const obstacleListener_twins_divergence = obstaclePosition_twins_divergence.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
+
+      if (isObstacleColliding_twins_divgergence(obj1, obj2)) {
+        if (!hasUpdatedObstacle_twins.current) {
+          crashes.current += 1;
+          hasUpdatedObstacle_twins.current = true;
+        }
+        obstacle_twins.current.reset()
+      }
+
+      // if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
+      //   if (!hasUpdatedObstacle_twins.current) {
+      //     hasUpdatedObstacle_twins.current = true;
+      //   }
+      //   obstacle_twins.current.reset()
+      // }
+
+      // if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
+      //   if (!hasUpdatedObstacle_twins.current) {
+      //     hasUpdatedObstacle_twins.current = true;
+      //   }
+      //   obstacle_twins.current.reset()
+      // }
+
+      // if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
+      //   if (!hasUpdatedObstacle_twins.current) {
+      //     hasUpdatedObstacle_twins.current = true;
+      //   }
+      //   obstacle_twins.current.reset()
+      // }
+
+      // if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
+      //   if (!hasUpdatedObstacle_twins.current) {
+      //     hasUpdatedObstacle_twins.current = true;
+      //   }
+      //   obstacle_twins.current.reset()
+      // }
+    });
+
     const upgradeToSpecial_0Listener = upgradeToSpecial_0_Position.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
 
@@ -1099,6 +1200,9 @@ export const Projectile = () => {
       obstaclePosition_large.removeListener(obstacleListener_large);
       obstaclePosition_right_angle_0.removeListener(obstacleListener_right_angle_0);
       obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1)
+      obstaclePosition_twins.removeListener(obstacleListener_twins);
+      obstaclePosition_twins_divergence.removeListener(obstacleListener_twins_divergence)
+      
       upgradeToSpecial_0_Position.removeListener(upgradeToSpecial_0Listener);
     }
   }, [obj1, specialDefense_0, specialDefense_1, specialDefense_2, specialDefense_3]);
@@ -1174,19 +1278,19 @@ export const Projectile = () => {
     // if (input.local != "c") {
       if (level.current >= 0) {
         animation.current.stop();
-        obstacle_0.current.stop();
+        obstacle_twins.current.stop();
         // obstacle_right_angle_0.current.stop();
       } 
-      if (level.current >= 1 && obstacle_1.current != null) { 
-        obstacle_1.current.stop();
-      } 
-      if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
-        obstacle_right_angle_0.current.stop();
-      }
+      // if (level.current >= 1 && obstacle_1.current != null) { 
+      //   obstacle_1.current.stop();
+      // } 
+      // if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
+      //   obstacle_right_angle_0.current.stop();
+      // }
 
-      if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
-        obstacle_right_angle_1.current.stop();
-      }
+      // if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
+      //   obstacle_right_angle_1.current.stop();
+      // }
     // }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1468,8 +1572,7 @@ export const Projectile = () => {
 
         {/* Twins */}
         {/* - - - - - - - - - - */}
-        {/* - - - - - - - - - - */}
-        {/* <Animated.View
+        <Animated.View
             style={[Styling.projectile_obstacle_block, {
               transform: [
                 { translateX: obstaclePosition_twins.x }, 
@@ -1488,8 +1591,8 @@ export const Projectile = () => {
           <Animated.View
             style={[Styling.projectile_obstacle_block, {
               transform: [
-                { translateX: obstaclePosition_twins.x }, 
-                { translateY: obstaclePosition_twins.y._value + WidthRatio(24) }
+                { translateX: obstaclePosition_twins_divergence.x }, 
+                { translateY: obstaclePosition_twins_divergence.y }
                 // { rotate: boxInterpolation_twins } 
               ],
               opacity: boxInterpolation_twins_b,
@@ -1499,7 +1602,7 @@ export const Projectile = () => {
             <Image 
               source={require('../../assets/projectile_enemy_3.png')} 
               style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View> */}
+          </Animated.View>
         {/* - - - - - - - - - - */}
 
 
