@@ -223,23 +223,26 @@ export const Projectile = () => {
           console.log("#4 About to run animations.")
           if (level.current >= 0) {
             letterAnimation();
-            runObstacleAnimation_large();
+            runObstacleAnimation_0();
+            // runObstacleAnimation_large();
             // runObstacleAnimation_right_angle_0();
             // runObstacleAnimation_right_angle_1();
             // runObstacleAnimation_opacity_bot();
             // runObstacleAnimation_twins();
 
 
-            runUpgradeToSpecial_0();
+            // runUpgradeToSpecial_0();
 
           }
           if (level.current >= 1) {
-            runObstacleAnimation_0();
+            runObstacleAnimation_1();
+
+            // runObstacleAnimation_0();
             // runUpgradeToSpecial_0();
           }
-          if (level.current >= 2) {
-            runObstacleAnimation_1();
-          }
+          // if (level.current >= 2) {
+          //   runObstacleAnimation_1();
+          // }
 
           setHasGameBeenStarted(true)
           setDisplayPlaybutton(false)
@@ -254,7 +257,7 @@ export const Projectile = () => {
       hasUpdatedLetterBlock.current = false;
       setLetter(wordPlusSeven.current[count._value]);
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-      letterPosition.setValue({ x: WidthRatio(400), y: localYPos_0 })
+      letterPosition.setValue({ x: WidthRatio(370), y: localYPos_0 })
       animation.current = Animated.parallel([
         Animated.timing(letterPosition.x, {
           toValue: -WidthRatio(40),
@@ -299,7 +302,7 @@ export const Projectile = () => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_0.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_0.setValue({ x: WidthRatio(370), y: localYPos_0 });
       obstacleRotation_0.setValue(0);
 
       obstacle_0.current = Animated.parallel([
@@ -314,8 +317,8 @@ export const Projectile = () => {
           useNativeDriver: true,
         }),
         Animated.timing(obstacleRotation_0, {
-          toValue: 5000,
-          duration: 5000,
+          toValue: 3000,
+          duration: 3000,
           useNativeDriver: true
         })
 
@@ -340,7 +343,7 @@ export const Projectile = () => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_1.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_1.setValue({ x: WidthRatio(370), y: localYPos_0 });
       obstacleRotation_1.setValue(0);
 
       obstacle_1.current = Animated.parallel([
@@ -355,8 +358,8 @@ export const Projectile = () => {
           useNativeDriver: true,
         }),
         Animated.timing(obstacleRotation_1, {
-          toValue: 5000,
-          duration: 5000,
+          toValue: 3000,
+          duration: 2500,
           useNativeDriver: true
         })
 
@@ -381,7 +384,7 @@ export const Projectile = () => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_large.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_large.setValue({ x: WidthRatio(370), y: localYPos_0 });
       // obstacleRotation_large.setValue(0);
 
       obstacle_large.current = Animated.parallel([
@@ -497,7 +500,7 @@ export const Projectile = () => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_opacity_bot.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_opacity_bot.setValue({ x: WidthRatio(370), y: localYPos_0 });
       obstacleOpacity_opacity_bot.setValue(0);
 
       obstacle_opacity_bot.current = Animated.parallel([
@@ -505,7 +508,7 @@ export const Projectile = () => {
 
         Animated.sequence([
           Animated.timing(obstaclePosition_opacity_bot.x, {
-            toValue: WidthRatio(400),
+            toValue: WidthRatio(370),
             duration: 1000,
             useNativeDriver: true,
           }),
@@ -600,7 +603,7 @@ export const Projectile = () => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_twins.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_twins.setValue({ x: WidthRatio(370), y: localYPos_0 });
       // obstacleRotation_twins.setValue(0);
 
       obstacle_twins.current = Animated.parallel([
@@ -678,7 +681,7 @@ export const Projectile = () => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      upgradeToSpecial_0_Position.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      upgradeToSpecial_0_Position.setValue({ x: WidthRatio(370), y: localYPos_0 });
 
       upgradeToSpecial_0.current = Animated.parallel([
         Animated.timing(upgradeToSpecial_0_Position.x, {
@@ -1050,11 +1053,12 @@ export const Projectile = () => {
         // youWin(crashes.current)
         console.log("CURRENT LEVEL:   " + level.current)
         console.log("CURRENT CRASHES:   " + crashes.current)
+        setLetterPocket([]);
 
         endGame({ 
           continue: true, 
-          local: "a", crashes: 
-          crashes.current, 
+          local: "a", 
+          crashes: crashes.current, 
           score: score.current, 
           level: level.current 
         });
@@ -1084,17 +1088,20 @@ export const Projectile = () => {
     }
   }
 
+  // [END GAME] 
+  // input.local "a" represents a continuance of gameplay
+  // input.local "b" represents a loss of game
+  // input.local "c" represents the user navigating away from the game
   const endGame = (input) => {
     hideCrashesUntilUpdate.current = true;
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
     if (input.local != "c") {
       if (level.current >= 0) {
-        animation.current.stop();
-        obstacle_large.current.stop();
-        upgradeToSpecial_0.current.stop();
+        animation.current.stop()
+        obstacle_0.current.stop()
       }
-      if (level.current >= 1) { obstacle_0.current.stop(); }
+      if (level.current >= 1) { obstacle_1.current.stop(); }
       // if (level.current >= 2) { obstacle_1.current.stop(); }
     }
 
@@ -1410,7 +1417,7 @@ export const Projectile = () => {
         {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
 
 
-        {/* <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: windowWidth/2}} /> */}
+        <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10)}} />
         {displayLetters.map((l, i) => (
           <View style={{
             width: 60, position: 'absolute', top: 10, left: WidthRatio((50 - ((((letterPositionNum * 65) / windowWidth) * 100) / 2)) * 3.7) + ((i * 65)),
