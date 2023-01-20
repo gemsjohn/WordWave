@@ -1146,12 +1146,11 @@ export const Projectile = () => {
   }, [letterPocket])
 
   useEffect(() => {
-    if (crashes.current >= 3) {
-      setTimeout(() => {
-        endGame({ continue: false, local: "b", crashes: null, score: 0, level: 0 });
-      }, 200);
-
-    }
+    setTimeout(() => {
+      if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
+          endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
+      }
+    }, 200);
   }, [crashes.current])
 
   const getBackgroundColor = (input) => {

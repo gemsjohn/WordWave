@@ -98,8 +98,8 @@ export const Game = (props) => {
               {retainUpgradeToSpecial_0 &&
                 <Special />
               }
-              {/* <Projectile /> */}
-              <Stage_2_Projectile />
+              <Projectile />
+              {/* <Stage_2_Projectile /> */}
             </SharedStateContext.Provider>
           </>
           :
