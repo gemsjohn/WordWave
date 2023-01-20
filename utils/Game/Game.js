@@ -9,6 +9,7 @@ import { Simple } from './Simple';
 import { Projectile } from './Projectile';
 import { Stage_1_Projectile } from './Stage_1_Projectile';
 import { Stage_2_Projectile } from './Stage_2_Projectile';
+import { Stage_3_Projectile } from './Stage_3_Projectile';
 import { CountdownTimer } from './CountdownTimer';
 
 import {
@@ -100,8 +101,9 @@ export const Game = (props) => {
                 <Special />
               }
               {/* <Projectile /> */}
-              <Stage_1_Projectile />
+              {/* <Stage_1_Projectile /> */}
               {/* <Stage_2_Projectile /> */}
+              <Stage_3_Projectile />
             </SharedStateContext.Provider>
           </>
           :

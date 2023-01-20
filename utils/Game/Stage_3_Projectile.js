@@ -17,7 +17,9 @@ import {
   isObstacleColliding_twins_0, 
   isObstacleColliding_twins_0_divgergence, 
   isObstacleColliding_twins_1, 
-  isObstacleColliding_twins_1_divgergence, 
+  isObstacleColliding_twins_1_divgergence,
+  isObstacleColliding_opacity_bot, 
+  isObstacleColliding_opacity_bot_divergence,
   isSpecialColliding_0, 
   isSpecialColliding_1, 
   isSpecialColliding_2, 
@@ -52,7 +54,7 @@ import {
 
 
 
-export const Stage_2_Projectile = () => {
+export const Stage_3_Projectile = () => {
   // [USE CONTEXT API] - - - - - 
   const { sharedState, setSharedState } = useContext(SharedStateContext);
 
@@ -129,9 +131,11 @@ export const Stage_2_Projectile = () => {
   // [OBSTACLE ANIMATION OPACITY BOT] - - - - - 
   const hasUpdatedObstacle_opacity_bot = useRef(false);
   const obstaclePosition_opacity_bot = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstaclePosition_opacity_bot_divergence = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
   const obstacleOpacity_opacity_bot = useRef(new Animated.Value(0)).current;
   const obstacle_opacity_bot = useRef(null)
   let timeoutObstacle_opacity_bot_ID;
+  
 
   // [OBSTACLE ANIMATION TWINS 0] - - - - - 
   const hasUpdatedObstacle_twins_0 = useRef(false);
@@ -276,21 +280,21 @@ export const Stage_2_Projectile = () => {
           setTimeout(() => {
             if (level.current >= 0) {
               letterAnimation();
-              runObstacleAnimation_twins_1();
+              runObstacleAnimation_opacity_bot()
 
             } 
             
-            if (level.current >= 1) {
-              runObstacleAnimation_twins_0();
-            } 
+            // if (level.current >= 1) {
+            //   runObstacleAnimation_twins_0();
+            // } 
             
-            if (level.current >= 2) {
-              runObstacleAnimation_right_angle_0();
-            }
+            // if (level.current >= 2) {
+            //   runObstacleAnimation_right_angle_0();
+            // }
 
-            if (level.current >= 3) {
-              runObstacleAnimation_right_angle_1();
-            }
+            // if (level.current >= 3) {
+            //   runObstacleAnimation_right_angle_1();
+            // }
 
             setHasGameBeenStarted(true)
           }, 1500)
@@ -542,50 +546,73 @@ export const Stage_2_Projectile = () => {
       hasUpdatedObstacle_opacity_bot.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_2 = Math.floor(Math.random() * HeightRatio(670));
+
+      let localXPos_0 = Math.floor(Math.random() * (WidthRatio(225) - WidthRatio(150) + 1) + WidthRatio(150));
+      let localXPos_1 = Math.floor(Math.random() * (WidthRatio(225) - WidthRatio(150) + 1) + WidthRatio(150));
 
       obstaclePosition_opacity_bot.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(370), y: localYPos_0 });
+
       obstacleOpacity_opacity_bot.setValue(0);
 
       obstacle_opacity_bot.current = Animated.parallel([
 
 
         Animated.sequence([
-          Animated.timing(obstaclePosition_opacity_bot.x, {
-            toValue: WidthRatio(370),
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_opacity_bot.y, {
-            toValue: localYPos_1,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_opacity_bot.x, {
-            toValue: WidthRatio(200),
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_opacity_bot.y, {
-            toValue: localYPos_0,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_opacity_bot.x, {
-            toValue: -WidthRatio(40),
-            duration: 1000,
-            useNativeDriver: true,
-          }),
+          Animated.parallel([
+            Animated.timing(obstaclePosition_opacity_bot.y, {
+              toValue: localYPos_1,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(obstaclePosition_opacity_bot_divergence.y, {
+              toValue: localYPos_2,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.timing(obstaclePosition_opacity_bot.x, {
+              toValue: localXPos_0,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(obstaclePosition_opacity_bot_divergence.x, {
+              toValue: localXPos_1,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.timing(obstaclePosition_opacity_bot.y, {
+              toValue: localYPos_0,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(obstaclePosition_opacity_bot_divergence.y, {
+              toValue: localYPos_0 + WidthRatio(24),
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.timing(obstaclePosition_opacity_bot.x, {
+              toValue: -WidthRatio(40),
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(obstaclePosition_opacity_bot_divergence.x, {
+              toValue: -WidthRatio(40),
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+          ]),
+          
+          
         ]),
         Animated.sequence([
-          Animated.timing(obstacleOpacity_opacity_bot, {
-            toValue: 1,
-            duration: 800,
-            easing: Easing.linear,
-            useNativeDriver: true,
-            isInteraction: false,
-            loop: true,
-            delay: 0,
-          }),
+          
           Animated.timing(obstacleOpacity_opacity_bot, {
             toValue: 0,
             duration: 800,
@@ -1332,9 +1359,8 @@ export const Stage_2_Projectile = () => {
     // Obstacle Right Twins 1
     const obstacleListener_twins_1 = obstaclePosition_twins_1.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
-      let obj3 = { x: value.x, y: value.y + WidthRatio(24), radius: WidthRatio(7.5), height: WidthRatio(24), width: WidthRatio(24) }
 
-      if (isObstacleColliding_twins_1(obj1, obj2, obj3)) {
+      if (isObstacleColliding_twins_1(obj1, obj2)) {
         if (!hasUpdatedObstacle_twins_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_1.current = true;
@@ -1370,7 +1396,7 @@ export const Stage_2_Projectile = () => {
         obstacle_twins_1.current.reset()
       }
     });
-    // Obstacle Right Twins 1
+    // Obstacle Right Twins 1 Divergence
     const obstacleListener_twins_1_divergence = obstaclePosition_twins_1_divergence.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
 
@@ -1411,6 +1437,88 @@ export const Stage_2_Projectile = () => {
       }
     });
 
+    // Obstacle Opacity Bot
+    const obstacleListener_opacity_bot = obstaclePosition_opacity_bot.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12), height: WidthRatio(15), width: WidthRatio(24) }
+
+      if (isObstacleColliding_opacity_bot(obj1, obj2)) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          crashes.current += 1;
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+    });
+
+    // Obstacle Opacity Bot Divergence
+    const obstacleListener_opacity_bot_divergence = obstaclePosition_opacity_bot_divergence.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12), height: WidthRatio(15), width: WidthRatio(24) }
+
+      if (isObstacleColliding_opacity_bot_divergence(obj1, obj2)) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          crashes.current += 1;
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          hasUpdatedObstacle_opacity_bot.current = true;
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+    });
+
     const upgradeToSpecial_0Listener = upgradeToSpecial_0_Position.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
 
@@ -1438,6 +1546,10 @@ export const Stage_2_Projectile = () => {
       obstaclePosition_twins_1.removeListener(obstacleListener_twins_1);
       obstaclePosition_twins_1_divergence.removeListener(obstacleListener_twins_1_divergence)
       
+      obstaclePosition_opacity_bot.removeListener(obstacleListener_opacity_bot);
+      obstaclePosition_opacity_bot_divergence.removeListener(obstacleListener_opacity_bot_divergence);
+
+
       upgradeToSpecial_0_Position.removeListener(upgradeToSpecial_0Listener);
     }
   }, [obj1, specialDefense_0, specialDefense_1, specialDefense_2, specialDefense_3]);
@@ -1512,44 +1624,45 @@ export const Stage_2_Projectile = () => {
     // if (input.local != "c") {
       if (level.current >= 0) {
         animation.current.stop();
-
+        obstacle_opacity_bot.current.stop();
         letterPosition.setValue({ x: 1000, y: 0 })
+        obstaclePosition_opacity_bot.setValue({ x: 1000, y: 0 })
+        obstaclePosition_opacity_bot_divergence.setValue({ x: 1000, y: 0 })
 
-        if (obstacle_twins_1.current != null) {
-          obstacle_twins_1.current.stop();
 
-          obstaclePosition_twins_1.setValue({ x: 1000, y: 0 })
+        // if (obstacle_twins_1.current != null) {
+        //   obstacle_twins_1.current.stop();
 
-        }
-        if (obstacle_0.current != null) {
-          obstacle_0.current.stop();
+        //   obstaclePosition_twins_1.setValue({ x: 1000, y: 0 })
 
-          obstaclePosition_0.setValue({ x: 1000, y: 0 })
-        }
-        if (obstacle_1.current != null) {
-          obstacle_1.current.stop();
+        // }
+        // if (obstacle_0.current != null) {
+        //   obstacle_0.current.stop();
 
-          obstaclePosition_1.setValue({ x: 1000, y: 0 })
-        }
+        //   obstaclePosition_0.setValue({ x: 1000, y: 0 })
+        // }
+        // if (obstacle_1.current != null) {
+        //   obstacle_1.current.stop();
 
-        // obstacle_right_angle_0.current.stop();
+        //   obstaclePosition_1.setValue({ x: 1000, y: 0 })
+        // }
       } 
-      if (level.current >= 1 && obstacle_0.current != null) { 
-        obstacle_twins_0.current.stop();
+      // if (level.current >= 1 && obstacle_0.current != null) { 
+      //   obstacle_twins_0.current.stop();
 
-        obstaclePosition_twins_0.setValue({ x: 1000, y: 0 })
-      } 
-      if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
-        obstacle_right_angle_0.current.stop();
+      //   obstaclePosition_twins_0.setValue({ x: 1000, y: 0 })
+      // } 
+      // if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
+      //   obstacle_right_angle_0.current.stop();
 
-        obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
-      }
+      //   obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+      // }
 
-      if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
-        obstacle_right_angle_1.current.stop();
+      // if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
+      //   obstacle_right_angle_1.current.stop();
 
-        obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
-      }
+      //   obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+      // }
     // }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1561,10 +1674,6 @@ export const Stage_2_Projectile = () => {
     // -Word
     setRandomWord('');
     wordPlusSeven.current = [];
-    // - Obstacles
-    obstaclePosition_0.setValue({ x: 1000, y: 0 })
-    obstaclePosition_1.setValue({ x: 1000, y: 0 })
-    obstaclePosition_large.setValue({ x: 1000, y: 0 })
     // - Game Logic
     count.setValue(0)
     // crashes.current = 0;
@@ -1819,7 +1928,7 @@ export const Stage_2_Projectile = () => {
 
         {/* Opacity Bot */}
         {/* - - - - - - - - - - */}
-        {/* <Animated.View
+        <Animated.View
             style={[Styling.projectile_obstacle_block, {
               transform: [
                 { translateX: obstaclePosition_opacity_bot.x }, 
@@ -1838,8 +1947,8 @@ export const Stage_2_Projectile = () => {
           <Animated.View
             style={[Styling.projectile_obstacle_block, {
               transform: [
-                { translateX: obstaclePosition_opacity_bot.x }, 
-                { translateY: obstaclePosition_opacity_bot.y._value + WidthRatio(24) }
+                { translateX: obstaclePosition_opacity_bot_divergence.x }, 
+                { translateY: obstaclePosition_opacity_bot_divergence.y }
                 // { rotate: boxInterpolation_opacity_bot } 
               ],
               opacity: boxInterpolation_opacity_bot,
@@ -1850,7 +1959,7 @@ export const Stage_2_Projectile = () => {
             <Image 
               source={require('../../assets/projectile_enemy_3.png')} 
               style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View> */}
+          </Animated.View>
         {/* - - - - - - - - - - */}
 
         {/* Twins */}

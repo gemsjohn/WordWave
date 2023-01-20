@@ -32,7 +32,7 @@ import {
 
 
 
-export const Projectile = () => {
+export const Stage_1_Projectile = () => {
   // [USE CONTEXT API] - - - - - 
   const { sharedState, setSharedState } = useContext(SharedStateContext);
 
@@ -56,7 +56,8 @@ export const Projectile = () => {
   const skullMoneyPlaceholder = useRef(2)
 
   const score = useRef(0);
-  const scoreFlash = useRef(false);
+  const scoreFlash_100 = useRef(false);
+  const scoreFlash_1000 = useRef(false);
   const level = useRef(0);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
@@ -201,6 +202,15 @@ export const Projectile = () => {
     let uniqueCombined = [...new Set(combined)];
     let scambledCombined = shuffle(uniqueCombined);
 
+      setDisplayPlaybutton(false)
+
+      if (level.current > 0) {
+        score.current += 1000;
+        scoreFlash_1000.current = true;
+        setTimeout(() => {
+          scoreFlash_1000.current = false;
+          }, 1000)
+      }
 
     setRandomWord(word);
     setDisplayLetters(letters)
@@ -222,25 +232,29 @@ export const Projectile = () => {
         if (isGameInProgress.current) {
           console.log("#4 About to run animations.")
           console.log("LEVEL: " + level.current)
-          if (level.current >= 0) {
-            letterAnimation();
-            runObstacleAnimation_0();
-          } 
-          
-          if (level.current >= 1) {
-            runObstacleAnimation_1();
-          } 
-          
-          if (level.current >= 2) {
-            runObstacleAnimation_right_angle_0();
-          }
+                  
 
-          if (level.current >= 3) {
-            runObstacleAnimation_right_angle_1();
-          }
-
-          setHasGameBeenStarted(true)
-          setDisplayPlaybutton(false)
+          setTimeout(() => {
+            if (level.current >= 0) {
+              letterAnimation();
+              runObstacleAnimation_0();
+            } 
+            
+            if (level.current >= 1) {
+              runObstacleAnimation_1();
+            } 
+            
+            if (level.current >= 2) {
+              runObstacleAnimation_right_angle_0();
+            }
+  
+            if (level.current >= 3) {
+              runObstacleAnimation_right_angle_1();
+            }
+  
+            setHasGameBeenStarted(true)
+            
+          }, 1500)
         }
       }
     }
@@ -1116,12 +1130,12 @@ export const Projectile = () => {
     console.log(similarElements)
     if (similarElements.length > prevSimilarElements){
       score.current += 100;
-      scoreFlash.current = true;
+      scoreFlash_100.current = true;
     }
     setPrevSimilarElements(similarElements.length)
     setPrevWrongElements(wrongElements.length)
     setTimeout(() => {
-      scoreFlash.current = false;
+      scoreFlash_100.current = false;
     }, 500)
 
     if (!continuousEndGameCall) {
@@ -1170,23 +1184,33 @@ export const Projectile = () => {
     hideCrashesUntilUpdate.current = true;
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
-    // if (input.local != "c") {
       if (level.current >= 0) {
         animation.current.stop();
         obstacle_0.current.stop();
-        // obstacle_right_angle_0.current.stop();
+
+        letterPosition.setValue({ x: 1000, y: 0 })
+        obstaclePosition_0.setValue({ x: 1000, y: 0 })
+
+
       } 
       if (level.current >= 1 && obstacle_1.current != null) { 
         obstacle_1.current.stop();
+        
+        obstaclePosition_1.setValue({ x: 1000, y: 0 })
+
       } 
       if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
         obstacle_right_angle_0.current.stop();
+
+        obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
       }
 
       if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
         obstacle_right_angle_1.current.stop();
+
+        obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
       }
-    // }
+
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
     // - Letters
@@ -1198,9 +1222,9 @@ export const Projectile = () => {
     setRandomWord('');
     wordPlusSeven.current = [];
     // - Obstacles
-    obstaclePosition_0.setValue({ x: 1000, y: 0 })
-    obstaclePosition_1.setValue({ x: 1000, y: 0 })
-    obstaclePosition_large.setValue({ x: 1000, y: 0 })
+    // obstaclePosition_0.setValue({ x: 1000, y: 0 })
+    // obstaclePosition_1.setValue({ x: 1000, y: 0 })
+    // obstaclePosition_large.setValue({ x: 1000, y: 0 })
     // - Game Logic
     count.setValue(0)
     // crashes.current = 0;
@@ -1283,7 +1307,7 @@ export const Projectile = () => {
                   fontWeight: 'bold'
                 }}>{score.current}</Text>
               </View>
-              {scoreFlash.current &&
+              {scoreFlash_100.current &&
                 <View style={{
                   position: 'absolute',
                   top: windowHeight/2 - WidthRatio(30),
@@ -1294,6 +1318,20 @@ export const Projectile = () => {
                 }} >
                   <Image 
                     source={require('../../assets/reward_100_points.png')} 
+                    style={{height: WidthRatio(60), width: WidthRatio(60)}} />
+                </View>
+              }
+              {scoreFlash_1000.current &&
+                <View style={{
+                  position: 'absolute',
+                  top: windowHeight/2 - WidthRatio(30),
+                  left: windowWidth/2 - WidthRatio(30),
+                  zIndex: -7,
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }} >
+                  <Image 
+                    source={require('../../assets/reward_1000_points.png')} 
                     style={{height: WidthRatio(60), width: WidthRatio(60)}} />
                 </View>
               }
