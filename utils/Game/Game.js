@@ -7,6 +7,7 @@ import { CharacterAndJoystick } from './CharacterAndJoystick';
 import { Special } from './Special';
 import { Simple } from './Simple';
 import { Projectile } from './Projectile';
+import { Stage_1_Projectile } from './Stage_1_Projectile';
 import { Stage_2_Projectile } from './Stage_2_Projectile';
 import { CountdownTimer } from './CountdownTimer';
 
@@ -98,7 +99,8 @@ export const Game = (props) => {
               {retainUpgradeToSpecial_0 &&
                 <Special />
               }
-              <Projectile />
+              {/* <Projectile /> */}
+              <Stage_1_Projectile />
               {/* <Stage_2_Projectile /> */}
             </SharedStateContext.Provider>
           </>
