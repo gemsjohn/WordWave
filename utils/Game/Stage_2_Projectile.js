@@ -70,6 +70,7 @@ export const Stage_2_Projectile = () => {
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
   const crashes = useRef(null);
+  const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
   const skullPlaceholder = useRef(3)
@@ -79,6 +80,7 @@ export const Stage_2_Projectile = () => {
   const scoreFlash_100 = useRef(false);
   const scoreFlash_1000 = useRef(false);
   const level = useRef(0);
+  const [stageTransitionModalVisible, setStageTransitionModalVisible] = useState(false);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
 
@@ -1050,6 +1052,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_0.current.reset()
       }
@@ -1091,6 +1097,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_1.current.reset()
       }
@@ -1132,6 +1142,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_large.current) {
           crashes.current += 1;
           hasUpdatedObstacle_large.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_large.current.reset()
       }
@@ -1173,6 +1187,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_right_angle_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_right_angle_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_right_angle_0.current.reset()
       }
@@ -1214,6 +1232,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_right_angle_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_right_angle_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_right_angle_1.current.reset()
       }
@@ -1256,6 +1278,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_twins_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_twins_0.current.reset()
       }
@@ -1296,6 +1322,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_twins_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_twins_0.current.reset()
       }
@@ -1338,6 +1368,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_twins_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_twins_1.current.reset()
       }
@@ -1378,6 +1412,10 @@ export const Stage_2_Projectile = () => {
         if (!hasUpdatedObstacle_twins_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_twins_1.current.reset()
       }
@@ -1451,6 +1489,10 @@ export const Stage_2_Projectile = () => {
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     if (wrongElements.length > prevWrongElements) {
       crashes.current += 1;
+      flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
     } 
     console.log(similarElements)
     if (similarElements.length > prevSimilarElements){
@@ -1534,10 +1576,12 @@ export const Stage_2_Projectile = () => {
 
         // obstacle_right_angle_0.current.stop();
       } 
-      if (level.current >= 1 && obstacle_0.current != null) { 
+      if (level.current >= 1 && obstacle_twins_0.current != null) { 
         obstacle_twins_0.current.stop();
 
         obstaclePosition_twins_0.setValue({ x: 1000, y: 0 })
+        obstaclePosition_twins_0_divergence.setValue({ x: 1000, y: 0 })
+
       } 
       if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
         obstacle_right_angle_0.current.stop();
@@ -1550,6 +1594,9 @@ export const Stage_2_Projectile = () => {
 
         obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
       }
+
+      
+
     // }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1582,14 +1629,26 @@ export const Stage_2_Projectile = () => {
       console.log("- - - - - - ")
 
       setHasGameBeenStarted(false);
+      if (input.level >= 0) {
+        setSharedState({
+          stage1: false,
+          stage2: false,
+          stage3: true,
+          currentScore: score.current,
+          currentLevel: level.current,
+          currentCrashes: crashes.current
+        })
+        setStageTransitionModalVisible(!stageTransitionModalVisible);
+
+        return;
+      }
+
       let localLevel = input.level + 1;
       level.current = localLevel;
       setLetterPocket([]);
       setDisplayLetters([]);
-      timeoutCallGenerateID = setTimeout(() => {
 
-        
-        
+      timeoutCallGenerateID = setTimeout(() => {
         Generate(input.crashes)
       }, 500)
 
@@ -1975,6 +2034,20 @@ export const Stage_2_Projectile = () => {
             ))}
           </>
         }
+        {flashOouchOnCrash.current  && !hideCrashesUntilUpdate.current &&
+          <View style={{
+            position: 'absolute',
+            top: windowHeight / 2 - WidthRatio(30),
+            left: windowWidth / 2 - WidthRatio(30),
+            zIndex: -7,
+            padding: HeightRatio(20),
+            borderRadius: HeightRatio(20)
+          }} >
+            <Image
+              source={require('../../assets/warning_oouch.png')}
+              style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+          </View>
+        }
 
         {/* SKULLS */}
         {Array.from(Array(skullPlaceholder.current).keys()).map((n, i) => (
@@ -2008,6 +2081,37 @@ export const Stage_2_Projectile = () => {
           </View>
         ))}
 
+        {/* STAGE TRANSITION MODAL */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={stageTransitionModalVisible}
+          onRequestClose={() => {
+            setStageTransitionModalVisible(!stageTransitionModalVisible);
+            isGameInProgress.current = false;
+          }}
+        >
+          <View style={Styling.modal_centered_view}>
+            <View style={Styling.modal_view}>
+              <Text style={Styling.modal_text}>Stage 1 Complete</Text>
+              <View style={{ margin: HeightRatio(20) }}>
+                <Text style={Styling.modal_text_style}>Select Next to proceed.</Text>
+              </View>
+              <TouchableOpacity
+                style={[Styling.modal_button]}
+                onPress={() => { 
+                  setStageTransitionModalVisible(!stageTransitionModalVisible); 
+                  // setDisplayPlaybutton(true); 
+                  
+                }}
+              >
+                <Text style={Styling.modal_text_style}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* GAME OVER MODAL */}
         <Modal
           animationType="slide"
           transparent={true}

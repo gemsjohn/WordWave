@@ -50,6 +50,7 @@ export const Stage_1_Projectile = () => {
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
   const crashes = useRef(null);
+  const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
   const skullPlaceholder = useRef(3)
@@ -59,6 +60,7 @@ export const Stage_1_Projectile = () => {
   const scoreFlash_100 = useRef(false);
   const scoreFlash_1000 = useRef(false);
   const level = useRef(0);
+  const [stageTransitionModalVisible, setStageTransitionModalVisible] = useState(false);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
 
@@ -156,6 +158,14 @@ export const Stage_1_Projectile = () => {
     isGameInProgress.current = false;
     setSharedState({ upgradeToSpecial_0: false })
     setSharedState({ deployUpgradeToSpecialAnimation: false })
+    setSharedState({
+      stage1: true,
+      stage2: null,
+      stage3: null,
+      currentScore: null,
+      currentLevel: null,
+      currentCrashes: null
+    })
   }, [])
 
   useEffect(() => {
@@ -177,7 +187,7 @@ export const Stage_1_Projectile = () => {
     clearTimeout(timeoutCallGenerateID);
     if (localPrevCrashes > 0) {
       crashes.current = localPrevCrashes;
-    } 
+    }
     else {
       crashes.current = null;
     }
@@ -202,21 +212,21 @@ export const Stage_1_Projectile = () => {
     let uniqueCombined = [...new Set(combined)];
     let scambledCombined = shuffle(uniqueCombined);
 
-      setDisplayPlaybutton(false)
+    setDisplayPlaybutton(false)
 
-      if (level.current > 0) {
-        score.current += 1000;
-        scoreFlash_1000.current = true;
-        setTimeout(() => {
-          scoreFlash_1000.current = false;
-          }, 1000)
-      }
+    if (level.current > 0) {
+      score.current += 1000;
+      scoreFlash_1000.current = true;
+      setTimeout(() => {
+        scoreFlash_1000.current = false;
+      }, 1000)
+    }
 
     setRandomWord(word);
     setDisplayLetters(letters)
 
     wordPlusSeven.current = scambledCombined; // Must be last
-    
+
     console.log("#2 Finish Generate")
   }
 
@@ -232,28 +242,28 @@ export const Stage_1_Projectile = () => {
         if (isGameInProgress.current) {
           console.log("#4 About to run animations.")
           console.log("LEVEL: " + level.current)
-                  
+
 
           setTimeout(() => {
             if (level.current >= 0) {
               letterAnimation();
               runObstacleAnimation_0();
-            } 
-            
+            }
+
             if (level.current >= 1) {
               runObstacleAnimation_1();
-            } 
-            
+            }
+
             if (level.current >= 2) {
               runObstacleAnimation_right_angle_0();
             }
-  
+
             if (level.current >= 3) {
               runObstacleAnimation_right_angle_1();
             }
-  
+
             setHasGameBeenStarted(true)
-            
+
           }, 1500)
         }
       }
@@ -895,6 +905,10 @@ export const Stage_1_Projectile = () => {
         if (!hasUpdatedObstacle_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_0.current.reset()
       }
@@ -936,6 +950,10 @@ export const Stage_1_Projectile = () => {
         if (!hasUpdatedObstacle_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_1.current.reset()
       }
@@ -977,6 +995,10 @@ export const Stage_1_Projectile = () => {
         if (!hasUpdatedObstacle_large.current) {
           crashes.current += 1;
           hasUpdatedObstacle_large.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_large.current.reset()
       }
@@ -1018,6 +1040,10 @@ export const Stage_1_Projectile = () => {
         if (!hasUpdatedObstacle_right_angle_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_right_angle_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_right_angle_0.current.reset()
       }
@@ -1059,6 +1085,10 @@ export const Stage_1_Projectile = () => {
         if (!hasUpdatedObstacle_right_angle_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_right_angle_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_right_angle_1.current.reset()
       }
@@ -1126,9 +1156,13 @@ export const Stage_1_Projectile = () => {
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     if (wrongElements.length > prevWrongElements) {
       crashes.current += 1;
-    } 
+      flashOouchOnCrash.current = true;
+      setTimeout(() => {
+        flashOouchOnCrash.current = false;
+      }, 500)
+    }
     console.log(similarElements)
-    if (similarElements.length > prevSimilarElements){
+    if (similarElements.length > prevSimilarElements) {
       score.current += 100;
       scoreFlash_100.current = true;
     }
@@ -1144,12 +1178,12 @@ export const Stage_1_Projectile = () => {
         console.log("CURRENT LEVEL:   " + level.current)
         console.log("CURRENT CRASHES:   " + crashes.current)
 
-        endGame({ 
-          continue: true, 
-          local: "a", 
-          crashes: crashes.current, 
-          score: score.current, 
-          level: level.current 
+        endGame({
+          continue: true,
+          local: "a",
+          crashes: crashes.current,
+          score: score.current,
+          level: level.current
         });
       }
     }
@@ -1162,7 +1196,7 @@ export const Stage_1_Projectile = () => {
   useEffect(() => {
     setTimeout(() => {
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
-          endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
+        endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
       }
     }, 200);
   }, [crashes.current])
@@ -1184,32 +1218,33 @@ export const Stage_1_Projectile = () => {
     hideCrashesUntilUpdate.current = true;
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
-      if (level.current >= 0) {
-        animation.current.stop();
-        obstacle_0.current.stop();
+    if (level.current >= 0) {
+      animation.current.stop();
+      obstacle_0.current.stop();
 
-        letterPosition.setValue({ x: 1000, y: 0 })
-        obstaclePosition_0.setValue({ x: 1000, y: 0 })
+      letterPosition.setValue({ x: 1000, y: 0 })
+      obstaclePosition_0.setValue({ x: 1000, y: 0 })
 
 
-      } 
-      if (level.current >= 1 && obstacle_1.current != null) { 
-        obstacle_1.current.stop();
-        
-        obstaclePosition_1.setValue({ x: 1000, y: 0 })
+    }
+    if (level.current >= 1 && obstacle_1.current != null) {
+      obstacle_1.current.stop();
 
-      } 
-      if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
-        obstacle_right_angle_0.current.stop();
+      obstaclePosition_1.setValue({ x: 1000, y: 0 })
 
-        obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
-      }
+    }
+    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
+      obstacle_right_angle_0.current.stop();
 
-      if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
-        obstacle_right_angle_1.current.stop();
+      obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+    }
 
-        obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
-      }
+    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
+      obstacle_right_angle_1.current.stop();
+
+      obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+    }
+
 
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1221,10 +1256,7 @@ export const Stage_1_Projectile = () => {
     // -Word
     setRandomWord('');
     wordPlusSeven.current = [];
-    // - Obstacles
-    // obstaclePosition_0.setValue({ x: 1000, y: 0 })
-    // obstaclePosition_1.setValue({ x: 1000, y: 0 })
-    // obstaclePosition_large.setValue({ x: 1000, y: 0 })
+
     // - Game Logic
     count.setValue(0)
     // crashes.current = 0;
@@ -1238,16 +1270,32 @@ export const Stage_1_Projectile = () => {
     // [HANDLE GAME RESTART]
     if (input.continue) {
       setHasGameBeenStarted(false);
-      let localLevel = input.level + 1;
-      level.current = localLevel;
-      setLetterPocket([]);
-      setDisplayLetters([]);
-      timeoutCallGenerateID = setTimeout(() => {
+      if (input.level >= 0) {
+        setSharedState({
+          stage1: false,
+          stage2: true,
+          stage3: false,
+          currentScore: score.current,
+          currentLevel: level.current,
+          currentCrashes: crashes.current
+        })
+        // setStageTransitionModalVisible(!stageTransitionModalVisible);
 
-        
-        
-        Generate(input.crashes)
-      }, 500)
+        return;
+      } else {
+        console.log("LEVEL CURRENT > ELSE")
+        let localLevel = input.level + 1;
+        level.current = localLevel;
+        setLetterPocket([]);
+        setDisplayLetters([]);
+
+
+        timeoutCallGenerateID = setTimeout(() => {
+          Generate(input.crashes)
+        }, 500)
+      }
+
+
 
     } else {
 
@@ -1287,78 +1335,78 @@ export const Stage_1_Projectile = () => {
           :
           <>
             {score.current > 0 ?
-            <>
-              <View style={{
-                position: 'absolute',
-                top: windowHeight - HeightRatio(160),
-                left: WidthRatio(10),
-                zIndex: -7, padding:
-                  HeightRatio(20),
-                borderRadius: HeightRatio(20)
-              }}>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  fontSize: HeightRatio(40),
-                  fontWeight: 'bold'
-                }}>Score:</Text>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(70),
-                  fontWeight: 'bold'
-                }}>{score.current}</Text>
-              </View>
-              {scoreFlash_100.current &&
+              <>
                 <View style={{
                   position: 'absolute',
-                  top: windowHeight/2 - WidthRatio(30),
-                  left: windowWidth/2 - WidthRatio(30),
-                  zIndex: -7,
-                  padding: HeightRatio(20),
+                  top: windowHeight - HeightRatio(160),
+                  left: WidthRatio(10),
+                  zIndex: -7, padding:
+                    HeightRatio(20),
                   borderRadius: HeightRatio(20)
-                }} >
-                  <Image 
-                    source={require('../../assets/reward_100_points.png')} 
-                    style={{height: WidthRatio(60), width: WidthRatio(60)}} />
+                }}>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: HeightRatio(40),
+                    fontWeight: 'bold'
+                  }}>Score:</Text>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(70),
+                    fontWeight: 'bold'
+                  }}>{score.current}</Text>
                 </View>
-              }
-              {scoreFlash_1000.current &&
-                <View style={{
-                  position: 'absolute',
-                  top: windowHeight/2 - WidthRatio(30),
-                  left: windowWidth/2 - WidthRatio(30),
-                  zIndex: -7,
-                  padding: HeightRatio(20),
-                  borderRadius: HeightRatio(20)
-                }} >
-                  <Image 
-                    source={require('../../assets/reward_1000_points.png')} 
-                    style={{height: WidthRatio(60), width: WidthRatio(60)}} />
-                </View>
-              }
-            </>
+                {scoreFlash_100.current &&
+                  <View style={{
+                    position: 'absolute',
+                    top: windowHeight / 2 - WidthRatio(30),
+                    left: windowWidth / 2 - WidthRatio(30),
+                    zIndex: -7,
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(20)
+                  }} >
+                    <Image
+                      source={require('../../assets/reward_100_points.png')}
+                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                  </View>
+                }
+                {scoreFlash_1000.current &&
+                  <View style={{
+                    position: 'absolute',
+                    top: windowHeight / 2 - WidthRatio(30),
+                    left: windowWidth / 2 - WidthRatio(30),
+                    zIndex: -7,
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(20)
+                  }} >
+                    <Image
+                      source={require('../../assets/reward_1000_points.png')}
+                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                  </View>
+                }
+              </>
               :
-            <>
-              <View style={{
-                position: 'absolute',
-                top: windowHeight - HeightRatio(160),
-                left: WidthRatio(10),
-                zIndex: -7,
-                padding: HeightRatio(20),
-                borderRadius: HeightRatio(20)
-              }}>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(40),
-                  fontWeight: 'bold'
-                }}>Score:</Text>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(70),
-                  fontWeight: 'bold'
-                }}>0</Text>
-              </View>
-              
-            </>
+              <>
+                <View style={{
+                  position: 'absolute',
+                  top: windowHeight - HeightRatio(160),
+                  left: WidthRatio(10),
+                  zIndex: -7,
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }}>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(40),
+                    fontWeight: 'bold'
+                  }}>Score:</Text>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(70),
+                    fontWeight: 'bold'
+                  }}>0</Text>
+                </View>
+
+              </>
             }
           </>
         }
@@ -1437,33 +1485,33 @@ export const Stage_1_Projectile = () => {
         {/* Right Angle 0 & 1 */}
         <Animated.View
           style={[Styling.projectile_obstacle_block,
-            {width: WidthRatio(24), height: WidthRatio(24),}, 
-            {
-              transform: [
-                { translateX: obstaclePosition_right_angle_0.x }, 
-                { translateY: obstaclePosition_right_angle_0.y },
-                // { rotate: boxInterpolation_large } 
-              ],
-            },
+          { width: WidthRatio(24), height: WidthRatio(24), },
+          {
+            transform: [
+              { translateX: obstaclePosition_right_angle_0.x },
+              { translateY: obstaclePosition_right_angle_0.y },
+              // { rotate: boxInterpolation_large } 
+            ],
+          },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_red_ufo.png')} 
+          <Image
+            source={require('../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
-              { translateX: obstaclePosition_right_angle_1.x }, 
+              { translateX: obstaclePosition_right_angle_1.x },
               { translateY: obstaclePosition_right_angle_1.y },
               // { rotate: boxInterpolation_large } 
             ],
-            
+
           },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_red_ufo.png')} 
+          <Image
+            source={require('../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
@@ -1560,7 +1608,7 @@ export const Stage_1_Projectile = () => {
         {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
 
 
-        <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10)}} />
+        <View style={{ borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10) }} />
         {displayLetters.map((l, i) => (
           <View style={{
             width: 60, position: 'absolute', top: 10, left: WidthRatio((50 - ((((letterPositionNum * 65) / windowWidth) * 100) / 2)) * 3.7) + ((i * 65)),
@@ -1593,6 +1641,20 @@ export const Stage_1_Projectile = () => {
               </View>
             ))}
           </>
+        }
+        {flashOouchOnCrash.current && !hideCrashesUntilUpdate.current &&
+          <View style={{
+            position: 'absolute',
+            top: windowHeight / 2 - WidthRatio(30),
+            left: windowWidth / 2 - WidthRatio(30),
+            zIndex: -7,
+            padding: HeightRatio(20),
+            borderRadius: HeightRatio(20)
+          }} >
+            <Image
+              source={require('../../assets/warning_oouch.png')}
+              style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+          </View>
         }
 
         {/* SKULLS */}
@@ -1627,6 +1689,38 @@ export const Stage_1_Projectile = () => {
           </View>
         ))}
 
+        {/* STAGE TRANSITION MODAL */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={stageTransitionModalVisible}
+          onRequestClose={() => {
+            setStageTransitionModalVisible(!stageTransitionModalVisible);
+            isGameInProgress.current = false;
+          }}
+        >
+          <View style={Styling.modal_centered_view}>
+            <View style={Styling.modal_view}>
+              <Text style={Styling.modal_text}>Stage 1 Complete</Text>
+              <View style={{ margin: HeightRatio(20) }}>
+                <Text style={Styling.modal_text_style}>Select Next to proceed.</Text>
+              </View>
+              <TouchableOpacity
+                style={[Styling.modal_button]}
+                onPress={() => { 
+                  setStageTransitionModalVisible(!stageTransitionModalVisible); 
+                  // setDisplayPlaybutton(true); 
+                  
+                }}
+              >
+                <Text style={Styling.modal_text_style}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* GAME OVER MODAL */}
+
         <Modal
           animationType="slide"
           transparent={true}
@@ -1654,6 +1748,8 @@ export const Stage_1_Projectile = () => {
             </View>
           </View>
         </Modal>
+
+
 
       </>
     </View>

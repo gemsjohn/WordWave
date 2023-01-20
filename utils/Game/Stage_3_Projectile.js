@@ -7,28 +7,28 @@ import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
-import { 
-  isLetterBlockColliding, 
-  isObstacleColliding_0, 
-  isObstacleColliding_1, 
-  isObstacleColliding_large, 
-  isObstacleColliding_right_angle_0, 
-  isObstacleColliding_right_angle_1, 
-  isObstacleColliding_twins_0, 
-  isObstacleColliding_twins_0_divgergence, 
-  isObstacleColliding_twins_1, 
+import {
+  isLetterBlockColliding,
+  isObstacleColliding_0,
+  isObstacleColliding_1,
+  isObstacleColliding_large,
+  isObstacleColliding_right_angle_0,
+  isObstacleColliding_right_angle_1,
+  isObstacleColliding_twins_0,
+  isObstacleColliding_twins_0_divgergence,
+  isObstacleColliding_twins_1,
   isObstacleColliding_twins_1_divgergence,
-  isObstacleColliding_opacity_bot, 
+  isObstacleColliding_opacity_bot,
   isObstacleColliding_opacity_bot_divergence,
-  isSpecialColliding_0, 
-  isSpecialColliding_1, 
-  isSpecialColliding_2, 
-  isSpecialColliding_3, 
-  isSpecialColliding_a_0, 
-  isSpecialColliding_a_1, 
-  isSpecialColliding_a_2, 
-  isSpecialColliding_a_3, 
-  isUpgradeToSpecial_0_Colliding 
+  isSpecialColliding_0,
+  isSpecialColliding_1,
+  isSpecialColliding_2,
+  isSpecialColliding_3,
+  isSpecialColliding_a_0,
+  isSpecialColliding_a_1,
+  isSpecialColliding_a_2,
+  isSpecialColliding_a_3,
+  isUpgradeToSpecial_0_Colliding
 } from './CollisionHandler';
 import {
   Text,
@@ -72,6 +72,7 @@ export const Stage_3_Projectile = () => {
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
   const crashes = useRef(null);
+  const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
   const skullPlaceholder = useRef(3)
@@ -135,7 +136,7 @@ export const Stage_3_Projectile = () => {
   const obstacleOpacity_opacity_bot = useRef(new Animated.Value(0)).current;
   const obstacle_opacity_bot = useRef(null)
   let timeoutObstacle_opacity_bot_ID;
-  
+
 
   // [OBSTACLE ANIMATION TWINS 0] - - - - - 
   const hasUpdatedObstacle_twins_0 = useRef(false);
@@ -221,7 +222,7 @@ export const Stage_3_Projectile = () => {
     clearTimeout(timeoutCallGenerateID);
     if (localPrevCrashes > 0) {
       crashes.current = localPrevCrashes;
-    } 
+    }
     else {
       crashes.current = null;
     }
@@ -248,19 +249,19 @@ export const Stage_3_Projectile = () => {
 
     setDisplayPlaybutton(false)
 
-      if (level.current > 0) {
-        score.current += 1000;
-        scoreFlash_1000.current = true;
-        setTimeout(() => {
-          scoreFlash_1000.current = false;
-          }, 1000)
-      }
+    if (level.current > 0) {
+      score.current += 1000;
+      scoreFlash_1000.current = true;
+      setTimeout(() => {
+        scoreFlash_1000.current = false;
+      }, 1000)
+    }
 
     setRandomWord(word);
     setDisplayLetters(letters)
 
     wordPlusSeven.current = scambledCombined; // Must be last
-    
+
     console.log("#2 Finish Generate")
   }
 
@@ -282,12 +283,17 @@ export const Stage_3_Projectile = () => {
               letterAnimation();
               runObstacleAnimation_opacity_bot()
 
-            } 
-            
+            }
+
+            if (level.current >= 1) {
+              runObstacleAnimation_1();
+              runObstacleAnimation_0();
+            }
+
             // if (level.current >= 1) {
             //   runObstacleAnimation_twins_0();
             // } 
-            
+
             // if (level.current >= 2) {
             //   runObstacleAnimation_right_angle_0();
             // }
@@ -608,11 +614,11 @@ export const Stage_3_Projectile = () => {
               useNativeDriver: true,
             }),
           ]),
-          
-          
+
+
         ]),
         Animated.sequence([
-          
+
           Animated.timing(obstacleOpacity_opacity_bot, {
             toValue: 0,
             duration: 800,
@@ -739,19 +745,19 @@ export const Stage_3_Projectile = () => {
             delay: 0,
           }),
         ]),
-        
-        
-      ]),
-      
 
-      obstacle_twins_0.current.start(() => {
-        if (timeoutObstacle_twins_0_ID) {
-          clearTimeout(timeoutObstacle_twins_0_ID);
-        }
-        timeoutObstacle_twins_0_ID = setTimeout(() => {
-          runObstacleAnimation_twins_0();
-        }, 200)
-      });
+
+      ]),
+
+
+        obstacle_twins_0.current.start(() => {
+          if (timeoutObstacle_twins_0_ID) {
+            clearTimeout(timeoutObstacle_twins_0_ID);
+          }
+          timeoutObstacle_twins_0_ID = setTimeout(() => {
+            runObstacleAnimation_twins_0();
+          }, 200)
+        });
     } else {
       return;
     }
@@ -830,26 +836,26 @@ export const Stage_3_Projectile = () => {
             delay: 0,
           }),
         ]),
-        
-        
+
+
       ]),
-      
 
-      obstacle_twins_1.current.start(() => {
-        if (timeoutObstacle_twins_1_ID) {
-          clearTimeout(timeoutObstacle_twins_1_ID);
-        }
-        timeoutObstacle_twins_1_ID = setTimeout(() => {
 
-          if (flip.current) {
-            runObstacleAnimation_twins_1();
-          } else {
-            runObstacleAnimation_0();
-            runObstacleAnimation_1();
+        obstacle_twins_1.current.start(() => {
+          if (timeoutObstacle_twins_1_ID) {
+            clearTimeout(timeoutObstacle_twins_1_ID);
           }
-          
-        }, 200)
-      });
+          timeoutObstacle_twins_1_ID = setTimeout(() => {
+
+            if (flip.current) {
+              runObstacleAnimation_twins_1();
+            } else {
+              runObstacleAnimation_0();
+              runObstacleAnimation_1();
+            }
+
+          }, 200)
+        });
     } else {
       return;
     }
@@ -1077,6 +1083,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_0.current.reset()
       }
@@ -1118,6 +1128,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_1.current.reset()
       }
@@ -1159,6 +1173,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_large.current) {
           crashes.current += 1;
           hasUpdatedObstacle_large.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_large.current.reset()
       }
@@ -1200,6 +1218,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_right_angle_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_right_angle_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_right_angle_0.current.reset()
       }
@@ -1241,6 +1263,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_right_angle_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_right_angle_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_right_angle_1.current.reset()
       }
@@ -1283,6 +1309,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_twins_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_twins_0.current.reset()
       }
@@ -1323,6 +1353,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_twins_0.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_0.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_twins_0.current.reset()
       }
@@ -1364,6 +1398,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_twins_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_twins_1.current.reset()
       }
@@ -1404,6 +1442,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_twins_1.current) {
           crashes.current += 1;
           hasUpdatedObstacle_twins_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_twins_1.current.reset()
       }
@@ -1445,6 +1487,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_opacity_bot.current) {
           crashes.current += 1;
           hasUpdatedObstacle_opacity_bot.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_opacity_bot.current.reset()
       }
@@ -1486,6 +1532,10 @@ export const Stage_3_Projectile = () => {
         if (!hasUpdatedObstacle_opacity_bot.current) {
           crashes.current += 1;
           hasUpdatedObstacle_opacity_bot.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
         }
         obstacle_opacity_bot.current.reset()
       }
@@ -1542,10 +1592,10 @@ export const Stage_3_Projectile = () => {
       obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1)
       obstaclePosition_twins_0.removeListener(obstacleListener_twins_0);
       obstaclePosition_twins_0_divergence.removeListener(obstacleListener_twins_0_divergence)
-      
+
       obstaclePosition_twins_1.removeListener(obstacleListener_twins_1);
       obstaclePosition_twins_1_divergence.removeListener(obstacleListener_twins_1_divergence)
-      
+
       obstaclePosition_opacity_bot.removeListener(obstacleListener_opacity_bot);
       obstaclePosition_opacity_bot_divergence.removeListener(obstacleListener_opacity_bot_divergence);
 
@@ -1563,9 +1613,13 @@ export const Stage_3_Projectile = () => {
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     if (wrongElements.length > prevWrongElements) {
       crashes.current += 1;
-    } 
+      flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
+    }
     console.log(similarElements)
-    if (similarElements.length > prevSimilarElements){
+    if (similarElements.length > prevSimilarElements) {
       score.current += 100;
       scoreFlash_100.current = true;
     }
@@ -1581,12 +1635,12 @@ export const Stage_3_Projectile = () => {
         console.log("CURRENT LEVEL:   " + level.current)
         console.log("CURRENT CRASHES:   " + crashes.current)
 
-        endGame({ 
-          continue: true, 
-          local: "a", 
-          crashes: crashes.current, 
-          score: score.current, 
-          level: level.current 
+        endGame({
+          continue: true,
+          local: "a",
+          crashes: crashes.current,
+          score: score.current,
+          level: level.current
         });
       }
     }
@@ -1599,7 +1653,7 @@ export const Stage_3_Projectile = () => {
   useEffect(() => {
     setTimeout(() => {
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
-          endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
+        endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
       }
     }, 200);
   }, [crashes.current])
@@ -1622,47 +1676,52 @@ export const Stage_3_Projectile = () => {
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
     // if (input.local != "c") {
-      if (level.current >= 0) {
-        animation.current.stop();
-        obstacle_opacity_bot.current.stop();
-        letterPosition.setValue({ x: 1000, y: 0 })
-        obstaclePosition_opacity_bot.setValue({ x: 1000, y: 0 })
-        obstaclePosition_opacity_bot_divergence.setValue({ x: 1000, y: 0 })
+    if (level.current >= 0) {
+      animation.current.stop();
+      obstacle_opacity_bot.current.stop();
+      letterPosition.setValue({ x: 1000, y: 0 })
+      obstaclePosition_opacity_bot.setValue({ x: 1000, y: 0 })
+      obstaclePosition_opacity_bot_divergence.setValue({ x: 1000, y: 0 })
 
+      // if (obstacle_0.current != null) {
+      //   obstacle_0.current.stop();
 
-        // if (obstacle_twins_1.current != null) {
-        //   obstacle_twins_1.current.stop();
-
-        //   obstaclePosition_twins_1.setValue({ x: 1000, y: 0 })
-
-        // }
-        // if (obstacle_0.current != null) {
-        //   obstacle_0.current.stop();
-
-        //   obstaclePosition_0.setValue({ x: 1000, y: 0 })
-        // }
-        // if (obstacle_1.current != null) {
-        //   obstacle_1.current.stop();
-
-        //   obstaclePosition_1.setValue({ x: 1000, y: 0 })
-        // }
-      } 
-      // if (level.current >= 1 && obstacle_0.current != null) { 
-      //   obstacle_twins_0.current.stop();
-
-      //   obstaclePosition_twins_0.setValue({ x: 1000, y: 0 })
-      // } 
-      // if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
-      //   obstacle_right_angle_0.current.stop();
-
-      //   obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+      //   obstaclePosition_0.setValue({ x: 1000, y: 0 })
       // }
+      // if (obstacle_1.current != null) {
+      //   obstacle_1.current.stop();
 
-      // if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
-      //   obstacle_right_angle_1.current.stop();
-
-      //   obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+      //   obstaclePosition_1.setValue({ x: 1000, y: 0 })
       // }
+    }
+
+
+    if (level.current >= 1 && obstacle_0.current != null && obstacle_1.current != null) {
+      obstacle_0.current.stop();
+      obstacle_1.current.stop();
+
+      obstaclePosition_0.setValue({ x: 1000, y: 0 })
+      obstaclePosition_1.setValue({ x: 1000, y: 0 })
+    }
+    if (level.current >= 1 && obstacle_twins_1.current != null) {
+      obstacle_twins_1.current.stop();
+
+      obstaclePosition_twins_1.setValue({ x: 1000, y: 0 })
+      obstaclePosition_twins_1_divergence.setValue({ x: 1000, y: 0 })
+
+    }
+
+    // if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
+    //   obstacle_right_angle_0.current.stop();
+
+    //   obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+    // }
+
+    // if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
+    //   obstacle_right_angle_1.current.stop();
+
+    //   obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+    // }
     // }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1697,8 +1756,8 @@ export const Stage_3_Projectile = () => {
       setDisplayLetters([]);
       timeoutCallGenerateID = setTimeout(() => {
 
-        
-        
+
+
         Generate(input.crashes)
       }, 500)
 
@@ -1746,78 +1805,78 @@ export const Stage_3_Projectile = () => {
           :
           <>
             {score.current > 0 ?
-            <>
-              <View style={{
-                position: 'absolute',
-                top: windowHeight - HeightRatio(160),
-                left: WidthRatio(10),
-                zIndex: -7, padding:
-                  HeightRatio(20),
-                borderRadius: HeightRatio(20)
-              }}>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  fontSize: HeightRatio(40),
-                  fontWeight: 'bold'
-                }}>Score:</Text>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(70),
-                  fontWeight: 'bold'
-                }}>{score.current}</Text>
-              </View>
-              {scoreFlash_100.current &&
+              <>
                 <View style={{
                   position: 'absolute',
-                  top: windowHeight/2 - WidthRatio(30),
-                  left: windowWidth/2 - WidthRatio(30),
-                  zIndex: -7,
-                  padding: HeightRatio(20),
+                  top: windowHeight - HeightRatio(160),
+                  left: WidthRatio(10),
+                  zIndex: -7, padding:
+                    HeightRatio(20),
                   borderRadius: HeightRatio(20)
-                }} >
-                  <Image 
-                    source={require('../../assets/reward_100_points.png')} 
-                    style={{height: WidthRatio(60), width: WidthRatio(60)}} />
+                }}>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: HeightRatio(40),
+                    fontWeight: 'bold'
+                  }}>Score:</Text>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(70),
+                    fontWeight: 'bold'
+                  }}>{score.current}</Text>
                 </View>
-              }
-              {scoreFlash_1000.current &&
-                <View style={{
-                  position: 'absolute',
-                  top: windowHeight/2 - WidthRatio(30),
-                  left: windowWidth/2 - WidthRatio(30),
-                  zIndex: -7,
-                  padding: HeightRatio(20),
-                  borderRadius: HeightRatio(20)
-                }} >
-                  <Image 
-                    source={require('../../assets/reward_1000_points.png')} 
-                    style={{height: WidthRatio(60), width: WidthRatio(60)}} />
-                </View>
-              }
-            </>
+                {scoreFlash_100.current &&
+                  <View style={{
+                    position: 'absolute',
+                    top: windowHeight / 2 - WidthRatio(30),
+                    left: windowWidth / 2 - WidthRatio(30),
+                    zIndex: -7,
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(20)
+                  }} >
+                    <Image
+                      source={require('../../assets/reward_100_points.png')}
+                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                  </View>
+                }
+                {scoreFlash_1000.current &&
+                  <View style={{
+                    position: 'absolute',
+                    top: windowHeight / 2 - WidthRatio(30),
+                    left: windowWidth / 2 - WidthRatio(30),
+                    zIndex: -7,
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(20)
+                  }} >
+                    <Image
+                      source={require('../../assets/reward_1000_points.png')}
+                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                  </View>
+                }
+              </>
               :
-            <>
-              <View style={{
-                position: 'absolute',
-                top: windowHeight - HeightRatio(160),
-                left: WidthRatio(10),
-                zIndex: -7,
-                padding: HeightRatio(20),
-                borderRadius: HeightRatio(20)
-              }}>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(40),
-                  fontWeight: 'bold'
-                }}>Score:</Text>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(70),
-                  fontWeight: 'bold'
-                }}>0</Text>
-              </View>
-              
-            </>
+              <>
+                <View style={{
+                  position: 'absolute',
+                  top: windowHeight - HeightRatio(160),
+                  left: WidthRatio(10),
+                  zIndex: -7,
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }}>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(40),
+                    fontWeight: 'bold'
+                  }}>Score:</Text>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(70),
+                    fontWeight: 'bold'
+                  }}>0</Text>
+                </View>
+
+              </>
             }
           </>
         }
@@ -1896,137 +1955,137 @@ export const Stage_3_Projectile = () => {
         {/* Right Angle 0 & 1 */}
         <Animated.View
           style={[Styling.projectile_obstacle_block,
-            {width: WidthRatio(24), height: WidthRatio(24),}, 
-            {
-              transform: [
-                { translateX: obstaclePosition_right_angle_0.x }, 
-                { translateY: obstaclePosition_right_angle_0.y },
-                // { rotate: boxInterpolation_large } 
-              ],
-            },
+          { width: WidthRatio(24), height: WidthRatio(24), },
+          {
+            transform: [
+              { translateX: obstaclePosition_right_angle_0.x },
+              { translateY: obstaclePosition_right_angle_0.y },
+              // { rotate: boxInterpolation_large } 
+            ],
+          },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_red_ufo.png')} 
+          <Image
+            source={require('../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
-              { translateX: obstaclePosition_right_angle_1.x }, 
+              { translateX: obstaclePosition_right_angle_1.x },
               { translateY: obstaclePosition_right_angle_1.y },
               // { rotate: boxInterpolation_large } 
             ],
-            
+
           },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_red_ufo.png')} 
+          <Image
+            source={require('../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
         {/* Opacity Bot */}
         {/* - - - - - - - - - - */}
         <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_opacity_bot.x }, 
-                { translateY: obstaclePosition_opacity_bot.y }
-                // { rotate: boxInterpolation_opacity_bot } 
-              ],
-              opacity: boxInterpolation_opacity_bot,
-              
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_3.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
-          <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_opacity_bot_divergence.x }, 
-                { translateY: obstaclePosition_opacity_bot_divergence.y }
-                // { rotate: boxInterpolation_opacity_bot } 
-              ],
-              opacity: boxInterpolation_opacity_bot,
-              
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_3.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_opacity_bot.x },
+              { translateY: obstaclePosition_opacity_bot.y }
+              // { rotate: boxInterpolation_opacity_bot } 
+            ],
+            opacity: boxInterpolation_opacity_bot,
+
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_3.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_opacity_bot_divergence.x },
+              { translateY: obstaclePosition_opacity_bot_divergence.y }
+              // { rotate: boxInterpolation_opacity_bot } 
+            ],
+            opacity: boxInterpolation_opacity_bot,
+
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_3.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
         {/* - - - - - - - - - - */}
 
         {/* Twins */}
         {/* - - - - - - - - - - */}
         <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_twins_0.x }, 
-                { translateY: obstaclePosition_twins_0.y }
-                // { rotate: boxInterpolation_twins_0 } 
-              ],
-              opacity: boxInterpolation_twins_0_a,
-              
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_4.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
-          <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_twins_0_divergence.x }, 
-                { translateY: obstaclePosition_twins_0_divergence.y }
-                // { rotate: boxInterpolation_twins_0 } 
-              ],
-              opacity: boxInterpolation_twins_0_b,
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_4.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_0.x },
+              { translateY: obstaclePosition_twins_0.y }
+              // { rotate: boxInterpolation_twins_0 } 
+            ],
+            opacity: boxInterpolation_twins_0_a,
 
-          <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_twins_1.x }, 
-                { translateY: obstaclePosition_twins_1.y }
-                // { rotate: boxInterpolation_twins_1 } 
-              ],
-              opacity: boxInterpolation_twins_1_a,
-              
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_4.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
-          <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_twins_1_divergence.x }, 
-                { translateY: obstaclePosition_twins_1_divergence.y }
-                // { rotate: boxInterpolation_twins_1 } 
-              ],
-              opacity: boxInterpolation_twins_1_b,
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_4.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_0_divergence.x },
+              { translateY: obstaclePosition_twins_0_divergence.y }
+              // { rotate: boxInterpolation_twins_0 } 
+            ],
+            opacity: boxInterpolation_twins_0_b,
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_1.x },
+              { translateY: obstaclePosition_twins_1.y }
+              // { rotate: boxInterpolation_twins_1 } 
+            ],
+            opacity: boxInterpolation_twins_1_a,
+
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_1_divergence.x },
+              { translateY: obstaclePosition_twins_1_divergence.y }
+              // { rotate: boxInterpolation_twins_1 } 
+            ],
+            opacity: boxInterpolation_twins_1_b,
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
         {/* - - - - - - - - - - */}
 
 
@@ -2050,7 +2109,7 @@ export const Stage_3_Projectile = () => {
         {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
 
 
-        <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10)}} />
+        <View style={{ borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10) }} />
         {displayLetters.map((l, i) => (
           <View style={{
             width: 60, position: 'absolute', top: 10, left: WidthRatio((50 - ((((letterPositionNum * 65) / windowWidth) * 100) / 2)) * 3.7) + ((i * 65)),
@@ -2084,6 +2143,21 @@ export const Stage_3_Projectile = () => {
             ))}
           </>
         }
+        {flashOouchOnCrash.current && !hideCrashesUntilUpdate.current &&
+          <View style={{
+            position: 'absolute',
+            top: windowHeight / 2 - WidthRatio(30),
+            left: windowWidth / 2 - WidthRatio(30),
+            zIndex: -7,
+            padding: HeightRatio(20),
+            borderRadius: HeightRatio(20)
+          }} >
+            <Image
+              source={require('../../assets/warning_oouch.png')}
+              style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+          </View>
+        }
+
 
         {/* SKULLS */}
         {Array.from(Array(skullPlaceholder.current).keys()).map((n, i) => (

@@ -35,7 +35,10 @@ export const Game = (props) => {
   const sharedStateRef = useRef({});
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-  const upgradeToSpecial_0 = useRef(null);
+  const [stage1, setStage1] = useState(true);
+  const [stage2, setStage2] = useState(false);
+  const [stage3, setStage3] = useState(false);
+
 
   setTimeout(() => {
     setLoadingComplete(true)
@@ -62,11 +65,17 @@ export const Game = (props) => {
   useEffect(() => {
     const intervalCheckUpgradeToSpecial_0 = setInterval(() => {
       setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
-      // if (upgradeToSpecial_0.current != sharedStateRef.current.upgradeToSpecial_0) {
-      //   console.log("Hanlde Special Display")
-      //   setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
-      //   upgradeToSpecial_0.current = sharedStateRef.current.upgradeToSpecial_0;
-      // }
+      
+      if (sharedStateRef.current.stage1 != null) {
+        setStage1(sharedStateRef.current.stage1);
+      }
+      if (sharedStateRef.current.stage2 != null) {
+        setStage2(sharedStateRef.current.stage2);
+      }
+      if (sharedStateRef.current.stage3 != null) {
+        setStage3(sharedStateRef.current.stage3);
+      }
+      
 
     }, 250)
 
@@ -101,9 +110,16 @@ export const Game = (props) => {
                 <Special />
               }
               {/* <Projectile /> */}
-              {/* <Stage_1_Projectile /> */}
-              {/* <Stage_2_Projectile /> */}
-              <Stage_3_Projectile />
+
+              {stage1 &&
+                <Stage_1_Projectile />
+              }
+              {stage2 &&
+                <Stage_2_Projectile />
+              }
+              {stage3 &&
+                <Stage_3_Projectile />
+              }
             </SharedStateContext.Provider>
           </>
           :
