@@ -210,6 +210,8 @@ export const Stage_2_Projectile = () => {
   }, []);
 
   const Generate = (localPrevCrashes) => {
+    console.log("GENERATE")
+    console.log("crashes.current = " + crashes.current)
     setContinuousEndGameCall(false)
     clearTimeout(timeoutCallGenerateID);
     if (localPrevCrashes > 0) {
@@ -262,18 +264,17 @@ export const Stage_2_Projectile = () => {
           console.log("LEVEL: " + level.current)
           if (level.current >= 0) {
             letterAnimation();
-            runObstacleAnimation_twins_0();
             runObstacleAnimation_twins_1();
 
           } 
           
-          // if (level.current >= 1) {
-          //   runObstacleAnimation_1();
-          // } 
+          if (level.current >= 1) {
+            runObstacleAnimation_twins_0();
+          } 
           
-          // if (level.current >= 2) {
-          //   runObstacleAnimation_right_angle_0();
-          // }
+          if (level.current >= 2) {
+            runObstacleAnimation_right_angle_0();
+          }
 
           // if (level.current >= 3) {
           //   runObstacleAnimation_right_angle_1();
@@ -459,7 +460,7 @@ export const Stage_2_Projectile = () => {
       obstaclePosition_right_angle_0.setValue({ x: localXPos_0, y: -HeightRatio(100) });
       obstacle_right_angle_0.current = Animated.sequence([
         Animated.spring(obstaclePosition_right_angle_0.y, {
-          toValue: localYPos_0, //letterPosition.y._value
+          toValue: localYPos_0,
           useNativeDriver: true,
           speed: 8,
           bounciness: 8
@@ -631,9 +632,9 @@ export const Stage_2_Projectile = () => {
     if (isGameInProgress.current) {
       hasUpdatedObstacle_twins_0.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * (HeightRatio(770) - HeightRatio(-100) + 1)) + HeightRatio(-100);
       let localYPos_2 = Math.floor(Math.random() * HeightRatio(670));
-      let localYPos_3 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_3 = Math.floor(Math.random() * (HeightRatio(770) - HeightRatio(-100) + 1)) + HeightRatio(-100);
 
       obstaclePosition_twins_0.setValue({ x: WidthRatio(370), y: localYPos_0 });
       obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(370), y: localYPos_2 });
@@ -722,9 +723,9 @@ export const Stage_2_Projectile = () => {
       flip.current = !flip.current;
       hasUpdatedObstacle_twins_1.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * (HeightRatio(770) - HeightRatio(-100) + 1)) + HeightRatio(-100);
       let localYPos_2 = Math.floor(Math.random() * HeightRatio(670));
-      let localYPos_3 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_3 = Math.floor(Math.random() * (HeightRatio(770) - HeightRatio(-100) + 1)) + HeightRatio(-100);
 
       obstaclePosition_twins_1.setValue({ x: WidthRatio(370), y: localYPos_0 });
       obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(370), y: localYPos_2 });
@@ -1472,12 +1473,11 @@ export const Stage_2_Projectile = () => {
   }, [letterPocket])
 
   useEffect(() => {
-    if (crashes.current >= 3) {
-      setTimeout(() => {
-        endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
-      }, 200);
-
-    }
+    setTimeout(() => {
+      if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
+          endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
+      }
+    }, 200);
   }, [crashes.current])
 
   const getBackgroundColor = (input) => {
@@ -1500,7 +1500,6 @@ export const Stage_2_Projectile = () => {
     // if (input.local != "c") {
       if (level.current >= 0) {
         animation.current.stop();
-        obstacle_twins_0.current.stop();
         if (obstacle_twins_1.current != null) {
           obstacle_twins_1.current.stop();
 
@@ -1514,12 +1513,12 @@ export const Stage_2_Projectile = () => {
 
         // obstacle_right_angle_0.current.stop();
       } 
-      // if (level.current >= 1 && obstacle_1.current != null) { 
-      //   obstacle_1.current.stop();
-      // } 
-      // if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
-      //   obstacle_right_angle_0.current.stop();
-      // }
+      if (level.current >= 1 && obstacle_0.current != null) { 
+        obstacle_twins_0.current.stop();
+      } 
+      if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
+        obstacle_right_angle_0.current.stop();
+      }
 
       // if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
       //   obstacle_right_angle_1.current.stop();
@@ -1569,7 +1568,7 @@ export const Stage_2_Projectile = () => {
 
     } else {
 
-      if (input.local == "b") {
+      if (input.local == "b" && crashes.current >= 3) {
         console.log("- - - - - - ")
         console.log("GAME ---> Over")
         console.log("- - - - - - ")
