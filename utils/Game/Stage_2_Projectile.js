@@ -69,14 +69,14 @@ export const Stage_2_Projectile = () => {
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
-  const crashes = useRef(null);
+  const crashes = useRef(sharedState.current.currentCrashes);
   const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
   const skullPlaceholder = useRef(3)
   const skullMoneyPlaceholder = useRef(2)
 
-  const score = useRef(0);
+  const score = useRef(sharedState.current.currentScore);
   const scoreFlash_100 = useRef(false);
   const scoreFlash_1000 = useRef(false);
   const level = useRef(0);
@@ -1630,27 +1630,39 @@ export const Stage_2_Projectile = () => {
 
       setHasGameBeenStarted(false);
       if (input.level >= 0) {
-        setSharedState({
-          stage1: false,
-          stage2: false,
-          stage3: true,
-          currentScore: score.current,
-          currentLevel: level.current,
-          currentCrashes: crashes.current
-        })
-        setStageTransitionModalVisible(!stageTransitionModalVisible);
+        setTimeout(() => {
+          score.current += 1000;
+          scoreFlash_1000.current = true;
+          setTimeout(() => {
+            scoreFlash_1000.current = false;
+          }, 1000)
+        }, 501)
+        
+        setTimeout(() => {
+          setSharedState({
+            stage1: false,
+            stage2: false,
+            stage3: true,
+            currentScore: score.current,
+            currentLevel: level.current,
+            currentCrashes: crashes.current
+          })
+        }, 1700)
+        
+        // setStageTransitionModalVisible(!stageTransitionModalVisible);
 
         return;
+      } else {
+        let localLevel = input.level + 1;
+        level.current = localLevel;
+        setLetterPocket([]);
+        setDisplayLetters([]);
+
+
+        timeoutCallGenerateID = setTimeout(() => {
+          Generate(input.crashes)
+        }, 500)
       }
-
-      let localLevel = input.level + 1;
-      level.current = localLevel;
-      setLetterPocket([]);
-      setDisplayLetters([]);
-
-      timeoutCallGenerateID = setTimeout(() => {
-        Generate(input.crashes)
-      }, 500)
 
     } else {
 

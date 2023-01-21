@@ -71,14 +71,14 @@ export const Stage_3_Projectile = () => {
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
-  const crashes = useRef(null);
+  const crashes = useRef(sharedState.current.currentCrashes);
   const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
   const skullPlaceholder = useRef(3)
   const skullMoneyPlaceholder = useRef(2)
 
-  const score = useRef(0);
+  const score = useRef(sharedState.current.currentScore);
   const scoreFlash_100 = useRef(false);
   const scoreFlash_1000 = useRef(false);
   const level = useRef(0);

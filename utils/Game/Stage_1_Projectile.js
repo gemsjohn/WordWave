@@ -1218,7 +1218,7 @@ export const Stage_1_Projectile = () => {
     hideCrashesUntilUpdate.current = true;
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
-    if (level.current >= 0) {
+    if (level.current >= 0 && animation.current != null && obstacle_0.current != null) {
       animation.current.stop();
       obstacle_0.current.stop();
 
@@ -1271,19 +1271,29 @@ export const Stage_1_Projectile = () => {
     if (input.continue) {
       setHasGameBeenStarted(false);
       if (input.level >= 0) {
-        setSharedState({
-          stage1: false,
-          stage2: true,
-          stage3: false,
-          currentScore: score.current,
-          currentLevel: level.current,
-          currentCrashes: crashes.current
-        })
+        setTimeout(() => {
+          score.current += 1000;
+          scoreFlash_1000.current = true;
+          setTimeout(() => {
+            scoreFlash_1000.current = false;
+          }, 1000)
+        }, 501)
+        
+        setTimeout(() => {
+          setSharedState({
+            stage1: false,
+            stage2: true,
+            stage3: false,
+            currentScore: score.current,
+            currentLevel: level.current,
+            currentCrashes: crashes.current
+          })
+        }, 1700)
+        
         // setStageTransitionModalVisible(!stageTransitionModalVisible);
 
         return;
       } else {
-        console.log("LEVEL CURRENT > ELSE")
         let localLevel = input.level + 1;
         level.current = localLevel;
         setLetterPocket([]);
@@ -1707,10 +1717,10 @@ export const Stage_1_Projectile = () => {
               </View>
               <TouchableOpacity
                 style={[Styling.modal_button]}
-                onPress={() => { 
-                  setStageTransitionModalVisible(!stageTransitionModalVisible); 
+                onPress={() => {
+                  setStageTransitionModalVisible(!stageTransitionModalVisible);
                   // setDisplayPlaybutton(true); 
-                  
+
                 }}
               >
                 <Text style={Styling.modal_text_style}>Next</Text>

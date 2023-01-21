@@ -38,6 +38,10 @@ export const Game = (props) => {
   const [stage1, setStage1] = useState(true);
   const [stage2, setStage2] = useState(false);
   const [stage3, setStage3] = useState(false);
+  // const [currentScore, setCurrentScore] = useState(null);
+  // const [currentLevel, setCurrentLevel] = useState(null);
+  // const [currentCrashes, setCurrentCrashes] = useState(null);
+
 
 
   setTimeout(() => {
