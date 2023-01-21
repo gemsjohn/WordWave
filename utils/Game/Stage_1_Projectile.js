@@ -1328,20 +1328,23 @@ export const Stage_1_Projectile = () => {
     <View>
       <>
         {displayPlaybutton ?
+        <>
           <TouchableOpacity
             onPress={() => { Generate() }}
             style={{
               position: 'absolute',
-              left: windowWidth / 2 - 125,
-              top: windowHeight / 2 - 125,
+              zIndex: 15,
+              left: windowWidth / 2 - HeightRatio(450),
+              top: windowHeight / 2 - HeightRatio(450),
               zIndex: -5
             }}
           >
             <Image
-              source={require('../../assets/button_play.png')}
-              style={{ height: 250, width: 250 }}
+              source={require('../../assets/stage_transition_1.png')}
+              style={{ height: HeightRatio(900), width: HeightRatio(900) }}
             />
           </TouchableOpacity>
+        </>
           :
           <>
             {score.current > 0 ?
@@ -1382,15 +1385,15 @@ export const Stage_1_Projectile = () => {
                 {scoreFlash_1000.current &&
                   <View style={{
                     position: 'absolute',
-                    top: windowHeight / 2 - WidthRatio(30),
-                    left: windowWidth / 2 - WidthRatio(30),
+                    top: windowHeight / 2 - HeightRatio(300),
+                    left: windowWidth / 2 - HeightRatio(300),
                     zIndex: -7,
                     padding: HeightRatio(20),
                     borderRadius: HeightRatio(20)
                   }} >
                     <Image
-                      source={require('../../assets/reward_1000_points.png')}
-                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                      source={require('../../assets/reward_1000_points_0.png')}
+                      style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
                   </View>
                 }
               </>

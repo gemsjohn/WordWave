@@ -1695,20 +1695,23 @@ export const Stage_2_Projectile = () => {
     <View>
       <>
         {displayPlaybutton ?
+          <>
           <TouchableOpacity
             onPress={() => { Generate() }}
             style={{
               position: 'absolute',
-              left: windowWidth / 2 - 125,
-              top: windowHeight / 2 - 125,
+              zIndex: 15,
+              left: windowWidth / 2 - HeightRatio(450),
+              top: windowHeight / 2 - HeightRatio(450),
               zIndex: -5
             }}
           >
             <Image
-              source={require('../../assets/button_play.png')}
-              style={{ height: 250, width: 250 }}
+              source={require('../../assets/stage_transition_2.png')}
+              style={{ height: HeightRatio(900), width: HeightRatio(900) }}
             />
           </TouchableOpacity>
+        </>
           :
           <>
             {score.current > 0 ?
