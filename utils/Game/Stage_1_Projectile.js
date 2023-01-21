@@ -49,7 +49,7 @@ export const Stage_1_Projectile = () => {
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
-  const crashes = useRef(null);
+  const crashes = useRef(0);
   const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
@@ -1285,8 +1285,8 @@ export const Stage_1_Projectile = () => {
             stage2: true,
             stage3: false,
             currentScore: score.current,
-            currentLevel: level.current,
-            currentCrashes: crashes.current
+            currentLevel: input.level,
+            currentCrashes: input.crashes
           })
         }, 1700)
         

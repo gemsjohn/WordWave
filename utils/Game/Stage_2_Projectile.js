@@ -69,7 +69,7 @@ export const Stage_2_Projectile = () => {
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
-  const crashes = useRef(sharedState.current.currentCrashes);
+  const crashes = useRef(null);
   const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
@@ -214,7 +214,6 @@ export const Stage_2_Projectile = () => {
 
   const Generate = (localPrevCrashes) => {
     console.log("GENERATE")
-    console.log("crashes.current = " + crashes.current)
     setContinuousEndGameCall(false)
     clearTimeout(timeoutCallGenerateID);
     if (localPrevCrashes > 0) {
@@ -222,6 +221,11 @@ export const Stage_2_Projectile = () => {
     } 
     else {
       crashes.current = null;
+    }
+    console.log("Just before level.current <= 0");
+    if (level.current <= 0) {
+      console.log("STAGE 2 / currentCrashes: " + sharedState.current.currentCrashes)
+      crashes.current += sharedState.current.currentCrashes
     }
 
     const data = require('./output.json');
@@ -1642,10 +1646,10 @@ export const Stage_2_Projectile = () => {
           setSharedState({
             stage1: false,
             stage2: false,
-            stage3: true,
+            stage3: true ,
             currentScore: score.current,
-            currentLevel: level.current,
-            currentCrashes: crashes.current
+            currentLevel: input.level,
+            currentCrashes: input.crashes
           })
         }, 1700)
         

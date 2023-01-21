@@ -72,6 +72,9 @@ export const Game = (props) => {
       
       if (sharedStateRef.current.stage1 != null) {
         setStage1(sharedStateRef.current.stage1);
+        // console.log("GAME / currentCrashes: " + sharedState.current.currentCrashes)
+        // console.log("GAME / currentScore: " + sharedState.current.currentScore)
+
       }
       if (sharedStateRef.current.stage2 != null) {
         setStage2(sharedStateRef.current.stage2);

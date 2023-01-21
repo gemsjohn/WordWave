@@ -227,6 +227,12 @@ export const Stage_3_Projectile = () => {
       crashes.current = null;
     }
 
+    console.log("Just before level.current <= 0");
+    if (level.current <= 0) {
+      console.log("STAGE 2 / currentCrashes: " + sharedState.current.currentCrashes)
+      crashes.current += sharedState.current.currentCrashes
+    }
+
     const data = require('./output.json');
     const index = Math.floor(Math.random() * data.length);
     const word = data[index].word;
