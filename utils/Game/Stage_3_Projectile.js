@@ -1858,7 +1858,7 @@ export const Stage_3_Projectile = () => {
                     borderRadius: HeightRatio(20)
                   }} >
                     <Image
-                      source={require('../../assets/reward_1000_points.png')}
+                      source={require('../../assets/reward_1000_points_0.png')}
                       style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
                   </View>
                 }
