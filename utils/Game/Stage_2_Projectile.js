@@ -1728,7 +1728,7 @@ export const Stage_2_Projectile = (props) => {
                   borderRadius: HeightRatio(20)
                 }}>
                   <Text style={{
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    color: 'rgba(255, 255, 255, 1.0)',
                     fontSize: HeightRatio(40),
                     fontWeight: 'bold'
                   }}>Score:</Text>

@@ -1272,7 +1272,7 @@ export const Stage_1_Projectile = (props) => {
     // [HANDLE GAME RESTART]
     if (input.continue) {
       setHasGameBeenStarted(false);
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1360,7 +1360,7 @@ export const Stage_1_Projectile = (props) => {
                   borderRadius: HeightRatio(20)
                 }}>
                   <Text style={{
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    color: 'rgba(255, 255, 255, 1.0)',
                     fontSize: HeightRatio(40),
                     fontWeight: 'bold'
                   }}>Score:</Text>
@@ -1788,5 +1788,3 @@ export const Stage_1_Projectile = (props) => {
     </View>
   );
 };
-
-// import { resetActionHome, resetActionGame, resetActionProfile } from '../ResetActions';

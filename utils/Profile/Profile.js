@@ -22,8 +22,17 @@ export const Profile = (props) => {
           {/* BODY */}
           <SafeAreaView style={Styling.container}>
             <ScrollView style={Styling.scrollView}>
-              
-              <Text style={{color: 'white', fontSize: HeightRatio(15), }}>{getTerm('profile', props.lang, 'title')}</Text>
+              <View style={{alignSelf: 'center'}}>
+                <Text style={{
+                  color: 'yellow', 
+                  fontSize: HeightRatio(50), 
+                  alignSelf: 'center',
+                  fontWight: 'bold',
+                  padding: HeightRatio(20) 
+                }}>
+                  Profile - Under Construction
+                </Text>
+              </View>
             </ScrollView>
           </SafeAreaView>
           <Navbar nav={props.nav} position={'absolute'} from={`${getTerm('profile', props.lang, 'title')}`} language={props.lang} />
