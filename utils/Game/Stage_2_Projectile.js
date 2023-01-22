@@ -7,26 +7,27 @@ import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
-import { 
-  isLetterBlockColliding, 
-  isObstacleColliding_0, 
-  isObstacleColliding_1, 
-  isObstacleColliding_large, 
-  isObstacleColliding_right_angle_0, 
-  isObstacleColliding_right_angle_1, 
-  isObstacleColliding_twins_0, 
-  isObstacleColliding_twins_0_divgergence, 
-  isObstacleColliding_twins_1, 
-  isObstacleColliding_twins_1_divgergence, 
-  isSpecialColliding_0, 
-  isSpecialColliding_1, 
-  isSpecialColliding_2, 
-  isSpecialColliding_3, 
-  isSpecialColliding_a_0, 
-  isSpecialColliding_a_1, 
-  isSpecialColliding_a_2, 
-  isSpecialColliding_a_3, 
-  isUpgradeToSpecial_0_Colliding 
+import { resetActionHome, resetActionGame, resetActionProfile } from '../ResetActions';
+import {
+  isLetterBlockColliding,
+  isObstacleColliding_0,
+  isObstacleColliding_1,
+  isObstacleColliding_large,
+  isObstacleColliding_right_angle_0,
+  isObstacleColliding_right_angle_1,
+  isObstacleColliding_twins_0,
+  isObstacleColliding_twins_0_divgergence,
+  isObstacleColliding_twins_1,
+  isObstacleColliding_twins_1_divgergence,
+  isSpecialColliding_0,
+  isSpecialColliding_1,
+  isSpecialColliding_2,
+  isSpecialColliding_3,
+  isSpecialColliding_a_0,
+  isSpecialColliding_a_1,
+  isSpecialColliding_a_2,
+  isSpecialColliding_a_3,
+  isUpgradeToSpecial_0_Colliding
 } from './CollisionHandler';
 import {
   Text,
@@ -48,11 +49,12 @@ import {
   TouchableOpacityBase,
   Easing
 } from 'react-native';
+import { set } from 'traverse';
 
 
 
 
-export const Stage_2_Projectile = () => {
+export const Stage_2_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
   const { sharedState, setSharedState } = useContext(SharedStateContext);
 
@@ -218,7 +220,7 @@ export const Stage_2_Projectile = () => {
     clearTimeout(timeoutCallGenerateID);
     if (localPrevCrashes > 0) {
       crashes.current = localPrevCrashes;
-    } 
+    }
     else {
       crashes.current = null;
     }
@@ -250,19 +252,19 @@ export const Stage_2_Projectile = () => {
 
     setDisplayPlaybutton(false)
 
-      if (level.current > 0) {
-        score.current += 1000;
-        scoreFlash_1000.current = true;
-        setTimeout(() => {
-          scoreFlash_1000.current = false;
-          }, 1000)
-      }
+    if (level.current > 0) {
+      score.current += 1000;
+      scoreFlash_1000.current = true;
+      setTimeout(() => {
+        scoreFlash_1000.current = false;
+      }, 1000)
+    }
 
     setRandomWord(word);
     setDisplayLetters(letters)
 
     wordPlusSeven.current = scambledCombined; // Must be last
-    
+
     console.log("#2 Finish Generate")
   }
 
@@ -284,12 +286,12 @@ export const Stage_2_Projectile = () => {
               letterAnimation();
               runObstacleAnimation_twins_1();
 
-            } 
-            
+            }
+
             if (level.current >= 1) {
               runObstacleAnimation_twins_0();
-            } 
-            
+            }
+
             if (level.current >= 2) {
               runObstacleAnimation_right_angle_0();
             }
@@ -718,19 +720,19 @@ export const Stage_2_Projectile = () => {
             delay: 0,
           }),
         ]),
-        
-        
-      ]),
-      
 
-      obstacle_twins_0.current.start(() => {
-        if (timeoutObstacle_twins_0_ID) {
-          clearTimeout(timeoutObstacle_twins_0_ID);
-        }
-        timeoutObstacle_twins_0_ID = setTimeout(() => {
-          runObstacleAnimation_twins_0();
-        }, 200)
-      });
+
+      ]),
+
+
+        obstacle_twins_0.current.start(() => {
+          if (timeoutObstacle_twins_0_ID) {
+            clearTimeout(timeoutObstacle_twins_0_ID);
+          }
+          timeoutObstacle_twins_0_ID = setTimeout(() => {
+            runObstacleAnimation_twins_0();
+          }, 200)
+        });
     } else {
       return;
     }
@@ -809,26 +811,26 @@ export const Stage_2_Projectile = () => {
             delay: 0,
           }),
         ]),
-        
-        
+
+
       ]),
-      
 
-      obstacle_twins_1.current.start(() => {
-        if (timeoutObstacle_twins_1_ID) {
-          clearTimeout(timeoutObstacle_twins_1_ID);
-        }
-        timeoutObstacle_twins_1_ID = setTimeout(() => {
 
-          if (flip.current) {
-            runObstacleAnimation_twins_1();
-          } else {
-            runObstacleAnimation_0();
-            runObstacleAnimation_1();
+        obstacle_twins_1.current.start(() => {
+          if (timeoutObstacle_twins_1_ID) {
+            clearTimeout(timeoutObstacle_twins_1_ID);
           }
-          
-        }, 200)
-      });
+          timeoutObstacle_twins_1_ID = setTimeout(() => {
+
+            if (flip.current) {
+              runObstacleAnimation_twins_1();
+            } else {
+              runObstacleAnimation_0();
+              runObstacleAnimation_1();
+            }
+
+          }, 200)
+        });
     } else {
       return;
     }
@@ -1476,10 +1478,10 @@ export const Stage_2_Projectile = () => {
       obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1)
       obstaclePosition_twins_0.removeListener(obstacleListener_twins_0);
       obstaclePosition_twins_0_divergence.removeListener(obstacleListener_twins_0_divergence)
-      
+
       obstaclePosition_twins_1.removeListener(obstacleListener_twins_1);
       obstaclePosition_twins_1_divergence.removeListener(obstacleListener_twins_1_divergence)
-      
+
       upgradeToSpecial_0_Position.removeListener(upgradeToSpecial_0Listener);
     }
   }, [obj1, specialDefense_0, specialDefense_1, specialDefense_2, specialDefense_3]);
@@ -1494,12 +1496,12 @@ export const Stage_2_Projectile = () => {
     if (wrongElements.length > prevWrongElements) {
       crashes.current += 1;
       flashOouchOnCrash.current = true;
-          setTimeout(() => {
-            flashOouchOnCrash.current = false;
-          }, 500)
-    } 
+      setTimeout(() => {
+        flashOouchOnCrash.current = false;
+      }, 500)
+    }
     console.log(similarElements)
-    if (similarElements.length > prevSimilarElements){
+    if (similarElements.length > prevSimilarElements) {
       score.current += 100;
       scoreFlash_100.current = true;
     }
@@ -1515,12 +1517,12 @@ export const Stage_2_Projectile = () => {
         console.log("CURRENT LEVEL:   " + level.current)
         console.log("CURRENT CRASHES:   " + crashes.current)
 
-        endGame({ 
-          continue: true, 
-          local: "a", 
-          crashes: crashes.current, 
-          score: score.current, 
-          level: level.current 
+        endGame({
+          continue: true,
+          local: "a",
+          crashes: crashes.current,
+          score: score.current,
+          level: level.current
         });
       }
     }
@@ -1533,7 +1535,7 @@ export const Stage_2_Projectile = () => {
   useEffect(() => {
     setTimeout(() => {
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
-          endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
+        endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
       }
     }, 200);
   }, [crashes.current])
@@ -1556,50 +1558,51 @@ export const Stage_2_Projectile = () => {
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
     // if (input.local != "c") {
-      if (level.current >= 0) {
-        animation.current.stop();
+    if (level.current >= 0) {
+      animation.current.stop();
 
-        letterPosition.setValue({ x: 1000, y: 0 })
+      letterPosition.setValue({ x: 1000, y: 0 })
 
-        if (obstacle_twins_1.current != null) {
-          obstacle_twins_1.current.stop();
+      if (obstacle_twins_1.current != null) {
+        obstacle_twins_1.current.stop();
 
-          obstaclePosition_twins_1.setValue({ x: 1000, y: 0 })
+        obstaclePosition_twins_1.setValue({ x: 1000, y: 0 })
+        obstaclePosition_twins_1_divergence.setValue({ x: 1000, y: 0 })
 
-        }
-        if (obstacle_0.current != null) {
-          obstacle_0.current.stop();
+      }
+      if (obstacle_0.current != null) {
+        obstacle_0.current.stop();
 
-          obstaclePosition_0.setValue({ x: 1000, y: 0 })
-        }
-        if (obstacle_1.current != null) {
-          obstacle_1.current.stop();
+        obstaclePosition_0.setValue({ x: 1000, y: 0 })
+      }
+      if (obstacle_1.current != null) {
+        obstacle_1.current.stop();
 
-          obstaclePosition_1.setValue({ x: 1000, y: 0 })
-        }
-
-        // obstacle_right_angle_0.current.stop();
-      } 
-      if (level.current >= 1 && obstacle_twins_0.current != null) { 
-        obstacle_twins_0.current.stop();
-
-        obstaclePosition_twins_0.setValue({ x: 1000, y: 0 })
-        obstaclePosition_twins_0_divergence.setValue({ x: 1000, y: 0 })
-
-      } 
-      if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
-        obstacle_right_angle_0.current.stop();
-
-        obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+        obstaclePosition_1.setValue({ x: 1000, y: 0 })
       }
 
-      if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
-        obstacle_right_angle_1.current.stop();
+      // obstacle_right_angle_0.current.stop();
+    }
+    if (level.current >= 1 && obstacle_twins_0.current != null) {
+      obstacle_twins_0.current.stop();
 
-        obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
-      }
+      obstaclePosition_twins_0.setValue({ x: 1000, y: 0 })
+      obstaclePosition_twins_0_divergence.setValue({ x: 1000, y: 0 })
 
-      
+    }
+    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
+      obstacle_right_angle_0.current.stop();
+
+      obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+    }
+
+    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
+      obstacle_right_angle_1.current.stop();
+
+      obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+    }
+
+
 
     // }
 
@@ -1633,7 +1636,7 @@ export const Stage_2_Projectile = () => {
       console.log("- - - - - - ")
 
       setHasGameBeenStarted(false);
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1641,18 +1644,18 @@ export const Stage_2_Projectile = () => {
             scoreFlash_1000.current = false;
           }, 1000)
         }, 501)
-        
+
         setTimeout(() => {
           setSharedState({
             stage1: false,
             stage2: false,
-            stage3: true ,
+            stage3: true,
             currentScore: score.current,
             currentLevel: input.level,
             currentCrashes: input.crashes
           })
         }, 1700)
-        
+
         // setStageTransitionModalVisible(!stageTransitionModalVisible);
 
         return;
@@ -1696,97 +1699,97 @@ export const Stage_2_Projectile = () => {
       <>
         {displayPlaybutton ?
           <>
-          <TouchableOpacity
-            onPress={() => { Generate() }}
-            style={{
-              position: 'absolute',
-              zIndex: 15,
-              left: windowWidth / 2 - HeightRatio(450),
-              top: windowHeight / 2 - HeightRatio(450),
-              zIndex: -5
-            }}
-          >
-            <Image
-              source={require('../../assets/stage_transition_2.png')}
-              style={{ height: HeightRatio(900), width: HeightRatio(900) }}
-            />
-          </TouchableOpacity>
-        </>
+            <TouchableOpacity
+              onPress={() => { Generate() }}
+              style={{
+                position: 'absolute',
+                zIndex: 15,
+                left: windowWidth / 2 - HeightRatio(450),
+                top: windowHeight / 2 - HeightRatio(450),
+                zIndex: -5
+              }}
+            >
+              <Image
+                source={require('../../assets/stage_transition_2.png')}
+                style={{ height: HeightRatio(900), width: HeightRatio(900) }}
+              />
+            </TouchableOpacity>
+          </>
           :
           <>
             {score.current > 0 ?
-            <>
-              <View style={{
-                position: 'absolute',
-                top: windowHeight - HeightRatio(160),
-                left: WidthRatio(10),
-                zIndex: -7, padding:
-                  HeightRatio(20),
-                borderRadius: HeightRatio(20)
-              }}>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  fontSize: HeightRatio(40),
-                  fontWeight: 'bold'
-                }}>Score:</Text>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(70),
-                  fontWeight: 'bold'
-                }}>{score.current}</Text>
-              </View>
-              {scoreFlash_100.current &&
+              <>
                 <View style={{
                   position: 'absolute',
-                  top: windowHeight/2 - WidthRatio(30),
-                  left: windowWidth/2 - WidthRatio(30),
-                  zIndex: -7,
-                  padding: HeightRatio(20),
+                  top: windowHeight - HeightRatio(160),
+                  left: WidthRatio(10),
+                  zIndex: -7, padding:
+                    HeightRatio(20),
                   borderRadius: HeightRatio(20)
-                }} >
-                  <Image 
-                    source={require('../../assets/reward_100_points.png')} 
-                    style={{height: WidthRatio(60), width: WidthRatio(60)}} />
+                }}>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: HeightRatio(40),
+                    fontWeight: 'bold'
+                  }}>Score:</Text>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(70),
+                    fontWeight: 'bold'
+                  }}>{score.current}</Text>
                 </View>
-              }
-              {scoreFlash_1000.current &&
-                <View style={{
-                  position: 'absolute',
-                  top: windowHeight/2 - WidthRatio(30),
-                  left: windowWidth/2 - WidthRatio(30),
-                  zIndex: -7,
-                  padding: HeightRatio(20),
-                  borderRadius: HeightRatio(20)
-                }} >
-                  <Image 
-                    source={require('../../assets/reward_1000_points_0.png')}
-                    style={{height: WidthRatio(60), width: WidthRatio(60)}} />
-                </View>
-              }
-            </>
+                {scoreFlash_100.current &&
+                  <View style={{
+                    position: 'absolute',
+                    top: windowHeight / 2 - WidthRatio(30),
+                    left: windowWidth / 2 - WidthRatio(30),
+                    zIndex: -7,
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(20)
+                  }} >
+                    <Image
+                      source={require('../../assets/reward_100_points.png')}
+                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                  </View>
+                }
+                {scoreFlash_1000.current &&
+                  <View style={{
+                    position: 'absolute',
+                    top: windowHeight / 2 - HeightRatio(300),
+                    left: windowWidth / 2 - HeightRatio(300),
+                    zIndex: -7,
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(20)
+                  }} >
+                    <Image
+                      source={require('../../assets/reward_1000_points_0.png')}
+                      style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
+                  </View>
+                }
+              </>
               :
-            <>
-              <View style={{
-                position: 'absolute',
-                top: windowHeight - HeightRatio(160),
-                left: WidthRatio(10),
-                zIndex: -7,
-                padding: HeightRatio(20),
-                borderRadius: HeightRatio(20)
-              }}>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(40),
-                  fontWeight: 'bold'
-                }}>Score:</Text>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: HeightRatio(70),
-                  fontWeight: 'bold'
-                }}>0</Text>
-              </View>
-              
-            </>
+              <>
+                <View style={{
+                  position: 'absolute',
+                  top: windowHeight - HeightRatio(160),
+                  left: WidthRatio(10),
+                  zIndex: -7,
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }}>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(40),
+                    fontWeight: 'bold'
+                  }}>Score:</Text>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: HeightRatio(70),
+                    fontWeight: 'bold'
+                  }}>0</Text>
+                </View>
+
+              </>
             }
           </>
         }
@@ -1865,33 +1868,33 @@ export const Stage_2_Projectile = () => {
         {/* Right Angle 0 & 1 */}
         <Animated.View
           style={[Styling.projectile_obstacle_block,
-            {width: WidthRatio(24), height: WidthRatio(24),}, 
-            {
-              transform: [
-                { translateX: obstaclePosition_right_angle_0.x }, 
-                { translateY: obstaclePosition_right_angle_0.y },
-                // { rotate: boxInterpolation_large } 
-              ],
-            },
+          { width: WidthRatio(24), height: WidthRatio(24), },
+          {
+            transform: [
+              { translateX: obstaclePosition_right_angle_0.x },
+              { translateY: obstaclePosition_right_angle_0.y },
+              // { rotate: boxInterpolation_large } 
+            ],
+          },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_red_ufo.png')} 
+          <Image
+            source={require('../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
-              { translateX: obstaclePosition_right_angle_1.x }, 
+              { translateX: obstaclePosition_right_angle_1.x },
               { translateY: obstaclePosition_right_angle_1.y },
               // { rotate: boxInterpolation_large } 
             ],
-            
+
           },
           ]}
         >
-          <Image 
-            source={require('../../assets/projectile_red_ufo.png')} 
+          <Image
+            source={require('../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
@@ -1934,68 +1937,68 @@ export const Stage_2_Projectile = () => {
         {/* Twins */}
         {/* - - - - - - - - - - */}
         <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_twins_0.x }, 
-                { translateY: obstaclePosition_twins_0.y }
-                // { rotate: boxInterpolation_twins_0 } 
-              ],
-              opacity: boxInterpolation_twins_0_a,
-              
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_4.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
-          <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_twins_0_divergence.x }, 
-                { translateY: obstaclePosition_twins_0_divergence.y }
-                // { rotate: boxInterpolation_twins_0 } 
-              ],
-              opacity: boxInterpolation_twins_0_b,
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_4.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_0.x },
+              { translateY: obstaclePosition_twins_0.y }
+              // { rotate: boxInterpolation_twins_0 } 
+            ],
+            opacity: boxInterpolation_twins_0_a,
 
-          <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_twins_1.x }, 
-                { translateY: obstaclePosition_twins_1.y }
-                // { rotate: boxInterpolation_twins_1 } 
-              ],
-              opacity: boxInterpolation_twins_1_a,
-              
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_4.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
-          <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_twins_1_divergence.x }, 
-                { translateY: obstaclePosition_twins_1_divergence.y }
-                // { rotate: boxInterpolation_twins_1 } 
-              ],
-              opacity: boxInterpolation_twins_1_b,
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_4.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_0_divergence.x },
+              { translateY: obstaclePosition_twins_0_divergence.y }
+              // { rotate: boxInterpolation_twins_0 } 
+            ],
+            opacity: boxInterpolation_twins_0_b,
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_1.x },
+              { translateY: obstaclePosition_twins_1.y }
+              // { rotate: boxInterpolation_twins_1 } 
+            ],
+            opacity: boxInterpolation_twins_1_a,
+
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_1_divergence.x },
+              { translateY: obstaclePosition_twins_1_divergence.y }
+              // { rotate: boxInterpolation_twins_1 } 
+            ],
+            opacity: boxInterpolation_twins_1_b,
+          },
+          ]}
+        >
+          <Image
+            source={require('../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
         {/* - - - - - - - - - - */}
 
 
@@ -2019,7 +2022,7 @@ export const Stage_2_Projectile = () => {
         {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
 
 
-        <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10)}} />
+        <View style={{ borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10) }} />
         {displayLetters.map((l, i) => (
           <View style={{
             width: 60, position: 'absolute', top: 10, left: WidthRatio((50 - ((((letterPositionNum * 65) / windowWidth) * 100) / 2)) * 3.7) + ((i * 65)),
@@ -2053,7 +2056,7 @@ export const Stage_2_Projectile = () => {
             ))}
           </>
         }
-        {flashOouchOnCrash.current  && !hideCrashesUntilUpdate.current &&
+        {flashOouchOnCrash.current && !hideCrashesUntilUpdate.current &&
           <View style={{
             position: 'absolute',
             top: windowHeight / 2 - WidthRatio(30),
@@ -2118,10 +2121,10 @@ export const Stage_2_Projectile = () => {
               </View>
               <TouchableOpacity
                 style={[Styling.modal_button]}
-                onPress={() => { 
-                  setStageTransitionModalVisible(!stageTransitionModalVisible); 
+                onPress={() => {
+                  setStageTransitionModalVisible(!stageTransitionModalVisible);
                   // setDisplayPlaybutton(true); 
-                  
+
                 }}
               >
                 <Text style={Styling.modal_text_style}>Next</Text>
@@ -2136,26 +2139,44 @@ export const Stage_2_Projectile = () => {
           transparent={true}
           visible={gameOverModalVisible}
           onRequestClose={() => {
-            setGameOverModalVisible(!gameOverModalVisible);
-            isGameInProgress.current = false;
+            setSharedState({
+              stage1: true,
+              stage2: false,
+              stage3: false,
+              currentScore: 0,
+              currentLevel: 0,
+              currentCrashes: 0
+            })
+            setTimeout(() => {
+              setGameOverModalVisible(!gameOverModalVisible);
+              isGameInProgress.current = false;
+            }, 500)
           }}
         >
-          <View style={Styling.modal_centered_view}>
-            <View style={Styling.modal_view}>
-              <Text style={Styling.modal_text}>Game Over</Text>
-              <View style={{ margin: HeightRatio(20) }}>
-                <Text style={Styling.modal_text_style}>Score</Text>
-                <Text style={Styling.modal_text_style}>Level</Text>
-                <Text style={Styling.modal_text_style}>Time</Text>
-                <Text style={Styling.modal_text_style}>Words</Text>
-              </View>
-              <TouchableOpacity
-                style={[Styling.modal_button]}
-                onPress={() => { setGameOverModalVisible(!gameOverModalVisible); setDisplayPlaybutton(true); }}
+          <View style={{...Styling.modal_centered_view}}>
+            <TouchableOpacity
+                style={{top: HeightRatio(-40)}}
+                onPress={() => { 
+                  props.nav.dispatch(resetActionHome);
+                }}
               >
-                <Text style={Styling.modal_text_style}>Close</Text>
-              </TouchableOpacity>
-            </View>
+                <View style={{ 
+                  // margin: HeightRatio(20), 
+                  position: 'absolute', 
+                  zIndex: 15,
+                  top: windowHeight/2 - HeightRatio(30),
+                  left: windowWidth/2 - WidthRatio(100) 
+                }}
+                >
+                  <Text style={Styling.modal_text_style}>Score: {score.current}</Text>
+                  <Text style={Styling.modal_text_style}>Level:</Text>
+                  <Text style={Styling.modal_text_style}>Time:</Text>
+                  <Text style={Styling.modal_text_style}>Words:</Text>
+                </View>
+                <Image 
+              source={require('../../assets/game_over.png')}
+              style={{height: HeightRatio(1000), width: HeightRatio(940)}} />
+            </TouchableOpacity>
           </View>
         </Modal>
 

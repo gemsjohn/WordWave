@@ -7,6 +7,7 @@ import { getTerm } from '../../Localization';
 import { shuffle } from 'lodash';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
+import { resetActionHome, resetActionGame, resetActionProfile } from '../ResetActions';
 import {
   isLetterBlockColliding,
   isObstacleColliding_0,
@@ -54,7 +55,7 @@ import {
 
 
 
-export const Stage_3_Projectile = () => {
+export const Stage_3_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
   const { sharedState, setSharedState } = useContext(SharedStateContext);
 
@@ -1620,9 +1621,9 @@ export const Stage_3_Projectile = () => {
     if (wrongElements.length > prevWrongElements) {
       crashes.current += 1;
       flashOouchOnCrash.current = true;
-          setTimeout(() => {
-            flashOouchOnCrash.current = false;
-          }, 500)
+      setTimeout(() => {
+        flashOouchOnCrash.current = false;
+      }, 500)
     }
     console.log(similarElements)
     if (similarElements.length > prevSimilarElements) {
@@ -1795,22 +1796,22 @@ export const Stage_3_Projectile = () => {
       <>
         {displayPlaybutton ?
           <>
-          <TouchableOpacity
-            onPress={() => { Generate() }}
-            style={{
-              position: 'absolute',
-              zIndex: 15,
-              left: windowWidth / 2 - HeightRatio(450),
-              top: windowHeight / 2 - HeightRatio(450),
-              zIndex: -5
-            }}
-          >
-            <Image
-              source={require('../../assets/stage_transition_3.png')}
-              style={{ height: HeightRatio(900), width: HeightRatio(900) }}
-            />
-          </TouchableOpacity>
-        </>
+            <TouchableOpacity
+              onPress={() => { Generate() }}
+              style={{
+                position: 'absolute',
+                zIndex: 15,
+                left: windowWidth / 2 - HeightRatio(450),
+                top: windowHeight / 2 - HeightRatio(450),
+                zIndex: -5
+              }}
+            >
+              <Image
+                source={require('../../assets/stage_transition_3.png')}
+                style={{ height: HeightRatio(900), width: HeightRatio(900) }}
+              />
+            </TouchableOpacity>
+          </>
           :
           <>
             {score.current > 0 ?
@@ -1851,15 +1852,15 @@ export const Stage_3_Projectile = () => {
                 {scoreFlash_1000.current &&
                   <View style={{
                     position: 'absolute',
-                    top: windowHeight / 2 - WidthRatio(30),
-                    left: windowWidth / 2 - WidthRatio(30),
+                    top: windowHeight / 2 - HeightRatio(300),
+                    left: windowWidth / 2 - HeightRatio(300),
                     zIndex: -7,
                     padding: HeightRatio(20),
                     borderRadius: HeightRatio(20)
                   }} >
                     <Image
                       source={require('../../assets/reward_1000_points_0.png')}
-                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                      style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
                   </View>
                 }
               </>
@@ -2205,26 +2206,44 @@ export const Stage_3_Projectile = () => {
           transparent={true}
           visible={gameOverModalVisible}
           onRequestClose={() => {
-            setGameOverModalVisible(!gameOverModalVisible);
-            isGameInProgress.current = false;
+            setSharedState({
+              stage1: true,
+              stage2: false,
+              stage3: false,
+              currentScore: 0,
+              currentLevel: 0,
+              currentCrashes: 0
+            })
+            setTimeout(() => {
+              setGameOverModalVisible(!gameOverModalVisible);
+              isGameInProgress.current = false;
+            }, 500)
           }}
         >
-          <View style={Styling.modal_centered_view}>
-            <View style={Styling.modal_view}>
-              <Text style={Styling.modal_text}>Game Over</Text>
-              <View style={{ margin: HeightRatio(20) }}>
-                <Text style={Styling.modal_text_style}>Score</Text>
-                <Text style={Styling.modal_text_style}>Level</Text>
-                <Text style={Styling.modal_text_style}>Time</Text>
-                <Text style={Styling.modal_text_style}>Words</Text>
-              </View>
-              <TouchableOpacity
-                style={[Styling.modal_button]}
-                onPress={() => { setGameOverModalVisible(!gameOverModalVisible); setDisplayPlaybutton(true); }}
+          <View style={{ ...Styling.modal_centered_view }}>
+            <TouchableOpacity
+              style={{ top: HeightRatio(-40) }}
+              onPress={() => { 
+                props.nav.dispatch(resetActionHome);
+              }}
+            >
+              <View style={{
+                // margin: HeightRatio(20), 
+                position: 'absolute',
+                zIndex: 15,
+                top: windowHeight / 2 - HeightRatio(30),
+                left: windowWidth / 2 - WidthRatio(100)
+              }}
               >
-                <Text style={Styling.modal_text_style}>Close</Text>
-              </TouchableOpacity>
-            </View>
+                <Text style={Styling.modal_text_style}>Score: {score.current}</Text>
+                <Text style={Styling.modal_text_style}>Level:</Text>
+                <Text style={Styling.modal_text_style}>Time:</Text>
+                <Text style={Styling.modal_text_style}>Words:</Text>
+              </View>
+              <Image
+                source={require('../../assets/game_over.png')}
+                style={{ height: HeightRatio(1000), width: HeightRatio(940) }} />
+            </TouchableOpacity>
           </View>
         </Modal>
 

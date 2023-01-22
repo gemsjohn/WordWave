@@ -99,6 +99,7 @@ export const Styling = StyleSheet.create({
     // flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: HeightRatio(-30)
     // marginTop: 22,
   },
   modal_view: {
@@ -133,8 +134,10 @@ export const Styling = StyleSheet.create({
   },
   modal_text_style: {
     color: "white",
+    fontSize: 25,
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "left",
+    marginTop: HeightRatio(5)
   },
   modal_text: {
     marginBottom: 15,

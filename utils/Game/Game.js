@@ -119,13 +119,13 @@ export const Game = (props) => {
               {/* <Projectile /> */}
 
               {stage1 &&
-                <Stage_1_Projectile />
+                <Stage_1_Projectile nav={props.nav} />
               }
               {stage2 &&
-                <Stage_2_Projectile />
+                <Stage_2_Projectile nav={props.nav} />
               }
               {stage3 &&
-                <Stage_3_Projectile />
+                <Stage_3_Projectile nav={props.nav} />
               }
             </SharedStateContext.Provider>
           </>

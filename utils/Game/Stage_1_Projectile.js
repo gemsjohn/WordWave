@@ -8,6 +8,8 @@ import { shuffle } from 'lodash';
 import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isObstacleColliding_right_angle_0, isObstacleColliding_right_angle_1, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3, isUpgradeToSpecial_0_Colliding } from './CollisionHandler';
 import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
+import { resetActionHome, resetActionGame, resetActionProfile } from '../ResetActions';
+
 import {
   Text,
   View,
@@ -32,7 +34,7 @@ import {
 
 
 
-export const Stage_1_Projectile = () => {
+export const Stage_1_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
   const { sharedState, setSharedState } = useContext(SharedStateContext);
 
@@ -1270,7 +1272,7 @@ export const Stage_1_Projectile = () => {
     // [HANDLE GAME RESTART]
     if (input.continue) {
       setHasGameBeenStarted(false);
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1739,26 +1741,44 @@ export const Stage_1_Projectile = () => {
           transparent={true}
           visible={gameOverModalVisible}
           onRequestClose={() => {
-            setGameOverModalVisible(!gameOverModalVisible);
-            isGameInProgress.current = false;
+            setSharedState({
+              stage1: true,
+              stage2: false,
+              stage3: false,
+              currentScore: 0,
+              currentLevel: 0,
+              currentCrashes: 0
+            })
+            setTimeout(() => {
+              setGameOverModalVisible(!gameOverModalVisible);
+              isGameInProgress.current = false;
+            }, 500)
           }}
         >
-          <View style={Styling.modal_centered_view}>
-            <View style={Styling.modal_view}>
-              <Text style={Styling.modal_text}>Game Over</Text>
-              <View style={{ margin: HeightRatio(20) }}>
-                <Text style={Styling.modal_text_style}>Score</Text>
-                <Text style={Styling.modal_text_style}>Level</Text>
-                <Text style={Styling.modal_text_style}>Time</Text>
-                <Text style={Styling.modal_text_style}>Words</Text>
-              </View>
-              <TouchableOpacity
-                style={[Styling.modal_button]}
-                onPress={() => { setGameOverModalVisible(!gameOverModalVisible); setDisplayPlaybutton(true); }}
+          <View style={{...Styling.modal_centered_view}}>
+            <TouchableOpacity
+                style={{top: HeightRatio(-40)}}
+                onPress={() => { 
+                  props.nav.dispatch(resetActionHome);
+                }}
               >
-                <Text style={Styling.modal_text_style}>Close</Text>
-              </TouchableOpacity>
-            </View>
+                <View style={{ 
+                  // margin: HeightRatio(20), 
+                  position: 'absolute', 
+                  zIndex: 15,
+                  top: windowHeight/2 - HeightRatio(30),
+                  left: windowWidth/2 - WidthRatio(100) 
+                }}
+                >
+                  <Text style={Styling.modal_text_style}>Score: {score.current}</Text>
+                  <Text style={Styling.modal_text_style}>Level:</Text>
+                  <Text style={Styling.modal_text_style}>Time:</Text>
+                  <Text style={Styling.modal_text_style}>Words:</Text>
+                </View>
+                <Image 
+              source={require('../../assets/game_over.png')}
+              style={{height: HeightRatio(1000), width: HeightRatio(940)}} />
+            </TouchableOpacity>
           </View>
         </Modal>
 
@@ -1768,3 +1788,5 @@ export const Stage_1_Projectile = () => {
     </View>
   );
 };
+
+// import { resetActionHome, resetActionGame, resetActionProfile } from '../ResetActions';
