@@ -1,14 +1,29 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 'react';
-import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3 } from './CollisionHandler';
+import React, { 
+    useState, 
+    useRef, 
+    useEffect, 
+    useLayoutEffect, 
+    useContext 
+} from 'react';
+import { 
+    Styling, 
+    WidthRatio, 
+    HeightRatio, 
+    windowHeight, 
+    windowWidth 
+} from '../../Styling';
+import {  
+    isSpecialColliding_0, 
+    isSpecialColliding_1, 
+    isSpecialColliding_2, 
+    isSpecialColliding_3 
+} from './CollisionHandler';
 import { SharedStateContext } from './Game';
-import { CountdownTimer } from './CountdownTimer';
 import moment  from 'moment';
 import {
     View,
     Text
 } from 'react-native';
-import { useMemo } from 'react/cjs/react.development';
 
 export const Special = (props) => {
     const isGameInProgress = useRef(false);

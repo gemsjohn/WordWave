@@ -12,14 +12,14 @@ import {
   HeightRatio, 
   windowHeight, 
   windowWidth 
-} from '../../Styling';
+} from '../../../Styling';
 import { shuffle } from 'lodash';
-import { SharedStateContext } from './Game';
+import { SharedStateContext } from '../Game';
 import { 
   resetActionHome, 
   resetActionGame, 
   resetActionProfile 
-} from '../ResetActions';
+} from '../../ResetActions';
 import {
   isLetterBlockColliding,
   isObstacleColliding_0,
@@ -40,7 +40,7 @@ import {
   isSpecialColliding_a_2,
   isSpecialColliding_a_3,
   isUpgradeToSpecial_0_Colliding
-} from './CollisionHandler';
+} from '../CollisionHandler';
 import {
   Text,
   View,
@@ -227,7 +227,7 @@ export const Stage_2_Projectile = (props) => {
       crashes.current += sharedState.current.currentCrashes
     }
 
-    const data = require('./output.json');
+    const data = require('../output.json');
     const index = Math.floor(Math.random() * data.length);
     const word = data[index].word;
     const letters = word.split('');

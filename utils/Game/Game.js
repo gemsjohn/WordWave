@@ -1,17 +1,27 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, createContext, useContext } from 'react';
-import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
+import React, { 
+  useState, 
+  useRef, 
+  useEffect, 
+  useLayoutEffect, 
+  createContext, 
+  useContext 
+} from 'react';
+import { 
+  Styling, 
+  WidthRatio, 
+  HeightRatio, 
+  windowHeight, 
+  windowWidth 
+} from '../../Styling';
 import moment  from 'moment';
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { CharacterAndJoystick } from './CharacterAndJoystick';
 import { Special } from './Special';
 import { Simple } from './Simple';
-import { Projectile } from './Projectile';
 import { Stage_1_Projectile } from './Stages/Stage_1_Projectile';
 import { Stage_2_Projectile } from './Stages/Stage_2_Projectile';
 import { Stage_3_Projectile } from './Stages/Stage_3_Projectile';
-import { CountdownTimer } from './CountdownTimer';
-
 import {
   View,
   StatusBar,
@@ -20,7 +30,6 @@ import {
   ActivityIndicator,
   UIManager,
 } from 'react-native';
-
 
 if (
   Platform.OS === "android" &&
@@ -38,11 +47,6 @@ export const Game = (props) => {
   const [stage1, setStage1] = useState(true);
   const [stage2, setStage2] = useState(false);
   const [stage3, setStage3] = useState(false);
-  // const [currentScore, setCurrentScore] = useState(null);
-  // const [currentLevel, setCurrentLevel] = useState(null);
-  // const [currentCrashes, setCurrentCrashes] = useState(null);
-
-
 
   setTimeout(() => {
     setLoadingComplete(true)
@@ -72,9 +76,6 @@ export const Game = (props) => {
       
       if (sharedStateRef.current.stage1 != null) {
         setStage1(sharedStateRef.current.stage1);
-        // console.log("GAME / currentCrashes: " + sharedState.current.currentCrashes)
-        // console.log("GAME / currentScore: " + sharedState.current.currentScore)
-
       }
       if (sharedStateRef.current.stage2 != null) {
         setStage2(sharedStateRef.current.stage2);
@@ -82,8 +83,6 @@ export const Game = (props) => {
       if (sharedStateRef.current.stage3 != null) {
         setStage3(sharedStateRef.current.stage3);
       }
-      
-
     }, 250)
 
     
@@ -111,22 +110,14 @@ export const Game = (props) => {
               value={{ sharedState: sharedStateRef, setSharedState }}
             >             
               <CharacterAndJoystick />
-
               
               {retainUpgradeToSpecial_0 &&
                 <Special />
               }
-              {/* <Projectile /> */}
 
-              {stage1 &&
-                <Stage_1_Projectile nav={props.nav} />
-              }
-              {stage2 &&
-                <Stage_2_Projectile nav={props.nav} />
-              }
-              {stage3 &&
-                <Stage_3_Projectile nav={props.nav} />
-              }
+              { stage1 && <Stage_1_Projectile nav={props.nav} /> }
+              { stage2 && <Stage_2_Projectile nav={props.nav} /> }
+              {stage3 && <Stage_3_Projectile nav={props.nav} /> }
             </SharedStateContext.Provider>
           </>
           :

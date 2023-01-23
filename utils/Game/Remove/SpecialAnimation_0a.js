@@ -1,27 +1,26 @@
-import React, { useState, useRef, useEffect, useContext, useCallback, useLayoutEffect, createContext, useMemo } from 'react';
-// import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isPowerColliding_0, isPowerColliding_1, isPowerColliding_2, isPowerColliding_3 } from './CollisionHandler';
-import { SharedStateContext } from './Game';
+import React, { 
+    useState, 
+    useRef, 
+    useEffect, 
+    useContext, 
+    useCallback, 
+    useLayoutEffect, 
+    createContext, 
+    useMemo 
+} from 'react';
+import { 
+    Styling, 
+    WidthRatio, 
+    HeightRatio, 
+    windowHeight, 
+    windowWidth 
+} from '../../../Styling';
+import { SharedStateContext } from '../Game';
 import {
     Text,
     View,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    Platform,
-    RefreshControl,
     Image,
-    ActivityIndicator,
     Animated,
-    PanResponder,
-    UIManager,
-    TouchableOpacity,
-    Modal,
-    Alert,
-    StyleSheet,
-    TouchableOpacityBase
 } from 'react-native';
 
 export const SpecialAnimation_0a = () => {
