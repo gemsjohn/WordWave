@@ -106,13 +106,6 @@ export const Stage_2_Projectile = (props) => {
   const obstacle_1 = useRef(null)
   let timeoutObstacle_1_ID;
 
-  // [OBSTACLE ANIMATION LARGE] - - - - - 
-  const hasUpdatedObstacle_large = useRef(false);
-  const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-  const obstacleRotation_large = useRef(new Animated.Value(0)).current;
-  const obstacle_large = useRef(null)
-  let timeoutObstacle_Large_ID;
-
   // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
   const hasUpdatedObstacle_right_angle_0 = useRef(false);
   const obstaclePosition_right_angle_0 = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
@@ -126,13 +119,6 @@ export const Stage_2_Projectile = (props) => {
   const obstacleRotation_right_angle_1 = useRef(new Animated.Value(0)).current;
   const obstacle_right_angle_1 = useRef(null)
   let timeoutObstacle_right_angle_1_ID;
-
-  // [OBSTACLE ANIMATION OPACITY BOT] - - - - - 
-  const hasUpdatedObstacle_opacity_bot = useRef(false);
-  const obstaclePosition_opacity_bot = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
-  const obstacleOpacity_opacity_bot = useRef(new Animated.Value(0)).current;
-  const obstacle_opacity_bot = useRef(null)
-  let timeoutObstacle_opacity_bot_ID;
 
   // [OBSTACLE ANIMATION TWINS 0] - - - - - 
   const hasUpdatedObstacle_twins_0 = useRef(false);
@@ -151,13 +137,6 @@ export const Stage_2_Projectile = (props) => {
   let timeoutObstacle_twins_1_ID;
   const flip = useRef(false);
 
-  // [UPGRADE TO SPECIAL 0 ANIMATION] - - - - - 
-  const hasUpdatedUpgradeToSpecial_0 = useRef(false);
-  const upgradeToSpecial_0_Position = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-  const upgradeToSpecial_0 = useRef(null)
-  let timeoutUpgradeToSpecial_0_ID;
-  const retainUpgradeToSpecial_0 = useRef(false);
-
   // [TESTING]
   const boxInterpolation_0 = obstacleRotation_0.interpolate({
     inputRange: [0, 5000],
@@ -166,10 +145,6 @@ export const Stage_2_Projectile = (props) => {
   const boxInterpolation_1 = obstacleRotation_1.interpolate({
     inputRange: [0, 5000],
     outputRange: ['360deg', '0deg']
-  });
-  const boxInterpolation_opacity_bot = obstacleOpacity_opacity_bot.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.0, 1.0]
   });
   const boxInterpolation_twins_0_a = obstacleOpacity_twins_0.interpolate({
     inputRange: [0, 1],
@@ -433,41 +408,6 @@ export const Stage_2_Projectile = (props) => {
     }
   };
 
-  const runObstacleAnimation_large = () => {
-    if (isGameInProgress.current) {
-      hasUpdatedObstacle_large.current = false;
-      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
-
-      obstaclePosition_large.setValue({ x: WidthRatio(370), y: localYPos_0 });
-      // obstacleRotation_large.setValue(0);
-
-      obstacle_large.current = Animated.parallel([
-        Animated.timing(obstaclePosition_large.x, {
-          toValue: -WidthRatio(40),
-          duration: 5000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(obstaclePosition_large.y, {
-          toValue: localYPos_1,
-          duration: 5000,
-          useNativeDriver: true,
-        }),
-      ]);
-
-      obstacle_large.current.start(() => {
-        if (timeoutObstacle_Large_ID) {
-          clearTimeout(timeoutObstacle_Large_ID);
-        }
-        timeoutObstacle_Large_ID = setTimeout(() => {
-          runObstacleAnimation_large();
-        }, 200)
-      });
-    } else {
-      return;
-    }
-  };
-
   const runObstacleAnimation_right_angle_0 = () => {
     if (isGameInProgress.current) {
       hasUpdatedObstacle_right_angle_0.current = false;
@@ -535,109 +475,6 @@ export const Stage_2_Projectile = (props) => {
         }
         timeoutObstacle_right_angle_1_ID = setTimeout(() => {
           runObstacleAnimation_right_angle_1();
-        }, 200)
-      });
-    } else {
-      return;
-    }
-  };
-
-  const runObstacleAnimation_opacity_bot = () => {
-    if (isGameInProgress.current) {
-      hasUpdatedObstacle_opacity_bot.current = false;
-      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
-
-      obstaclePosition_opacity_bot.setValue({ x: WidthRatio(370), y: localYPos_0 });
-      obstacleOpacity_opacity_bot.setValue(0);
-
-      obstacle_opacity_bot.current = Animated.parallel([
-
-
-        Animated.sequence([
-          Animated.timing(obstaclePosition_opacity_bot.x, {
-            toValue: WidthRatio(370),
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_opacity_bot.y, {
-            toValue: localYPos_1,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_opacity_bot.x, {
-            toValue: WidthRatio(200),
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_opacity_bot.y, {
-            toValue: localYPos_0,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_opacity_bot.x, {
-            toValue: -WidthRatio(40),
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-        ]),
-        Animated.sequence([
-          Animated.timing(obstacleOpacity_opacity_bot, {
-            toValue: 1,
-            duration: 800,
-            easing: Easing.linear,
-            useNativeDriver: true,
-            isInteraction: false,
-            loop: true,
-            delay: 0,
-          }),
-          Animated.timing(obstacleOpacity_opacity_bot, {
-            toValue: 0,
-            duration: 800,
-            easing: Easing.linear,
-            useNativeDriver: true,
-            isInteraction: false,
-            loop: true,
-            delay: 0,
-          }),
-          Animated.timing(obstacleOpacity_opacity_bot, {
-            toValue: 1,
-            duration: 800,
-            easing: Easing.linear,
-            useNativeDriver: true,
-            isInteraction: false,
-            loop: true,
-            delay: 0,
-          }),
-          Animated.timing(obstacleOpacity_opacity_bot, {
-            toValue: 0,
-            duration: 800,
-            easing: Easing.linear,
-            useNativeDriver: true,
-            isInteraction: false,
-            loop: true,
-            delay: 0,
-          }),
-          Animated.timing(obstacleOpacity_opacity_bot, {
-            toValue: 1,
-            duration: 800,
-            easing: Easing.linear,
-            useNativeDriver: true,
-            isInteraction: false,
-            loop: true,
-            delay: 0,
-          }),
-        ])
-
-
-      ]);
-
-      obstacle_opacity_bot.current.start(() => {
-        if (timeoutObstacle_opacity_bot_ID) {
-          clearTimeout(timeoutObstacle_opacity_bot_ID);
-        }
-        timeoutObstacle_opacity_bot_ID = setTimeout(() => {
-          runObstacleAnimation_opacity_bot();
         }, 200)
       });
     } else {
@@ -833,46 +670,6 @@ export const Stage_2_Projectile = (props) => {
     }
   };
 
-
-
-
-
-  const runUpgradeToSpecial_0 = () => {
-    if (isGameInProgress.current && !retainUpgradeToSpecial_0.current) {
-      hasUpdatedUpgradeToSpecial_0.current = false;
-      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
-      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
-
-      upgradeToSpecial_0_Position.setValue({ x: WidthRatio(370), y: localYPos_0 });
-
-      upgradeToSpecial_0.current = Animated.parallel([
-        Animated.timing(upgradeToSpecial_0_Position.x, {
-          toValue: -WidthRatio(40),
-          duration: 8000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(upgradeToSpecial_0_Position.y, {
-          toValue: localYPos_1,
-          duration: 8000,
-          useNativeDriver: true,
-        }),
-
-      ]);
-
-      upgradeToSpecial_0.current.start(() => {
-        if (timeoutUpgradeToSpecial_0_ID) {
-          clearTimeout(timeoutUpgradeToSpecial_0_ID);
-        }
-        timeoutUpgradeToSpecial_0_ID = setTimeout(() => {
-          runUpgradeToSpecial_0();
-        }, 200)
-      });
-    } else {
-      return;
-    }
-  };
-
-
   const [obj1, setObj1] = useState({
     x: 0,
     y: 0,
@@ -880,42 +677,8 @@ export const Stage_2_Projectile = (props) => {
     height: 0,
     radius: 0
   });
-  const [specialDefense_0, setSpecialDefense_0] = useState({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0
-  });
-  const [specialDefense_1, setSpecialDefense_1] = useState({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0
-  });
-  const [specialDefense_2, setSpecialDefense_2] = useState({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0
-  });
-  const [specialDefense_3, setSpecialDefense_3] = useState({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0
-  });
-
-  const prevRetainSpecialDefense_0x = useRef(specialDefense_0.x);
-  const prevRetainSpecialDefense_1x = useRef(specialDefense_1.x);
-  const prevRetainSpecialDefense_2x = useRef(specialDefense_2.x);
-  const prevRetainSpecialDefense_3x = useRef(specialDefense_3.x);
-  const deployUpgradeToSpecialAnimation = useRef(null);
 
   useEffect(() => {
-    let localSpecialDefense_0x;
-    let localSpecialDefense_1x;
-    let localSpecialDefense_2x;
-    let localSpecialDefense_3x;
 
     // This function will be called on every animation frame
     const update = () => {
@@ -926,103 +689,6 @@ export const Stage_2_Projectile = (props) => {
         height: sharedState.current.charHeight / 2,
         radius: sharedState.current.charHeight / 2,
       });
-
-      if (deployUpgradeToSpecialAnimation.current != sharedState.current.deployUpgradeToSpecialAnimation) {
-        deployUpgradeToSpecialAnimation.current = !deployUpgradeToSpecialAnimation.current
-        // console.log("- - - - -  -")
-        // console.log(sharedState.current.deployUpgradeToSpecialAnimation)
-        if (sharedState.current.deployUpgradeToSpecialAnimation) {
-          setSharedState({ upgradeToSpecial_0: false })
-          retainUpgradeToSpecial_0.current = false;
-          runUpgradeToSpecial_0();
-        }
-      }
-
-
-
-      // Special Defense 0 Update
-      if (prevRetainSpecialDefense_0x.current === 0 && sharedState.current.specialActive_0) {
-        setSpecialDefense_0({
-          x: sharedState.current.specialSizeLocation_0.x,
-          y: sharedState.current.specialSizeLocation_0.y,
-          width: sharedState.current.specialSizeLocation_0.height,
-          height: sharedState.current.specialSizeLocation_0.width
-        });
-        localSpecialDefense_0x = sharedState.current.specialSizeLocation_0.x;
-
-      } else if (prevRetainSpecialDefense_0x.current != 0 && !sharedState.current.specialActive_0) {
-        localSpecialDefense_0x = 0;
-        setSpecialDefense_0({
-          x: 0,
-          y: HeightRatio(125),
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charWidth
-        });
-      }
-      prevRetainSpecialDefense_0x.current = localSpecialDefense_0x;
-
-      // Special Defense 1 Update
-      if (prevRetainSpecialDefense_1x.current === 0 && sharedState.current.specialActive_1) {
-        setSpecialDefense_1({
-          x: sharedState.current.specialSizeLocation_1.x,
-          y: sharedState.current.specialSizeLocation_1.y,
-          width: sharedState.current.specialSizeLocation_1.height,
-          height: sharedState.current.specialSizeLocation_1.width
-        });
-        localSpecialDefense_1x = sharedState.current.specialSizeLocation_1.x;
-
-      } else if (prevRetainSpecialDefense_1x.current != 0 && !sharedState.current.specialActive_1) {
-        localSpecialDefense_1x = 0;
-        setSpecialDefense_1({
-          x: 0,
-          y: HeightRatio(245),
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charWidth
-        });
-      }
-      prevRetainSpecialDefense_1x.current = localSpecialDefense_1x;
-
-      // Special Defense 2 Update
-      if (prevRetainSpecialDefense_2x.current === 0 && sharedState.current.specialActive_2) {
-        setSpecialDefense_2({
-          x: sharedState.current.specialSizeLocation_2.x,
-          y: sharedState.current.specialSizeLocation_2.y,
-          width: sharedState.current.specialSizeLocation_2.height,
-          height: sharedState.current.specialSizeLocation_2.width
-        });
-        localSpecialDefense_2x = sharedState.current.specialSizeLocation_2.x;
-
-      } else if (prevRetainSpecialDefense_2x.current != 0 && !sharedState.current.specialActive_2) {
-        localSpecialDefense_2x = 0;
-        setSpecialDefense_2({
-          x: 0,
-          y: HeightRatio(365),
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charWidth
-        });
-      }
-      prevRetainSpecialDefense_2x.current = localSpecialDefense_2x;
-
-      // Special Defense 3 Update
-      if (prevRetainSpecialDefense_3x.current === 0 && sharedState.current.specialActive_3) {
-        setSpecialDefense_3({
-          x: sharedState.current.specialSizeLocation_3.x,
-          y: sharedState.current.specialSizeLocation_3.y,
-          width: sharedState.current.specialSizeLocation_3.height,
-          height: sharedState.current.specialSizeLocation_3.width
-        });
-        localSpecialDefense_3x = sharedState.current.specialSizeLocation_3.x;
-
-      } else if (prevRetainSpecialDefense_3x.current != 0 && !sharedState.current.specialActive_3) {
-        localSpecialDefense_3x = 0;
-        setSpecialDefense_3({
-          x: 0,
-          y: HeightRatio(485),
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charWidth
-        });
-      }
-      prevRetainSpecialDefense_3x.current = localSpecialDefense_3x;
 
       requestAnimationFrame(update);
     };
@@ -1063,33 +729,6 @@ export const Stage_2_Projectile = (props) => {
         obstacle_0.current.reset()
       }
 
-      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_0.current) {
-          hasUpdatedObstacle_0.current = true;
-        }
-        obstacle_0.current.reset()
-      }
-
-      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_0.current) {
-          hasUpdatedObstacle_0.current = true;
-        }
-        obstacle_0.current.reset()
-      }
-
-      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_0.current) {
-          hasUpdatedObstacle_0.current = true;
-        }
-        obstacle_0.current.reset()
-      }
-
-      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_0.current) {
-          hasUpdatedObstacle_0.current = true;
-        }
-        obstacle_0.current.reset()
-      }
     });
 
     // Obstacle 1
@@ -1108,78 +747,6 @@ export const Stage_2_Projectile = (props) => {
         obstacle_1.current.reset()
       }
 
-      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_1.current) {
-          hasUpdatedObstacle_1.current = true;
-        }
-        obstacle_1.current.reset()
-      }
-
-      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_1.current) {
-          hasUpdatedObstacle_1.current = true;
-        }
-        obstacle_1.current.reset()
-      }
-
-      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_1.current) {
-          hasUpdatedObstacle_1.current = true;
-        }
-        obstacle_1.current.reset()
-      }
-
-      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_1.current) {
-          hasUpdatedObstacle_1.current = true;
-        }
-        obstacle_1.current.reset()
-      }
-    });
-
-    // Obstacle Large
-    const obstacleListener_large = obstaclePosition_large.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12), height: WidthRatio(24), width: WidthRatio(24) }
-
-      if (isObstacleColliding_large(obj1, obj2)) {
-        if (!hasUpdatedObstacle_large.current) {
-          crashes.current += 1;
-          hasUpdatedObstacle_large.current = true;
-          flashOouchOnCrash.current = true;
-          setTimeout(() => {
-            flashOouchOnCrash.current = false;
-          }, 500)
-        }
-        obstacle_large.current.reset()
-      }
-
-      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_large.current) {
-          hasUpdatedObstacle_large.current = true;
-        }
-        obstacle_large.current.reset()
-      }
-
-      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_large.current) {
-          hasUpdatedObstacle_large.current = true;
-        }
-        obstacle_large.current.reset()
-      }
-
-      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_large.current) {
-          hasUpdatedObstacle_large.current = true;
-        }
-        obstacle_large.current.reset()
-      }
-
-      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_large.current) {
-          hasUpdatedObstacle_large.current = true;
-        }
-        obstacle_large.current.reset()
-      }
     });
 
     // Obstacle Right Angle 0
@@ -1198,33 +765,6 @@ export const Stage_2_Projectile = (props) => {
         obstacle_right_angle_0.current.reset()
       }
 
-      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_right_angle_0.current) {
-          hasUpdatedObstacle_right_angle_0.current = true;
-        }
-        obstacle_right_angle_0.current.reset()
-      }
-
-      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_right_angle_0.current) {
-          hasUpdatedObstacle_right_angle_0.current = true;
-        }
-        obstacle_right_angle_0.current.reset()
-      }
-
-      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_right_angle_0.current) {
-          hasUpdatedObstacle_right_angle_0.current = true;
-        }
-        obstacle_right_angle_0.current.reset()
-      }
-
-      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_right_angle_0.current) {
-          hasUpdatedObstacle_right_angle_0.current = true;
-        }
-        obstacle_right_angle_0.current.reset()
-      }
     });
 
     // Obstacle Right Angle 1
@@ -1243,33 +783,6 @@ export const Stage_2_Projectile = (props) => {
         obstacle_right_angle_1.current.reset()
       }
 
-      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_right_angle_1.current) {
-          hasUpdatedObstacle_right_angle_1.current = true;
-        }
-        obstacle_right_angle_1.current.reset()
-      }
-
-      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_right_angle_1.current) {
-          hasUpdatedObstacle_right_angle_1.current = true;
-        }
-        obstacle_right_angle_1.current.reset()
-      }
-
-      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_right_angle_1.current) {
-          hasUpdatedObstacle_right_angle_1.current = true;
-        }
-        obstacle_right_angle_1.current.reset()
-      }
-
-      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_right_angle_1.current) {
-          hasUpdatedObstacle_right_angle_1.current = true;
-        }
-        obstacle_right_angle_1.current.reset()
-      }
     });
 
     // Obstacle Right Twins 0
@@ -1289,33 +802,6 @@ export const Stage_2_Projectile = (props) => {
         obstacle_twins_0.current.reset()
       }
 
-      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_twins_0.current) {
-          hasUpdatedObstacle_twins_0.current = true;
-        }
-        obstacle_twins_0.current.reset()
-      }
-
-      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_twins_0.current) {
-          hasUpdatedObstacle_twins_0.current = true;
-        }
-        obstacle_twins_0.current.reset()
-      }
-
-      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_twins_0.current) {
-          hasUpdatedObstacle_twins_0.current = true;
-        }
-        obstacle_twins_0.current.reset()
-      }
-
-      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_twins_0.current) {
-          hasUpdatedObstacle_twins_0.current = true;
-        }
-        obstacle_twins_0.current.reset()
-      }
     });
     // Obstacle Right Twins Divergence 0
     const obstacleListener_twins_0_divergence = obstaclePosition_twins_0_divergence.addListener((value) => {
@@ -1333,33 +819,6 @@ export const Stage_2_Projectile = (props) => {
         obstacle_twins_0.current.reset()
       }
 
-      if (isSpecialColliding_a_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_twins_0.current) {
-          hasUpdatedObstacle_twins_0.current = true;
-        }
-        obstacle_twins_0.current.reset()
-      }
-
-      if (isSpecialColliding_a_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_twins_0.current) {
-          hasUpdatedObstacle_twins_0.current = true;
-        }
-        obstacle_twins_0.current.reset()
-      }
-
-      if (isSpecialColliding_a_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_twins_0.current) {
-          hasUpdatedObstacle_twins_0.current = true;
-        }
-        obstacle_twins_0.current.reset()
-      }
-
-      if (isSpecialColliding_a_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_twins_0.current) {
-          hasUpdatedObstacle_twins_0.current = true;
-        }
-        obstacle_twins_0.current.reset()
-      }
     });
 
     // Obstacle Right Twins 1
@@ -1379,33 +838,6 @@ export const Stage_2_Projectile = (props) => {
         obstacle_twins_1.current.reset()
       }
 
-      if (isSpecialColliding_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_twins_1.current) {
-          hasUpdatedObstacle_twins_1.current = true;
-        }
-        obstacle_twins_1.current.reset()
-      }
-
-      if (isSpecialColliding_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_twins_1.current) {
-          hasUpdatedObstacle_twins_1.current = true;
-        }
-        obstacle_twins_1.current.reset()
-      }
-
-      if (isSpecialColliding_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_twins_1.current) {
-          hasUpdatedObstacle_twins_1.current = true;
-        }
-        obstacle_twins_1.current.reset()
-      }
-
-      if (isSpecialColliding_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_twins_1.current) {
-          hasUpdatedObstacle_twins_1.current = true;
-        }
-        obstacle_twins_1.current.reset()
-      }
     });
     // Obstacle Right Twins 1
     const obstacleListener_twins_1_divergence = obstaclePosition_twins_1_divergence.addListener((value) => {
@@ -1423,54 +855,12 @@ export const Stage_2_Projectile = (props) => {
         obstacle_twins_1.current.reset()
       }
 
-      if (isSpecialColliding_a_0(specialDefense_0, obj2) && specialDefense_0.x != 0) {
-        if (!hasUpdatedObstacle_twins_1.current) {
-          hasUpdatedObstacle_twins_1.current = true;
-        }
-        obstacle_twins_1.current.reset()
-      }
-
-      if (isSpecialColliding_a_1(specialDefense_1, obj2) && specialDefense_1.x != 0) {
-        if (!hasUpdatedObstacle_twins_1.current) {
-          hasUpdatedObstacle_twins_1.current = true;
-        }
-        obstacle_twins_1.current.reset()
-      }
-
-      if (isSpecialColliding_a_2(specialDefense_2, obj2) && specialDefense_2.x != 0) {
-        if (!hasUpdatedObstacle_twins_1.current) {
-          hasUpdatedObstacle_twins_1.current = true;
-        }
-        obstacle_twins_1.current.reset()
-      }
-
-      if (isSpecialColliding_a_3(specialDefense_3, obj2) && specialDefense_3.x != 0) {
-        if (!hasUpdatedObstacle_twins_1.current) {
-          hasUpdatedObstacle_twins_1.current = true;
-        }
-        obstacle_twins_1.current.reset()
-      }
-    });
-
-    const upgradeToSpecial_0Listener = upgradeToSpecial_0_Position.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
-
-      if (isUpgradeToSpecial_0_Colliding(obj1, obj2)) {
-        // console.log("UPGRADE COLLISION!!!!!!")
-        if (!hasUpdatedUpgradeToSpecial_0.current) {
-          retainUpgradeToSpecial_0.current = true;
-          setSharedState({ upgradeToSpecial_0: true })
-          hasUpdatedUpgradeToSpecial_0.current = true;
-        }
-        upgradeToSpecial_0.current.reset();
-      }
     });
 
     return () => {
       letterPosition.removeListener(wordBlockListener);
       obstaclePosition_0.removeListener(obstacleListener_0);
       obstaclePosition_1.removeListener(obstacleListener_1);
-      obstaclePosition_large.removeListener(obstacleListener_large);
       obstaclePosition_right_angle_0.removeListener(obstacleListener_right_angle_0);
       obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1)
       obstaclePosition_twins_0.removeListener(obstacleListener_twins_0);
@@ -1479,9 +869,8 @@ export const Stage_2_Projectile = (props) => {
       obstaclePosition_twins_1.removeListener(obstacleListener_twins_1);
       obstaclePosition_twins_1_divergence.removeListener(obstacleListener_twins_1_divergence)
 
-      upgradeToSpecial_0_Position.removeListener(upgradeToSpecial_0Listener);
     }
-  }, [obj1, specialDefense_0, specialDefense_1, specialDefense_2, specialDefense_3]);
+  }, [obj1]);
 
   useEffect(() => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -1554,11 +943,11 @@ export const Stage_2_Projectile = (props) => {
     hideCrashesUntilUpdate.current = true;
     setContinuousEndGameCall(true)
     isGameInProgress.current = false;
-    // if (input.local != "c") {
+
     if (level.current >= 0) {
       animation.current.stop();
-
       letterPosition.setValue({ x: 1000, y: 0 })
+      hasUpdatedLetterBlock.current = false;
 
       if (obstacle_twins_1.current != null) {
         obstacle_twins_1.current.stop();
@@ -1569,62 +958,48 @@ export const Stage_2_Projectile = (props) => {
       }
       if (obstacle_0.current != null) {
         obstacle_0.current.stop();
-
         obstaclePosition_0.setValue({ x: 1000, y: 0 })
+        hasUpdatedObstacle_0.current = false;
       }
       if (obstacle_1.current != null) {
         obstacle_1.current.stop();
-
         obstaclePosition_1.setValue({ x: 1000, y: 0 })
-      }
+        hasUpdatedObstacle_1.current = false;
 
-      // obstacle_right_angle_0.current.stop();
+      }
     }
     if (level.current >= 1 && obstacle_twins_0.current != null) {
       obstacle_twins_0.current.stop();
-
       obstaclePosition_twins_0.setValue({ x: 1000, y: 0 })
       obstaclePosition_twins_0_divergence.setValue({ x: 1000, y: 0 })
-
+      hasUpdatedObstacle_twins_0.current = false;
     }
     if (level.current >= 2 && obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-
       obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+      hasUpdatedObstacle_right_angle_0.current = false;
     }
 
     if (level.current >= 3 && obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-
       obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+      hasUpdatedObstacle_right_angle_1.current = false;
     }
-
-
-
-    // }
 
     // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
     // - Letters
     setLetter('');
     setLetterPocket([]);
     setDisplayLetters([]);
-    letterPosition.setValue({ x: 1000, y: 0 });
+    
     // -Word
     setRandomWord('');
     wordPlusSeven.current = [];
-    // - Obstacles
-    obstaclePosition_0.setValue({ x: 1000, y: 0 })
-    obstaclePosition_1.setValue({ x: 1000, y: 0 })
-    obstaclePosition_large.setValue({ x: 1000, y: 0 })
+
     // - Game Logic
     count.setValue(0)
-    // crashes.current = 0;
-    // prevCrashes.current = 0
     level.current = 0;
-    hasUpdatedLetterBlock.current = false;
-    hasUpdatedObstacle_0.current = false;
-    hasUpdatedObstacle_1.current = false;
-    hasUpdatedObstacle_large.current = false;
+    
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
@@ -1652,8 +1027,6 @@ export const Stage_2_Projectile = (props) => {
             currentCrashes: input.crashes
           })
         }, 1700)
-
-        // setStageTransitionModalVisible(!stageTransitionModalVisible);
 
         return;
       } else {
@@ -1846,22 +1219,6 @@ export const Stage_2_Projectile = (props) => {
             style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
-        <Animated.View
-          style={[Styling.projectile_obstacle_block, {
-            transform: [
-              { translateX: obstaclePosition_large.x },
-              { translateY: obstaclePosition_large.y },
-              // { rotate: boxInterpolation_large } 
-            ],
-
-          },
-          ]}
-        >
-          <Image
-            source={require('../../../assets/projectile_enemy_2.png')}
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-        </Animated.View>
-
         {/* Right Angle 0 & 1 */}
         <Animated.View
           style={[Styling.projectile_obstacle_block,
@@ -1879,6 +1236,7 @@ export const Stage_2_Projectile = (props) => {
             source={require('../../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
+
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
@@ -1895,44 +1253,7 @@ export const Stage_2_Projectile = (props) => {
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
-        {/* Opacity Bot */}
-        {/* - - - - - - - - - - */}
-        {/* <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_opacity_bot.x }, 
-                { translateY: obstaclePosition_opacity_bot.y }
-                // { rotate: boxInterpolation_opacity_bot } 
-              ],
-              opacity: boxInterpolation_opacity_bot,
-              
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_3.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View>
-          <Animated.View
-            style={[Styling.projectile_obstacle_block, {
-              transform: [
-                { translateX: obstaclePosition_opacity_bot.x }, 
-                { translateY: obstaclePosition_opacity_bot.y._value + WidthRatio(24) }
-                // { rotate: boxInterpolation_opacity_bot } 
-              ],
-              opacity: boxInterpolation_opacity_bot,
-              
-            },
-            ]}
-          >
-            <Image 
-              source={require('../../assets/projectile_enemy_3.png')} 
-              style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-          </Animated.View> */}
-        {/* - - - - - - - - - - */}
-
-        {/* Twins */}
-        {/* - - - - - - - - - - */}
+        {/* TWINS */}
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
@@ -1998,25 +1319,6 @@ export const Stage_2_Projectile = (props) => {
         </Animated.View>
         {/* - - - - - - - - - - */}
 
-
-        {/* Upgrade To Special 0 */}
-        <Animated.View
-          style={[
-            Styling.projectile_obstacle_block,
-            {
-              transform: [{ translateX: upgradeToSpecial_0_Position.x }, { translateY: upgradeToSpecial_0_Position.y }],
-            },
-          ]}
-        >
-          <Image
-            source={require('../../../assets/upgrade_to_special_1.png')}  ///upgrade_to_special_0.png
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
-        </Animated.View>
-        {/* CHARACTER GUIDELINES */}
-        {/* <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: obj1.x}} />
-          <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: obj1.y}} /> */}
-        {/* <View style={{borderWidth: 5, borderColor: 'blue', height: WidthRatio(12), width: WidthRatio(24), position: 'absolute', top: obj1.y+WidthRatio(6), left: obj1.x-WidthRatio(12)}} /> */}
-        {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
 
 
         <View style={{ borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10) }} />

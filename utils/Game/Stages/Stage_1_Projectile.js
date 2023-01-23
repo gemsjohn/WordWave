@@ -674,7 +674,7 @@ export const Stage_1_Projectile = (props) => {
     // [HANDLE GAME RESTART]
     if (input.continue) {
       setHasGameBeenStarted(false);
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
