@@ -1083,7 +1083,7 @@ export const Stage_3_Projectile = (props) => {
       obstaclePosition_0.removeListener(obstacleListener_0);
       obstaclePosition_1.removeListener(obstacleListener_1);
       obstaclePosition_right_angle_0.removeListener(obstacleListener_right_angle_0);
-
+      obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1);
       obstaclePosition_twins_1.removeListener(obstacleListener_twins_1);
       obstaclePosition_twins_1_divergence.removeListener(obstacleListener_twins_1_divergence)
 
