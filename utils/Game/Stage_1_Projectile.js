@@ -1,38 +1,47 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useContext, useMemo } from 'react';
-// import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
-import { Navbar } from '../../components/Navbar';
-import { getTerm } from '../../Localization';
+import React, { 
+  useState, 
+  useRef, 
+  useEffect, 
+  useLayoutEffect, 
+  useContext
+} from 'react';
+import { 
+  Styling, 
+  WidthRatio, 
+  HeightRatio, 
+  windowHeight, 
+  windowWidth 
+} from '../../Styling';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1, isObstacleColliding_large, isObstacleColliding_right_angle_0, isObstacleColliding_right_angle_1, isSpecialColliding_0, isSpecialColliding_1, isSpecialColliding_2, isSpecialColliding_3, isUpgradeToSpecial_0_Colliding } from './CollisionHandler';
-import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
-import { resetActionHome, resetActionGame, resetActionProfile } from '../ResetActions';
+import { 
+  resetActionHome, 
+  resetActionGame, 
+  resetActionProfile 
+} from '../ResetActions';
+import { 
+  isLetterBlockColliding, 
+  isObstacleColliding_0, 
+  isObstacleColliding_1, 
+  isObstacleColliding_large, 
+  isObstacleColliding_right_angle_0, 
+  isObstacleColliding_right_angle_1, 
+  isSpecialColliding_0, 
+  isSpecialColliding_1, 
+  isSpecialColliding_2, 
+  isSpecialColliding_3, 
+  isUpgradeToSpecial_0_Colliding 
+} from './CollisionHandler';
 
 import {
   Text,
   View,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Platform,
-  RefreshControl,
   Image,
-  ActivityIndicator,
   Animated,
-  PanResponder,
-  UIManager,
   TouchableOpacity,
   Modal,
-  Alert,
-  StyleSheet,
-  TouchableOpacityBase,
   Easing
 } from 'react-native';
-
-
-
 
 export const Stage_1_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 

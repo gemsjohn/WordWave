@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Basic_Frontend",
-    "slug": "Basic_Frontend",
+    "name": "Cosmic Scramble",
+    "slug": "cosmicScramble",
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/icon.png",
@@ -21,6 +21,8 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.cosmicscramble",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -28,6 +30,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dfa0a44a-b106-4b60-821f-61b53c7faaf1"
+      }
     }
   }
 }

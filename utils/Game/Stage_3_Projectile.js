@@ -1,13 +1,24 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useContext, useMemo } from 'react';
-// import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
-import { Navbar } from '../../components/Navbar';
-import { getTerm } from '../../Localization';
+import React, { 
+  useState, 
+  useRef, 
+  useEffect, 
+  useLayoutEffect, 
+  useContext 
+} from 'react';
+import { 
+  Styling, 
+  WidthRatio, 
+  HeightRatio, 
+  windowHeight, 
+  windowWidth 
+} from '../../Styling';
 import { shuffle } from 'lodash';
-import { MovementA, MovementB, MovementC, MovementD } from './ObstacleMovement';
 import { SharedStateContext } from './Game';
-import { resetActionHome, resetActionGame, resetActionProfile } from '../ResetActions';
+import { 
+  resetActionHome, 
+  resetActionGame, 
+  resetActionProfile 
+} from '../ResetActions';
 import {
   isLetterBlockColliding,
   isObstacleColliding_0,
@@ -34,26 +45,12 @@ import {
 import {
   Text,
   View,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Platform,
-  RefreshControl,
   Image,
-  ActivityIndicator,
   Animated,
-  PanResponder,
-  UIManager,
   TouchableOpacity,
   Modal,
-  Alert,
-  StyleSheet,
-  TouchableOpacityBase,
   Easing
 } from 'react-native';
-
-
-
 
 export const Stage_3_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
