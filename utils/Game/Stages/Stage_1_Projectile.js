@@ -25,6 +25,7 @@ import {
   isObstacleColliding_1, 
   isObstacleColliding_right_angle_0, 
   isObstacleColliding_right_angle_1, 
+  isAuxilliaryGreenHealth_Colliding
 } from '../CollisionHandler';
 
 import {
@@ -106,6 +107,12 @@ export const Stage_1_Projectile = (props) => {
   const obstacle_right_angle_1 = useRef(null)
   let timeoutObstacle_right_angle_1_ID;
 
+  // [AUXILLIARY GREEN HEALTH ANIMATION] - - - - - 
+  const hasUpdatedAuxilliaryGreenHealth = useRef(false);
+  const auxilliaryGreenHealth_Position = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const auxilliaryGreenHealth = useRef(null)
+  let timeoutAuxilliaryGreenHealth_ID;
+  const retainAuxilliaryGreenHealth = useRef(false);
 
 
   // [TESTING]
@@ -435,6 +442,41 @@ export const Stage_1_Projectile = (props) => {
     }
   };
 
+  const runAuxilliaryGreenHealth = () => {
+    if (isGameInProgress.current && !retainAuxilliaryGreenHealth.current) {
+      hasUpdatedAuxilliaryGreenHealth.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: localYPos_0 });
+
+      auxilliaryGreenHealth.current = Animated.parallel([
+        Animated.timing(auxilliaryGreenHealth_Position.x, {
+          toValue: -WidthRatio(40),
+          duration: 8000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(auxilliaryGreenHealth_Position.y, {
+          toValue: localYPos_1,
+          duration: 8000,
+          useNativeDriver: true,
+        }),
+
+      ]);
+
+      auxilliaryGreenHealth.current.start(() => {
+        if (timeoutAuxilliaryGreenHealth_ID) {
+          clearTimeout(timeoutAuxilliaryGreenHealth_ID);
+        }
+        timeoutAuxilliaryGreenHealth_ID = setTimeout(() => {
+          runAuxilliaryGreenHealth();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
   const [obj1, setObj1] = useState({
     x: 0,
     y: 0,
@@ -550,12 +592,30 @@ export const Stage_1_Projectile = (props) => {
 
     });
 
+    // AuxilliaryGreenHealth
+
+    const auxilliaryGreenHealthListener = auxilliaryGreenHealth_Position.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
+
+      if (isAuxilliaryGreenHealth_Colliding(obj1, obj2)) {
+        // console.log("UPGRADE COLLISION!!!!!!")
+        if (!hasUpdatedAuxilliaryGreenHealth.current) {
+          retainAuxilliaryGreenHealth.current = true;
+          crashes.current -= 1;
+          hasUpdatedAuxilliaryGreenHealth.current = true;
+        }
+        auxilliaryGreenHealth.current.reset();
+      }
+    });
+
     return () => {
       letterPosition.removeListener(wordBlockListener);
       obstaclePosition_0.removeListener(obstacleListener_0);
       obstaclePosition_1.removeListener(obstacleListener_1);
       obstaclePosition_right_angle_0.removeListener(obstacleListener_right_angle_0);
-      obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1)
+      obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1);
+
+      auxilliaryGreenHealth_Position.removeListener(auxilliaryGreenHealthListener);
     }
   }, [obj1]);  
 
@@ -607,6 +667,15 @@ export const Stage_1_Projectile = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
+      if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
+        auxilliaryGreenHealth.current.stop();
+        auxilliaryGreenHealth_Position.setValue({ x: 1000, y: 0 })
+        hasUpdatedAuxilliaryGreenHealth.current = false;
+        retainAuxilliaryGreenHealth.current = false;
+
+      } else if (crashes.current >= 2) {
+        runAuxilliaryGreenHealth();
+      }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
         endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
       }
@@ -639,6 +708,12 @@ export const Stage_1_Projectile = (props) => {
 
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
+
+      if (auxilliaryGreenHealth.current != null) {
+        auxilliaryGreenHealth.current.stop();
+        auxilliaryGreenHealth_Position.setValue({ x: 1000, y: 0 })
+        hasUpdatedAuxilliaryGreenHealth.current = false;
+      }
     }
     if (level.current >= 1 && obstacle_1.current != null) {
       obstacle_1.current.stop();
@@ -911,6 +986,20 @@ export const Stage_1_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/projectile_red_ufo.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+
+        {/* Auxilliary Green Health */}
+        <Animated.View
+          style={[
+            Styling.projectile_obstacle_block,
+            {
+              transform: [{ translateX: auxilliaryGreenHealth_Position.x }, { translateY: auxilliaryGreenHealth_Position.y }],
+            },
+          ]}
+        >
+          <Image
+            source={require('../../../assets/aux_green_plus.png')}  ///upgrade_to_special_0.png
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
