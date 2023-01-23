@@ -1707,7 +1707,7 @@ export const Stage_2_Projectile = (props) => {
               }}
             >
               <Image
-                source={require('../../assets/stage_transition_2.png')}
+                source={require('../../../assets/stage_transition_2.png')}
                 style={{ height: HeightRatio(900), width: HeightRatio(900) }}
               />
             </TouchableOpacity>
@@ -1745,7 +1745,7 @@ export const Stage_2_Projectile = (props) => {
                     borderRadius: HeightRatio(20)
                   }} >
                     <Image
-                      source={require('../../assets/reward_100_points.png')}
+                      source={require('../../../assets/reward_100_points.png')}
                       style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
                   </View>
                 }
@@ -1759,7 +1759,7 @@ export const Stage_2_Projectile = (props) => {
                     borderRadius: HeightRatio(20)
                   }} >
                     <Image
-                      source={require('../../assets/reward_1000_points_0.png')}
+                      source={require('../../../assets/reward_1000_points_0.png')}
                       style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
                   </View>
                 }
@@ -1808,7 +1808,7 @@ export const Stage_2_Projectile = (props) => {
             {letter.toUpperCase()}
           </Text>
           <Image
-            source={require('../../assets/block_keyboard_key.png')}
+            source={require('../../../assets/block_keyboard_key.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
 
         </Animated.View>
@@ -1826,7 +1826,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_asteroid_2.png')}
+            source={require('../../../assets/projectile_asteroid_2.png')}
             style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
@@ -1842,7 +1842,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_asteroid_2.png')}
+            source={require('../../../assets/projectile_asteroid_2.png')}
             style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
@@ -1858,7 +1858,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_enemy_2.png')}
+            source={require('../../../assets/projectile_enemy_2.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
@@ -1876,7 +1876,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_red_ufo.png')}
+            source={require('../../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
         <Animated.View
@@ -1891,7 +1891,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_red_ufo.png')}
+            source={require('../../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
@@ -1946,7 +1946,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_enemy_4.png')}
+            source={require('../../../assets/projectile_enemy_4.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
         <Animated.View
@@ -1961,7 +1961,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_enemy_4.png')}
+            source={require('../../../assets/projectile_enemy_4.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
@@ -1978,7 +1978,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_enemy_4.png')}
+            source={require('../../../assets/projectile_enemy_4.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
         <Animated.View
@@ -1993,7 +1993,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/projectile_enemy_4.png')}
+            source={require('../../../assets/projectile_enemy_4.png')}
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
         {/* - - - - - - - - - - */}
@@ -2009,7 +2009,7 @@ export const Stage_2_Projectile = (props) => {
           ]}
         >
           <Image
-            source={require('../../assets/upgrade_to_special_1.png')}  ///upgrade_to_special_0.png
+            source={require('../../../assets/upgrade_to_special_1.png')}  ///upgrade_to_special_0.png
             style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
         {/* CHARACTER GUIDELINES */}
@@ -2048,7 +2048,7 @@ export const Stage_2_Projectile = (props) => {
               }}
                 key={i}
               >
-                <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
+                <Image source={require('../../../assets/skull_0.png')} style={{ height: 50, width: 50 }} />
               </View>
             ))}
           </>
@@ -2063,7 +2063,7 @@ export const Stage_2_Projectile = (props) => {
             borderRadius: HeightRatio(20)
           }} >
             <Image
-              source={require('../../assets/warning_oouch.png')}
+              source={require('../../../assets/warning_oouch.png')}
               style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
           </View>
         }
@@ -2080,7 +2080,7 @@ export const Stage_2_Projectile = (props) => {
           }}
             key={i}
           >
-            <Image source={require('../../assets/skull_0.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
+            <Image source={require('../../../assets/skull_0.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
           </View>
         ))}
 
@@ -2096,7 +2096,7 @@ export const Stage_2_Projectile = (props) => {
           }}
             key={i}
           >
-            <Image source={require('../../assets/skull_money.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
+            <Image source={require('../../../assets/skull_money.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
           </View>
         ))}
 
@@ -2171,7 +2171,7 @@ export const Stage_2_Projectile = (props) => {
                   <Text style={Styling.modal_text_style}>Words:</Text>
                 </View>
                 <Image 
-              source={require('../../assets/game_over.png')}
+              source={require('../../../assets/game_over.png')}
               style={{height: HeightRatio(1000), width: HeightRatio(940)}} />
             </TouchableOpacity>
           </View>

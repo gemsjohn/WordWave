@@ -7,9 +7,9 @@ import { CharacterAndJoystick } from './CharacterAndJoystick';
 import { Special } from './Special';
 import { Simple } from './Simple';
 import { Projectile } from './Projectile';
-import { Stage_1_Projectile } from './Stage_1_Projectile';
-import { Stage_2_Projectile } from './Stage_2_Projectile';
-import { Stage_3_Projectile } from './Stage_3_Projectile';
+import { Stage_1_Projectile } from './Stages/Stage_1_Projectile';
+import { Stage_2_Projectile } from './Stages/Stage_2_Projectile';
+import { Stage_3_Projectile } from './Stages/Stage_3_Projectile';
 import { CountdownTimer } from './CountdownTimer';
 
 import {
