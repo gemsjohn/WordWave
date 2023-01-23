@@ -5,7 +5,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
-import { CountdownTimer } from '../Game/CountdownTimer';
 
 export const Home = (props) => {
   return (
