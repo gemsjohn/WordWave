@@ -892,7 +892,7 @@ export const Stage_2_Projectile = (props) => {
     // AuxilliaryGreenHealth
 
     const auxilliaryGreenHealthListener = auxilliaryGreenHealth_Position.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, width: WidthRatio(24), height: WidthRatio(24) }
+      let obj2 = { x: value.x, y: value.y, width: WidthRatio(12), height: WidthRatio(12) }
 
       if (isAuxilliaryGreenHealth_Colliding(obj1, obj2)) {
         // console.log("UPGRADE COLLISION!!!!!!")
@@ -1072,7 +1072,7 @@ export const Stage_2_Projectile = (props) => {
       console.log("- - - - - - ")
 
       setHasGameBeenStarted(false);
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1394,7 +1394,7 @@ export const Stage_2_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/aux_green_plus.png')}  ///upgrade_to_special_0.png
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+            style={{ height: WidthRatio(12), width: WidthRatio(12) }} />
         </Animated.View>
 
 
