@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 // import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
-import { Navbar } from '../../components/Navbar';
-import { getTerm } from '../../Localization';
+import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../../Styling';
+import { Navbar } from '../../../components/Navbar';
+import { getTerm } from '../../../Localization';
 import { shuffle } from 'lodash';
-import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1 } from './CollisionHandler';
+import { isLetterBlockColliding, isObstacleColliding_0, isObstacleColliding_1 } from '../CollisionHandler';
 import {
     Text,
     View,

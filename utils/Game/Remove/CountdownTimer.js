@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { windowWidth } from '../../Styling';
+import { windowWidth } from '../../../Styling';
 
 export const CountdownTimer = () => {
     const [count, setCount] = useState(15);
