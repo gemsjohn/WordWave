@@ -4,7 +4,6 @@ import React, {
   useEffect, 
   useLayoutEffect, 
   useContext, 
-  useMemo 
 } from 'react';
 import { 
   Styling, 
@@ -24,22 +23,12 @@ import {
   isLetterBlockColliding,
   isObstacleColliding_0,
   isObstacleColliding_1,
-  isObstacleColliding_large,
   isObstacleColliding_right_angle_0,
   isObstacleColliding_right_angle_1,
   isObstacleColliding_twins_0,
   isObstacleColliding_twins_0_divgergence,
   isObstacleColliding_twins_1,
   isObstacleColliding_twins_1_divgergence,
-  isSpecialColliding_0,
-  isSpecialColliding_1,
-  isSpecialColliding_2,
-  isSpecialColliding_3,
-  isSpecialColliding_a_0,
-  isSpecialColliding_a_1,
-  isSpecialColliding_a_2,
-  isSpecialColliding_a_3,
-  isUpgradeToSpecial_0_Colliding
 } from '../CollisionHandler';
 import {
   Text,
@@ -1008,7 +997,7 @@ export const Stage_2_Projectile = (props) => {
       console.log("- - - - - - ")
 
       setHasGameBeenStarted(false);
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
