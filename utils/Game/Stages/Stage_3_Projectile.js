@@ -1683,6 +1683,7 @@ export const Stage_3_Projectile = (props) => {
     if (level.current >= 0) {
       animation.current.stop();
       obstacle_opacity_bot.current.stop();
+      
       letterPosition.setValue({ x: 1000, y: 0 })
       obstaclePosition_opacity_bot.setValue({ x: 1000, y: 0 })
       obstaclePosition_opacity_bot_divergence.setValue({ x: 1000, y: 0 })
