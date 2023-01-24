@@ -55,6 +55,9 @@ export const Stage_2_Projectile = (props) => {
 
   // [GAME LOGIC] - - - - - 
   const isGameInProgress = useRef(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const pauseTimeout = useRef(null);
+  const updatedPostResume = useRef(null)
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
@@ -79,6 +82,7 @@ export const Stage_2_Projectile = (props) => {
   const letterPosition = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current
   const animation = useRef(null)
   const count = new Animated.Value(0);
+  const countRef = useRef(0);
   const wordPlusSeven = useRef([])
   let timeoutLetter_ID;
 
@@ -249,6 +253,8 @@ export const Stage_2_Projectile = (props) => {
         if (isGameInProgress.current) {
           console.log("#4 About to run animations.")
           console.log("LEVEL: " + level.current)
+          updatedPostResume.current = true;
+          pauseTimeout.current = false;
 
           setTimeout(() => {
             if (level.current >= 0) {
@@ -280,6 +286,13 @@ export const Stage_2_Projectile = (props) => {
   const letterAnimation = () => {
     if (isGameInProgress.current) {
       hasUpdatedLetterBlock.current = false;
+
+      countRef.current = count._value;
+      if (sharedState.current.currentLetter_countValue != null && !updatedPostResume.current) {
+        count.setValue(sharedState.current.currentLetter_countValue);
+        updatedPostResume.current = true;
+      }
+
       setLetter(wordPlusSeven.current[count._value]);
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       letterPosition.setValue({ x: WidthRatio(370), y: localYPos_0 })
@@ -982,7 +995,7 @@ export const Stage_2_Projectile = (props) => {
         endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
       }
     }, 200);
-  }, [crashes.current])
+  }, [crashes.current, level.current])
 
   const getBackgroundColor = (input) => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -991,6 +1004,111 @@ export const Stage_2_Projectile = (props) => {
     } else {
       return 'rgba(255, 255, 255, 0.65)';
     }
+  }
+
+  const pauseGame = () => {
+    // console.log("PAUSE");
+    // console.log("countRef.current")
+    // console.log(countRef.current)
+    setIsPaused(true)
+    isGameInProgress.current = false;
+    updatedPostResume.current = false;
+
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+
+
+    setSharedState({
+      stage1: false,
+      stage2: true,
+      stage3: false,
+      currentScore: score.current,
+      currentLevel: level.current,
+      currentCrashes: crashes.current,
+      currentUniqueLetterPocket: uniqueLetterPocket,
+      currentWordPlusSeven: wordPlusSeven.current,
+      currentDisplayLetters: displayLetters,
+      currentLetter_countValue: countRef.current
+    })
+
+    if (level.current >= 0) {
+      animation.current.stop();
+      letterPosition.setValue({ x: 1000, y: 0 })
+      hasUpdatedLetterBlock.current = false;
+
+      if (obstacle_twins_1.current != null) {
+        obstacle_twins_1.current.stop();
+
+        obstaclePosition_twins_1.setValue({ x: 1000, y: 0 })
+        obstaclePosition_twins_1_divergence.setValue({ x: 1000, y: 0 })
+
+      }
+      if (obstacle_0.current != null) {
+        obstacle_0.current.stop();
+        obstaclePosition_0.setValue({ x: 1000, y: 0 })
+        hasUpdatedObstacle_0.current = false;
+      }
+      if (obstacle_1.current != null) {
+        obstacle_1.current.stop();
+        obstaclePosition_1.setValue({ x: 1000, y: 0 })
+        hasUpdatedObstacle_1.current = false;
+
+      }
+
+      if (auxilliaryGreenHealth.current != null) {
+        auxilliaryGreenHealth.current.stop();
+        auxilliaryGreenHealth_Position.setValue({ x: 1000, y: 0 })
+        hasUpdatedAuxilliaryGreenHealth.current = false;
+      }
+    }
+    if (level.current >= 1 && obstacle_twins_0.current != null) {
+      obstacle_twins_0.current.stop();
+      obstaclePosition_twins_0.setValue({ x: 1000, y: 0 })
+      obstaclePosition_twins_0_divergence.setValue({ x: 1000, y: 0 })
+      hasUpdatedObstacle_twins_0.current = false;
+    }
+    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
+      obstacle_right_angle_0.current.stop();
+      obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+      hasUpdatedObstacle_right_angle_0.current = false;
+    }
+
+    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
+      obstacle_right_angle_1.current.stop();
+      obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+      hasUpdatedObstacle_right_angle_1.current = false;
+    }
+
+  }
+
+  const resumeGame = () => {
+    setIsPaused(false)
+    isGameInProgress.current = true;
+
+
+    if (level.current >= 0) {
+      letterAnimation();
+      runObstacleAnimation_twins_1();
+
+    }
+
+    if (level.current >= 1) {
+      runObstacleAnimation_twins_0();
+    }
+
+    if (level.current >= 2) {
+      runObstacleAnimation_right_angle_0();
+    }
+
+    if (level.current >= 3) {
+      runObstacleAnimation_right_angle_1();
+    }
+
+    pauseTimeout.current = true;
+    setTimeout(() => {
+      pauseTimeout.current = false;
+    }, 15000)
+
+
   }
 
   // [END GAME] 
@@ -1072,7 +1190,7 @@ export const Stage_2_Projectile = (props) => {
       console.log("- - - - - - ")
 
       setHasGameBeenStarted(false);
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1151,6 +1269,66 @@ export const Stage_2_Projectile = (props) => {
           </>
           :
           <>
+          {/* [PAUSE / RESUME] */}
+          {isPaused ?
+              <View style={{
+                position: 'absolute',
+                zIndex: -7,
+                top: HeightRatio(20),
+                left: HeightRatio(20)
+              }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    resumeGame();
+                  }}
+                  style={{
+                    height: HeightRatio(100),
+                    width: HeightRatio(100),
+                    // backgroundColor: 'red'
+                  }}>
+                  <Image
+                    source={require('../../../assets/button_resume.png')}
+                    style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                </TouchableOpacity>
+              </View>
+              :
+              <>
+                {!pauseTimeout.current ?
+                  <View style={{
+                    position: 'absolute',
+                    zIndex: -7,
+                    top: HeightRatio(20),
+                    left: HeightRatio(20)
+                  }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        pauseGame();
+                      }}
+                      style={{
+                        height: HeightRatio(100),
+                        width: HeightRatio(100),
+                        // backgroundColor: 'red'
+                      }}>
+                      <Image
+                        source={require('../../../assets/button_pause.png')}
+                        style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                    </TouchableOpacity>
+                  </View>
+                  :
+                  <View style={{
+                    position: 'absolute',
+                    zIndex: -7,
+                    top: HeightRatio(20),
+                    left: HeightRatio(20)
+                  }}>
+                      <Image
+                        source={require('../../../assets/clock_icon.png')}
+                        style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                  </View>
+                }
+              </>
+            }
+
             {score.current > 0 ?
               <>
                 <View style={{

@@ -696,7 +696,7 @@ export const Stage_1_Projectile = (props) => {
         endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
       }
     }, 200);
-  }, [crashes.current])
+  }, [crashes.current, level.current])
 
   const getBackgroundColor = (input) => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -869,7 +869,7 @@ export const Stage_1_Projectile = (props) => {
     if (input.continue) {
       setHasGameBeenStarted(false);
       setLetterPocket([]);
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -996,7 +996,6 @@ export const Stage_1_Projectile = (props) => {
                     top: HeightRatio(20),
                     left: HeightRatio(20)
                   }}>
-                    
                       <Image
                         source={require('../../../assets/clock_icon.png')}
                         style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
