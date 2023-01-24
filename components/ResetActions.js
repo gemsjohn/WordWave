@@ -23,3 +23,10 @@ export const resetActionHome = CommonActions.reset({
       params: {} 
     }]
   });
+  export const resetActionAuth = CommonActions.reset({
+    index: 1,
+    routes: [{ 
+      name: `${getTerm('auth', language, 'title')}`, 
+      params: {} 
+    }]
+  });

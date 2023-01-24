@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Home } from './Home/Home';
 import { Profile } from './Profile/Profile';
 import { Game } from './Game/Game';
+import { Auth } from './Auth/auth';
 
 const language = 'en'
 export const HomeScreen = ({ navigation, route }) => {
@@ -19,4 +20,10 @@ export const ProfileScreen = ({ navigation, route }) => {
     <Profile nav={navigation} lang={language} />
   );
 }
+export const AuthScreen = ({ navigation, route }) => {
+  return (
+    <Auth nav={navigation} lang={language} />
+  );
+}
+
 

@@ -155,7 +155,24 @@ export const Styling = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'white'
-  }
+  },
+
+  // AUTH
+  textInputStyle: {
+    outline: 'none',
+    backgroundColor: 'transparent',
+    color: 'white',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    padding: 20,
+    border: 'solid',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 40,
+    alignSelf: 'center',
+    margin: 10,
+    width: windowWidth - 80
+  },
 
 
 });

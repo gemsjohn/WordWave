@@ -8,7 +8,7 @@ import { CommonActions } from '@react-navigation/native';
 import { HeightRatio, WidthRatio, windowWidth, windowHeight, Styling } from '../Styling';
 // import { useQuery } from '@apollo/client';
 // import { GET_USER_BY_ID, GET_ME } from '../utils/queries';
-import { resetActionHome, resetActionGame, resetActionProfile } from '../utils/ResetActions';
+import { resetActionHome, resetActionGame, resetActionProfile, resetActionAuth } from './ResetActions';
 import { getTerm } from '../Localization';
 
 
@@ -20,12 +20,14 @@ export const Navbar = (props) => {
     const [homeBg, setHomeBg] = useState('rgba(255, 255, 255, 0.1)');
     const [gameBg, setGameBg] = useState('rgba(255, 255, 255, 0.1)');
     const [profileBg, setProfileBg] = useState('rgba(255, 255, 255, 0.1)');
+    const [authBg, setAuthBg] = useState('rgba(255, 255, 255, 0.1)');
+
     // let fontLoaded_0 = useFonts({ Inter_900Black, });
     // if (!fontLoaded_0) { return null; }
 
     const checkToken = async (value) => {
         try {
-          const response = await fetch('', {
+          const response = await fetch('https://cosmicbackend.herokuapp.com/graphql/protected-route', {
             method: 'GET',
             headers: {
               'Authorization': `${value}`
@@ -65,21 +67,22 @@ export const Navbar = (props) => {
             setAuthState(false)
         }
     }
-    // CheckAuthState()
+    CheckAuthState()
 
-    const buttons = [
-        { key: 0, image: '../assets/button_game_nav.png', label: `${getTerm('home', props.language, 'title')}`, backgroundColor: homeBg, iconColor: 'white', onPress: () => { props.nav.dispatch(resetActionHome); } }, 
-        { key: 1, image: '../assets/button_game_nav.png', label: `${getTerm('game', props.language, 'title')}`, backgroundColor: gameBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionGame); } },
-        { key: 2, image: '../assets/button_profile_nav.png', label: `${getTerm('profile', props.language, 'title')}`, backgroundColor: profileBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionProfile); } }
-    ];
+    // const buttons = [
+    //     { key: 0, image: '../assets/button_game_nav.png', label: `${getTerm('home', props.language, 'title')}`, backgroundColor: homeBg, iconColor: 'white', onPress: () => { props.nav.dispatch(resetActionHome); } }, 
+    //     { key: 1, image: '../assets/button_game_nav.png', label: `${getTerm('game', props.language, 'title')}`, backgroundColor: gameBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionGame); } },
+    //     { key: 2, image: '../assets/button_profile_nav.png', label: `${getTerm('profile', props.language, 'title')}`, backgroundColor: profileBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionProfile); } }
+    // ];
 
     useEffect(() => {
-        if (props.from == `${getTerm('home', props.language, 'title')}`) {setHomeBg('#fa1f5a75')} else {setHomeBg('#86000c90')}
-        if (props.from == `${getTerm('game', props.language, 'title')}`) {setGameBg('#fa1f5a75')} else {setGameBg('#86000c90')}
-        if (props.from == `${getTerm('profile', props.language, 'title')}`) {setProfileBg('#fa1f5a75')} else {setProfileBg('#86000c90')}
+        // if (props.from == `${getTerm('home', props.language, 'title')}`) {setHomeBg('#fa1f5a75')} else {setHomeBg('#86000c90')}
+        // if (props.from == `${getTerm('game', props.language, 'title')}`) {setGameBg('#fa1f5a75')} else {setGameBg('#86000c90')}
+        // if (props.from == `${getTerm('profile', props.language, 'title')}`) {setProfileBg('#fa1f5a75')} else {setProfileBg('#86000c90')}
+        // if (props.from == `${getTerm('auth', props.language, 'title')}`) {setAuthBg('#fa1f5a75')} else {setAuthBg('#86000c90')}
         
-        // CurrentUser()
-        // getBearerToken()
+        CurrentUser()
+        getBearerToken()
     }, [])
 
 
@@ -106,10 +109,15 @@ export const Navbar = (props) => {
                 <Image source={require('../assets/button_game_nav.png')} style={{height: 60, width: 60}} />
                 {/* <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>GAME</Text> */}
             </TouchableOpacity>
+            {isTokenValid ?
             <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionProfile); }}  style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
                 <Image source={require('../assets/button_profile_nav.png')} style={{height: 60, width: 60}} />
-                {/* <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>PROFILE</Text> */}
             </TouchableOpacity>
+            :
+            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionAuth); }}  style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
+                <Image source={require('../assets/button_profile_nav.png')} style={{height: 60, width: 60}} />
+            </TouchableOpacity>
+            }
             </View>
     )
 }

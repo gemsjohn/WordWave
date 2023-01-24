@@ -8,12 +8,13 @@
       },
       "profile": {
         "title": "PROFILE"
+      },
+      "auth": {
+        "title": "AUTH"
       }
     },
     "es": {
       "home": "",
-      "page_0": "",
-      "page_1": "",
       "profile": ""
     }
   }

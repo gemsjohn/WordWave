@@ -107,7 +107,7 @@ export const Home = (props) => {
                       }}>
                         Characters
                       </Text>
-                      <Text style={{
+                      {/* <Text style={{
                         color: 'white',
                         fontSize: HeightRatio(50),
                         fontWeight: 'bold',
@@ -115,7 +115,77 @@ export const Home = (props) => {
                         margin: WidthRatio(10)
                       }}>
                         Details
-                      </Text>
+                      </Text> */}
+                      <View style={{
+                        flexDirection: 'row', 
+                        flexWrap: 'wrap', 
+                        // alignSelf: 'center'
+                      }}>
+                        {/* CHARACTER: You */}
+                        <View style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                          borderRadius: HeightRatio(10),
+                          padding: HeightRatio(10),
+                          margin: HeightRatio(5)
+                        }}>
+                          <Image
+                            source={require('../../assets/Char_1.png')}
+                            style={{height: HeightRatio(100), width: HeightRatio(100)}}/>
+                          <Text style={{color: 'white', alignSelf: 'center'}}>You</Text>
+                        </View>
+
+                        {/* CHARACTER: Asteroid */}
+                        <View style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                          borderRadius: HeightRatio(10),
+                          padding: HeightRatio(10),
+                          margin: HeightRatio(5)
+                        }}>
+                          <Image
+                            source={require('../../assets/projectile_asteroid_2.png')}
+                            style={{height: HeightRatio(100), width: HeightRatio(100)}}/>
+                          <Text style={{color: 'white', alignSelf: 'center'}}>Asteroid</Text>
+                        </View>
+
+                        {/* CHARACTER: Red UFO */}
+                        <View style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                          borderRadius: HeightRatio(10),
+                          padding: HeightRatio(10),
+                          margin: HeightRatio(5)
+                        }}>
+                          <Image
+                            source={require('../../assets/projectile_red_ufo.png')}
+                            style={{height: HeightRatio(100), width: HeightRatio(100)}}/>
+                          <Text style={{color: 'white', alignSelf: 'center'}}>Red UFO</Text>
+                        </View>
+
+                        {/* CHARACTER: Twin */}
+                        <View style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                          borderRadius: HeightRatio(10),
+                          padding: HeightRatio(10),
+                          margin: HeightRatio(5)
+                        }}>
+                          <Image
+                            source={require('../../assets/projectile_enemy_4.png')}
+                            style={{height: HeightRatio(100), width: HeightRatio(100)}}/>
+                          <Text style={{color: 'white', alignSelf: 'center'}}>Twin</Text>
+                        </View>
+
+                        {/* CHARACTER: Opacity Bot */}
+                        <View style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                          borderRadius: HeightRatio(10),
+                          padding: HeightRatio(10),
+                          margin: HeightRatio(5)
+                        }}>
+                          <Image
+                            source={require('../../assets/projectile_enemy_3.png')}
+                            style={{height: HeightRatio(100), width: HeightRatio(100)}}/>
+                          <Text style={{color: 'white', alignSelf: 'center'}}>Opacity Bot</Text>
+                        </View>
+                     </View>
                     </View>
                   }
                   {count == 2 &&

@@ -18,7 +18,7 @@ import {
   resetActionHome, 
   resetActionGame, 
   resetActionProfile 
-} from '../../ResetActions';
+} from '../../../components/ResetActions';
 import {
   isLetterBlockColliding,
   isObstacleColliding_0,
