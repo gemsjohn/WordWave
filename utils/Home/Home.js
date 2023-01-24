@@ -1,13 +1,13 @@
 import React from 'react';
-import { 
-  Text, 
-  View, 
-  SafeAreaView, 
-  ScrollView, 
-  StatusBar, 
-  Platform, 
-  RefreshControl, 
-  Image, 
+import {
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Platform,
+  RefreshControl,
+  Image,
   ImageBackground,
   TouchableOpacity
 } from 'react-native';
@@ -16,8 +16,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
+import { useEffect, useRef, useState } from 'react/cjs/react.development';
 
 export const Home = (props) => {
+  // const count = useRef(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (count > 3) {
+      setCount(0);
+    }
+  }, [count])
   return (
     <LinearGradient
       colors={['#1b262c', '#070707']}
@@ -40,32 +49,138 @@ export const Home = (props) => {
 
         {/* BODY */}
         <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
-          
+
           <SafeAreaView style={Styling.container}>
             <ScrollView style={Styling.scrollView}>
 
               <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
-                <View style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                  padding: HeightRatio(50),
-                  borderRadius: HeightRatio(50),
-                  width: windowWidth * 0.8,
-                  margin: WidthRatio(10),
-                  alignSelf: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row'
-                }}>
+                  {count == 0 &&
+                    <View style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                      padding: HeightRatio(50),
+                      borderRadius: HeightRatio(50),
+                      width: windowWidth * 0.8,
+                      margin: WidthRatio(10),
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column'
+                    }}>
+                      <Text style={{
+                        color: '#fcd01f',
+                        fontSize: HeightRatio(50),
+                        fontWeight: 'bold',
+                        width: windowWidth * 0.7,
+                        margin: WidthRatio(2)
+                      }}>
+                        Objective
+                      </Text>
+                      <Text style={{
+                        color: 'white',
+                        fontSize: HeightRatio(50),
+                        fontWeight: 'bold',
+                        width: windowWidth * 0.7,
+                        margin: WidthRatio(5)
+                      }}>
+                        Collect letters to spell the word at the top of the screen,
+                        avoid obstacles and enemies. Complete all 5 levels to advance
+                        to the next stage. Game over after colliding with 3 objects.
+                      </Text>
+                    </View>
+                  }
+                  {count == 1 &&
+                    <View style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                      padding: HeightRatio(50),
+                      borderRadius: HeightRatio(50),
+                      width: windowWidth * 0.8,
+                      margin: WidthRatio(10),
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column'
+                    }}>
+                      <Text style={{
+                        color: '#fcd01f',
+                        fontSize: HeightRatio(50),
+                        fontWeight: 'bold',
+                        width: windowWidth * 0.7,
+                        margin: WidthRatio(2)
+                      }}>
+                        Characters
+                      </Text>
+                      <Text style={{
+                        color: 'white',
+                        fontSize: HeightRatio(50),
+                        fontWeight: 'bold',
+                        width: windowWidth * 0.7,
+                        margin: WidthRatio(10)
+                      }}>
+                        Details
+                      </Text>
+                    </View>
+                  }
+                  {count == 2 &&
+                    <View style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                      padding: HeightRatio(50),
+                      borderRadius: HeightRatio(50),
+                      width: windowWidth * 0.8,
+                      margin: WidthRatio(10),
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column'
+                    }}>
+                      <Text style={{
+                        color: '#fcd01f',
+                        fontSize: HeightRatio(50),
+                        fontWeight: 'bold',
+                        width: windowWidth * 0.7,
+                        margin: WidthRatio(2)
+                      }}>
+                        Stages
+                      </Text>
+                      <Text style={{
+                        color: 'white',
+                        fontSize: HeightRatio(50),
+                        fontWeight: 'bold',
+                        width: windowWidth * 0.7,
+                        margin: WidthRatio(10)
+                      }}>
+                        Details
+                      </Text>
+                    </View>
+                  }
+                  {count == 3 &&
+                    <View style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                      padding: HeightRatio(50),
+                      borderRadius: HeightRatio(50),
+                      width: windowWidth * 0.8,
+                      margin: WidthRatio(10),
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column'
+                    }}>
+                      <Text style={{
+                        color: '#fcd01f',
+                        fontSize: HeightRatio(50),
+                        fontWeight: 'bold',
+                        width: windowWidth * 0.7,
+                        margin: WidthRatio(2)
+                      }}>
+                        Extras
+                      </Text>
+                      <Text style={{
+                        color: 'white',
+                        fontSize: HeightRatio(50),
+                        fontWeight: 'bold',
+                        width: windowWidth * 0.7,
+                        margin: WidthRatio(10)
+                      }}>
+                        Details
+                      </Text>
+                    </View>
+                  }
 
-                  <Text style={{
-                    color: 'white',
-                    fontSize: HeightRatio(50),
-                    fontWeight: 'bold',
-                    width: windowWidth * 0.7,
-                    margin: WidthRatio(10)
-                  }}>
-                    Collect letters to spell the word at the top of the screen, avoid obstacles and enemies. Complete all 5 levels to advance to the next stage. Game over after colliding with 3 objects.
-                  </Text>
-                </View>
                 <View style={{ height: HeightRatio(200) }}></View>
 
               </View>
@@ -73,7 +188,7 @@ export const Home = (props) => {
           </SafeAreaView>
 
           <View style={{ alignSelf: 'center', flexDirection: 'column', margin: WidthRatio(5) }}>
-            <TouchableOpacity onPress={() => console.log("UP")}>
+            <TouchableOpacity onPress={() => {console.log("UP"); setCount(prev => prev - 1);}}>
               <Image
                 source={require('../../assets/home_up_arrow.png')}
                 style={{ width: WidthRatio(50), height: WidthRatio(50) }} />
@@ -81,13 +196,13 @@ export const Home = (props) => {
 
             <View style={{ width: WidthRatio(50), height: WidthRatio(50) }} />
 
-            <TouchableOpacity onPress={() => console.log("DOWN")}>
+            <TouchableOpacity onPress={() => {console.log("DOWN"); setCount(prev => prev + 1);}}>
               <Image
                 source={require('../../assets/home_down_arrow.png')}
                 style={{ width: WidthRatio(50), height: WidthRatio(50) }} />
             </TouchableOpacity>
           </View>
-          
+
         </View>
       </ImageBackground>
       <Navbar nav={props.nav} position={'absolute'} from={`${getTerm('home', props.lang, 'title')}`} language={props.lang} />
