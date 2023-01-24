@@ -1,30 +1,30 @@
-import React, { 
-  useState, 
-  useRef, 
-  useEffect, 
-  useLayoutEffect, 
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
   useContext
 } from 'react';
-import { 
-  Styling, 
-  WidthRatio, 
-  HeightRatio, 
-  windowHeight, 
-  windowWidth 
+import {
+  Styling,
+  WidthRatio,
+  HeightRatio,
+  windowHeight,
+  windowWidth
 } from '../../../Styling';
 import { shuffle } from 'lodash';
 import { SharedStateContext } from '../Game';
-import { 
-  resetActionHome, 
-  resetActionGame, 
-  resetActionProfile 
+import {
+  resetActionHome,
+  resetActionGame,
+  resetActionProfile
 } from '../../ResetActions';
-import { 
-  isLetterBlockColliding, 
-  isObstacleColliding_0, 
-  isObstacleColliding_1, 
-  isObstacleColliding_right_angle_0, 
-  isObstacleColliding_right_angle_1, 
+import {
+  isLetterBlockColliding,
+  isObstacleColliding_0,
+  isObstacleColliding_1,
+  isObstacleColliding_right_angle_0,
+  isObstacleColliding_right_angle_1,
   isAuxilliaryGreenHealth_Colliding
 } from '../CollisionHandler';
 
@@ -617,7 +617,7 @@ export const Stage_1_Projectile = (props) => {
 
       auxilliaryGreenHealth_Position.removeListener(auxilliaryGreenHealthListener);
     }
-  }, [obj1]);  
+  }, [obj1]);
 
   useEffect(() => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -691,6 +691,61 @@ export const Stage_1_Projectile = (props) => {
     }
   }
 
+  const pauseGame = () => {
+    console.log("PAUSE");
+    isGameInProgress.current = false;
+    setSharedState({
+      stage1: true,
+      stage2: false,
+      stage3: false,
+      currentScore: score.current,
+      currentLevel: level.current,
+      currentCrashes: crashes.current
+    })
+
+    if (level.current >= 0 && animation.current != null && obstacle_0.current != null) {
+      animation.current.stop();
+      obstacle_0.current.stop();
+
+      letterPosition.setValue({ x: 1000, y: 0 })
+      obstaclePosition_0.setValue({ x: 1000, y: 0 })
+
+      hasUpdatedLetterBlock.current = false;
+      hasUpdatedObstacle_0.current = false;
+
+      if (auxilliaryGreenHealth.current != null) {
+        auxilliaryGreenHealth.current.stop();
+        auxilliaryGreenHealth_Position.setValue({ x: 1000, y: 0 })
+        hasUpdatedAuxilliaryGreenHealth.current = false;
+      }
+    }
+    if (level.current >= 1 && obstacle_1.current != null) {
+      obstacle_1.current.stop();
+      obstaclePosition_1.setValue({ x: 1000, y: 0 })
+      hasUpdatedObstacle_1.current = false;
+    }
+    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
+      obstacle_right_angle_0.current.stop();
+      obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+      hasUpdatedObstacle_right_angle_0.current = false;
+    }
+
+    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
+      obstacle_right_angle_1.current.stop();
+      obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+      hasUpdatedObstacle_right_angle_1.current = false;
+    }
+
+    // letterPocket, displayLetters, randomWord, wordPlusSeven
+    console.log("- - - - -")
+    console.log(score.current)
+    console.log(level.current)
+    console.log(crashes.current)
+    console.log("- - - - -")
+
+
+  }
+
   // [END GAME] 
   // input.local "a" represents a continuance of gameplay
   // input.local "b" represents a loss of game
@@ -737,7 +792,6 @@ export const Stage_1_Projectile = (props) => {
     setLetter('');
     setLetterPocket([]);
     setDisplayLetters([]);
-    letterPosition.setValue({ x: 1000, y: 0 });
     // -Word
     setRandomWord('');
     wordPlusSeven.current = [];
@@ -757,7 +811,7 @@ export const Stage_1_Projectile = (props) => {
             scoreFlash_1000.current = false;
           }, 1000)
         }, 501)
-        
+
         setTimeout(() => {
           setSharedState({
             stage1: false,
@@ -805,25 +859,43 @@ export const Stage_1_Projectile = (props) => {
     <View>
       <>
         {displayPlaybutton ?
-        <>
-          <TouchableOpacity
-            onPress={() => { Generate() }}
-            style={{
-              position: 'absolute',
-              zIndex: 15,
-              left: windowWidth / 2 - HeightRatio(450),
-              top: windowHeight / 2 - HeightRatio(450),
-              zIndex: -5
-            }}
-          >
-            <Image
-              source={require('../../../assets/stage_transition_1.png')}
-              style={{ height: HeightRatio(900), width: HeightRatio(900) }}
-            />
-          </TouchableOpacity>
-        </>
+          <>
+            <TouchableOpacity
+              onPress={() => { Generate() }}
+              style={{
+                position: 'absolute',
+                zIndex: 15,
+                left: windowWidth / 2 - HeightRatio(450),
+                top: windowHeight / 2 - HeightRatio(450),
+                zIndex: -5
+              }}
+            >
+              <Image
+                source={require('../../../assets/stage_transition_1.png')}
+                style={{ height: HeightRatio(900), width: HeightRatio(900) }}
+              />
+            </TouchableOpacity>
+          </>
           :
           <>
+            <View style={{
+              position: 'absolute',
+              zIndex: -7,
+              top: windowHeight / 2 - HeightRatio(100),
+              left: windowWidth / 2 - HeightRatio(100)
+            }}>
+              <TouchableOpacity
+                onPress={() => {
+                  pauseGame();
+                }}
+                style={{
+                  height: HeightRatio(200),
+                  width: HeightRatio(200),
+                  backgroundColor: 'blue'
+                }}>
+
+              </TouchableOpacity>
+            </View>
             {score.current > 0 ?
               <>
                 <View style={{
@@ -1135,29 +1207,29 @@ export const Stage_1_Projectile = (props) => {
             }, 500)
           }}
         >
-          <View style={{...Styling.modal_centered_view}}>
+          <View style={{ ...Styling.modal_centered_view }}>
             <TouchableOpacity
-                style={{top: HeightRatio(-40)}}
-                onPress={() => { 
-                  props.nav.dispatch(resetActionHome);
-                }}
+              style={{ top: HeightRatio(-40) }}
+              onPress={() => {
+                props.nav.dispatch(resetActionHome);
+              }}
+            >
+              <View style={{
+                // margin: HeightRatio(20), 
+                position: 'absolute',
+                zIndex: 15,
+                top: windowHeight / 2 - HeightRatio(30),
+                left: windowWidth / 2 - WidthRatio(100)
+              }}
               >
-                <View style={{ 
-                  // margin: HeightRatio(20), 
-                  position: 'absolute', 
-                  zIndex: 15,
-                  top: windowHeight/2 - HeightRatio(30),
-                  left: windowWidth/2 - WidthRatio(100) 
-                }}
-                >
-                  <Text style={Styling.modal_text_style}>Score: {score.current}</Text>
-                  <Text style={Styling.modal_text_style}>Level:</Text>
-                  <Text style={Styling.modal_text_style}>Time:</Text>
-                  <Text style={Styling.modal_text_style}>Words:</Text>
-                </View>
-                <Image 
-              source={require('../../../assets/game_over.png')}
-              style={{height: HeightRatio(1000), width: HeightRatio(940)}} />
+                <Text style={Styling.modal_text_style}>Score: {score.current}</Text>
+                <Text style={Styling.modal_text_style}>Level:</Text>
+                <Text style={Styling.modal_text_style}>Time:</Text>
+                <Text style={Styling.modal_text_style}>Words:</Text>
+              </View>
+              <Image
+                source={require('../../../assets/game_over.png')}
+                style={{ height: HeightRatio(1000), width: HeightRatio(940) }} />
             </TouchableOpacity>
           </View>
         </Modal>
