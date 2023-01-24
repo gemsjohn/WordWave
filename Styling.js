@@ -29,6 +29,7 @@ export const Styling = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: '#240046',
+    
     marginTop: 30
   },
   joystick_container: {
