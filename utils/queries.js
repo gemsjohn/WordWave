@@ -29,29 +29,17 @@ export const GET_ME = gql`
 `;
 
 export const GET_USER_BY_ID = gql`
-  query Query($id: ID!) {
-    user(_id: $id) {
-      _id
-      role
-      username
-      email
-      profilepicture
-      games {
-        _id
-        userid
-        username
-        w1
-        w2
-        w3
-        time
-        score
-        date
-        difficulty
-      }
-      resetToken
-      resetTokenExpiry
-    }
+  query User($id: ID!) {
+  user(_id: $id) {
+    _id
+    role
+    username
+    email
+    profilepicture
+    resetToken
+    resetTokenExpiry
   }
+}
 `;
 
 export const GET_USERS = gql`

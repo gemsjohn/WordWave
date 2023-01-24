@@ -32,6 +32,14 @@ export const Styling = StyleSheet.create({
     
     marginTop: 30
   },
+  profileDivisionLine: {
+    borderColor: '#4cc9f0',
+    borderBottomWidth: 1,
+    width: windowWidth - 80,
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 10
+  },
   joystick_container: {
     flex: 1,
     alignItems: "flex-start",
@@ -173,6 +181,42 @@ export const Styling = StyleSheet.create({
     margin: 10,
     width: windowWidth - 80
   },
+
+  // Profile
+  profileScrollView: {
+    backgroundColor: 'transparent',
+    marginHorizontal: -20,
+    alignSelf: "center",
+    width: windowWidth - 10,
+    height: windowHeight - 100,
+    marginTop: 10
+  },
+  modalFontAwesomeIcons: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginRight: 10
+  },
+  modalScoringVarText: {
+    color: 'white',
+    fontSize: 40,
+    fontWeight: 'bold',
+  },
+  modalWordButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 20,
+    borderRadius: 40,
+    alignSelf: 'center',
+    margin: 10,
+    width: windowWidth - 80,
+    flexDirection: 'row'
+},
+modalWordButtonText: {
+    color: '#001219',
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'center'
+},
 
 
 });
