@@ -52,6 +52,8 @@ export const Stage_1_Projectile = (props) => {
 
   // [GAME LOGIC] - - - - - 
   const isGameInProgress = useRef(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const updatedPostResume = useRef(null)
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
@@ -76,6 +78,7 @@ export const Stage_1_Projectile = (props) => {
   const letterPosition = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current
   const animation = useRef(null)
   const count = new Animated.Value(0);
+  const countRef = useRef(0);
   const wordPlusSeven = useRef([])
   let timeoutLetter_ID;
 
@@ -207,13 +210,14 @@ export const Stage_1_Projectile = (props) => {
       console.log("#3 Word Plus 7 useEffect")
       hideCrashesUntilUpdate.current = false;
       isGameInProgress.current = true;
+      updatedPostResume.current = true;
 
       // [GAME LEVEL CONTROL]
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
           console.log("#4 About to run animations.")
           console.log("LEVEL: " + level.current)
-
+          
 
           setTimeout(() => {
             if (level.current >= 0) {
@@ -245,6 +249,17 @@ export const Stage_1_Projectile = (props) => {
   const letterAnimation = () => {
     if (isGameInProgress.current) {
       hasUpdatedLetterBlock.current = false;
+      countRef.current = count._value;
+      console.log("COUNT VALUE LETTER ANIMATION: " + count._value)
+      if (sharedState.current.currentLetter_countValue != null && !updatedPostResume.current) {
+        console.log("#1")
+        count.setValue(sharedState.current.currentLetter_countValue);
+        updatedPostResume.current = true;
+      }
+      console.log("COUNT VALUE AFTER: " + count._value )
+
+      
+
       setLetter(wordPlusSeven.current[count._value]);
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       letterPosition.setValue({ x: WidthRatio(370), y: localYPos_0 })
@@ -265,8 +280,12 @@ export const Stage_1_Projectile = (props) => {
 
         if (count._value >= wordPlusSeven.current.length - 1) {
           count.setValue(0)
+        console.log("#2")
+
         } else {
           count.setValue(count._value + 1)
+        console.log("#3")
+
         }
 
         animation.current.stop((value) => {
@@ -692,15 +711,27 @@ export const Stage_1_Projectile = (props) => {
   }
 
   const pauseGame = () => {
-    console.log("PAUSE");
+    // console.log("PAUSE");
+    // console.log("countRef.current")
+    // console.log(countRef.current)
+    setIsPaused(true)
     isGameInProgress.current = false;
+    updatedPostResume.current = false;
+
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+    
+
     setSharedState({
       stage1: true,
       stage2: false,
       stage3: false,
       currentScore: score.current,
       currentLevel: level.current,
-      currentCrashes: crashes.current
+      currentCrashes: crashes.current,
+      currentUniqueLetterPocket: uniqueLetterPocket,
+      currentWordPlusSeven: wordPlusSeven.current,
+      currentDisplayLetters: displayLetters,
+      currentLetter_countValue: countRef.current
     })
 
     if (level.current >= 0 && animation.current != null && obstacle_0.current != null) {
@@ -736,13 +767,43 @@ export const Stage_1_Projectile = (props) => {
       hasUpdatedObstacle_right_angle_1.current = false;
     }
 
-    // letterPocket, displayLetters, randomWord, wordPlusSeven
-    console.log("- - - - -")
-    console.log(score.current)
-    console.log(level.current)
-    console.log(crashes.current)
-    console.log("- - - - -")
+  }
 
+  const resumeGame = () => {
+    // console.log("RESUME");
+    // console.log("- - - - - -")
+    // console.log(sharedState.current.stage1)
+    // console.log(sharedState.current.stage2)
+    // console.log(sharedState.current.stage3)
+    // console.log(sharedState.current.currentScore)
+    // console.log(sharedState.current.currentLevel)
+    // console.log(sharedState.current.currentCrashes)
+    // console.log(sharedState.current.currentUniqueLetterPocket)
+    // console.log(sharedState.current.currentWordPlusSeven)
+    // console.log(sharedState.current.currentDisplayLetters)
+    // console.log(sharedState.current.currentLetter_countValue)
+    // console.log("- - - - - -")
+
+    setIsPaused(false)
+    isGameInProgress.current = true;
+    
+    
+    if (sharedState.current.currentLevel >= 0) {
+      letterAnimation();
+      runObstacleAnimation_0();
+    }
+
+    if (sharedState.current.currentLevel >= 1) {
+      runObstacleAnimation_1();
+    }
+
+    if (sharedState.current.currentLevel >= 2) {
+      runObstacleAnimation_right_angle_0();
+    }
+
+    if (sharedState.current.currentLevel >= 3) {
+      runObstacleAnimation_right_angle_1();
+    }
 
   }
 
@@ -798,11 +859,13 @@ export const Stage_1_Projectile = (props) => {
 
     // - Game Logic
     count.setValue(0)
+    countRef.current = 0;
     level.current = 0;
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
       setHasGameBeenStarted(false);
+      setLetterPocket([]);
       if (input.level >= 4) {
         setTimeout(() => {
           score.current += 1000;
@@ -878,24 +941,45 @@ export const Stage_1_Projectile = (props) => {
           </>
           :
           <>
-            <View style={{
-              position: 'absolute',
-              zIndex: -7,
-              top: windowHeight / 2 - HeightRatio(100),
-              left: windowWidth / 2 - HeightRatio(100)
-            }}>
-              <TouchableOpacity
-                onPress={() => {
-                  pauseGame();
-                }}
-                style={{
-                  height: HeightRatio(200),
-                  width: HeightRatio(200),
-                  backgroundColor: 'blue'
-                }}>
+            {isPaused ?
+              <View style={{
+                position: 'absolute',
+                zIndex: -7,
+                top: windowHeight / 2 - HeightRatio(100),
+                left: windowWidth / 2 - HeightRatio(100)
+              }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    resumeGame();
+                  }}
+                  style={{
+                    height: HeightRatio(200),
+                    width: HeightRatio(200),
+                    backgroundColor: 'green'
+                  }}>
 
-              </TouchableOpacity>
-            </View>
+                </TouchableOpacity>
+              </View>
+              :
+              <View style={{
+                position: 'absolute',
+                zIndex: -7,
+                top: windowHeight / 2 - HeightRatio(100),
+                left: windowWidth / 2 - HeightRatio(100)
+              }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    pauseGame();
+                  }}
+                  style={{
+                    height: HeightRatio(200),
+                    width: HeightRatio(200),
+                    backgroundColor: 'red'
+                  }}>
+
+                </TouchableOpacity>
+              </View>
+            }
             {score.current > 0 ?
               <>
                 <View style={{
