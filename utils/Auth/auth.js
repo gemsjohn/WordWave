@@ -12,8 +12,7 @@ import { Styling } from '../../Styling';
 import { CommonActions } from '@react-navigation/native';
 import { getTerm } from '../../Localization';
 import { resetActionHome, resetActionGame, resetActionProfile, resetActionAuth } from '../../components/ResetActions';
-
-
+import { ScreenOrientation } from 'expo';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 // [GLOBAL] - [[[Variables: Dimensions]]] - - - - 
@@ -279,8 +278,9 @@ export const Auth = (props) => {
   
     return (
       <>
+      <View style={Styling.container}>
   
-        <SafeAreaView style={{ height: windowHeight, marginBottom: 100, marginTop: 32 }}>
+        <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
   
           <ScrollView style={{}} keyboardShouldPersistTaps={'always'} keyboardDismissMode="on-drag">
             
@@ -438,7 +438,7 @@ export const Auth = (props) => {
                               borderRadius: 40,
                               alignSelf: 'center',
                               margin: 10,
-                              width: windowWidth - 80
+                              width: '80%'
                             }}
   
                           >
@@ -464,7 +464,7 @@ export const Auth = (props) => {
                               borderRadius: 40,
                               alignSelf: 'center',
                               margin: 10,
-                              width: windowWidth - 80
+                              width: '80%'
                             }}
                           >
                             <Text
@@ -499,7 +499,7 @@ export const Auth = (props) => {
                           borderRadius: 40,
                           alignSelf: 'center',
                           margin: 10,
-                          width: windowWidth - 200
+                          width: '80%'
                         }}
                       >
                         <Text
@@ -565,7 +565,7 @@ export const Auth = (props) => {
                                 borderRadius: 40,
                                 alignSelf: 'center',
                                 margin: 10,
-                                width: windowWidth - 80
+                                width: '80%'
                               }}
                             >
                               <Text
@@ -591,7 +591,7 @@ export const Auth = (props) => {
                                 borderRadius: 40,
                                 alignSelf: 'center',
                                 margin: 10,
-                                width: windowWidth - 80
+                                width: '80%'
                               }}
                             >
                               <Text
@@ -621,7 +621,7 @@ export const Auth = (props) => {
                             style={{
                               alignSelf: 'center',
                               margin: 10,
-                              width: windowWidth - 80
+                              width: '80%'
                             }}
                           >
                             <View style={{ flexDirection: 'column', alignSelf: 'center', margin: 10, marginTop: -5 }}>
@@ -649,7 +649,7 @@ export const Auth = (props) => {
                                     borderRadius: 40,
                                     alignSelf: 'center',
                                     margin: 10,
-                                    width: windowWidth - 80
+                                    width: '80%'
                                   }}
                                 >
                                   <Text
@@ -754,7 +754,7 @@ export const Auth = (props) => {
                                         borderRadius: 40,
                                         alignSelf: 'center',
                                         margin: 10,
-                                        width: windowWidth - 80
+                                        width: '80%'
                                       }}
                                     >
                                       <Text
@@ -827,11 +827,11 @@ export const Auth = (props) => {
                           </View>
                         }
   
-                        <View style={Styling.modalDivisionLine}></View>
-  
+                        {/* <View style={Styling.modalDivisionLine}></View> */}
+                        
                         <Text
                           style={{ color: 'white', alignSelf: 'center', fontSize: 30, margin: 20, fontWeight: 'bold' }}
-                          allowFontScaling={false}
+                          // allowFontScaling={false}
                         >
                           Don't have an account?
                         </Text>
@@ -840,17 +840,17 @@ export const Auth = (props) => {
                             style={{
                               backgroundColor: 'blue',
                               display: 'flex',
-                              justifyContent: 'flex-start',
+                              // justifyContent: 'flex-start',
                               padding: 20,
                               borderRadius: 40,
                               alignSelf: 'center',
                               margin: 10,
-                              width: windowWidth - 200
+                              width: '80%'
                             }}
                           >
                             <Text
                               style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
-                              allowFontScaling={false}
+                              // allowFontScaling={false}
                             >
                               Sign Up
                             </Text>
@@ -867,8 +867,9 @@ export const Auth = (props) => {
             <View style={{ marginBottom: 400 }}></View>
           </ScrollView>
         </SafeAreaView>
-        {/* <Navbar nav={props.nav} position={'absolute'} from={`${getTerm('auth', props.lang, 'title')}`} language={props.lang} /> */}
-        <TouchableOpacity
+        <Navbar nav={props.nav} position={'absolute'} from={`${getTerm('auth', props.lang, 'title')}`} language={props.lang} />
+        </View>
+        {/* <TouchableOpacity
               style={{ 
                 position: 'absolute',
                 zIndex: 15,
@@ -885,7 +886,7 @@ export const Auth = (props) => {
               }}
         >
           <Text style={{color: 'white', alignSelf: 'center', marginTop: HeightRatio(60)}}>HOME</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <StatusBar
           barStyle="default"
           hidden={false}

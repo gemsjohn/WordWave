@@ -58,6 +58,7 @@ export default function App() {
             options={{
               animationEnabled: false,
               headerShown: false,
+              orientation: 'portrait_up'
             }}
           />
           <Stack.Screen
@@ -66,6 +67,7 @@ export default function App() {
             options={{
               animationEnabled: false,
               headerShown: false,
+              orientation: 'landscape'
             }}
           />
           <Stack.Screen
@@ -74,6 +76,7 @@ export default function App() {
             options={{
               animationEnabled: false,
               headerShown: false,
+              orientation: 'landscape'
             }}
           />
           <Stack.Screen
@@ -82,6 +85,7 @@ export default function App() {
             options={{
               animationEnabled: false,
               headerShown: false,
+              orientation: 'portrait_up'
             }}
           />
         </Stack.Navigator>

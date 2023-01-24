@@ -56,8 +56,9 @@ import { UserDetails } from './UserDetails';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
 // import { RecentGames } from '../game/RecentGames';
-import { Styling } from '../../Styling';
+import { HeightRatio, Styling } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
+import { getTerm } from '../../Localization';
 import {
   resetActionHome,
   resetActionGame,
@@ -190,7 +191,6 @@ export const Profile = (props) => {
     return (
         <>
             <View style={Styling.container}>
-                <Navbar nav={props.nav} auth={authState} position={'relative'} from={'profile'} />
                 <View>
                     
                 
@@ -279,7 +279,7 @@ export const Profile = (props) => {
                                                 style={Styling.modalWordButton}
                                             >
                                                 <Text
-                                                    style={{ ...Styling.modalWordButtonText, fontSize: windowWidth * 0.08, }}
+                                                    style={{ ...Styling.modalWordButtonText, fontSize: HeightRatio(50), }}
                                                     allowFontScaling={false}
                                                 >
                                                     Logout
@@ -294,6 +294,8 @@ export const Profile = (props) => {
                     </ScrollView>
                 </SafeAreaView>
                 </View>
+                <Navbar nav={props.nav} position={'absolute'} from={`${getTerm('profile', props.lang, 'title')}`} language={props.lang} />
+
             </View>
 
             <StatusBar

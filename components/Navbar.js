@@ -98,7 +98,7 @@ export const Navbar = (props) => {
                 alignItems: 'center',
                 backgroundColor: 'transparent',
                 flexDirection: 'row',
-                width: windowWidth
+                // width: windowWidth
             }}
             >
             <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionHome); }} style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >

@@ -218,9 +218,9 @@ export const UserDetails = (props) => {
                             // borderTopLeftRadius: 30,
                             borderBottomLeftRadius: 25,
                             padding: 10,
-                            width: windowWidth - 40,
+                            // width: '100%',
                             flexDirection: 'column',
-                            margin: 10,
+                            // margin: 10,
                             backgroundColor: `${EditableFields[i].edit ? 'rgba(255, 255, 255, 0.1)' : 'transparent'}`,
                             // borderTopRightRadius: 10,
                             borderTopLeftRadius: 10
@@ -246,7 +246,7 @@ export const UserDetails = (props) => {
                                         position: 'absolute',
                                         zIndex: 10,
                                         alignSelf: 'center',
-                                        left: windowWidth - 115,
+                                        left: '80%',
                                         padding: 4,
                                         borderRadius: 4,
                                         flexDirection: 'row'
@@ -272,7 +272,7 @@ export const UserDetails = (props) => {
                                                     {i == 3 &&
                                                         <>
                                                             <TouchableOpacity onPress={() => copyToClipboard()} style={{ marginLeft: 10 }}>
-                                                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)', width: windowWidth - 60, borderRadius: 10, padding: 10 }}>
+                                                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)', width: '80%', borderRadius: 10, padding: 10 }}>
                                                                     <Text
                                                                         style={{ color: '#efea5a', fontSize: windowHeight * 0.02, fontWeight: 'bold', marginLeft: windowWidth * 0.02 }}
                                                                         allowFontScaling={false}
@@ -310,7 +310,7 @@ export const UserDetails = (props) => {
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: windowWidth - 160
+                                                                // width: '80%'
                                                             }}
                                                         />
                                                         {/* [[[SUBMIT BUTTON]]] */}
@@ -372,7 +372,7 @@ export const UserDetails = (props) => {
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: windowWidth - 80
+                                                                // width: '80%'
                                                             }}
                                                         />
                                                     </View>
@@ -403,7 +403,7 @@ export const UserDetails = (props) => {
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: windowWidth - 160
+                                                                // width: '80%'
                                                             }}
                                                         />
                                                         {/* [[[SUBMIT BUTTON]]] */}
