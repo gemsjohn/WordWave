@@ -53,6 +53,7 @@ export const Stage_1_Projectile = (props) => {
   // [GAME LOGIC] - - - - - 
   const isGameInProgress = useRef(false);
   const [isPaused, setIsPaused] = useState(false);
+  const pauseTimeout = useRef(null);
   const updatedPostResume = useRef(null)
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
@@ -210,14 +211,16 @@ export const Stage_1_Projectile = (props) => {
       console.log("#3 Word Plus 7 useEffect")
       hideCrashesUntilUpdate.current = false;
       isGameInProgress.current = true;
-      updatedPostResume.current = true;
+      // updatedPostResume.current = true;
+      // pauseTimeout.current = false;
 
       // [GAME LEVEL CONTROL]
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
           console.log("#4 About to run animations.")
           console.log("LEVEL: " + level.current)
-          
+          updatedPostResume.current = true;
+          pauseTimeout.current = false;
 
           setTimeout(() => {
             if (level.current >= 0) {
@@ -250,15 +253,12 @@ export const Stage_1_Projectile = (props) => {
     if (isGameInProgress.current) {
       hasUpdatedLetterBlock.current = false;
       countRef.current = count._value;
-      console.log("COUNT VALUE LETTER ANIMATION: " + count._value)
       if (sharedState.current.currentLetter_countValue != null && !updatedPostResume.current) {
-        console.log("#1")
         count.setValue(sharedState.current.currentLetter_countValue);
         updatedPostResume.current = true;
       }
-      console.log("COUNT VALUE AFTER: " + count._value )
 
-      
+
 
       setLetter(wordPlusSeven.current[count._value]);
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -280,12 +280,9 @@ export const Stage_1_Projectile = (props) => {
 
         if (count._value >= wordPlusSeven.current.length - 1) {
           count.setValue(0)
-        console.log("#2")
 
         } else {
           count.setValue(count._value + 1)
-        console.log("#3")
-
         }
 
         animation.current.stop((value) => {
@@ -719,7 +716,7 @@ export const Stage_1_Projectile = (props) => {
     updatedPostResume.current = false;
 
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
-    
+
 
     setSharedState({
       stage1: true,
@@ -786,8 +783,8 @@ export const Stage_1_Projectile = (props) => {
 
     setIsPaused(false)
     isGameInProgress.current = true;
-    
-    
+
+
     if (sharedState.current.currentLevel >= 0) {
       letterAnimation();
       runObstacleAnimation_0();
@@ -804,6 +801,12 @@ export const Stage_1_Projectile = (props) => {
     if (sharedState.current.currentLevel >= 3) {
       runObstacleAnimation_right_angle_1();
     }
+
+    pauseTimeout.current = true;
+    setTimeout(() => {
+      pauseTimeout.current = false;
+    }, 15000)
+
 
   }
 
@@ -941,45 +944,67 @@ export const Stage_1_Projectile = (props) => {
           </>
           :
           <>
+            {/* [PAUSE / RESUME] */}
             {isPaused ?
               <View style={{
                 position: 'absolute',
                 zIndex: -7,
-                top: windowHeight / 2 - HeightRatio(100),
-                left: windowWidth / 2 - HeightRatio(100)
+                top: HeightRatio(20),
+                left: HeightRatio(20)
               }}>
                 <TouchableOpacity
                   onPress={() => {
                     resumeGame();
                   }}
                   style={{
-                    height: HeightRatio(200),
-                    width: HeightRatio(200),
-                    backgroundColor: 'green'
+                    height: HeightRatio(100),
+                    width: HeightRatio(100),
+                    // backgroundColor: 'red'
                   }}>
-
+                  <Image
+                    source={require('../../../assets/button_resume.png')}
+                    style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
                 </TouchableOpacity>
               </View>
               :
-              <View style={{
-                position: 'absolute',
-                zIndex: -7,
-                top: windowHeight / 2 - HeightRatio(100),
-                left: windowWidth / 2 - HeightRatio(100)
-              }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    pauseGame();
-                  }}
-                  style={{
-                    height: HeightRatio(200),
-                    width: HeightRatio(200),
-                    backgroundColor: 'red'
+              <>
+                {!pauseTimeout.current ?
+                  <View style={{
+                    position: 'absolute',
+                    zIndex: -7,
+                    top: HeightRatio(20),
+                    left: HeightRatio(20)
                   }}>
-
-                </TouchableOpacity>
-              </View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        pauseGame();
+                      }}
+                      style={{
+                        height: HeightRatio(100),
+                        width: HeightRatio(100),
+                        // backgroundColor: 'red'
+                      }}>
+                      <Image
+                        source={require('../../../assets/button_pause.png')}
+                        style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                    </TouchableOpacity>
+                  </View>
+                  :
+                  <View style={{
+                    position: 'absolute',
+                    zIndex: -7,
+                    top: HeightRatio(20),
+                    left: HeightRatio(20)
+                  }}>
+                    
+                      <Image
+                        source={require('../../../assets/clock_icon.png')}
+                        style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                  </View>
+                }
+              </>
             }
+
             {score.current > 0 ?
               <>
                 <View style={{
