@@ -11,11 +11,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
 import { MainStateContext } from '../../App';
 import { Styling, windowWidth, windowHeight, HeightRatio, WidthRatio } from '../../Styling';
+import * as SecureStore from 'expo-secure-store';
 
 const resetActionProfile = CommonActions.reset({
   index: 1,
   routes: [{ name: 'Profile', params: {} }]
 });
+
+
 
 export const Auth = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
@@ -60,10 +63,7 @@ export const Auth = ({ navigation }) => {
     // Server
     const [isTokenValid, setIsTokenValid] = useState(null);
 
-    // const resetActionProfile = CommonActions.reset({
-    //   index: 1,
-    //   routes: [{ name: 'Profile', params: {} }]
-    // });
+    
 
     const checkToken = async (value) => {
       console.log("* * * * * * * * ")

@@ -43,6 +43,7 @@ import {
     faStar,
     faTrophy
 } from '@fortawesome/free-solid-svg-icons'
+import { SecureStorage } from './SecureStorage';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -160,6 +161,7 @@ export const ProfileScreen = ({ navigation }) => {
                                             </LinearGradient>
                                         </TouchableOpacity>
                                     </View>
+                                    <SecureStorage />
                                     <View style={{ marginBottom: 200 }}></View>
                                 </>
                             }

@@ -5,28 +5,9 @@ import { faSolid, faUser, faPlus, faUpLong, faMagnifyingGlass, faCheck, faLocati
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Navbar } from '../../components/Navbar';
-import { Styling } from '../../Styling';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const {
-  width: SCREEN_WIDTH,
-  height: SCREEN_HEIGHT,
-} = Dimensions.get('window');
-
-const scaleWidth = SCREEN_WIDTH / 360;
-const scaleHeight = SCREEN_HEIGHT / 800;
-
-const WidthRatio = (size) => {
-  const newSize = size * scaleWidth;
-  return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
-
-const HeightRatio = (size) => {
-  const newSize = size * scaleHeight;
-  return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
+import { Styling, windowWidth, windowHeight, HeightRatio, WidthRatio } from '../../Styling';
+import { MainStateContext } from '../../App';
+import * as SecureStore from 'expo-secure-store';
 
 export const HomeScreen = ({ navigation }) => {
   const [userID, setUserID] = useState('');
@@ -47,6 +28,7 @@ export const HomeScreen = ({ navigation }) => {
       setCount(0);
     }
   }, [count])
+
 
   const CheckAuthState = async () => {
     let value = await AsyncStorage.getItem('@authState')

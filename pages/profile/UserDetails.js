@@ -21,9 +21,6 @@ import {
 export const UserDetails = (props) => {
     const { mainState, setMainState } = useContext(MainStateContext);
 
-    const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height;
-
     const [updateUser] = useMutation(UPDATE_USER);
     const [updateUserPassword] = useMutation(UPDATE_USER_PASSWORD);
     const [deleteUser] = useMutation(DELETE_USER);

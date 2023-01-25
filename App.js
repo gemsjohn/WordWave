@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import { ApolloProvider, ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from '@apollo/link-context';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
@@ -6,9 +6,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GameScreen } from './pages/game/Game';
 import { HomeScreen } from './pages/home/Home';
+import { KeyScreen } from './pages/home/Key';
 import { LeaderScreen } from './pages/leader/Leader';
 import { ProfileScreen } from './pages/profile/Profile';
 import { Auth } from './pages/auth/auth';
+import * as SecureStore from 'expo-secure-store';
+
 
 export const MainStateContext = createContext();
 
@@ -16,24 +19,24 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const mainStateRef = useRef({});
-  // const userID = useRef(null);
-  // const bearerToken = useRef(null);
-  // const authState = useRef(null);
-
   const setMainState = (newState) => {
     mainStateRef.current = { ...mainStateRef.current, ...newState };
   };
 
-// useEffect(() => {
-//   // userID.current = mainStateRef.current.userID
-//   // bearerToken.current = mainStateRef.current.bearerToken
-//   // authState.current = mainStateRef.current.authState
-//   setInterval(() =>{
-//     console.log(mainStateRef.current)
-//   }, 1000)
-// }, [])
+  const [initRoute, setInitRoute] = useState("Key");
 
+  async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    if (result) {
+      setInitRoute("Key")
+    } else {
+      setInitRoute("Home")
+    }
+  }
 
+  useEffect(() => {
+    getValueFor('cosmicKey')
+  }, [])
 
   const GRAPHQL_API_URL = 'https://cosmicbackend.herokuapp.com/graphql';
   const asyncAuthLink = setContext(async () => {
@@ -82,7 +85,7 @@ export default function App() {
           value={{ mainState: mainStateRef, setMainState }}>
         <NavigationContainer theme={MyTheme} onStateChange={(state) => {console.log('New state is', state.routes)}}>
         <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName={initRoute}
         screenOptions={{
         cardStyleInterpolator: forFade,
         animationEnabled: false,
@@ -98,13 +101,22 @@ export default function App() {
       }}
         />
         <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-        animationEnabled: false,
-        headerShown: false,
-        orientation: 'landscape'
-      }}
+          name="Home"
+          component={HomeScreen}
+          options={{
+          animationEnabled: false,
+          headerShown: false,
+          orientation: 'landscape'
+        }}
+        />
+        <Stack.Screen
+          name="Key"
+          component={KeyScreen}
+          options={{
+          animationEnabled: false,
+          headerShown: false,
+          orientation: 'portrait_up'
+        }}
         />
         <Stack.Screen
         name="Game"
