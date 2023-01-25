@@ -1,4 +1,4 @@
-import React, { useEffect, useInsertionEffect, useState } from 'react';
+import React, { useEffect, useInsertionEffect, useState, useContext, useRef } from 'react';
 import { View, Text, Button, Dimensions, Image, TouchableOpacity, PixelRatio } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSolid, faUser, faPlus, faUpLong, faMagnifyingGlass, faComment, faPen, faW, faF, faFlagCheckered, faGear, faTrophy, faHouse } from '@fortawesome/free-solid-svg-icons';
@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import { GET_USER_BY_ID, GET_ME } from '../utils/queries';
-
+import { MainStateContext } from '../App';
 
 const {
     width: SCREEN_WIDTH,
@@ -28,6 +28,8 @@ const HeightRatio = (size) => {
 
 
 export const Navbar = (props) => {
+    const { mainState, setMainState } = useContext(MainStateContext);
+
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const [authState, setAuthState] = useState(false);
@@ -39,6 +41,7 @@ export const Navbar = (props) => {
     const [userID, setUserID] = useState('');
     const [bearerToken, storeBearerToken] = useState(false);
     const [isTokenValid, setIsTokenValid] = useState(null);
+    const keyboardOpen = useRef(false);
 
     const checkToken = async (value) => {
         try {
@@ -109,9 +112,6 @@ export const Navbar = (props) => {
         index: 1,
         routes: [{ name: 'Leader', params: {} }]
     });
-
-    
-
     
 
     useEffect(() => {

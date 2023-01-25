@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Button, View, TouchableOpacity, Text, TextInput, StyleSheet, Modal, PixelRatio } from "react-native";
 import { Dimensions } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSolid, faAddressCard, faEnvelope, faSackDollar, faStar, faX, faPenToSquare, faCopy } from '@fortawesome/free-solid-svg-icons'
 import { useMutation, useQuery } from '@apollo/client';
-import { UPDATE_USER, LOGIN_USER, UPDATE_USER_PASSWORD, DELETE_USER } from '../../utils/mutations';
 import { GET_USER_BY_ID } from '../../utils/queries';
 import { DemoAppInvoiceAndQuote } from './VerificationInvoiceAndQuote';
 import * as Clipboard from 'expo-clipboard';
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MainStateContext } from '../../App';
+import { 
+    UPDATE_USER, 
+    LOGIN_USER, 
+    UPDATE_USER_PASSWORD, 
+    DELETE_USER 
+} from '../../utils/mutations';
+
 
 const {
     width: SCREEN_WIDTH,
@@ -30,7 +37,8 @@ const HeightRatio = (size) => {
 }
 
 export const UserDetails = (props) => {
-    // console.log(props)
+    const { mainState, setMainState } = useContext(MainStateContext);
+
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
@@ -191,7 +199,7 @@ export const UserDetails = (props) => {
     // [[[PRODUCT USER DETAIL SECTIONS]]]
     for (let i = 0; i < EditableFields.length; i++) {
         userDetailsArray[i] =
-            <View style={{}} key={i}>
+            <View style={{ width: 450}} key={i}>
                 <TouchableOpacity
                     onPress={() => {
                         setShowEditableFieldUsername(false);

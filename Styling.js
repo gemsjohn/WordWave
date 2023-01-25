@@ -379,8 +379,8 @@ export const Styling = StyleSheet.create({
     backgroundColor: 'transparent',
     marginHorizontal: -20,
     alignSelf: "center",
-    width: windowWidth - 10,
-    height: windowHeight - 100,
+    width: 450,
+    // height: '100%',
     marginTop: 10
   },
   modalWordButton: {
@@ -390,7 +390,7 @@ export const Styling = StyleSheet.create({
     borderRadius: 40,
     alignSelf: 'center',
     margin: 10,
-    width: windowWidth - 80,
+    width: 350,
     flexDirection: 'row'
   },
   modalWordButtonText: {
@@ -403,11 +403,6 @@ export const Styling = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     marginRight: 10
-  },
-  modalScoringVarText: {
-    color: 'white',
-    fontSize: 30,
-    fontWeight: 'bold',
   },
   profileDivisionLine: {
     borderColor: '#4cc9f0',

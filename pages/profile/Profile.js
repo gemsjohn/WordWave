@@ -128,7 +128,7 @@ export const ProfileScreen = ({ navigation }) => {
         }
     }
 
-    
+
 
     useEffect(() => {
         CheckAuthState();
@@ -139,20 +139,7 @@ export const ProfileScreen = ({ navigation }) => {
     return (
         <>
             <View style={Styling.container}>
-                <Navbar nav={navigation} auth={authState} position={'relative'} from={'profile'} />
-                <View>
-                {selectedColor && selectedColor.gradient && selectedColor.image ?
-                    <DisplayGradient gradient={selectedColor.gradient} image={selectedColor.image} />
-                    :
-                    <>
-                        <Image source={require('../../assets/dalle_7.png')} style={{ ...Styling.background, opacity: 0.4 }} />
-                        <LinearGradient
-                            colors={['#0b132b', '#3a506b']}
-                            style={{ ...Styling.background, opacity: 0.5 }}
-                        />
-                    </>
-                }
-                
+
                 <SafeAreaView style={Styling.profileContainer}>
                     <ScrollView style={Styling.profileScrollView}>
                         <View style={{}}>
@@ -238,7 +225,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                 style={Styling.modalWordButton}
                                             >
                                                 <Text
-                                                    style={{ ...Styling.modalWordButtonText, fontSize: windowWidth * 0.08, }}
+                                                    style={{ ...Styling.modalWordButtonText, fontSize: 20, }}
                                                     allowFontScaling={false}
                                                 >
                                                     Logout
@@ -252,7 +239,8 @@ export const ProfileScreen = ({ navigation }) => {
                         </View >
                     </ScrollView>
                 </SafeAreaView>
-                </View>
+                <Navbar nav={navigation} auth={authState} position={'absolute'} from={'profile'} />
+
             </View>
 
             <StatusBar
