@@ -19,7 +19,6 @@ import {
     isSpecialColliding_3 
 } from './CollisionHandler';
 import { SharedStateContext } from './Game';
-import moment  from 'moment';
 import {
     View,
     Text

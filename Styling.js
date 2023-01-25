@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions, StatusBar, PixelRatio } from 'react-native';
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;

@@ -13,7 +13,6 @@ import {
   windowHeight, 
   windowWidth 
 } from '../../Styling';
-import moment  from 'moment';
 import { Navbar } from '../../components/Navbar';
 import { getTerm } from '../../Localization';
 import { CharacterAndJoystick } from './CharacterAndJoystick';
