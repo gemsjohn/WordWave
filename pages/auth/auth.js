@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useMutation } from "@apollo/client";
 import jwtDecode from "jwt-decode";
 import { LOGIN_USER, ADD_USER, REQUEST_RESET, RESET_PASSWORD } from '../../utils/mutations';
@@ -10,7 +10,7 @@ import { Loading } from '../../components/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Styling } from '../../Styling';
 import { CommonActions } from '@react-navigation/native';
-import { ScreenOrientation } from 'expo';
+import { MainStateContext } from '../../App';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 // [GLOBAL] - [[[Variables: Dimensions]]] - - - - 
@@ -47,6 +47,7 @@ const resetActionProfile = CommonActions.reset({
 });
 
 export const Auth = ({ navigation }) => {
+    const { mainState, setMainState } = useContext(MainStateContext);
     const [authState, setAuthState] = useState(false);
     const [displayLoading, setDisplayLoading] = useState(false);
     const [newUser, setNewUser] = useState(false);
@@ -94,6 +95,10 @@ export const Auth = ({ navigation }) => {
     // });
 
     const checkToken = async (value) => {
+      console.log("* * * * * * * * ")
+      console.log(value)
+      console.log("* * * * * * * * ")
+
       try {
         const response = await fetch('https://cosmicbackend.herokuapp.com/protected-route', {
           method: 'GET',
@@ -103,11 +108,14 @@ export const Auth = ({ navigation }) => {
         });
         if (response.ok) {
           // Token is still valid
+          console.log("Token is still valid")
+
           setIsTokenValid(true)
           navigation.dispatch(resetActionProfile)
           return true;
         } else {
           // Token is no longer valid
+          console.log("Token is no longer valid")
           setIsTokenValid(false)
           return false;
         }
@@ -115,59 +123,6 @@ export const Auth = ({ navigation }) => {
         console.error(error);
       }
   }
-  
-  
-    const storeBearerToken = async (value) => {
-      try {
-        await AsyncStorage.setItem('@storage_Key', value)
-        checkToken(value)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    const getBearerToken = async () => {
-      let value = await AsyncStorage.getItem('@storage_Key', value)
-      checkToken(value)
-    }
-    const storeUserID = async (value) => {
-      try {
-        await AsyncStorage.setItem('@userID', value)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-  
-    const storeAuthState = async (value) => {
-      try {
-        await AsyncStorage.setItem('@authState', value)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    const CheckAuthState = async () => {
-      let value = await AsyncStorage.getItem('@authState')
-      if (value === 'true') {
-        setAuthState(true)
-      } else if (value === 'false') {
-        setAuthState(false)
-      }
-    }
-  
-  
-    const CurrentUser = async () => {
-      let value = await AsyncStorage.getItem('@userID', value);
-      if (value == '') {
-        setUserID('')
-      } else {
-        setUserID(value)
-      }
-    }
-  
-    useEffect(() => {
-      CheckAuthState();
-      CurrentUser();
-      getBearerToken();
-    }, [])
   
     const handleLogin = async () => {
   
@@ -180,19 +135,29 @@ export const Auth = ({ navigation }) => {
         });
   
         if (data.login.token) {
+          console.log("Login Success")
           const decoded = jwtDecode(data.login.token)
-          storeBearerToken(`Bearer ${data.login.token}`)
+
           setUserID(decoded?.data._id);
-          storeUserID(`${decoded?.data._id}`)
           setDisplayLoading(false);
-          setAuthState(true);
-          storeAuthState('true')
+          setMainState({
+            bearerToken: `Bearer ${data.login.token}`,
+            userID: `${decoded?.data._id}`,
+            authState: true
+          })
+          checkToken(`Bearer ${data.login.token}`)
         }
       } catch (e) {
+        console.log("Login Error")
         setDisplayLoading(false);
-        setAuthState(false);
         console.error(e);
         setDisplayLoginFailureAlert(true)
+
+        setMainState({
+          bearerToken: null,
+          userID: null,
+          authState: false
+        })
       }
     }
   
@@ -215,7 +180,7 @@ export const Auth = ({ navigation }) => {
           setUserID(decoded?.data._id);
           storeUserID(`${decoded?.data._id}`)
           setDisplayLoading(false);
-          setAuthState(true);
+          // setAuthState(true);
           storeAuthState('true')
           setPromptEmailInput("")
           setPromptUsernameInput("")
@@ -224,7 +189,7 @@ export const Auth = ({ navigation }) => {
         }
       } catch (e) {
         setDisplayLoading(false);
-        setAuthState(false);
+        // setAuthState(false);
         console.error(e);
         Alert.alert(
           "Sign Up Failed",

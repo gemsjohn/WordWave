@@ -16,11 +16,31 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const mainStateRef = useRef({});
+  // const userID = useRef(null);
+  // const bearerToken = useRef(null);
+  // const authState = useRef(null);
+
+  const setMainState = (newState) => {
+    mainStateRef.current = { ...mainStateRef.current, ...newState };
+  };
+
+// useEffect(() => {
+//   // userID.current = mainStateRef.current.userID
+//   // bearerToken.current = mainStateRef.current.bearerToken
+//   // authState.current = mainStateRef.current.authState
+//   setInterval(() =>{
+//     console.log(mainStateRef.current)
+//   }, 1000)
+// }, [])
+
+
+
   const GRAPHQL_API_URL = 'https://cosmicbackend.herokuapp.com/graphql';
   const asyncAuthLink = setContext(async () => {
     return {
       headers: {
-        Authorization: await AsyncStorage.getItem('@storage_Key'),
+        // Authorization: await AsyncStorage.getItem('@storage_Key'),
+        Authorization: mainStateRef.current.bearerToken,
       },
     };
   });
@@ -51,9 +71,7 @@ export default function App() {
     },
   });
 
-  const setMainState = (newState) => {
-    mainStateRef.current = { ...mainStateRef.current, ...newState };
-  };
+  
 
   
 

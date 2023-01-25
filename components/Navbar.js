@@ -43,20 +43,25 @@ export const Navbar = (props) => {
     const [isTokenValid, setIsTokenValid] = useState(null);
     const keyboardOpen = useRef(false);
 
-    const checkToken = async (value) => {
+    let prevMainState;
+
+    const checkToken = async () => {
         try {
-          const response = await fetch('https://cosmicbackend.herokuapp.com/graphql/protected-route', {
+          const response = await fetch('https://cosmicbackend.herokuapp.com/protected-route', {
             method: 'GET',
             headers: {
-              'Authorization': `${value}`
+              'Authorization': `${mainState.current.bearerToken}`
             }
           });
           if (response.ok) {
             // Token is still valid
+            console.log("Token is still valid")
             setIsTokenValid(true)
             return true;
           } else {
             // Token is no longer valid
+            console.log("Token is no longer valid")
+
             setIsTokenValid(false)
             return false;
           }
@@ -65,27 +70,28 @@ export const Navbar = (props) => {
         }
     }
 
-    const CurrentUser = async () => {
-        let value = await AsyncStorage.getItem('@userID', value);
-        setUserID(value);
-    }
+    // const CurrentUser = async () => {
+    //     // let value = await AsyncStorage.getItem('@userID', value);
+    //     let value = mainState.current.userID;
+    //     setUserID(value);
+    // }
 
-    const getBearerToken = async () => {
-          let value = await AsyncStorage.getItem('@storage_Key', value)
-          checkToken(value)
-    }
+    // const getBearerToken = async () => {
+    //     //   let value = await AsyncStorage.getItem('@storage_Key', value)
+    //     let value = mainState.current.bearerToken;
+    //       checkToken(value)
+    // }
 
 
-    const CheckAuthState = async () => {
-        let value = await AsyncStorage.getItem('@authState')
-        // console.log(value)
-        if (value === 'true') {
-            setAuthState(true)
-        } else if (value === 'false') {
-            setAuthState(false)
-        }
-    }
-    CheckAuthState()
+    // const CheckAuthState = async () => {
+    //     let value = mainState.current.authState;
+    //     // console.log(value)
+    //     if (value === 'true') {
+    //         setAuthState(true)
+    //     } else if (value === 'false') {
+    //         setAuthState(false)
+    //     }
+    // }
 
 
     const resetActionHome = CommonActions.reset({
@@ -115,14 +121,34 @@ export const Navbar = (props) => {
     
 
     useEffect(() => {
+        console.log("NAV BAR USEEFFECT")
         if (props.from == 'home') {setHomeBg('rgba(255, 255, 255, 0.1)')} else {setHomeBg('transparent')}
         if (props.from == 'game') {setGameBg('rgba(255, 255, 255, 0.1)')} else {setGameBg('transparent')}
         if (props.from == 'leader') {setLeaderBg('rgba(255, 255, 255, 0.1)')} else {setLeaderBg('transparent')}
         // if (props.from == 'settings') {setSettingsBg('rgba(255, 255, 255, 0.1)')} else {setSettingsBg('transparent')}
         if (props.from == 'profile') {setProfileBg('rgba(255, 255, 255, 0.1)')} else {setProfileBg('transparent')}
-        CurrentUser()
-        getBearerToken()
+        checkToken();
+
+        // setInterval(() =>{
+        //     // console.log(mainState.current)
+        //     if (mainState.current !== prevMainState) {
+        //         prevMainState = mainState.current;
+        //         // console.log("mainState.current has changed, updating myVariable to:", prevMainState);
+        //         CurrentUser()
+        //         getBearerToken()
+        //         CheckAuthState()
+        //     }
+        // }, 1000)
     }, [])
+
+    // useEffect(() => {
+    //     // userID.current = mainStateRef.current.userID
+    //     // bearerToken.current = mainStateRef.current.bearerToken
+    //     // authState.current = mainStateRef.current.authState
+    //     setInterval(() =>{
+    //       console.log(mainStateRef.current)
+    //     }, 1000)
+    //   }, [])
 
 
     return (

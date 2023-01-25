@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 
 
 export const GET_ME = gql`
-  query Me {
+  query Query {
     me {
       _id
       role
@@ -14,14 +14,11 @@ export const GET_ME = gql`
         _id
         userid
         username
-        w1
-        w2
-        w3
-        time
         score
+        stage
         date
-        difficulty
       }
+      tokens
       resetToken
       resetTokenExpiry
     }
@@ -29,22 +26,8 @@ export const GET_ME = gql`
 `;
 
 export const GET_USER_BY_ID = gql`
-  query User($id: ID!) {
-  user(_id: $id) {
-    _id
-    role
-    username
-    email
-    profilepicture
-    resetToken
-    resetTokenExpiry
-  }
-}
-`;
-
-export const GET_USERS = gql`
-  query Query {
-    users {
+  query Query($id: ID!) {
+    user(_id: $id) {
       _id
       role
       username
@@ -54,14 +37,34 @@ export const GET_USERS = gql`
         _id
         userid
         username
-        w1
-        w2
-        w3
-        time
         score
+        stage
         date
-        difficulty
       }
+      tokens
+      resetToken
+      resetTokenExpiry
+    }
+  }
+`;
+
+export const GET_USERS = gql`
+  query Query($echo: String) {
+    users(echo: $echo) {
+      _id
+      role
+      username
+      email
+      profilepicture
+      games {
+        _id
+        userid
+        username
+        score
+        stage
+        date
+      }
+      tokens
       resetToken
       resetTokenExpiry
     }
@@ -69,8 +72,8 @@ export const GET_USERS = gql`
 `;
 
 export const GET_USERS_SEARCH = gql`
-  query Query($search: String) {
-    getUsers(search: $search) {
+  query Query($search: String, $echo: String) {
+    getUsers(search: $search, echo: $echo) {
       users {
         _id
         role
@@ -81,14 +84,11 @@ export const GET_USERS_SEARCH = gql`
           _id
           userid
           username
-          w1
-          w2
-          w3
-          time
           score
+          stage
           date
-          difficulty
         }
+        tokens
         resetToken
         resetTokenExpiry
       }
@@ -97,28 +97,24 @@ export const GET_USERS_SEARCH = gql`
 `;
 
 export const GAMES = gql`
-  query Query {
-    games {
+  query Query($echo: String) {
+    games(echo: $echo) {
       _id
       userid
       username
-      w1
-      w2
-      w3
-      time
       score
+      stage
       date
-      difficulty
     }
-  } 
+  }
 `;
 
 export const LEADERBOARD = gql`
   query Query {
     leaderBoard {
+      id
       username
       score
-      id
       position
     }
   }
