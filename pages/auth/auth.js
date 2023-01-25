@@ -8,38 +8,9 @@ import { faSolid, faUser, faPlus, faUpLong, faMagnifyingGlass, faCheck, faLocati
 import { Navbar } from '../../components/Navbar';
 import { Loading } from '../../components/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Styling } from '../../Styling';
 import { CommonActions } from '@react-navigation/native';
 import { MainStateContext } from '../../App';
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// [GLOBAL] - [[[Variables: Dimensions]]] - - - - 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const {
-  width: SCREEN_WIDTH,
-  height: SCREEN_HEIGHT,
-} = Dimensions.get('window');
-
-const scaleWidth = SCREEN_WIDTH / 360;
-const scaleHeight = SCREEN_HEIGHT / 800;
-
-const WidthRatio = (size) => {
-  const newSize = size * scaleWidth;
-  return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-  //   if (Platform.OS === 'ios') {
-  //     return Math.round(PixelRatio.roundToNearestPixel(newSize))
-  //   } else {
-  //     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-  //   }
-}
-
-const HeightRatio = (size) => {
-  const newSize = size * scaleHeight;
-  return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
+import { Styling, windowWidth, windowHeight, HeightRatio, WidthRatio } from '../../Styling';
 
 const resetActionProfile = CommonActions.reset({
   index: 1,
@@ -48,7 +19,7 @@ const resetActionProfile = CommonActions.reset({
 
 export const Auth = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
-    const [authState, setAuthState] = useState(false);
+    // const [authState, setAuthState] = useState(false);
     const [displayLoading, setDisplayLoading] = useState(false);
     const [newUser, setNewUser] = useState(false);
     const [displayLoginFailureAlert, setDisplayLoginFailureAlert] = useState(false)
@@ -66,7 +37,7 @@ export const Auth = ({ navigation }) => {
     // Username and Password
     const [promptInput_0, setPromptInput_0] = useState("");
     const [promptInput_1, setPromptInput_1] = useState("");
-    const [userID, setUserID] = useState("")
+
   
     // Forgot Password
     const [displayForgotPasswordContent, setDisplayForgotPasswordContent] = useState(false);
@@ -137,14 +108,14 @@ export const Auth = ({ navigation }) => {
         if (data.login.token) {
           console.log("Login Success")
           const decoded = jwtDecode(data.login.token)
-
-          setUserID(decoded?.data._id);
           setDisplayLoading(false);
+
           setMainState({
             bearerToken: `Bearer ${data.login.token}`,
             userID: `${decoded?.data._id}`,
             authState: true
           })
+
           checkToken(`Bearer ${data.login.token}`)
         }
       } catch (e) {
@@ -173,23 +144,25 @@ export const Auth = ({ navigation }) => {
             profilepicture: '',
           }
         });
-        // console.log(data.addUser.token)
+
         if (data.addUser.token) {
           const decoded = jwtDecode(data.addUser.token)
-          storeBearerToken(`Bearer ${data.addUser.token}`)
-          setUserID(decoded?.data._id);
-          storeUserID(`${decoded?.data._id}`)
+
           setDisplayLoading(false);
-          // setAuthState(true);
-          storeAuthState('true')
           setPromptEmailInput("")
           setPromptUsernameInput("")
           setPromptPasswordInput("")
-  
+
+          setMainState({
+            bearerToken: `Bearer ${data.addUser.token}`,
+            userID: `${decoded?.data._id}`,
+            authState: true
+          })
+
+          checkToken(`Bearer ${data.addUser.token}`)
         }
       } catch (e) {
         setDisplayLoading(false);
-        // setAuthState(false);
         console.error(e);
         Alert.alert(
           "Sign Up Failed",
@@ -198,6 +171,13 @@ export const Auth = ({ navigation }) => {
             { text: "OK", onPress: () => console.log("OK Pressed") }
           ]
         );
+
+        setMainState({
+          bearerToken: null,
+          userID: null,
+          authState: false
+        })
+
       }
     };
   
