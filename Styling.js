@@ -370,7 +370,7 @@ export const Styling = StyleSheet.create({
     borderRadius: 40,
     alignSelf: 'center',
     margin: 10,
-    width: '80%'
+    width: 350
   },
   profileContainer: {
     // paddingTop: StatusBar.currentHeight,

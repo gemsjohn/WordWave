@@ -441,7 +441,7 @@ export const Auth = ({ navigation }) => {
                               borderRadius: 40,
                               alignSelf: 'center',
                               margin: 10,
-                              width: '80%'
+                              width: 350
                             }}
   
                           >
@@ -467,7 +467,7 @@ export const Auth = ({ navigation }) => {
                               borderRadius: 40,
                               alignSelf: 'center',
                               margin: 10,
-                              width: '80%'
+                              width: 350
                             }}
                           >
                             <Text
@@ -502,7 +502,7 @@ export const Auth = ({ navigation }) => {
                           borderRadius: 40,
                           alignSelf: 'center',
                           margin: 10,
-                          width: '80%'
+                          width: 350
                         }}
                       >
                         <Text
@@ -568,7 +568,7 @@ export const Auth = ({ navigation }) => {
                                 borderRadius: 40,
                                 alignSelf: 'center',
                                 margin: 10,
-                                width: '80%'
+                                width: 350
                               }}
                             >
                               <Text
@@ -594,7 +594,7 @@ export const Auth = ({ navigation }) => {
                                 borderRadius: 40,
                                 alignSelf: 'center',
                                 margin: 10,
-                                width: '80%'
+                                width: 350
                               }}
                             >
                               <Text
@@ -608,8 +608,9 @@ export const Auth = ({ navigation }) => {
                         }
   
                         <View style={Styling.modalDivisionLine}></View>
-  
-                        <TouchableOpacity onPress={() => setDisplayForgotPasswordContent(true)}>
+
+                        <TouchableOpacity 
+                          onPress={() => setDisplayForgotPasswordContent(current => !current)}>
                           <View>
                             <Text
                               style={{ color: '#80ffdb', alignSelf: 'center', fontSize: 30, margin: 10, fontWeight: 'bold' }}
@@ -624,10 +625,10 @@ export const Auth = ({ navigation }) => {
                             style={{
                               alignSelf: 'center',
                               margin: 10,
-                              width: '80%'
+                              width: 350
                             }}
                           >
-                            <View style={{ flexDirection: 'column', alignSelf: 'center', margin: 10, marginTop: -5 }}>
+                            <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
   
                               <TextInput
                                 type="text"
@@ -652,7 +653,7 @@ export const Auth = ({ navigation }) => {
                                     borderRadius: 40,
                                     alignSelf: 'center',
                                     margin: 10,
-                                    width: '80%'
+                                    width: '90%'
                                   }}
                                 >
                                   <Text
@@ -681,7 +682,7 @@ export const Auth = ({ navigation }) => {
                                   borderRadius: 40,
                                   alignSelf: 'center',
                                   margin: 10,
-                                  width: windowWidth - 130
+                                  width: 350
                                 }}
                               >
                                 <Text
@@ -757,7 +758,7 @@ export const Auth = ({ navigation }) => {
                                         borderRadius: 40,
                                         alignSelf: 'center',
                                         margin: 10,
-                                        width: '80%'
+                                        width: 350
                                       }}
                                     >
                                       <Text
@@ -830,7 +831,8 @@ export const Auth = ({ navigation }) => {
                           </View>
                         }
   
-                        {/* <View style={Styling.modalDivisionLine}></View> */}
+                          <View style={Styling.modalDivisionLine}></View>
+
                         
                         <Text
                           style={{ color: 'white', alignSelf: 'center', fontSize: 30, margin: 20, fontWeight: 'bold' }}
@@ -848,7 +850,7 @@ export const Auth = ({ navigation }) => {
                               borderRadius: 40,
                               alignSelf: 'center',
                               margin: 10,
-                              width: '80%'
+                              width: 400
                             }}
                           >
                             <Text

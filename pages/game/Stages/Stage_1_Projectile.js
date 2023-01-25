@@ -870,7 +870,7 @@ export const Stage_1_Projectile = (props) => {
     if (input.continue) {
       setHasGameBeenStarted(false);
       setLetterPocket([]);
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
