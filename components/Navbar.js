@@ -1,29 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useInsertionEffect, useState } from 'react';
 import { View, Text, Button, Dimensions, Image, TouchableOpacity, PixelRatio } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSolid, faUser, faPlus, faUpLong, faMagnifyingGlass, faComment, faPen, faW, faF, faFlagCheckered, faGear, faTrophy, faHouse, faTruck } from '@fortawesome/free-solid-svg-icons';
-// import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import { faSolid, faUser, faPlus, faUpLong, faMagnifyingGlass, faComment, faPen, faW, faF, faFlagCheckered, faGear, faTrophy, faHouse } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
-import { HeightRatio, WidthRatio, windowWidth, windowHeight, Styling } from '../Styling';
-// import { useQuery } from '@apollo/client';
-// import { GET_USER_BY_ID, GET_ME } from '../utils/queries';
-import { resetActionHome, resetActionGame, resetActionProfile, resetActionAuth } from './ResetActions';
-import { getTerm } from '../Localization';
+import { useQuery } from '@apollo/client';
+import { GET_USER_BY_ID, GET_ME } from '../utils/queries';
+
+
+const {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
+} = Dimensions.get('window');
+
+const scaleWidth = SCREEN_WIDTH / 360;
+const scaleHeight = SCREEN_HEIGHT / 800;
+
+const WidthRatio = (size) => {
+    const newSize = size * scaleWidth;
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+}
+
+const HeightRatio = (size) => {
+    const newSize = size * scaleHeight;
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+}
 
 
 export const Navbar = (props) => {
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
     const [authState, setAuthState] = useState(false);
+    const [homeBg, setHomeBg] = useState('rgba(255, 255, 255, 0.1)');
+    const [gameBg, setGameBg] = useState('rgba(255, 255, 255, 0.1)');
+    const [leaderBg, setLeaderBg] = useState('rgba(255, 255, 255, 0.1)');
+    // const [settingsBg, setSettingsBg] = useState('rgba(255, 255, 255, 0.1)');
+    const [profileBg, setProfileBg] = useState('rgba(255, 255, 255, 0.1)');
     const [userID, setUserID] = useState('');
     const [bearerToken, storeBearerToken] = useState(false);
     const [isTokenValid, setIsTokenValid] = useState(null);
-    const [homeBg, setHomeBg] = useState('rgba(255, 255, 255, 0.1)');
-    const [gameBg, setGameBg] = useState('rgba(255, 255, 255, 0.1)');
-    const [profileBg, setProfileBg] = useState('rgba(255, 255, 255, 0.1)');
-    const [authBg, setAuthBg] = useState('rgba(255, 255, 255, 0.1)');
-
-    // let fontLoaded_0 = useFonts({ Inter_900Black, });
-    // if (!fontLoaded_0) { return null; }
 
     const checkToken = async (value) => {
         try {
@@ -69,18 +84,42 @@ export const Navbar = (props) => {
     }
     CheckAuthState()
 
-    // const buttons = [
-    //     { key: 0, image: '../assets/button_game_nav.png', label: `${getTerm('home', props.language, 'title')}`, backgroundColor: homeBg, iconColor: 'white', onPress: () => { props.nav.dispatch(resetActionHome); } }, 
-    //     { key: 1, image: '../assets/button_game_nav.png', label: `${getTerm('game', props.language, 'title')}`, backgroundColor: gameBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionGame); } },
-    //     { key: 2, image: '../assets/button_profile_nav.png', label: `${getTerm('profile', props.language, 'title')}`, backgroundColor: profileBg, iconColor: '#4996ea', onPress: () => { props.nav.dispatch(resetActionProfile); } }
-    // ];
+
+    const resetActionHome = CommonActions.reset({
+        index: 1,
+        routes: [{ name: 'Home', params: {} }]
+    });
+    const resetActionGame = CommonActions.reset({
+        index: 1,
+        routes: [{ name: 'Game', params: {} }]
+    });
+    // const resetActionSettings = CommonActions.reset({
+    //     index: 1,
+    //     routes: [{ name: 'Settings', params: {} }]
+    // });
+    const resetActionProfile = CommonActions.reset({
+        index: 1,
+        routes: [{ name: 'Profile', params: {} }]
+    });
+    const resetActionAuth = CommonActions.reset({
+        index: 1,
+        routes: [{ name: 'Auth', params: {} }]
+    });
+    const resetActionLeader = CommonActions.reset({
+        index: 1,
+        routes: [{ name: 'Leader', params: {} }]
+    });
+
+    
+
+    
 
     useEffect(() => {
-        // if (props.from == `${getTerm('home', props.language, 'title')}`) {setHomeBg('#fa1f5a75')} else {setHomeBg('#86000c90')}
-        // if (props.from == `${getTerm('game', props.language, 'title')}`) {setGameBg('#fa1f5a75')} else {setGameBg('#86000c90')}
-        // if (props.from == `${getTerm('profile', props.language, 'title')}`) {setProfileBg('#fa1f5a75')} else {setProfileBg('#86000c90')}
-        // if (props.from == `${getTerm('auth', props.language, 'title')}`) {setAuthBg('#fa1f5a75')} else {setAuthBg('#86000c90')}
-        
+        if (props.from == 'home') {setHomeBg('rgba(255, 255, 255, 0.1)')} else {setHomeBg('transparent')}
+        if (props.from == 'game') {setGameBg('rgba(255, 255, 255, 0.1)')} else {setGameBg('transparent')}
+        if (props.from == 'leader') {setLeaderBg('rgba(255, 255, 255, 0.1)')} else {setLeaderBg('transparent')}
+        // if (props.from == 'settings') {setSettingsBg('rgba(255, 255, 255, 0.1)')} else {setSettingsBg('transparent')}
+        if (props.from == 'profile') {setProfileBg('rgba(255, 255, 255, 0.1)')} else {setProfileBg('transparent')}
         CurrentUser()
         getBearerToken()
     }, [])
@@ -98,26 +137,91 @@ export const Navbar = (props) => {
                 alignItems: 'center',
                 backgroundColor: 'transparent',
                 flexDirection: 'row',
-                // width: windowWidth
             }}
+        >
+            {/* [[[HOME]]] */}
+            <TouchableOpacity
+                onPress={() => { props.nav.dispatch(resetActionHome); }}
             >
-            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionHome); }} style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
-                <Image source={require('../assets/button_home_nav.png')} style={{height: 60, width: 60}} />
-                {/* <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>HOME</Text> */}
+                <View
+                    style={{
+                        flexDirection: 'column', marginLeft: 10, marginRight: 10
+                    }}
+                    accessible={true}
+                    accessibilityLabel="Home"
+                >
+                    <Image source={require('../assets/button_home_nav.png')} style={{height: 60, width: 60}} />
+                </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionGame); }}  style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
-                <Image source={require('../assets/button_game_nav.png')} style={{height: 60, width: 60}} />
-                {/* <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>GAME</Text> */}
+           
+            {/* [[[GAME]]] */}
+            <TouchableOpacity
+                onPress={() => { props.nav.dispatch(resetActionGame); }}
+            >
+                <View
+                    style={{
+                        flexDirection: 'column', marginLeft: 10, marginRight: 10
+                    }}
+                    accessible={true}
+                    accessibilityLabel="Game"
+                >
+                    <Image source={require('../assets/button_game_nav.png')} style={{height: 60, width: 60}} />
+                </View>
             </TouchableOpacity>
+            {/* [[[LEADER BOARD]]] */}
+            {/* <TouchableOpacity
+                onPress={() => { props.nav.dispatch(resetActionLeader); }}
+            >
+                <View
+                    style={{
+                        flexDirection: 'column', marginLeft: 10, marginRight: 10
+                    }}
+                    accessible={true}
+                    accessibilityLabel="Leader board"
+                >
+                    <FontAwesomeIcon
+                        icon={faSolid, faTrophy}
+                        style={{ color: '#efea5a', alignSelf: 'center' }}
+                        size={25}
+                    />
+                    <Text 
+                        style={{ color: 'white', marginTop: 6, alignSelf: 'center', fontSize: HeightRatio(18) }}
+                        allowFontScaling={false}
+                    >
+                        Leader
+                    </Text>
+                </View>
+            </TouchableOpacity> */}
+            
+            {/* [[[PROFILE]]] */}
             {isTokenValid ?
-            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionProfile); }}  style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
-                <Image source={require('../assets/button_profile_nav.png')} style={{height: 60, width: 60}} />
-            </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => { props.nav.dispatch(resetActionProfile); }}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'column', marginLeft: 10, marginRight: 10
+                        }}
+                        accessible={true}
+                        accessibilityLabel="User profile"
+                    >
+                        <Image source={require('../assets/button_profile_nav.png')} style={{height: 60, width: 60}} />
+                    </View>
+                </TouchableOpacity>
             :
-            <TouchableOpacity onPress={() => { props.nav.dispatch(resetActionAuth); }}  style={{flexDirection: 'column', marginLeft: 10, marginRight: 10}} >
-                <Image source={require('../assets/button_profile_nav.png')} style={{height: 60, width: 60}} />
-            </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => { props.nav.dispatch(resetActionAuth); }}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'column', marginLeft: 10, marginRight: 10
+                        }}
+                    >
+                        <Image source={require('../assets/button_profile_nav.png')} style={{height: 60, width: 60}} />
+                    </View>
+                </TouchableOpacity>
+
             }
-            </View>
+        </View>
     )
 }
