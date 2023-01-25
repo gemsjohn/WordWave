@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
+import { MainStateContext } from '../../App';
 import {
     StyleSheet,
     Text,
@@ -73,10 +74,17 @@ const COLORS = [
 export const RecentGames = (props) => {
     const [currentColor, setCurrentColor] = useState('white');
     let gameCards = [];
+    const { mainState, setMainState } = useContext(MainStateContext);
+    const userID = useRef(null);
 
-    const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-        variables: { id: props.currentuser }
+    const { data: userByID } = useQuery(GET_USER_BY_ID, {
+        variables: { id: userID.current }
     });
+
+    useEffect(() => {
+        userID.current = mainState.current.userID;
+        console.log(userID.current)
+    }, [])
     // console.log("!!!!")
     // console.log(userByID?.user.games)
 

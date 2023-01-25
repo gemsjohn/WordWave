@@ -10,6 +10,7 @@ import * as Clipboard from 'expo-clipboard';
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MainStateContext } from '../../App';
+import { windowHeight, windowWidth, HeightRatio, WidthRatio, Styling } from '../../Styling';
 import { 
     UPDATE_USER, 
     LOGIN_USER, 
@@ -18,23 +19,23 @@ import {
 } from '../../utils/mutations';
 
 
-const {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
-} = Dimensions.get('window');
+// const {
+//     width: SCREEN_WIDTH,
+//     height: SCREEN_HEIGHT,
+// } = Dimensions.get('window');
 
-const scaleWidth = SCREEN_WIDTH / 360;
-const scaleHeight = SCREEN_HEIGHT / 800;
+// const scaleWidth = SCREEN_WIDTH / 360;
+// const scaleHeight = SCREEN_HEIGHT / 800;
 
-const WidthRatio = (size) => {
-    const newSize = size * scaleWidth;
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
+// const WidthRatio = (size) => {
+//     const newSize = size * scaleWidth;
+//     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+// }
 
-const HeightRatio = (size) => {
-    const newSize = size * scaleHeight;
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
+// const HeightRatio = (size) => {
+//     const newSize = size * scaleHeight;
+//     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+// }
 
 export const UserDetails = (props) => {
     const { mainState, setMainState } = useContext(MainStateContext);
@@ -62,38 +63,21 @@ export const UserDetails = (props) => {
     const [deleteUserModal, setDeleteUserModal] = useState(false);
 
     let userDetailsArray = [];
+    const userID = useRef(null);
 
 
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-        variables: { id: props.currentuser._id }
+        variables: { id: userID.current }
     });
 
+    useEffect(() => {
+        userID.current = mainState.current.userID;
+        console.log(userID.current)
+    }, [])
+
     const copyToClipboard = async () => {
-        await Clipboard.setStringAsync(props.currentuser._id);
+        await Clipboard.setStringAsync(userID.current);
     };
-
-    const storeAuthState = async (value) => {
-        try {
-            await AsyncStorage.setItem('@authState', value)
-        } catch (e) {
-            console.error(e)
-        }
-    }
-    const storeBearerToken = async (value) => {
-        try {
-            await AsyncStorage.setItem('@storage_Key', value)
-        } catch (e) {
-            console.error(e)
-        }
-    }
-
-    const storeUserID = async (value) => {
-        try {
-            await AsyncStorage.setItem('@userID', value)
-        } catch (e) {
-            console.error(e)
-        }
-    }
 
     const resetActionAuth = CommonActions.reset({
         index: 1,
@@ -105,7 +89,7 @@ export const UserDetails = (props) => {
     const EditableFields = [
         {
             title: 'Username',
-            detail: props.currentuser.username,
+            detail: userByID?.user.username,
             edit: showEditableFieldUsername,
             setedit: setShowEditableFieldUsername,
             prompt: promptUsernameInput,
@@ -113,7 +97,7 @@ export const UserDetails = (props) => {
         },
         {
             title: 'Email',
-            detail: props.currentuser.email,
+            detail: userByID?.user.email,
             edit: showEditableFieldEmail,
             setedit: setShowEditableFieldEmail,
             prompt: promptEmailInput,
@@ -144,11 +128,10 @@ export const UserDetails = (props) => {
             try {
                 await updateUser({
                     variables: {
-                        profilepicture: props.currentuser.profilepicture,
-                        verified: props.currentuser.verified,
+                        profilepicture: userByID?.user.profilepicture,
+                        verified: userByID?.user.verified,
                         username: promptUsernameInput,
-                        email: props.currentuser.email,
-                        rating: props.currentuser.rating,
+                        email: userByID?.user.email,
                     }
                 });
                 refetch();
@@ -158,11 +141,10 @@ export const UserDetails = (props) => {
             try {
                 await updateUser({
                     variables: {
-                        profilepicture: props.currentuser.profilepicture,
-                        verified: props.currentuser.verified,
-                        username: props.currentuser.username,
+                        profilepicture: userByID?.user.profilepicture,
+                        verified: userByID?.user.verified,
+                        username: userByID?.user.username,
                         email: promptEmailInput,
-                        rating: props.currentuser.rating,
                     }
                 });
                 refetch();
@@ -188,9 +170,11 @@ export const UserDetails = (props) => {
             await deleteUser({
                 variables: { deleteUserId: promptDeleteInput }
             });
-            storeAuthState('false')
-            storeBearerToken('')
-            storeUserID('')
+            setMainState({
+                bearerToken: null,
+                userID: null,
+                authState: false
+            })
             props.nav.dispatch(resetActionAuth)
         }
         catch (e) { console.error(e); }
@@ -284,7 +268,7 @@ export const UserDetails = (props) => {
                                                                     <Text
                                                                         style={{ color: '#efea5a', fontSize: windowHeight * 0.02, fontWeight: 'bold', marginLeft: windowWidth * 0.02 }}
                                                                         allowFontScaling={false}
-                                                                    >Copy ID {props.currentuser._id}</Text>
+                                                                    >Copy ID {userByID?.user._id}</Text>
                                                                 </View>
                                                             </TouchableOpacity>
                                                         </>
