@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
 import { MainStateContext } from '../../App';
+import { Styling, windowHeight, windowWidth, HeightRatio, WidthRatio } from '../../Styling';
 import {
     StyleSheet,
     Text,
@@ -35,27 +36,6 @@ import {
     faTrophy
 } from '@fortawesome/free-solid-svg-icons'
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
-} = Dimensions.get('window');
-
-const scaleWidth = SCREEN_WIDTH / 360;
-const scaleHeight = SCREEN_HEIGHT / 800;
-
-const WidthRatio = (size) => {
-    const newSize = size * scaleWidth;
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
-
-const HeightRatio = (size) => {
-    const newSize = size * scaleHeight;
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
-
 const COLORS = [
     '#f94144',
     '#f3722c',
@@ -71,45 +51,15 @@ const COLORS = [
     '#cc8b79'
 ];
 
-export const RecentGames = (props) => {
+export const RecentGames = () => {
     const [currentColor, setCurrentColor] = useState('white');
     let gameCards = [];
     const { mainState, setMainState } = useContext(MainStateContext);
     const userID = useRef(null);
 
-    const { data: userByID } = useQuery(GET_USER_BY_ID, {
+    const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
         variables: { id: userID.current }
     });
-
-    useEffect(() => {
-        userID.current = mainState.current.userID;
-        console.log(userID.current)
-    }, [])
-    // console.log("!!!!")
-    // console.log(userByID?.user.games)
-
-    const storeAuthState = async (value) => {
-        try {
-            await AsyncStorage.setItem('@authState', value)
-        } catch (e) {
-            console.error(e)
-        }
-    }
-    const storeBearerToken = async (value) => {
-        try {
-            await AsyncStorage.setItem('@storage_Key', value)
-        } catch (e) {
-            console.error(e)
-        }
-    }
-
-    const storeUserID = async (value) => {
-        try {
-            await AsyncStorage.setItem('@userID', value)
-        } catch (e) {
-            console.error(e)
-        }
-    }
 
     for (let i = 0; i < userByID?.user.games.length; i++) {
         const index = Math.floor(Math.random() * COLORS.length);
@@ -140,41 +90,19 @@ export const RecentGames = (props) => {
                 </View>
                 <View style={{ flexDirection: 'column' }}>
                     <View style={{ flexDirection: 'row' }}>
-                        
-
                         <Text 
                             style={{ fontSize: windowWidth*0.05, fontWeight: 'bold', color: '#efea5a', marginRight: 10 }}
                             allowFontScaling={false}
                         >{userByID?.user.games[i].score} points</Text>
-                        <FontAwesomeIcon
-                            icon={faSolid, faClock}
-                            style={{ color: 'white', alignSelf: 'center', marginRight: 10 }}
-                            size={20}
-                        />
-                        <Text 
-                            style={{ fontSize: windowWidth*0.05, fontWeight: 'bold', color: 'white', marginRight: 10 }}
-                            allowFontScaling={false}
-                            >{userByID?.user.games[i].time} seconds</Text>
+                                                
                     </View>
-                    <View style={{ flexDirection: 'row', marginLeft: 30 }}>
-                        <Text 
-                            style={{ fontSize: windowWidth*0.05, fontWeight: 'bold', color: '#aaf683', marginRight: 10 }}
-                            allowFontScaling={false}
-                        >Words:</Text>
-                        <Text 
-                            style={{ fontSize: windowWidth*0.05, fontWeight: 'bold', color: 'white', marginRight: 10 }}
-                            allowFontScaling={false}
-                        >{userByID?.user.games[i].w1},</Text>
-                        <Text 
-                            style={{ fontSize: windowWidth*0.05, fontWeight: 'bold', color: 'white', marginRight: 10 }}
-                            allowFontScaling={false}
-                        >{userByID?.user.games[i].w2}</Text>
-                    </View>
+                    
                 </View>
             </View>
     }
 
     useEffect(() => {
+        userID.current = mainState.current.userID;
         refetch()
     }, [])
 

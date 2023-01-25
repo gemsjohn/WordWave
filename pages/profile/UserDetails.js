@@ -18,25 +18,6 @@ import {
     DELETE_USER 
 } from '../../utils/mutations';
 
-
-// const {
-//     width: SCREEN_WIDTH,
-//     height: SCREEN_HEIGHT,
-// } = Dimensions.get('window');
-
-// const scaleWidth = SCREEN_WIDTH / 360;
-// const scaleHeight = SCREEN_HEIGHT / 800;
-
-// const WidthRatio = (size) => {
-//     const newSize = size * scaleWidth;
-//     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-// }
-
-// const HeightRatio = (size) => {
-//     const newSize = size * scaleHeight;
-//     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-// }
-
 export const UserDetails = (props) => {
     const { mainState, setMainState } = useContext(MainStateContext);
 
@@ -72,7 +53,6 @@ export const UserDetails = (props) => {
 
     useEffect(() => {
         userID.current = mainState.current.userID;
-        console.log(userID.current)
     }, [])
 
     const copyToClipboard = async () => {
