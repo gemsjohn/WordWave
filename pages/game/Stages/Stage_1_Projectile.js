@@ -13,7 +13,7 @@ import {
   windowWidth
 } from '../../../Styling';
 import { shuffle } from 'lodash';
-import { SharedStateContext } from '../Game';
+import { MainStateContext } from '../../../App';
 import {
   isLetterBlockColliding,
   isObstacleColliding_0,
@@ -41,7 +41,7 @@ const resetActionHome = CommonActions.reset({
 
 export const Stage_1_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
-  const { sharedState, setSharedState } = useContext(SharedStateContext);
+  const { mainState, setMainState } = useContext(MainStateContext);
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
@@ -132,9 +132,9 @@ export const Stage_1_Projectile = (props) => {
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
-    setSharedState({ upgradeToSpecial_0: false })
-    setSharedState({ deployUpgradeToSpecialAnimation: false })
-    setSharedState({
+    setMainState({ upgradeToSpecial_0: false })
+    setMainState({ deployUpgradeToSpecialAnimation: false })
+    setMainState({
       stage1: true,
       stage2: null,
       stage3: null,
@@ -254,8 +254,8 @@ export const Stage_1_Projectile = (props) => {
     if (isGameInProgress.current) {
       hasUpdatedLetterBlock.current = false;
       countRef.current = count._value;
-      if (sharedState.current.currentLetter_countValue != null && !updatedPostResume.current) {
-        count.setValue(sharedState.current.currentLetter_countValue);
+      if (mainState.current.currentLetter_countValue != null && !updatedPostResume.current) {
+        count.setValue(mainState.current.currentLetter_countValue);
         updatedPostResume.current = true;
       }
 
@@ -507,11 +507,11 @@ export const Stage_1_Projectile = (props) => {
     // This function will be called on every animation frame
     const update = () => {
       setObj1({
-        x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth / 2,
-        y: sharedState.current.charY - sharedState.current.charHeight / 1.2,
-        width: sharedState.current.charWidth,
-        height: sharedState.current.charHeight / 2,
-        radius: sharedState.current.charHeight / 2,
+        x: mainState.current.charX + WidthRatio(64) + mainState.current.charWidth / 2,
+        y: mainState.current.charY - mainState.current.charHeight / 1.2,
+        width: mainState.current.charWidth,
+        height: mainState.current.charHeight / 2,
+        radius: mainState.current.charHeight / 2,
       });
 
       requestAnimationFrame(update);
@@ -719,7 +719,7 @@ export const Stage_1_Projectile = (props) => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
 
 
-    setSharedState({
+    setMainState({
       stage1: true,
       stage2: false,
       stage3: false,
@@ -770,36 +770,36 @@ export const Stage_1_Projectile = (props) => {
   const resumeGame = () => {
     // console.log("RESUME");
     // console.log("- - - - - -")
-    // console.log(sharedState.current.stage1)
-    // console.log(sharedState.current.stage2)
-    // console.log(sharedState.current.stage3)
-    // console.log(sharedState.current.currentScore)
-    // console.log(sharedState.current.currentLevel)
-    // console.log(sharedState.current.currentCrashes)
-    // console.log(sharedState.current.currentUniqueLetterPocket)
-    // console.log(sharedState.current.currentWordPlusSeven)
-    // console.log(sharedState.current.currentDisplayLetters)
-    // console.log(sharedState.current.currentLetter_countValue)
+    // console.log(mainState.current.stage1)
+    // console.log(mainState.current.stage2)
+    // console.log(mainState.current.stage3)
+    // console.log(mainState.current.currentScore)
+    // console.log(mainState.current.currentLevel)
+    // console.log(mainState.current.currentCrashes)
+    // console.log(mainState.current.currentUniqueLetterPocket)
+    // console.log(mainState.current.currentWordPlusSeven)
+    // console.log(mainState.current.currentDisplayLetters)
+    // console.log(mainState.current.currentLetter_countValue)
     // console.log("- - - - - -")
 
     setIsPaused(false)
     isGameInProgress.current = true;
 
 
-    if (sharedState.current.currentLevel >= 0) {
+    if (mainState.current.currentLevel >= 0) {
       letterAnimation();
       runObstacleAnimation_0();
     }
 
-    if (sharedState.current.currentLevel >= 1) {
+    if (mainState.current.currentLevel >= 1) {
       runObstacleAnimation_1();
     }
 
-    if (sharedState.current.currentLevel >= 2) {
+    if (mainState.current.currentLevel >= 2) {
       runObstacleAnimation_right_angle_0();
     }
 
-    if (sharedState.current.currentLevel >= 3) {
+    if (mainState.current.currentLevel >= 3) {
       runObstacleAnimation_right_angle_1();
     }
 
@@ -870,7 +870,7 @@ export const Stage_1_Projectile = (props) => {
     if (input.continue) {
       setHasGameBeenStarted(false);
       setLetterPocket([]);
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -880,7 +880,7 @@ export const Stage_1_Projectile = (props) => {
         }, 501)
 
         setTimeout(() => {
-          setSharedState({
+          setMainState({
             stage1: false,
             stage2: true,
             stage3: false,
@@ -911,12 +911,12 @@ export const Stage_1_Projectile = (props) => {
         setTimeout(() => {
           setHasGameBeenStarted(false);
           setGameOverModalVisible(true)
-          setSharedState({ upgradeToSpecial_0: false })
+          setMainState({ upgradeToSpecial_0: false })
 
         }, 100);
       } else if (input.local == "c") {
         setHasGameBeenStarted(false);
-        setSharedState({ upgradeToSpecial_0: false })
+        setMainState({ upgradeToSpecial_0: false })
       }
     }
   }
@@ -1302,7 +1302,7 @@ export const Stage_1_Projectile = (props) => {
           transparent={true}
           visible={gameOverModalVisible}
           onRequestClose={() => {
-            setSharedState({
+            setMainState({
               stage1: true,
               stage2: false,
               stage3: false,

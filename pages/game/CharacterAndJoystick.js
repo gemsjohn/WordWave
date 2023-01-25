@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext, useLayoutEffect, createContext } from 'react';
 import { Styling, WidthRatio, HeightRatio, windowHeight, windowWidth } from '../../Styling';
-import { SharedStateContext } from './Game';
+import { MainStateContext } from '../../App';
 import {
   Text,
   View,
@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 
 export const CharacterAndJoystick = () => {
-  // const sharedStateRef = useRef({});
+  const { mainState, setMainState } = useContext(MainStateContext);
+
   let newY;
   let newX;
   let charHeight = HeightRatio(68);
   let charWidth = WidthRatio(24);
   let offset = WidthRatio(190);
-  const { sharedState, setSharedState } = useContext(SharedStateContext);
   const objectPosition = useRef({ x: 0, y: 0 });
   let yInit = [];
   let xInit = [];
@@ -99,8 +99,9 @@ export const CharacterAndJoystick = () => {
     })
   ).current;
 
+
   useEffect(() => {
-    setSharedState({
+    setMainState({
       charX: posX,
       charY: posY,
       charHeight: charHeight,

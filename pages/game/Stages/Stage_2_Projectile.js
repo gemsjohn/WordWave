@@ -13,7 +13,7 @@ import {
   windowWidth 
 } from '../../../Styling';
 import { shuffle } from 'lodash';
-import { SharedStateContext } from '../Game';
+import { MainStateContext } from '../../../App';
 import {
   isLetterBlockColliding,
   isObstacleColliding_0,
@@ -45,7 +45,8 @@ const resetActionHome = CommonActions.reset({
 
 export const Stage_2_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
-  const { sharedState, setSharedState } = useContext(SharedStateContext);
+  const { mainState, setMainState } = useContext(MainStateContext);
+
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
@@ -70,7 +71,7 @@ export const Stage_2_Projectile = (props) => {
   const skullPlaceholder = useRef(3)
   const skullMoneyPlaceholder = useRef(2)
 
-  const score = useRef(sharedState.current.currentScore);
+  const score = useRef(mainState.current.currentScore);
   const scoreFlash_100 = useRef(false);
   const scoreFlash_1000 = useRef(false);
   const level = useRef(0);
@@ -171,8 +172,8 @@ export const Stage_2_Projectile = (props) => {
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
-    setSharedState({ upgradeToSpecial_0: false })
-    setSharedState({ deployUpgradeToSpecialAnimation: false })
+    setMainState({ upgradeToSpecial_0: false })
+    setMainState({ deployUpgradeToSpecialAnimation: false })
   }, [])
 
   useEffect(() => {
@@ -201,8 +202,8 @@ export const Stage_2_Projectile = (props) => {
     }
     console.log("Just before level.current <= 0");
     if (level.current <= 0) {
-      console.log("STAGE 2 / currentCrashes: " + sharedState.current.currentCrashes)
-      crashes.current += sharedState.current.currentCrashes
+      console.log("STAGE 2 / currentCrashes: " + mainState.current.currentCrashes)
+      crashes.current += mainState.current.currentCrashes
     }
 
     const data = require('../output.json');
@@ -290,8 +291,8 @@ export const Stage_2_Projectile = (props) => {
       hasUpdatedLetterBlock.current = false;
 
       countRef.current = count._value;
-      if (sharedState.current.currentLetter_countValue != null && !updatedPostResume.current) {
-        count.setValue(sharedState.current.currentLetter_countValue);
+      if (mainState.current.currentLetter_countValue != null && !updatedPostResume.current) {
+        count.setValue(mainState.current.currentLetter_countValue);
         updatedPostResume.current = true;
       }
 
@@ -730,11 +731,11 @@ export const Stage_2_Projectile = (props) => {
     // This function will be called on every animation frame
     const update = () => {
       setObj1({
-        x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth / 2,
-        y: sharedState.current.charY - sharedState.current.charHeight / 1.2,
-        width: sharedState.current.charWidth,
-        height: sharedState.current.charHeight / 2,
-        radius: sharedState.current.charHeight / 2,
+        x: mainState.current.charX + WidthRatio(64) + mainState.current.charWidth / 2,
+        y: mainState.current.charY - mainState.current.charHeight / 1.2,
+        width: mainState.current.charWidth,
+        height: mainState.current.charHeight / 2,
+        radius: mainState.current.charHeight / 2,
       });
 
       requestAnimationFrame(update);
@@ -1019,7 +1020,7 @@ export const Stage_2_Projectile = (props) => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
 
 
-    setSharedState({
+    setMainState({
       stage1: false,
       stage2: true,
       stage3: false,
@@ -1192,7 +1193,7 @@ export const Stage_2_Projectile = (props) => {
       console.log("- - - - - - ")
 
       setHasGameBeenStarted(false);
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1202,7 +1203,7 @@ export const Stage_2_Projectile = (props) => {
         }, 501)
 
         setTimeout(() => {
-          setSharedState({
+          setMainState({
             stage1: false,
             stage2: false,
             stage3: true,
@@ -1234,7 +1235,7 @@ export const Stage_2_Projectile = (props) => {
         setTimeout(() => {
           setHasGameBeenStarted(false);
           setGameOverModalVisible(true)
-          setSharedState({ upgradeToSpecial_0: false })
+          setMainState({ upgradeToSpecial_0: false })
 
         }, 100);
       } else if (input.local == "c") {
@@ -1242,7 +1243,7 @@ export const Stage_2_Projectile = (props) => {
         console.log("GAME ---> Away")
         console.log("- - - - - - ")
         setHasGameBeenStarted(false);
-        setSharedState({ upgradeToSpecial_0: false })
+        setMainState({ upgradeToSpecial_0: false })
       }
     }
   }
@@ -1696,7 +1697,7 @@ export const Stage_2_Projectile = (props) => {
           transparent={true}
           visible={gameOverModalVisible}
           onRequestClose={() => {
-            setSharedState({
+            setMainState({
               stage1: true,
               stage2: false,
               stage3: false,

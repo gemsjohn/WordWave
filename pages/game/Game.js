@@ -16,7 +16,7 @@ import { GET_USER_BY_ID } from '../../utils/queries';
 import { CommonActions, useTheme } from '@react-navigation/native';
 import { Navbar } from '../../components/Navbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { MainStateContext } from '../../App';
 import {
     Styling,
     WidthRatio,
@@ -25,9 +25,9 @@ import {
     windowWidth
 } from '../../Styling';
 import { CharacterAndJoystick } from './CharacterAndJoystick';
-  import { Stage_1_Projectile } from './Stages/Stage_1_Projectile';
-  import { Stage_2_Projectile } from './Stages/Stage_2_Projectile';
-  import { Stage_3_Projectile } from './Stages/Stage_3_Projectile';
+import { Stage_1_Projectile } from './Stages/Stage_1_Projectile';
+import { Stage_2_Projectile } from './Stages/Stage_2_Projectile';
+import { Stage_3_Projectile } from './Stages/Stage_3_Projectile';
 import {
     View,
     Platform,
@@ -36,10 +36,9 @@ import {
     UIManager,
 } from 'react-native';
 
-export const SharedStateContext = createContext();
-
 export const GameScreen = ({ navigation }) => {
     const sharedStateRef = useRef({});
+    const { mainState, setMainState } = useContext(MainStateContext);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
     const [stage1, setStage1] = useState(true);
@@ -96,22 +95,21 @@ export const GameScreen = ({ navigation }) => {
         };
     }, []);
 
-    const setSharedState = (newState) => {
-        sharedStateRef.current = { ...sharedStateRef.current, ...newState };
-    };
+
+    // }, [])
 
     useEffect(() => {
         const intervalCheckUpgradeToSpecial_0 = setInterval(() => {
-            setRetainUpgradeToSpecial_0(sharedStateRef.current.upgradeToSpecial_0);
+            setRetainUpgradeToSpecial_0(mainState.current.upgradeToSpecial_0);
 
-            if (sharedStateRef.current.stage1 != null) {
-                setStage1(sharedStateRef.current.stage1);
+            if (mainState.current.stage1 != null) {
+                setStage1(mainState.current.stage1);
             }
-            if (sharedStateRef.current.stage2 != null) {
-                setStage2(sharedStateRef.current.stage2);
+            if (mainState.current.stage2 != null) {
+                setStage2(mainState.current.stage2);
             }
-            if (sharedStateRef.current.stage3 != null) {
-                setStage3(sharedStateRef.current.stage3);
+            if (mainState.current.stage3 != null) {
+                setStage3(mainState.current.stage3);
             }
         }, 250)
 
@@ -127,20 +125,15 @@ export const GameScreen = ({ navigation }) => {
                 />
                 {loadingComplete ?
                     <>
+                        <CharacterAndJoystick />
 
-                        <SharedStateContext.Provider
-                            value={{ sharedState: sharedStateRef, setSharedState }}
-                        >
-                            <CharacterAndJoystick />
+                        {/* {retainUpgradeToSpecial_0 &&
+                            <Special />
+                        } */}
 
-                            {/* {retainUpgradeToSpecial_0 &&
-                <Special />
-              } */}
-
-                            {stage1 && <Stage_1_Projectile nav={navigation} />}
-                            {stage2 && <Stage_2_Projectile nav={navigation} />}
-                            {stage3 && <Stage_3_Projectile nav={navigation} />}
-                        </SharedStateContext.Provider>
+                        {stage1 && <Stage_1_Projectile nav={navigation} />}
+                        {stage2 && <Stage_2_Projectile nav={navigation} />}
+                        {stage3 && <Stage_3_Projectile nav={navigation} />}
                     </>
                     :
                     <View style={{ width: windowWidth, height: windowHeight }}>
@@ -161,11 +154,11 @@ export const GameScreen = ({ navigation }) => {
             </View>
             <Navbar nav={navigation} auth={authState} position={'absolute'} from={'game'} />
             <StatusBar
-            animated={true}
-            backgroundColor="transparent"
-            barStyle={'dark-content'}
-            showHideTransition={'none'}
-            hidden={true} />
+                animated={true}
+                backgroundColor="transparent"
+                barStyle={'dark-content'}
+                showHideTransition={'none'}
+                hidden={true} />
         </>
     )
 

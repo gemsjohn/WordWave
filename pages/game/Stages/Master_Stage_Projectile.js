@@ -13,7 +13,8 @@ import {
   windowWidth 
 } from '../../../Styling';
 import { shuffle } from 'lodash';
-import { SharedStateContext } from '../Game';
+import { MainStateContext } from '../../../App';
+
 import { 
   resetActionHome, 
   resetActionGame, 
@@ -55,7 +56,7 @@ import {
 
 export const Stage_3_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
-  const { sharedState, setSharedState } = useContext(SharedStateContext);
+  const { mainState, setMainState } = useContext(MainStateContext);
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
@@ -70,14 +71,14 @@ export const Stage_3_Projectile = (props) => {
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
-  const crashes = useRef(sharedState.current.currentCrashes);
+  const crashes = useRef(mainState.current.currentCrashes);
   const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
   const skullPlaceholder = useRef(3)
   const skullMoneyPlaceholder = useRef(2)
 
-  const score = useRef(sharedState.current.currentScore);
+  const score = useRef(mainState.current.currentScore);
   const scoreFlash_100 = useRef(false);
   const scoreFlash_1000 = useRef(false);
   const level = useRef(0);
@@ -197,14 +198,12 @@ export const Stage_3_Projectile = (props) => {
     inputRange: [0, 1],
     outputRange: [1.0, 0.5]
   });
-
-
-
+ 
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
-    setSharedState({ upgradeToSpecial_0: false })
-    setSharedState({ deployUpgradeToSpecialAnimation: false })
+    setMainState({ upgradeToSpecial_0: false })
+    setMainState({ deployUpgradeToSpecialAnimation: false })
   }, [])
 
   useEffect(() => {
@@ -235,8 +234,8 @@ export const Stage_3_Projectile = (props) => {
 
     console.log("Just before level.current <= 0");
     if (level.current <= 0) {
-      console.log("STAGE 2 / currentCrashes: " + sharedState.current.currentCrashes)
-      crashes.current += sharedState.current.currentCrashes
+      console.log("STAGE 2 / currentCrashes: " + mainState.current.currentCrashes)
+      crashes.current += mainState.current.currentCrashes
     }
 
     const data = require('../output.json');
@@ -993,19 +992,20 @@ export const Stage_3_Projectile = (props) => {
     // This function will be called on every animation frame
     const update = () => {
       setObj1({
-        x: sharedState.current.charX + WidthRatio(64) + sharedState.current.charWidth / 2,
-        y: sharedState.current.charY - sharedState.current.charHeight / 1.2,
-        width: sharedState.current.charWidth,
-        height: sharedState.current.charHeight / 2,
-        radius: sharedState.current.charHeight / 2,
+        x: mainState.current.charX + WidthRatio(64) + mainState.current.charWidth / 2,
+        y: mainState.current.charY - mainState.current.charHeight / 1.2,
+        width: mainState.current.charWidth,
+        height: mainState.current.charHeight / 2,
+        radius: mainState.current.charHeight / 2,
       });
 
-      if (deployUpgradeToSpecialAnimation.current != sharedState.current.deployUpgradeToSpecialAnimation) {
+      if (deployUpgradeToSpecialAnimation.current != mainState.current.deployUpgradeToSpecialAnimation) {
         deployUpgradeToSpecialAnimation.current = !deployUpgradeToSpecialAnimation.current
         // console.log("- - - - -  -")
-        // console.log(sharedState.current.deployUpgradeToSpecialAnimation)
-        if (sharedState.current.deployUpgradeToSpecialAnimation) {
-          setSharedState({ upgradeToSpecial_0: false })
+        // console.log(mainState.current.deployUpgradeToSpecialAnimation)
+        if (mainState.current.deployUpgradeToSpecialAnimation) {
+          // setmainState({ upgradeToSpecial_0: false })
+          setMainState({ upgradeToSpecial_0: false })
           retainUpgradeToSpecial_0.current = false;
           runUpgradeToSpecial_0();
         }
@@ -1014,85 +1014,85 @@ export const Stage_3_Projectile = (props) => {
 
 
       // Special Defense 0 Update
-      if (prevRetainSpecialDefense_0x.current === 0 && sharedState.current.specialActive_0) {
+      if (prevRetainSpecialDefense_0x.current === 0 && mainState.current.specialActive_0) {
         setSpecialDefense_0({
-          x: sharedState.current.specialSizeLocation_0.x,
-          y: sharedState.current.specialSizeLocation_0.y,
-          width: sharedState.current.specialSizeLocation_0.height,
-          height: sharedState.current.specialSizeLocation_0.width
+          x: mainState.current.specialSizeLocation_0.x,
+          y: mainState.current.specialSizeLocation_0.y,
+          width: mainState.current.specialSizeLocation_0.height,
+          height: mainState.current.specialSizeLocation_0.width
         });
-        localSpecialDefense_0x = sharedState.current.specialSizeLocation_0.x;
+        localSpecialDefense_0x = mainState.current.specialSizeLocation_0.x;
 
-      } else if (prevRetainSpecialDefense_0x.current != 0 && !sharedState.current.specialActive_0) {
+      } else if (prevRetainSpecialDefense_0x.current != 0 && !mainState.current.specialActive_0) {
         localSpecialDefense_0x = 0;
         setSpecialDefense_0({
           x: 0,
           y: HeightRatio(125),
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charWidth
+          width: mainState.current.charWidth,
+          height: mainState.current.charWidth
         });
       }
       prevRetainSpecialDefense_0x.current = localSpecialDefense_0x;
 
       // Special Defense 1 Update
-      if (prevRetainSpecialDefense_1x.current === 0 && sharedState.current.specialActive_1) {
+      if (prevRetainSpecialDefense_1x.current === 0 && mainState.current.specialActive_1) {
         setSpecialDefense_1({
-          x: sharedState.current.specialSizeLocation_1.x,
-          y: sharedState.current.specialSizeLocation_1.y,
-          width: sharedState.current.specialSizeLocation_1.height,
-          height: sharedState.current.specialSizeLocation_1.width
+          x: mainState.current.specialSizeLocation_1.x,
+          y: mainState.current.specialSizeLocation_1.y,
+          width: mainState.current.specialSizeLocation_1.height,
+          height: mainState.current.specialSizeLocation_1.width
         });
-        localSpecialDefense_1x = sharedState.current.specialSizeLocation_1.x;
+        localSpecialDefense_1x = mainState.current.specialSizeLocation_1.x;
 
-      } else if (prevRetainSpecialDefense_1x.current != 0 && !sharedState.current.specialActive_1) {
+      } else if (prevRetainSpecialDefense_1x.current != 0 && !mainState.current.specialActive_1) {
         localSpecialDefense_1x = 0;
         setSpecialDefense_1({
           x: 0,
           y: HeightRatio(245),
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charWidth
+          width: mainState.current.charWidth,
+          height: mainState.current.charWidth
         });
       }
       prevRetainSpecialDefense_1x.current = localSpecialDefense_1x;
 
       // Special Defense 2 Update
-      if (prevRetainSpecialDefense_2x.current === 0 && sharedState.current.specialActive_2) {
+      if (prevRetainSpecialDefense_2x.current === 0 && mainState.current.specialActive_2) {
         setSpecialDefense_2({
-          x: sharedState.current.specialSizeLocation_2.x,
-          y: sharedState.current.specialSizeLocation_2.y,
-          width: sharedState.current.specialSizeLocation_2.height,
-          height: sharedState.current.specialSizeLocation_2.width
+          x: mainState.current.specialSizeLocation_2.x,
+          y: mainState.current.specialSizeLocation_2.y,
+          width: mainState.current.specialSizeLocation_2.height,
+          height: mainState.current.specialSizeLocation_2.width
         });
-        localSpecialDefense_2x = sharedState.current.specialSizeLocation_2.x;
+        localSpecialDefense_2x = mainState.current.specialSizeLocation_2.x;
 
-      } else if (prevRetainSpecialDefense_2x.current != 0 && !sharedState.current.specialActive_2) {
+      } else if (prevRetainSpecialDefense_2x.current != 0 && !mainState.current.specialActive_2) {
         localSpecialDefense_2x = 0;
         setSpecialDefense_2({
           x: 0,
           y: HeightRatio(365),
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charWidth
+          width: mainState.current.charWidth,
+          height: mainState.current.charWidth
         });
       }
       prevRetainSpecialDefense_2x.current = localSpecialDefense_2x;
 
       // Special Defense 3 Update
-      if (prevRetainSpecialDefense_3x.current === 0 && sharedState.current.specialActive_3) {
+      if (prevRetainSpecialDefense_3x.current === 0 && mainState.current.specialActive_3) {
         setSpecialDefense_3({
-          x: sharedState.current.specialSizeLocation_3.x,
-          y: sharedState.current.specialSizeLocation_3.y,
-          width: sharedState.current.specialSizeLocation_3.height,
-          height: sharedState.current.specialSizeLocation_3.width
+          x: mainState.current.specialSizeLocation_3.x,
+          y: mainState.current.specialSizeLocation_3.y,
+          width: mainState.current.specialSizeLocation_3.height,
+          height: mainState.current.specialSizeLocation_3.width
         });
-        localSpecialDefense_3x = sharedState.current.specialSizeLocation_3.x;
+        localSpecialDefense_3x = mainState.current.specialSizeLocation_3.x;
 
-      } else if (prevRetainSpecialDefense_3x.current != 0 && !sharedState.current.specialActive_3) {
+      } else if (prevRetainSpecialDefense_3x.current != 0 && !mainState.current.specialActive_3) {
         localSpecialDefense_3x = 0;
         setSpecialDefense_3({
           x: 0,
           y: HeightRatio(485),
-          width: sharedState.current.charWidth,
-          height: sharedState.current.charWidth
+          width: mainState.current.charWidth,
+          height: mainState.current.charWidth
         });
       }
       prevRetainSpecialDefense_3x.current = localSpecialDefense_3x;
@@ -1621,7 +1621,9 @@ export const Stage_3_Projectile = (props) => {
         // console.log("UPGRADE COLLISION!!!!!!")
         if (!hasUpdatedUpgradeToSpecial_0.current) {
           retainUpgradeToSpecial_0.current = true;
-          setSharedState({ upgradeToSpecial_0: true })
+          // setmainState({ upgradeToSpecial_0: true })
+          setMainState({ upgradeToSpecial_0: true })
+
           hasUpdatedUpgradeToSpecial_0.current = true;
         }
         upgradeToSpecial_0.current.reset();
@@ -1848,7 +1850,9 @@ export const Stage_3_Projectile = (props) => {
         setTimeout(() => {
           setHasGameBeenStarted(false);
           setGameOverModalVisible(true)
-          setSharedState({ upgradeToSpecial_0: false })
+          // setmainState({ upgradeToSpecial_0: false })
+          setMainState({ upgradeToSpecial_0: false })
+
 
         }, 100);
       } else if (input.local == "c") {
@@ -1856,7 +1860,9 @@ export const Stage_3_Projectile = (props) => {
         console.log("GAME ---> Away")
         console.log("- - - - - - ")
         setHasGameBeenStarted(false);
-        setSharedState({ upgradeToSpecial_0: false })
+        // setmainState({ upgradeToSpecial_0: false })
+        setMainState({ upgradeToSpecial_0: false })
+
       }
     }
   }
@@ -2291,7 +2297,15 @@ export const Stage_3_Projectile = (props) => {
           transparent={true}
           visible={gameOverModalVisible}
           onRequestClose={() => {
-            setSharedState({
+            // setmainState({
+            //   stage1: true,
+            //   stage2: false,
+            //   stage3: false,
+            //   currentScore: 0,
+            //   currentLevel: 0,
+            //   currentCrashes: 0
+            // })
+            setMainState({
               stage1: true,
               stage2: false,
               stage3: false,
