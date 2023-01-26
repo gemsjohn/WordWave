@@ -733,7 +733,7 @@ export const Stage_1_Projectile = (props) => {
           crashes: crashes.current, 
           score: score.current, 
           level: level.current,
-          uniqueLetterPocket: [],
+          letterPocket: letterPocket,
           wordPlusSeven: wordPlusSeven.current,
           displayLetters: displayLetters,
           letter_countValue: countRef.current
@@ -876,9 +876,8 @@ export const Stage_1_Projectile = (props) => {
     setLetterPocket(mainState.current.currentLetterPocket) 
     wordPlusSeven.current = mainState.current.currentWordPlusSeven;
     setDisplayLetters(mainState.current.currentDisplayLetters)
-    countRef.current = mainState.current.currentLetter_countValue;
-    setPrevSimilarElements(0)
-    setPrevWrongElements(0)
+    countRef.current = mainState.current.currentLetter_countValue + 1;
+
 
     hideCrashesUntilUpdate.current = false;
     isGameInProgress.current = true;
@@ -1009,7 +1008,7 @@ export const Stage_1_Projectile = (props) => {
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
-          currentLetterPocket: input.uniqueLetterPocket,
+          currentLetterPocket: input.letterPocket,
           currentWordPlusSeven: input.wordPlusSeven,
           currentDisplayLetters: input.displayLetters,
           currentLetter_countValue: input.letter_countValue
