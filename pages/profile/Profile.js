@@ -49,9 +49,15 @@ import { SecureStorage } from './SecureStorage';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+async function deleteKey(key) {
+    // console.log("** DELETE **")
+    // console.log(key)
+    await SecureStore.deleteItemAsync(key);
+  }
+
 export const ProfileScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
-    
+
     const [userDetailsOpen, setUserDetailsOpen] = useState(false);
     const [recentGamesOpen, setRecentGamesOpen] = useState(false);
     const [leaderBoardsOpen, setLeaderBoardsOpen] = useState(false);
@@ -65,7 +71,7 @@ export const ProfileScreen = ({ navigation }) => {
         variables: { id: userID.current }
     });
 
-    
+
 
     const resetActionAuth = CommonActions.reset({
         index: 1,
@@ -75,25 +81,25 @@ export const ProfileScreen = ({ navigation }) => {
     async function getValueFor(key) {
         let result = await SecureStore.getItemAsync(key);
         if (result && authState) {
-          return;
+            return;
         } else if (!result && authState.current) {
-          setDisplaySetUpCosmicKeyModal(true)
+            setDisplaySetUpCosmicKeyModal(true)
         }
-      }
-    
-    
-      useEffect(() => {
+    }
+
+
+    useEffect(() => {
         setTimeout(() => {
-          authState.current = mainState.current.authState
-          userID.current = mainState.current.userID;
-          getValueFor('cosmicKey')
+            authState.current = mainState.current.authState
+            userID.current = mainState.current.userID;
+            getValueFor('cosmicKey')
         }, 500)
-    
-      }, [])
+
+    }, [])
 
     return (
         <>
-            <View style={{...Styling.container, backgroundColor: 'black'}}>
+            <View style={{ ...Styling.container, backgroundColor: 'black' }}>
 
                 <SafeAreaView style={Styling.profileContainer}>
                     <ScrollView style={Styling.profileScrollView}>
@@ -164,7 +170,30 @@ export const ProfileScreen = ({ navigation }) => {
                                         }
                                         <View style={Styling.profileDivisionLine}></View>
 
-                                        
+                                        <View>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    deleteKey('cosmicKey'); 
+                                                    setTimeout(() => {
+                                                        setDisplaySetUpCosmicKeyModal(true)
+                                                    }, 500)
+                                                }}
+                                                style={Styling.modalWordButton}>
+                                                <LinearGradient
+                                                    // Button Linear Gradient
+                                                    colors={['#f8200d', '#840000']}
+                                                    style={Styling.modalWordButton}
+                                                >
+                                                    <Text
+                                                        style={{ ...Styling.modalWordButtonText, fontSize: 20, color: 'white' }}
+                                                        allowFontScaling={false}
+                                                    >
+                                                        Remove/Reset Keycode
+                                                    </Text>
+                                                </LinearGradient>
+                                            </TouchableOpacity>
+                                        </View>
+
                                         <TouchableOpacity
                                             onPress={() => {
                                                 setMainState({
@@ -189,9 +218,9 @@ export const ProfileScreen = ({ navigation }) => {
                                                 </Text>
                                             </LinearGradient>
                                         </TouchableOpacity>
-                                        
+
                                     </View>
-                                    
+
                                     <View style={{ marginBottom: 200 }}></View>
                                 </>
                             }
@@ -206,24 +235,24 @@ export const ProfileScreen = ({ navigation }) => {
                 transparent={true}
                 visible={displaySetUpCosmicKeyModal}
                 onRequestClose={() => {
-                setDisplaySetUpCosmicKeyModal(!displaySetUpCosmicKeyModal);
+                    setDisplaySetUpCosmicKeyModal(!displaySetUpCosmicKeyModal);
                 }}
             >
                 <View style={Styling.modal_centered_view}>
-                <View style={Styling.modal_view}>
-                    <View style={{ flexDirection: 'column' }}>
-                    
-                    <SecureStorage />
+                    <View style={Styling.modal_view}>
+                        <View style={{ flexDirection: 'column' }}>
 
-                    <TouchableOpacity
-                        onPress={() => setDisplaySetUpCosmicKeyModal(!displaySetUpCosmicKeyModal)}
-                        style={{marginTop: 20}}>
-                        <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>
-                            Close
-                        </Text>
-                    </TouchableOpacity>
+                            <SecureStorage />
+
+                            <TouchableOpacity
+                                onPress={() => setDisplaySetUpCosmicKeyModal(!displaySetUpCosmicKeyModal)}
+                                style={{ marginTop: 20 }}>
+                                <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>
+                                    Close
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
                 </View>
             </Modal>
 

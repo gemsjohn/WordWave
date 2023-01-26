@@ -265,16 +265,6 @@ export const SecureStorage = () => {
               </TouchableOpacity>
             </View>
           </View>
-
-          {/* <View>
-            <TouchableOpacity
-              onPress={() => deleteKey('cosmicKey')}
-              style={{backgroundColor: 'red'}}>
-                <Text style={{color: 'black'}}>
-                  DELETE KEY
-                </Text>
-              </TouchableOpacity>
-          </View> */}
         </>
       </View>
     </>
