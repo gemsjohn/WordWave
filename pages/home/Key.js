@@ -18,9 +18,7 @@ export const KeyScreen = ({ navigation }) => {
     const [keyPress, setKeyPress] = useState('');
     const [keyArray, setKeyArray] = useState([]);
     const [count, setCount] = useState(0);
-
-
-    
+    const [pageLoadComplete, setPageLoadComplete] = useState(false);
 
     const handleKeyPress = (value) => {
         setKeyPress(keyPress + value);
@@ -30,7 +28,6 @@ export const KeyScreen = ({ navigation }) => {
 
     async function getValueFor(key) {
         let result = await SecureStore.getItemAsync(key);
-        console.log(result)
         if (result) {
             setKey(result.split(''));
         } else {
@@ -40,6 +37,12 @@ export const KeyScreen = ({ navigation }) => {
     
       useEffect(() => {
         getValueFor('cosmicKey')
+        console.log("#1")
+        setTimeout(() => {
+        console.log("#2")
+
+            setPageLoadComplete(true)
+        }, 1000)
       }, [])
 
       function areArraysEqual(arr1, arr2) {
@@ -47,7 +50,7 @@ export const KeyScreen = ({ navigation }) => {
         return JSON.stringify(arr1) === JSON.stringify(arr2);
       }
 
-      const updatAuth = async () => {
+      const updateAuth = async () => {
         let localBearerToken = await SecureStore.getItemAsync('bearerToken');
         let localUserID = await SecureStore.getItemAsync('userID');
         let localAuthState = await SecureStore.getItemAsync('authState');
@@ -57,15 +60,6 @@ export const KeyScreen = ({ navigation }) => {
         } else if (localAuthState == 'false' || !localAuthState) {
             updatedLocalAuthState = false;
         }
-
-
-        console.log("!*!*!*!*!*!*")
-        console.log(localBearerToken)
-        console.log(localUserID)
-        console.log(updatedLocalAuthState)
-
-
-
         setMainState({
             bearerToken: `${localBearerToken}`,
             userID: `${localUserID}`,
@@ -76,20 +70,24 @@ export const KeyScreen = ({ navigation }) => {
       
 
       useEffect(() => {
-          console.log(count)
         if (count > 3 && areArraysEqual(key, keyArray)) {
-            navigation.dispatch(resetActionHome);
-            updatAuth();
+            updateAuth();
+            setTimeout(() => {
+                navigation.dispatch(resetActionHome);
+
+            }, 500)
+            
 
         } else if (count > 3 && !areArraysEqual(key, keyArray)) {
             setKeyPress('')
             setKeyArray([])
             setCount(0)
-            console.log("INCORRECT")
         }
       }, [count])
       
     return (
+        <>
+        {pageLoadComplete ?
         <View style={{...Styling.container, marginTop: 0, backgroundColor: 'black'}}>
             <StatusBar
               animated={true}
@@ -207,5 +205,9 @@ export const KeyScreen = ({ navigation }) => {
                 </View>
             </View>
         </View>
+        :
+        <View style={{backgroundColor: 'black'}} />
+        }
+        </>
     )
 }

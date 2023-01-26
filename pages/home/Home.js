@@ -1,152 +1,77 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, Image, TouchableOpacity, ScrollView, StatusBar, SafeAreaView, Dimensions, Button, Linking, ImageBackground, FlatList, PixelRatio, Modal } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSolid, faUser, faPlus, faUpLong, faMagnifyingGlass, faCheck, faLocationPin, faEnvelope, faLock, faGear, faX } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_USER_BY_ID } from '../../utils/queries';
 import { Navbar } from '../../components/Navbar';
 import { Styling, windowWidth, windowHeight, HeightRatio, WidthRatio } from '../../Styling';
 import { MainStateContext } from '../../App';
 import * as SecureStore from 'expo-secure-store';
 
 export const HomeScreen = ({ navigation }) => {
-  const [userID, setUserID] = useState('');
-  const [authState, setAuthState] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const colors = [
-    { value: 'red', gradient: ['#4f000b', '#ff595e'], image: require('../../assets/dalle_1.png'), id: 0 },
-    { value: 'orange', gradient: ['#b21e35', '#faa307'], image: require('../../assets/dalle_4.png'), id: 1 },
-    { value: 'green', gradient: ['#132a13', '#83e377'], image: require('../../assets/dalle_2.png'), id: 2 },
-    { value: 'blue', gradient: ['#00171f', '#0466c8'], image: require('../../assets/dalle_3.png'), id: 3 },
-    { value: 'purple', gradient: ['#240046', '#c77dff'], image: require('../../assets/dalle_5.png'), id: 4 },
-    { value: '#0b132b', gradient: ['#0b132b', '#3a506b'], image: require('../../assets/dalle_7.png'), id: 5 },
-  ];
+  const { mainState, setMainState } = useContext(MainStateContext);
+
   const [count, setCount] = useState(0);
+  // const [authState, setAuthState] = useState(false);
+  const authState = useRef(false);
+  const [hasCosmicKey, setHasCosmicKey] = useState(false);
+  const [displaySignUpModal, setDisplaySignUpModal] = useState(false);
+  const [displaySetUpCosmicKeyModal, setDisplaySetUpCosmicKeyModal] = useState(false);
+  const [displayUsername, setDisplayUsername] = useState(false);
+
+  const userID = useRef(null);
+
+
+  const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
+      variables: { id: userID.current }
+  });
+
+
+  async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    console.log("- - - -")
+    console.log(authState.current)
+    if (result && authState) {
+      // setHasCosmicKey(true)
+      console.log("DISPLAY USER NAME")
+      setDisplayUsername(true)
+    } else if (!result && authState.current) {
+      // setHasCosmicKey(false)
+      console.log("SET UP COSMIC KEY")
+    } else if (!result && !authState.current) {
+      console.log("SIGN UP MODAL")
+
+    }
+  }
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      authState.current = mainState.current.authState
+      userID.current = mainState.current.userID;
+      getValueFor('cosmicKey')
+    }, 500)
+    
+  }, [])
+
 
   useEffect(() => {
     if (count > 3) {
       setCount(0);
+    } else if (count < 0) {
+      setCount(0)
     }
   }, [count])
 
-
-  const CheckAuthState = async () => {
-    let value = await AsyncStorage.getItem('@authState')
-    if (value === 'true') {
-      setAuthState(true);
-    } else if (value === 'false') {
-      setAuthState(false);
-    }
-  }
-
-  const CurrentUser = async () => {
-    let value = await AsyncStorage.getItem('@userID', value);
-    setUserID(value);
-  }
-
-  const selectColor = async (color) => {
-    // console.log(color)
-    // setSelectedColor(color);
-    try {
-      const jsonValue = JSON.stringify(color)
-      await AsyncStorage.setItem('selectedColor', jsonValue);
-      setSelectedColor(color)
-    } catch (e) {
-      console.error(e)
-    }
-  };
-
-  const getSelectedColor = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('selectedColor')
-      if (jsonValue != null) {
-        let color = JSON.parse(jsonValue)
-        setSelectedColor(color)
-      }
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const DisplayGradient = (props) => {
-    return (
-      <>
-        <Image source={props.image} style={{ ...Styling.background, opacity: 0.4 }} />
-        <LinearGradient
-          colors={props.gradient}
-          style={{ ...Styling.background, opacity: 0.5 }}
-        />
-      </>
-    )
-  }
-
-
-
-
-  // const selectedLevel = getSelectedLevel();
-  // console.log(selectedLevel); // Outputs 'Easy'
-  let buttonArray = [];
-  let demoText = ["", "E", "", "", "", "", "Q", "", "", "", "P", "U", "T", "T", "Y", "", "I", "", "", "", "", "P", "", "", "", "", "", "", ""]
-  const DemoGrid = () => {
-    for (let i = 0; i < 25; i++) {
-      buttonArray[i] =
-        <View key={i}>
-          {i == 11 ?
-            <LinearGradient
-              // Button Linear Gradient
-              colors={['#ffba08', '#faa307']}
-              style={Styling.gridBlock}
-            >
-              <View
-                accessible={true}
-                accessibilityLabel="Example grid."
-              >
-                <Text
-                  style={Styling.letters}
-                  allowFontScaling={false}
-                  accessible={true}
-                  accessibilityLabel="Revealed letter."
-                >
-                  {demoText[i]}
-                </Text>
-              </View>
-            </LinearGradient>
-            :
-            <LinearGradient
-              // Button Linear Gradient
-              colors={['#f8f9fa', '#ced4da']}
-              style={Styling.gridBlock}
-            >
-              <View
-                accessible={true}
-                accessibilityLabel="Example grid."
-              >
-                <Text
-                  style={Styling.letters}
-                  allowFontScaling={false}
-                  accessible={true}
-                  accessibilityLabel="Example block."
-                >
-                  {demoText[i]}
-                </Text>
-              </View>
-            </LinearGradient>
-          }
-        </View>
-    }
-
-    return buttonArray;
-  }
-
-  useEffect(() => {
-    CheckAuthState();
-    CurrentUser();
-  }, [])
-
-  useEffect(() => {
-    getSelectedColor();
-  }, [selectedColor])
-
+//   setMainState({
+//     bearerToken: `${localBearerToken}`,
+//     userID: `${localUserID}`,
+//     authState: updatedLocalAuthState,
+//     initialKeyMoment: moment()                        
+// })
 
 
 
@@ -161,20 +86,20 @@ export const HomeScreen = ({ navigation }) => {
             style={{
               justifyContent: 'center',
               height: windowHeight
-            }}>
-            <StatusBar
-              animated={true}
-              backgroundColor="#80ffdb"
-              barStyle={'dark-content'}
-              showHideTransition={'none'}
-              hidden={false} />
+            }}>          
 
             {/* BODY */}
             <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
 
               <SafeAreaView style={Styling.container}>
                 <ScrollView style={Styling.scrollView}>
-
+                  {displayUsername &&
+                    <View style={{margin: 10}}>
+                      <Text style={{color: 'white', fontSize: 20}}>
+                        Welcome back {userByID?.user.username}!
+                      </Text>
+                    </View>
+                  }
                   <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
                     {count == 0 &&
                       <View style={{
@@ -398,15 +323,22 @@ export const HomeScreen = ({ navigation }) => {
             </View>
           </ImageBackground>
         </View>
-        <Navbar nav={navigation} auth={authState} position={'absolute'} from={'home'} />
+        <Navbar nav={navigation} position={'absolute'} from={'home'} />
       </View>
-      <StatusBar
+      {/* <StatusBar
         barStyle="default"
         hidden={false}
         backgroundColor="transparent"
         translucent={true}
         networkActivityIndicatorVisible={true}
-      />
+      /> */}
+
+      {/* <StatusBar
+              animated={true}
+              backgroundColor="transparent"
+              barStyle={'dark-content'}
+              showHideTransition={'none'}
+              hidden={false} /> */}
     </>
   );
 }

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Cosmic Scramble",
     "slug": "cosmicScramble",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "landscape",
     "icon": "./assets/adaptive_icon_0.png",
     "userInterfaceStyle": "light",
@@ -22,7 +22,7 @@
     },
     "android": {
       "package": "com.cosmicscramble",
-      "versionCode": 8,
+      "versionCode": 9,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive_icon_0.png",
         "backgroundColor": "#FFFFFF"

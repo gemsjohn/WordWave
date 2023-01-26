@@ -8,6 +8,12 @@ async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
 
+async function deleteKey(key) {
+  console.log("** DELETE **")
+  console.log(key)
+  await SecureStore.deleteItemAsync(key);
+}
+
 async function getValueFor(key) {
   let result = await SecureStore.getItemAsync(key);
   if (result) {
@@ -67,11 +73,6 @@ export const SecureStorage = () => {
 
   }
 
-
-  // const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-  //   variables: { id: userID.current }
-  // });
-
   useEffect(() => {
     userID.current = mainState.current.userID;
   }, [])
@@ -79,7 +80,6 @@ export const SecureStorage = () => {
   useEffect(() => {
     console.log(count)
     if (count > 3) {
-      // save('cosmicKey', `${prompKeyInput}`);
       console.log(keyArray)
 
     }
@@ -264,6 +264,16 @@ export const SecureStorage = () => {
                 <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>Save</Text>
               </TouchableOpacity>
             </View>
+          </View>
+
+          <View>
+            <TouchableOpacity
+              onPress={() => deleteKey('cosmicKey')}
+              style={{backgroundColor: 'red'}}>
+                <Text style={{color: 'black'}}>
+                  DELETE KEY
+                </Text>
+              </TouchableOpacity>
           </View>
           </>
         }

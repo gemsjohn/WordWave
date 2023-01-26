@@ -59,15 +59,6 @@ export default function App() {
     link: asyncAuthLink.concat(httpLink),
   });
 
-  const MyTheme = {
-    dark: true,
-    colors: {
-      primary: 'rgb(255, 45, 85)',
-      background: '#001219',
-      notification: 'rgb(255, 69, 58)',
-    },
-  };
-
 
   const forFade = ({ current }) => ({
     cardStyle: {
@@ -84,7 +75,7 @@ export default function App() {
       <ApolloProvider client={apolloClient}>
         <MainStateContext.Provider
           value={{ mainState: mainStateRef, setMainState }}>
-        <NavigationContainer theme={MyTheme} onStateChange={(state) => {console.log('New state is', state.routes)}}>
+        <NavigationContainer onStateChange={(state) => {console.log('New state is', state.routes)}}>
         <Stack.Navigator
         initialRouteName={initRoute}
         screenOptions={{

@@ -75,30 +75,6 @@ export const Navbar = (props) => {
         }
     }
 
-    // const CurrentUser = async () => {
-    //     // let value = await AsyncStorage.getItem('@userID', value);
-    //     let value = mainState.current.userID;
-    //     setUserID(value);
-    // }
-
-    // const getBearerToken = async () => {
-    //     //   let value = await AsyncStorage.getItem('@storage_Key', value)
-    //     let value = mainState.current.bearerToken;
-    //       checkToken(value)
-    // }
-
-
-    // const CheckAuthState = async () => {
-    //     let value = mainState.current.authState;
-    //     // console.log(value)
-    //     if (value === 'true') {
-    //         setAuthState(true)
-    //     } else if (value === 'false') {
-    //         setAuthState(false)
-    //     }
-    // }
-
-
     const resetActionHome = CommonActions.reset({
         index: 1,
         routes: [{ name: 'Home', params: {} }]

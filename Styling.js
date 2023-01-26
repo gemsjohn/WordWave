@@ -41,7 +41,7 @@ export const Styling = StyleSheet.create({
     flex: 1,
     // backgroundColor: '#240046',
 
-    marginTop: 30
+    marginTop: 0
   },
   profileDivisionLine: {
     borderColor: '#4cc9f0',
@@ -204,9 +204,6 @@ export const Styling = StyleSheet.create({
     flex: 1,
     paddingTop: StatusBar.currentHeight,
   },
-  scrollView: {
-    marginHorizontal: 0,
-  },
   circlecontainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -317,11 +314,11 @@ export const Styling = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  container: {
-    flex: 1,
-    // backgroundColor: 'black',
-    marginTop: 30
-  },
+  // container: {
+  //   flex: 1,
+  //   // backgroundColor: 'black',
+  //   // marginTop: 30
+  // },
   scrollContainer: {
     // paddingTop: StatusBar.currentHeight,
   },
