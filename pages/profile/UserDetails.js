@@ -10,6 +10,7 @@ import * as Clipboard from 'expo-clipboard';
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MainStateContext } from '../../App';
+import { SecureStorage } from './SecureStorage';
 import { windowHeight, windowWidth, HeightRatio, WidthRatio, Styling } from '../../Styling';
 import { 
     UPDATE_USER, 

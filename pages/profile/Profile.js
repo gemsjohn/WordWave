@@ -135,7 +135,7 @@ export const ProfileScreen = ({ navigation }) => {
                                         }
                                         <View style={Styling.profileDivisionLine}></View>
 
-
+                                        <SecureStorage />
                                         <TouchableOpacity
                                             onPress={() => {
                                                 setMainState({
@@ -156,11 +156,11 @@ export const ProfileScreen = ({ navigation }) => {
                                                     style={{ ...Styling.modalWordButtonText, fontSize: 20, }}
                                                     allowFontScaling={false}
                                                 >
-                                                    Logout
+                                                    Switch User
                                                 </Text>
                                             </LinearGradient>
                                         </TouchableOpacity>
-                                        <SecureStorage />
+                                        
                                     </View>
                                     
                                     <View style={{ marginBottom: 200 }}></View>
