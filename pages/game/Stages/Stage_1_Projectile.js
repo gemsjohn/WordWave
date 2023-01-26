@@ -144,16 +144,6 @@ export const Stage_1_Projectile = (props) => {
   });
 
 
-  async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result && authState) {
-      setDisplayUsername(true)
-    } else if (!result && !authState.current) {
-      setDisplaySignUpModal(true)
-    }
-  }
-
-
   useLayoutEffect(() => {
     isGameInProgress.current = false;
     setMainState({ upgradeToSpecial_0: false })
@@ -959,7 +949,7 @@ export const Stage_1_Projectile = (props) => {
       count.setValue(0)
       countRef.current = 0;
       level.current = 0;
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -975,7 +965,11 @@ export const Stage_1_Projectile = (props) => {
             stage3: false,
             currentScore: score.current,
             currentLevel: input.level,
-            currentCrashes: input.crashes
+            currentCrashes: input.crashes,
+            currentLetterPocket: [],
+            currentWordPlusSeven: [],
+            currentDisplayLetters: [],
+            currentLetter_countValue: 0
           })
         }, 1700)
 
