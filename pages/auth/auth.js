@@ -256,10 +256,13 @@ export const Auth = ({ navigation }) => {
     return (
       <>
       <View style={{...Styling.container, backgroundColor: 'black'}}>
-      <LinearGradient
-                    colors={['#f34734', '#feb832']}
-                    style={{flex: 1}}
-                >
+      <ImageBackground
+            source={require('../../assets/home_background.png')}
+            resizeMode="cover"
+            style={{
+              justifyContent: 'center',
+              height: '100%'
+            }}>
         <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
   
           <ScrollView style={{}} keyboardShouldPersistTaps={'always'} keyboardDismissMode="on-drag">
@@ -486,7 +489,7 @@ export const Auth = ({ navigation }) => {
                           style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
                           allowFontScaling={false}
                         >
-                          Login</Text>
+                          LOGIN</Text>
                       </View>
                     </TouchableOpacity>
                   </>
@@ -584,13 +587,13 @@ export const Auth = ({ navigation }) => {
                           </TouchableOpacity>
                         }
   
-                        <View style={Styling.modalDivisionLine}></View>
+                        <View style={Styling.profileDivisionLine}></View>
 
                         <TouchableOpacity 
                           onPress={() => setDisplayForgotPasswordContent(current => !current)}>
                           <View>
                             <Text
-                              style={{ color: '#80ffdb', alignSelf: 'center', fontSize: 30, margin: 10, fontWeight: 'bold' }}
+                              style={{ color: '#fcd01f', alignSelf: 'center', fontSize: 30, margin: 10, fontWeight: 'bold' }}
                               allowFontScaling={false}
                             >
                               Forgot Password?
@@ -636,7 +639,7 @@ export const Auth = ({ navigation }) => {
                                   <Text
                                     style={{ color: 'black', alignSelf: 'center', fontSize: 30, margin: 10, fontWeight: 'bold' }}
                                     allowFontScaling={false}
-                                  >Submit</Text>
+                                  >SUBMIT</Text>
                                 </View>
                               </TouchableOpacity>
                             </View>
@@ -808,7 +811,7 @@ export const Auth = ({ navigation }) => {
                           </View>
                         }
   
-                          <View style={Styling.modalDivisionLine}></View>
+                          <View style={Styling.profileDivisionLine}></View>
 
                         
                         <Text
@@ -827,14 +830,14 @@ export const Auth = ({ navigation }) => {
                               borderRadius: 40,
                               alignSelf: 'center',
                               margin: 10,
-                              width: 400
+                              width: 350
                             }}
                           >
                             <Text
                               style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
                               // allowFontScaling={false}
                             >
-                              Sign Up
+                              SIGN UP
                             </Text>
                           </View>
                         </TouchableOpacity>
@@ -849,7 +852,7 @@ export const Auth = ({ navigation }) => {
             <View style={{ marginBottom: 400 }}></View>
           </ScrollView>
         </SafeAreaView>
-        </LinearGradient>
+        </ImageBackground>
         <Navbar nav={navigation} auth={isTokenValid} position={'absolute'} from={'auth'} />
         </View>
         {/* <TouchableOpacity

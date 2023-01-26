@@ -410,9 +410,9 @@ export const Styling = StyleSheet.create({
     marginRight: 10
   },
   profileDivisionLine: {
-    borderColor: '#4cc9f0',
-    borderBottomWidth: 1,
-    width: windowWidth - 80,
+    borderColor: 'white',
+    borderBottomWidth: 2,
+    width: 400,
     alignSelf: 'center',
     marginTop: 10,
     marginBottom: 10

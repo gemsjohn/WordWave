@@ -28,7 +28,8 @@ import {
     SafeAreaView,
     ScrollView,
     Button,
-    Image
+    Image,
+    ImageBackground
 } from 'react-native';
 import {
     faSolid,
@@ -100,10 +101,13 @@ export const ProfileScreen = ({ navigation }) => {
     return (
         <>
             <View style={{ ...Styling.container }}>
-                <LinearGradient
-                    colors={['#f34734', '#feb832']}
-                    style={{flex: 1}}
-                >
+            <ImageBackground
+            source={require('../../assets/home_background.png')}
+            resizeMode="cover"
+            style={{
+              justifyContent: 'center',
+              height: '100%'
+            }}>
                     <SafeAreaView style={Styling.profileContainer}>
                         <ScrollView style={Styling.profileScrollView}>
                             <View style={{}}>
@@ -122,7 +126,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                 }}
                                             >
                                                 <View
-                                                    style={{ flexDirection: 'row', margin: 10 }}
+                                                    style={{ flexDirection: 'row', margin: 20 }}
                                                 >
                                                     <FontAwesomeIcon
                                                         icon={faSolid, faSliders}
@@ -182,18 +186,23 @@ export const ProfileScreen = ({ navigation }) => {
                                                         }, 500)
                                                     }}
                                                     style={Styling.modalWordButton}>
-                                                    <LinearGradient
-                                                        // Button Linear Gradient
-                                                        colors={['#f8200d', '#840000']}
-                                                        style={Styling.modalWordButton}
-                                                    >
+                                                    <View style={{
+                                                        backgroundColor: '#f8200d',
+                                                        display: 'flex',
+                                                        justifyContent: 'flex-start',
+                                                        padding: 20,
+                                                        borderRadius: 40,
+                                                        alignSelf: 'center',
+                                                        margin: 10,
+                                                        width: 350
+                                                    }}>
                                                         <Text
-                                                            style={{ ...Styling.modalWordButtonText, fontSize: 20, color: 'white' }}
-                                                            allowFontScaling={false}
+                                                        style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
+                                                        allowFontScaling={false}
                                                         >
                                                             Remove/Reset Keycode
                                                         </Text>
-                                                    </LinearGradient>
+                                                    </View>
                                                 </TouchableOpacity>
                                             </View>
 
@@ -206,20 +215,25 @@ export const ProfileScreen = ({ navigation }) => {
                                                     })
                                                     navigation.dispatch(resetActionAuth)
                                                 }}
-                                                style={{ ...Styling.modalWordButton, marginTop: 60 }}
+                                                style={{ ...Styling.modalWordButton, marginTop: 10 }}
                                             >
-                                                <LinearGradient
-                                                    // Button Linear Gradient
-                                                    colors={['#aacc00', '#80b918']}
-                                                    style={Styling.modalWordButton}
-                                                >
+                                                <View style={{
+                                                    backgroundColor: 'blue',
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-start',
+                                                    padding: 20,
+                                                    borderRadius: 40,
+                                                    alignSelf: 'center',
+                                                    margin: 10,
+                                                    width: 350
+                                                }}>
                                                     <Text
-                                                        style={{ ...Styling.modalWordButtonText, fontSize: 20, }}
-                                                        allowFontScaling={false}
+                                                    style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
+                                                    allowFontScaling={false}
                                                     >
                                                         Switch User
                                                     </Text>
-                                                </LinearGradient>
+                                                </View>
                                             </TouchableOpacity>
 
                                         </View>
@@ -230,7 +244,7 @@ export const ProfileScreen = ({ navigation }) => {
                             </View >
                         </ScrollView>
                     </SafeAreaView>
-                </LinearGradient>
+                </ImageBackground>
                 <Navbar nav={navigation} auth={mainState.current.authState} position={'absolute'} from={'profile'} />
 
             </View>

@@ -201,7 +201,7 @@ export const UserDetails = (props) => {
                             <Text style={{ color: 'white', marginRight: 10, fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}>{EditableFields[i].title}</Text>
 
                             <Text
-                                style={{ color: 'white', alignSelf: 'center', fontSize: 14, width: 150 }}
+                                style={{ color: '#fcd01f', alignSelf: 'center', fontSize: 16, fontWeight: 'bold', width: 150 }}
                                 numberOfLines={1}
                                 ellipsizeMode='tail'
                             >

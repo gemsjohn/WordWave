@@ -39,6 +39,7 @@ export const HomeScreen = ({ navigation }) => {
       setDisplayUsername(true)
     } else if (!result && !authState.current) {
       setDisplaySignUpModal(true)
+      setDisplayUsername(false)
     }
   }
 
@@ -86,20 +87,34 @@ export const HomeScreen = ({ navigation }) => {
               <SafeAreaView style={Styling.container}>
                 <ScrollView style={Styling.scrollView}>
                   {displayUsername &&
-                    <View style={{ marginTop: 50, alignSelf: 'center' }}>
+                    <>
+                    <View style={{ marginTop: 50, flexDirection:'column' }}>
                       <Text style={{
                         color: 'white',
-                        fontSize: 24,
-                        fontWeight: 'bold'
+                        fontSize: 30,
+                        fontWeight: 'bold',
+                        alignSelf: 'center'
                       }}>
-                        Welcome back {userByID?.user.username}!
+                        {userByID?.user.username}
+                      </Text>
+                      <Text style={{
+                        color: 'white',
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        alignSelf: 'center'
+
+                      }}>
+                        Tokens Remaining: {userByID?.user.tokens}
                       </Text>
                     </View>
+                    <View style={Styling.profileDivisionLine}></View>
+                    </>
                   }
+
                   <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
                     {count == 0 &&
                       <View style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
                         padding: 10,
                         borderRadius: 20,
                         width: 400,
@@ -132,7 +147,7 @@ export const HomeScreen = ({ navigation }) => {
                     }
                     {count == 1 &&
                       <View style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
                         padding: 10,
                         borderRadius: 20,
                         width: 400,
@@ -163,7 +178,7 @@ export const HomeScreen = ({ navigation }) => {
                           }}>
                             <Image
                               source={require('../../assets/Char_1.png')}
-                              style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                              style={{ height: 150, width: 150 }} />
                             <Text style={{ color: 'white', alignSelf: 'center' }}>You</Text>
                           </View>
 
@@ -176,7 +191,7 @@ export const HomeScreen = ({ navigation }) => {
                           }}>
                             <Image
                               source={require('../../assets/projectile_asteroid_2.png')}
-                              style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                              style={{ height: 150, width: 150 }} />
                             <Text style={{ color: 'white', alignSelf: 'center' }}>Asteroid</Text>
                           </View>
 
@@ -189,7 +204,7 @@ export const HomeScreen = ({ navigation }) => {
                           }}>
                             <Image
                               source={require('../../assets/projectile_red_ufo.png')}
-                              style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                              style={{ height: 150, width: 150 }} />
                             <Text style={{ color: 'white', alignSelf: 'center' }}>Red UFO</Text>
                           </View>
 
@@ -202,7 +217,7 @@ export const HomeScreen = ({ navigation }) => {
                           }}>
                             <Image
                               source={require('../../assets/projectile_enemy_4.png')}
-                              style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                              style={{ height: 150, width: 150 }} />
                             <Text style={{ color: 'white', alignSelf: 'center' }}>Twin</Text>
                           </View>
 
@@ -215,7 +230,7 @@ export const HomeScreen = ({ navigation }) => {
                           }}>
                             <Image
                               source={require('../../assets/projectile_enemy_3.png')}
-                              style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                              style={{ height: 150, width: 150 }} />
                             <Text style={{ color: 'white', alignSelf: 'center' }}>Opacity Bot</Text>
                           </View>
                         </View>
@@ -223,7 +238,7 @@ export const HomeScreen = ({ navigation }) => {
                     }
                     {count == 2 &&
                       <View style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
                         padding: 10,
                         borderRadius: 20,
                         width: 400,
@@ -254,7 +269,7 @@ export const HomeScreen = ({ navigation }) => {
                     }
                     {count == 3 &&
                       <View style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
                         padding: 10,
                         borderRadius: 20,
                         width: 400,
@@ -284,7 +299,7 @@ export const HomeScreen = ({ navigation }) => {
                       </View>
                     }
 
-                    <View style={{ height: HeightRatio(200) }}></View>
+                    <View style={{ height: 200 }}></View>
 
                   </View>
                 </ScrollView>
