@@ -44,6 +44,8 @@ export const GameScreen = ({ navigation }) => {
     const [stage1, setStage1] = useState(true);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
+    const [stage4, setStage4] = useState(false);
+
 
     const [userID, setUserID] = useState('');
     const [authState, setAuthState] = useState(false);
@@ -128,6 +130,9 @@ export const GameScreen = ({ navigation }) => {
             if (mainState.current.stage3 != null) {
                 setStage3(mainState.current.stage3);
             }
+            // if (mainState.current.stage4 != null) {
+            //     setStage4(mainState.current.stage4);
+            // }
         }, 250)
 
 

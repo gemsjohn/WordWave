@@ -13,6 +13,8 @@ import {
   windowWidth 
 } from '../../../Styling';
 import { shuffle } from 'lodash';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_USER_BY_ID } from '../../../utils/queries';
 import { MainStateContext } from '../../../App';
 import {
   isLetterBlockColliding,
@@ -58,14 +60,14 @@ const resetActionHome = CommonActions.reset({
 export const Stage_3_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
   const { mainState, setMainState } = useContext(MainStateContext);
-
+  const userID = useRef(null);
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
   const [prevWrongElements, setPrevWrongElements] = useState(0);
   const [prevSimilarElements, setPrevSimilarElements] = useState(0);
-  const [letterPocket, setLetterPocket] = useState([]);
-  const [displayLetters, setDisplayLetters] = useState([])
+  const [letterPocket, setLetterPocket] = useState(mainState.current.currentLetterPocket);
+  const [displayLetters, setDisplayLetters] = useState(mainState.current.currentDisplayLetters)
   const [letterPositionNum, setLetterPositionNum] = useState(0)
 
   // [GAME LOGIC] - - - - - 
@@ -84,9 +86,11 @@ export const Stage_3_Projectile = (props) => {
   const skullMoneyPlaceholder = useRef(2)
 
   const score = useRef(mainState.current.currentScore);
+  const [recordedScore, setRecordedScore] = useState(0);
   const scoreFlash_100 = useRef(false);
   const scoreFlash_1000 = useRef(false);
-  const level = useRef(0);
+  const level = useRef(mainState.current.currentLevel);
+  const [recordedLevel, setRecordedLevel] = useState(0);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
 
@@ -95,9 +99,9 @@ export const Stage_3_Projectile = (props) => {
   const [letter, setLetter] = useState('');
   const letterPosition = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current
   const animation = useRef(null)
-  const count = new Animated.Value(0);
-  const countRef = useRef(0);
-  const wordPlusSeven = useRef([])
+  const count = new Animated.Value(mainState.current.currentLetter_countValue);
+  const countRef = useRef(mainState.current.currentLetter_countValue);
+  const wordPlusSeven = useRef(mainState.current.currentWordPlusSeven)
   let timeoutLetter_ID;
 
   // [OBSTACLE ANIMATION 0] - - - - - 
@@ -205,13 +209,16 @@ export const Stage_3_Projectile = (props) => {
     outputRange: [1.0, 0.5]
   });
 
-
-
+  const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
+    variables: { id: userID.current }
+  });
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
     setMainState({ upgradeToSpecial_0: false })
     setMainState({ deployUpgradeToSpecialAnimation: false })
+    
+    userID.current = mainState.current.userID;
   }, [])
 
   useEffect(() => {
@@ -300,6 +307,10 @@ export const Stage_3_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
+            if (mainState.current.currentCrashes >= 2) {
+              runAuxilliaryGreenHealth();
+            }
+
             if (level.current >= 0) {
               letterAnimation();
               runObstacleAnimation_opacity_bot()
@@ -1152,7 +1163,7 @@ export const Stage_3_Projectile = (props) => {
         });
       }
     }
-    if (letterPocket.length > 0) {
+    if (letterPocket.length > 0 && isGameInProgress.current) {
       animation.current.reset()
     }
 
@@ -1170,7 +1181,17 @@ export const Stage_3_Projectile = (props) => {
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
-        endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
+        endGame({ 
+          continue: false, 
+          local: "b", 
+          crashes: crashes.current, 
+          score: score.current, 
+          level: level.current,
+          letterPocket: letterPocket,
+          wordPlusSeven: wordPlusSeven.current,
+          displayLetters: displayLetters,
+          letter_countValue: countRef.current
+        });
       }
     }, 200);
   }, [crashes.current, level.current])
@@ -1202,7 +1223,7 @@ export const Stage_3_Projectile = (props) => {
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
-      currentUniqueLetterPocket: uniqueLetterPocket,
+      currentLetterPocket: uniqueLetterPocket,
       currentWordPlusSeven: wordPlusSeven.current,
       currentDisplayLetters: displayLetters,
       currentLetter_countValue: countRef.current
@@ -1294,13 +1315,61 @@ export const Stage_3_Projectile = (props) => {
 
   }
 
+  const continueGame = () => {
+    console.log("CONTINUE GAME");
+    console.log("- - - - - -")
+    console.log(mainState.current.stage1)
+    console.log(mainState.current.stage2)
+    console.log(mainState.current.stage3)
+    console.log(mainState.current.currentScore)
+    console.log(mainState.current.currentLevel)
+    console.log(mainState.current.currentCrashes)
+    console.log(mainState.current.currentLetterPocket)
+    console.log(mainState.current.currentWordPlusSeven)
+    console.log(mainState.current.currentDisplayLetters)
+    console.log(mainState.current.currentLetter_countValue)
+    console.log("- - - - - -")
+
+    score.current = mainState.current.currentScore;
+    level.current = mainState.current.currentLevel;
+    crashes.current = mainState.current.currentCrashes;
+    setLetterPocket(mainState.current.currentLetterPocket) 
+    wordPlusSeven.current = mainState.current.currentWordPlusSeven;
+    setDisplayLetters(mainState.current.currentDisplayLetters)
+    countRef.current = mainState.current.currentLetter_countValue + 1;
+
+
+    hideCrashesUntilUpdate.current = false;
+    isGameInProgress.current = true;
+    setHasGameBeenStarted(true)
+
+    if (level.current >= 0) {
+      letterAnimation();
+      runObstacleAnimation_opacity_bot()
+
+    }
+
+    if (level.current >= 1) {
+      runObstacleAnimation_1();
+      runObstacleAnimation_0();
+    }
+
+    if (level.current >= 2) {
+      runObstacleAnimation_right_angle_0();
+      // runUpgradeToSpecial_0();
+    }
+
+    if (level.current >= 3) {
+      runObstacleAnimation_right_angle_1();
+    }
+  }
+
   // [END GAME] 
   // input.local "a" represents a continuance of gameplay
   // input.local "b" represents a loss of game
   // input.local "c" represents the user navigating away from the game
   const endGame = (input) => {
     hideCrashesUntilUpdate.current = true;
-    setContinuousEndGameCall(true)
     isGameInProgress.current = false;
     // if (input.local != "c") {
     if (level.current >= 0) {
@@ -1354,55 +1423,117 @@ export const Stage_3_Projectile = (props) => {
     
     }
 
-    // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
-    // - Letters
-    setLetter('');
-    setLetterPocket([]);
-    setDisplayLetters([]);
-    // -Word
-    setRandomWord('');
-    wordPlusSeven.current = [];
-    // - Game Logic
-    count.setValue(0)
-    level.current = 0;
-    
-
     // [HANDLE GAME RESTART]
     if (input.continue) {
-      console.log("- - - - - - ")
-      console.log("GAME ---> Continue")
-      console.log("- - - - - - ")
-
+      setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
-      let localLevel = input.level + 1;
-      level.current = localLevel;
-      setLetterPocket([]);
-      setDisplayLetters([]);
-      timeoutCallGenerateID = setTimeout(() => {
+      // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
+      setLetter('');
+      setRandomWord('');
+
+      setMainState({
+        currentScore: score.current,
+        currentLevel: input.level,
+        currentCrashes: input.crashes,
+        currentLetterPocket: [],
+        currentWordPlusSeven: [],
+        currentDisplayLetters: [],
+        currentLetter_countValue: 0
+      })
+      if (input.level >= 4) {
+        // setTimeout(() => {
+        //   score.current += 1000;
+        //   scoreFlash_1000.current = true;
+        //   setTimeout(() => {
+        //     scoreFlash_1000.current = false;
+        //   }, 1000)
+        // }, 501)
+
+        // setTimeout(() => {
+        //   setMainState({
+        //     stage1: false,
+        //     stage2: false,
+        //     stage3: false,
+        //     stage4: true,
+        //     currentScore: score.current,
+        //     currentLevel: input.level,
+        //     currentCrashes: input.crashes,
+        //     currentLetterPocket: [],
+        //     currentWordPlusSeven: [],
+        //     currentDisplayLetters: [],
+        //     currentLetter_countValue: 0
+        //   })
+        // }, 1700)
+
+        endGame({ 
+          continue: false, 
+          local: "b", 
+          crashes: crashes.current, 
+          score: score.current, 
+          level: level.current,
+          letterPocket: letterPocket,
+          wordPlusSeven: wordPlusSeven.current,
+          displayLetters: displayLetters,
+          letter_countValue: countRef.current
+        });
+
+        return;
+      } else {
+        let localLevel = input.level + 1;
+        level.current = localLevel;
+        setLetterPocket([]);
+        setDisplayLetters([]);
 
 
+        timeoutCallGenerateID = setTimeout(() => {
+          Generate(input.crashes)
+        }, 500)
+      }
 
-        Generate(input.crashes)
-      }, 500)
+
 
     } else {
 
-      if (input.local == "b" && crashes.current >= 3) {
-        console.log("- - - - - - ")
-        console.log("GAME ---> Over")
-        console.log("- - - - - - ")
+      if (input.local == "b") {
+        let localLevel = input.level + 1;
+        setRecordedLevel(localLevel)
+        setRecordedScore(input.score)
+
+        setMainState({
+          stage1: false,
+          stage2: false,
+          stage3: true,
+          currentScore: input.score,
+          currentLevel: input.level,
+          currentCrashes: 0,
+          currentLetterPocket: input.letterPocket,
+          currentWordPlusSeven: input.wordPlusSeven,
+          currentDisplayLetters: input.displayLetters,
+          currentLetter_countValue: input.letter_countValue
+        })
+        
         setTimeout(() => {
-          setHasGameBeenStarted(false);
+          // setHasGameBeenStarted(false);
           setGameOverModalVisible(true)
-          setMainState({ upgradeToSpecial_0: false })
 
         }, 100);
       } else if (input.local == "c") {
-        console.log("- - - - - - ")
-        console.log("GAME ---> Away")
-        console.log("- - - - - - ")
-        setHasGameBeenStarted(false);
-        setMainState({ upgradeToSpecial_0: false })
+        // setHasGameBeenStarted(false);
+        setContinuousEndGameCall(true)
+
+        // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
+        // - Letters
+        setLetter('');
+        setLetterPocket([]);
+        setDisplayLetters([]);
+        // -Word
+        setRandomWord('');
+        wordPlusSeven.current = [];
+
+        // - Game Logic
+        count.setValue(0)
+        countRef.current = 0;
+        level.current = 0;
       }
     }
   }
@@ -1830,6 +1961,8 @@ export const Stage_3_Projectile = (props) => {
           </View>
         ))}
 
+        {/* GAME OVER MODAL */}
+
         <Modal
           animationType="slide"
           transparent={true}
@@ -1849,30 +1982,81 @@ export const Stage_3_Projectile = (props) => {
             }, 500)
           }}
         >
-          <View style={{ ...Styling.modal_centered_view }}>
-            <TouchableOpacity
-              style={{ top: HeightRatio(-40) }}
-              onPress={() => { 
-                props.nav.dispatch(resetActionHome);
-              }}
-            >
-              <View style={{
-                // margin: HeightRatio(20), 
-                position: 'absolute',
-                zIndex: 15,
-                top: windowHeight / 2 - HeightRatio(30),
-                left: windowWidth / 2 - WidthRatio(100)
-              }}
-              >
-                <Text style={Styling.modal_text_style}>Score: {score.current}</Text>
-                <Text style={Styling.modal_text_style}>Level:</Text>
-                <Text style={Styling.modal_text_style}>Time:</Text>
-                <Text style={Styling.modal_text_style}>Words:</Text>
+          <View style={Styling.modal_centered_view}>
+            <View style={Styling.modal_view}>
+              <View style={{ flexDirection: 'column' }}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
+                  GAME OVER
+                </Text>
+                <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
+                  Tokens: {userByID?.user.tokens}
+                </Text>
+                </View>
+                
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{
+                    margin: 20, 
+                    alignSelf: 'center', 
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: 20,
+                    width: windowWidth/4,
+                    height: windowWidth/4
+                  }}>
+                    <Text style={Styling.modal_text_style}>Score: {recordedScore}</Text>
+                    <Text style={Styling.modal_text_style}>Stage: 3</Text>
+                    <Text style={Styling.modal_text_style}>Level: {recordedLevel}</Text>
+                  </View>
+                  <View style={{margin: 20, alignSelf: 'center'}}/>
+                  <View style={{
+                    margin: 20, 
+                    alignSelf: 'center', 
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: 20,
+                    width: windowWidth/4,
+                    height: windowWidth/4
+                  }}>
+                    <Text style={{
+                      ...Styling.modal_text_style, 
+                      alignSelf: 'center',
+                      color: 'yellow'
+                    }}>
+                      CONTINUE?
+                    </Text>
+                    <Text style={{
+                      ...Styling.modal_text_style, 
+                      alignSelf: 'center',
+                      fontSize: 20,
+                      color: 'white',
+                      marginTop: 4
+                    }}>
+                      USE TOKEN
+                    </Text>
+                    <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setGameOverModalVisible(!gameOverModalVisible); 
+                        setTimeout(() => {
+                          continueGame();
+                        }, 500)
+                        }}
+                      style={{backgroundColor: '#05b636', padding: 20, margin: 10, borderRadius: 10}}>
+                      <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>
+                        YES
+                      </Text>
+                    </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  onPress={() => props.nav.dispatch(resetActionHome)}>
+                  <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
               </View>
-              <Image
-                source={require('../../../assets/game_over.png')}
-                style={{ height: HeightRatio(1000), width: HeightRatio(940) }} />
-            </TouchableOpacity>
+            </View>
           </View>
         </Modal>
 

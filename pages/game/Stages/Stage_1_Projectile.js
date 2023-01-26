@@ -135,10 +135,6 @@ export const Stage_1_Projectile = (props) => {
     outputRange: ['360deg', '0deg']
   });
 
-
-  
-
-
   const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
     variables: { id: userID.current }
   });
@@ -696,7 +692,7 @@ export const Stage_1_Projectile = (props) => {
         });
       }
     }
-    if (letterPocket.length > 0) {
+    if (letterPocket.length > 0 && isGameInProgress.current) {
       animation.current.reset()
     }
     console.log("#1")
@@ -937,18 +933,19 @@ export const Stage_1_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
       // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
-      // - Letters
       setLetter('');
-      setLetterPocket([]);
-      setDisplayLetters([]);
-      // -Word
       setRandomWord('');
-      wordPlusSeven.current = [];
 
-      // - Game Logic
-      count.setValue(0)
-      countRef.current = 0;
-      level.current = 0;
+      setMainState({
+        currentScore: score.current,
+        currentLevel: input.level,
+        currentCrashes: input.crashes,
+        currentLetterPocket: [],
+        currentWordPlusSeven: [],
+        currentDisplayLetters: [],
+        currentLetter_countValue: 0
+      })
+
       if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;

@@ -269,6 +269,10 @@ export const Stage_2_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
+            if (mainState.current.currentCrashes >= 2) {
+              runAuxilliaryGreenHealth();
+            }
+
             if (level.current >= 0) {
               letterAnimation();
               runObstacleAnimation_twins_1();
@@ -982,11 +986,16 @@ export const Stage_2_Projectile = (props) => {
           local: "a",
           crashes: crashes.current,
           score: score.current,
-          level: level.current
+          level: level.current,
+          letterPocket: [],
+          wordPlusSeven: [],
+          displayLetters: [],
+          letter_countValue: 0
         });
+
       }
     }
-    if (letterPocket.length > 0) {
+    if (letterPocket.length > 0 && isGameInProgress.current) {
       animation.current.reset()
     }
 
@@ -1241,19 +1250,19 @@ export const Stage_2_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
       // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
-      // - Letters
       setLetter('');
-      setLetterPocket([]);
-      setDisplayLetters([]);
-      // -Word
       setRandomWord('');
-      wordPlusSeven.current = [];
 
-      // - Game Logic
-      count.setValue(0)
-      countRef.current = 0;
-      level.current = 0;
-      if (input.level >= 4) {
+      setMainState({
+        currentScore: score.current,
+        currentLevel: input.level,
+        currentCrashes: input.crashes,
+        currentLetterPocket: [],
+        currentWordPlusSeven: [],
+        currentDisplayLetters: [],
+        currentLetter_countValue: 0
+      })
+      if (input.level >= 0) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1265,8 +1274,8 @@ export const Stage_2_Projectile = (props) => {
         setTimeout(() => {
           setMainState({
             stage1: false,
-            stage2: true,
-            stage3: false,
+            stage2: false,
+            stage3: true,
             currentScore: score.current,
             currentLevel: input.level,
             currentCrashes: input.crashes,
