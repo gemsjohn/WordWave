@@ -2,13 +2,13 @@
   "expo": {
     "name": "Cosmic Scramble",
     "slug": "cosmicScramble",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "landscape",
     "icon": "./assets/adaptive_icon_0.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -22,7 +22,7 @@
     },
     "android": {
       "package": "com.cosmicscramble",
-      "versionCode": 7,
+      "versionCode": 8,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive_icon_0.png",
         "backgroundColor": "#FFFFFF"

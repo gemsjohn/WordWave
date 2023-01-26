@@ -319,7 +319,7 @@ export const Styling = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#240046',
+    // backgroundColor: 'black',
     marginTop: 30
   },
   scrollContainer: {

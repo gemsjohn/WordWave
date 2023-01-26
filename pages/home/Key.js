@@ -18,7 +18,7 @@ export const KeyScreen = ({ navigation }) => {
     const [keyPress, setKeyPress] = useState('');
     const [keyArray, setKeyArray] = useState([]);
     const [count, setCount] = useState(0);
-    
+
 
     
 
@@ -90,8 +90,23 @@ export const KeyScreen = ({ navigation }) => {
       }, [count])
       
     return (
-        <View style={Styling.container}>
-            <View style={{marginTop: 300, flexDirection: 'row', alignSelf: 'center'}}>
+        <View style={{...Styling.container, marginTop: 0, backgroundColor: 'black'}}>
+            <StatusBar
+              animated={true}
+              backgroundColor="black"
+              barStyle={'default'}
+              showHideTransition={'none'}
+              hidden={false} />
+              <Image
+                source={require('../../assets/adaptive_icon_0.png')}
+                style={{
+                    height: 100, 
+                    width: 100, 
+                    borderRadius: 200,
+                    marginTop: 100,
+                    alignSelf: 'center'
+                }} />
+            <View style={{marginTop: 100, flexDirection: 'row', alignSelf: 'center'}}>
                 {count > 0 ?
                     <View style={{
                         backgroundColor: 'rgba(255, 255, 255, 1.0)', 
