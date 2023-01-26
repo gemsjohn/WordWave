@@ -79,6 +79,23 @@ export const GameScreen = ({ navigation }) => {
         setLoadingComplete(true)
     }, 1000)
 
+    useLayoutEffect(() => {
+        console.log("GAME - USE LAYOUT EFFECT ")
+        setMainState({
+            stage1: null,
+            stage2: null,
+            stage3: null,
+            currentScore: 0,
+            currentLevel: 0,
+            currentCrashes: 0,
+            currentLetterPocket: [],
+            currentWordPlusSeven: [],
+            currentDisplayLetters: [],
+            currentLetter_countValue: 0
+          })
+    }, [])
+
+
     useEffect(() => {
         CheckAuthState();
         CurrentUser();

@@ -60,12 +60,12 @@ export const Navbar = (props) => {
           });
           if (response.ok) {
             // Token is still valid
-            console.log("NAV - Token is still valid")
+            // console.log("NAV - Token is still valid")
             setIsTokenValid(true)
             return true;
           } else {
             // Token is no longer valid
-            console.log("NAV - Token is no longer valid")
+            // console.log("NAV - Token is no longer valid")
 
             setIsTokenValid(false)
             return false;
@@ -102,7 +102,7 @@ export const Navbar = (props) => {
     
 
     useEffect(() => {
-        console.log("NAV BAR USEEFFECT")
+        // console.log("NAV BAR USEEFFECT")
         if (props.from == 'home') {setHomeBg('rgba(255, 255, 255, 0.1)')} else {setHomeBg('transparent')}
         if (props.from == 'game') {setGameBg('rgba(255, 255, 255, 0.1)')} else {setGameBg('transparent')}
         if (props.from == 'leader') {setLeaderBg('rgba(255, 255, 255, 0.1)')} else {setLeaderBg('transparent')}

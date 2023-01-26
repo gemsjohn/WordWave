@@ -326,9 +326,10 @@ export const HomeScreen = ({ navigation }) => {
           <View style={Styling.modal_view}>
             <View style={{ flexDirection: 'column' }}>
               <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}>
-              Don't miss out on the opportunity to showcase your skills and 
-              compete with others by signing up or logging in to get your high 
-              score on the leaderboard!
+              Enhance your gaming experience and put your skills on display by 
+              signing up or logging in and climbing to the top of the leaderboard! 
+              As an added bonus, you'll also receive 5 free tokens, 
+              providing you with the chance to keep playing even if you hit a setback.
               </Text>
 
               <TouchableOpacity
