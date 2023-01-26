@@ -64,27 +64,34 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <>
       <View style={Styling.container}>
-
+        <StatusBar
+          barStyle="default"
+          hidden={false}
+          backgroundColor="transparent"
+          translucent={true}
+          networkActivityIndicatorVisible={true}
+        />
         <View>
           <ImageBackground
             source={require('../../assets/home_background.png')}
             resizeMode="cover"
             style={{
               justifyContent: 'center',
-              height: windowHeight
+              height: '100%'
             }}>
 
             {/* BODY */}
-            <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
+            <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
 
               <SafeAreaView style={Styling.container}>
                 <ScrollView style={Styling.scrollView}>
                   {displayUsername &&
-                    <View style={{ margin: 10 }}>
-                      <Text style={{ 
-                        color: 'white', 
-                        fontSize: 24, 
-                        fontWeight: 'bold' }}>
+                    <View style={{ marginTop: 50, alignSelf: 'center' }}>
+                      <Text style={{
+                        color: 'white',
+                        fontSize: 24,
+                        fontWeight: 'bold'
+                      }}>
                         Welcome back {userByID?.user.username}!
                       </Text>
                     </View>
@@ -93,29 +100,29 @@ export const HomeScreen = ({ navigation }) => {
                     {count == 0 &&
                       <View style={{
                         backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                        padding: HeightRatio(10),
-                        borderRadius: HeightRatio(20),
-                        width: windowWidth * 0.8,
-                        // margin: WidthRatio(10),
+                        padding: 10,
+                        borderRadius: 20,
+                        width: 400,
+                        margin: 10,
                         alignSelf: 'center',
                         justifyContent: 'center',
                         flexDirection: 'column'
                       }}>
                         <Text style={{
                           color: '#fcd01f',
-                          fontSize: HeightRatio(50),
+                          fontSize: 40,
                           fontWeight: 'bold',
-                          width: windowWidth * 0.7,
-                          margin: WidthRatio(2)
+                          width: 400,
+                          margin: 4
                         }}>
                           Objective
                         </Text>
                         <Text style={{
                           color: 'white',
-                          fontSize: HeightRatio(20),
+                          fontSize: 20,
                           fontWeight: 'bold',
-                          width: windowWidth * 0.7,
-                          margin: WidthRatio(5)
+                          width: 350,
+                          margin: 10
                         }}>
                           Collect letters to spell the word at the top of the screen,
                           avoid obstacles and enemies. Complete all 5 levels to advance
@@ -126,36 +133,26 @@ export const HomeScreen = ({ navigation }) => {
                     {count == 1 &&
                       <View style={{
                         backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                        padding: HeightRatio(50),
-                        borderRadius: HeightRatio(50),
-                        width: windowWidth * 0.8,
-                        margin: WidthRatio(10),
+                        padding: 10,
+                        borderRadius: 20,
+                        width: 400,
+                        margin: 10,
                         alignSelf: 'center',
                         justifyContent: 'center',
                         flexDirection: 'column'
                       }}>
                         <Text style={{
                           color: '#fcd01f',
-                          fontSize: HeightRatio(50),
+                          fontSize: 40,
                           fontWeight: 'bold',
-                          width: windowWidth * 0.7,
-                          margin: WidthRatio(2)
+                          width: 400,
+                          margin: 4
                         }}>
                           Characters
                         </Text>
-                        {/* <Text style={{
-                        color: 'white',
-                        fontSize: HeightRatio(50),
-                        fontWeight: 'bold',
-                        width: windowWidth * 0.7,
-                        margin: WidthRatio(10)
-                      }}>
-                        Details
-                      </Text> */}
                         <View style={{
                           flexDirection: 'row',
                           flexWrap: 'wrap',
-                          // alignSelf: 'center'
                         }}>
                           {/* CHARACTER: You */}
                           <View style={{
@@ -227,29 +224,29 @@ export const HomeScreen = ({ navigation }) => {
                     {count == 2 &&
                       <View style={{
                         backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                        padding: HeightRatio(50),
-                        borderRadius: HeightRatio(50),
-                        width: windowWidth * 0.8,
-                        margin: WidthRatio(10),
+                        padding: 10,
+                        borderRadius: 20,
+                        width: 400,
+                        margin: 10,
                         alignSelf: 'center',
                         justifyContent: 'center',
                         flexDirection: 'column'
                       }}>
                         <Text style={{
                           color: '#fcd01f',
-                          fontSize: HeightRatio(50),
+                          fontSize: 40,
                           fontWeight: 'bold',
-                          width: windowWidth * 0.7,
-                          margin: WidthRatio(2)
+                          width: 400,
+                          margin: 4
                         }}>
                           Stages
                         </Text>
                         <Text style={{
                           color: 'white',
-                          fontSize: HeightRatio(50),
+                          fontSize: 20,
                           fontWeight: 'bold',
-                          width: windowWidth * 0.7,
-                          margin: WidthRatio(10)
+                          width: 350,
+                          margin: 10
                         }}>
                           Details
                         </Text>
@@ -258,29 +255,29 @@ export const HomeScreen = ({ navigation }) => {
                     {count == 3 &&
                       <View style={{
                         backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                        padding: HeightRatio(50),
-                        borderRadius: HeightRatio(50),
-                        width: windowWidth * 0.8,
-                        margin: WidthRatio(10),
+                        padding: 10,
+                        borderRadius: 20,
+                        width: 400,
+                        margin: 10,
                         alignSelf: 'center',
                         justifyContent: 'center',
                         flexDirection: 'column'
                       }}>
                         <Text style={{
                           color: '#fcd01f',
-                          fontSize: HeightRatio(50),
+                          fontSize: 40,
                           fontWeight: 'bold',
-                          width: windowWidth * 0.7,
-                          margin: WidthRatio(2)
+                          width: 400,
+                          margin: 4
                         }}>
                           Extras
                         </Text>
                         <Text style={{
                           color: 'white',
-                          fontSize: HeightRatio(50),
+                          fontSize: 20,
                           fontWeight: 'bold',
-                          width: windowWidth * 0.7,
-                          margin: WidthRatio(10)
+                          width: 350,
+                          margin: 10
                         }}>
                           Details
                         </Text>
@@ -293,7 +290,7 @@ export const HomeScreen = ({ navigation }) => {
                 </ScrollView>
               </SafeAreaView>
 
-              <View style={{ alignSelf: 'center', flexDirection: 'column', margin: WidthRatio(5) }}>
+              <View style={{ alignSelf: 'center', flexDirection: 'row', marginBottom: 70 }}>
                 <TouchableOpacity onPress={() => { console.log("UP"); setCount(prev => prev - 1); }}>
                   <Image
                     source={require('../../assets/home_up_arrow.png')}
@@ -326,10 +323,10 @@ export const HomeScreen = ({ navigation }) => {
           <View style={Styling.modal_view}>
             <View style={{ flexDirection: 'column' }}>
               <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}>
-              Enhance your gaming experience and put your skills on display by 
-              signing up or logging in and climbing to the top of the leaderboard! 
-              As an added bonus, you'll also receive 5 free tokens, 
-              providing you with the chance to keep playing even if you hit a setback.
+                Enhance your gaming experience and put your skills on display by
+                signing up or logging in and climbing to the top of the leaderboard!
+                As an added bonus, you'll also receive 5 free tokens,
+                providing you with the chance to keep playing even if you hit a setback.
               </Text>
 
               <TouchableOpacity

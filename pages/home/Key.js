@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, Image, TouchableOpacity, ScrollView, StatusBar, SafeAreaView, Dimensions, Button, Linking, ImageBackground, FlatList, PixelRatio, Modal } from 'react-native';
 import { Styling, windowWidth, windowHeight, HeightRatio, WidthRatio } from '../../Styling';
+import { LinearGradient } from 'expo-linear-gradient';
 import { MainStateContext } from '../../App';
 import * as SecureStore from 'expo-secure-store';
 import { CommonActions } from '@react-navigation/native';
@@ -87,8 +88,12 @@ export const KeyScreen = ({ navigation }) => {
       
     return (
         <>
+        <LinearGradient
+                    colors={['#f34734', '#feb832']}
+                    style={{flex: 1}}
+                >
         {pageLoadComplete ?
-        <View style={{...Styling.container, marginTop: 0, backgroundColor: 'black'}}>
+        <View style={{...Styling.container, marginTop: 0}}>
             <StatusBar
               animated={true}
               backgroundColor="black"
@@ -114,7 +119,7 @@ export const KeyScreen = ({ navigation }) => {
 
                     :
                     <View style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)', 
                         height: 25, 
                         width: 25, 
                         margin: 10}} />
@@ -128,7 +133,7 @@ export const KeyScreen = ({ navigation }) => {
 
                     :
                     <View style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)', 
                         height: 25, 
                         width: 25, 
                         margin: 10}} />
@@ -142,7 +147,7 @@ export const KeyScreen = ({ navigation }) => {
 
                     :
                     <View style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)', 
                         height: 25, 
                         width: 25, 
                         margin: 10}} />
@@ -156,7 +161,7 @@ export const KeyScreen = ({ navigation }) => {
 
                     :
                     <View style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)', 
                         height: 25, 
                         width: 25, 
                         margin: 10}} />
@@ -166,40 +171,40 @@ export const KeyScreen = ({ navigation }) => {
             </View>
             <View style={{marginTop: 100}}>
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('1')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('1')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>1</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('2')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('2')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>2</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('3')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('3')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>3</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('4')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('4')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>4</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('5')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('5')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>5</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('6')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('6')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>6</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('7')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('7')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>7</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('8')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('8')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>8</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('9')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('9')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>9</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('0')}>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10}} onPress={() => handleKeyPress('0')}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20}}>0</Text>
                     </TouchableOpacity>
                 </View>
@@ -208,6 +213,7 @@ export const KeyScreen = ({ navigation }) => {
         :
         <View style={{backgroundColor: 'black'}} />
         }
+        </LinearGradient>
         </>
     )
 }

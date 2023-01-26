@@ -946,7 +946,7 @@ export const Stage_1_Projectile = (props) => {
         currentLetter_countValue: 0
       })
 
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -961,7 +961,7 @@ export const Stage_1_Projectile = (props) => {
             stage2: true,
             stage3: false,
             currentScore: score.current,
-            currentLevel: input.level,
+            currentLevel: 0,
             currentCrashes: input.crashes,
             currentLetterPocket: [],
             currentWordPlusSeven: [],

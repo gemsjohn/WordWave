@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useMutation } from "@apollo/client";
 import jwtDecode from "jwt-decode";
 import { LOGIN_USER, ADD_USER, REQUEST_RESET, RESET_PASSWORD } from '../../utils/mutations';
@@ -255,7 +256,10 @@ export const Auth = ({ navigation }) => {
     return (
       <>
       <View style={{...Styling.container, backgroundColor: 'black'}}>
-  
+      <LinearGradient
+                    colors={['#f34734', '#feb832']}
+                    style={{flex: 1}}
+                >
         <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
   
           <ScrollView style={{}} keyboardShouldPersistTaps={'always'} keyboardDismissMode="on-drag">
@@ -845,6 +849,7 @@ export const Auth = ({ navigation }) => {
             <View style={{ marginBottom: 400 }}></View>
           </ScrollView>
         </SafeAreaView>
+        </LinearGradient>
         <Navbar nav={navigation} auth={isTokenValid} position={'absolute'} from={'auth'} />
         </View>
         {/* <TouchableOpacity

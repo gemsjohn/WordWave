@@ -1,11 +1,19 @@
 import { StyleSheet, Dimensions, StatusBar, PixelRatio } from 'react-native';
 
-export const windowWidth = Dimensions.get('window').width;
-export const windowHeight = Dimensions.get('window').height;
+// - - - - - - - - - - - - - - -  -
+// * * * * * * * * * * * * * * * * *
+// HEIGHT AND WIDTH HAVE BEEN REVERSED 
+// TO ACCOMIDATE PORTAIT VS LANDSCAPE TRANSITIONS
+// * * * * * * * * * * * * * * * * *
+// - - - - - - - - - - - - - - -  -
+
+
+export const windowWidth = Dimensions.get('window').height;
+export const windowHeight = Dimensions.get('window').width;
 
 const {
-  width: SCREEN_WIDTH,
-  height: SCREEN_HEIGHT,
+  width: SCREEN_HEIGHT,
+  height: SCREEN_WIDTH,
 } = Dimensions.get('window');
 
 const scaleWidth = SCREEN_WIDTH / 360;
