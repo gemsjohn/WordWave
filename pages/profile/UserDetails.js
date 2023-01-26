@@ -187,7 +187,7 @@ export const UserDetails = (props) => {
                             // borderTopLeftRadius: 30,
                             borderBottomLeftRadius: 25,
                             padding: 10,
-                            width: windowWidth - 40,
+                            width: 400,
                             flexDirection: 'column',
                             margin: 10,
                             backgroundColor: `${EditableFields[i].edit ? 'rgba(255, 255, 255, 0.1)' : 'transparent'}`,
@@ -197,10 +197,10 @@ export const UserDetails = (props) => {
 
                     >
                         <View style={{ flexDirection: 'row', }}>
-                            <Text style={{ color: 'white', marginRight: 10, fontSize: windowWidth * 0.06, fontWeight: 'bold', alignSelf: 'center' }}>{EditableFields[i].title}</Text>
+                            <Text style={{ color: 'white', marginRight: 10, fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}>{EditableFields[i].title}</Text>
 
                             <Text
-                                style={{ color: 'white', alignSelf: 'center', fontSize: windowWidth * 0.03, width: windowWidth / 2.3 }}
+                                style={{ color: 'white', alignSelf: 'center', fontSize: 14, width: 150 }}
                                 numberOfLines={1}
                                 ellipsizeMode='tail'
                             >
@@ -215,7 +215,7 @@ export const UserDetails = (props) => {
                                         position: 'absolute',
                                         zIndex: 10,
                                         alignSelf: 'center',
-                                        left: windowWidth - 115,
+                                        left: 340,
                                         padding: 4,
                                         borderRadius: 4,
                                         flexDirection: 'row'
@@ -241,9 +241,9 @@ export const UserDetails = (props) => {
                                                     {i == 3 &&
                                                         <>
                                                             <TouchableOpacity onPress={() => copyToClipboard()} style={{ marginLeft: 10 }}>
-                                                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)', width: windowWidth - 60, borderRadius: 10, padding: 10 }}>
+                                                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)', width: 380, borderRadius: 10, padding: 10, alignSelf: 'center' }}>
                                                                     <Text
-                                                                        style={{ color: '#efea5a', fontSize: windowHeight * 0.02, fontWeight: 'bold', marginLeft: windowWidth * 0.02 }}
+                                                                        style={{ color: '#efea5a', fontSize: 20, fontWeight: 'bold', marginLeft: 20 }}
                                                                         allowFontScaling={false}
                                                                     >Copy ID {userByID?.user._id}</Text>
                                                                 </View>
@@ -279,7 +279,7 @@ export const UserDetails = (props) => {
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: windowWidth - 160
+                                                                width: 270
                                                             }}
                                                         />
                                                         {/* [[[SUBMIT BUTTON]]] */}
@@ -341,7 +341,7 @@ export const UserDetails = (props) => {
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: windowWidth - 80
+                                                                width: 350
                                                             }}
                                                         />
                                                     </View>
@@ -372,7 +372,7 @@ export const UserDetails = (props) => {
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: windowWidth - 160
+                                                                width: 270
                                                             }}
                                                         />
                                                         {/* [[[SUBMIT BUTTON]]] */}

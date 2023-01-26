@@ -7,6 +7,7 @@ import { CommonActions } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import { GET_USER_BY_ID, GET_ME } from '../utils/queries';
 import { MainStateContext } from '../App';
+import moment from 'moment';
 
 const {
     width: SCREEN_WIDTH,
@@ -43,9 +44,13 @@ export const Navbar = (props) => {
     const [isTokenValid, setIsTokenValid] = useState(null);
     const keyboardOpen = useRef(false);
 
-    let prevMainState;
+    let localKeyMoment = moment();
 
     const checkToken = async () => {
+        // console.log("= = = = = = ")
+        // console.log(mainState.current.bearerToken)
+        // console.log("= = = = = = ")
+
         try {
           const response = await fetch('https://cosmicbackend.herokuapp.com/protected-route', {
             method: 'GET',
@@ -55,12 +60,12 @@ export const Navbar = (props) => {
           });
           if (response.ok) {
             // Token is still valid
-            console.log("Token is still valid")
+            console.log("NAV - Token is still valid")
             setIsTokenValid(true)
             return true;
           } else {
             // Token is no longer valid
-            console.log("Token is no longer valid")
+            console.log("NAV - Token is no longer valid")
 
             setIsTokenValid(false)
             return false;
@@ -127,28 +132,18 @@ export const Navbar = (props) => {
         if (props.from == 'leader') {setLeaderBg('rgba(255, 255, 255, 0.1)')} else {setLeaderBg('transparent')}
         // if (props.from == 'settings') {setSettingsBg('rgba(255, 255, 255, 0.1)')} else {setSettingsBg('transparent')}
         if (props.from == 'profile') {setProfileBg('rgba(255, 255, 255, 0.1)')} else {setProfileBg('transparent')}
-        checkToken();
+        
 
-        // setInterval(() =>{
-        //     // console.log(mainState.current)
-        //     if (mainState.current !== prevMainState) {
-        //         prevMainState = mainState.current;
-        //         // console.log("mainState.current has changed, updating myVariable to:", prevMainState);
-        //         CurrentUser()
-        //         getBearerToken()
-        //         CheckAuthState()
-        //     }
-        // }, 1000)
+        // checkToken();
+
     }, [])
 
-    // useEffect(() => {
-    //     // userID.current = mainStateRef.current.userID
-    //     // bearerToken.current = mainStateRef.current.bearerToken
-    //     // authState.current = mainStateRef.current.authState
-    //     setInterval(() =>{
-    //       console.log(mainStateRef.current)
-    //     }, 1000)
-    //   }, [])
+    if (localKeyMoment != mainState.current.initialKeyMoment) {
+        checkToken();
+    }
+
+
+
 
 
     return (

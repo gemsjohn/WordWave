@@ -18,7 +18,11 @@ const resetActionProfile = CommonActions.reset({
   routes: [{ name: 'Profile', params: {} }]
 });
 
-
+async function save(key, value) {
+  console.log(key)
+  console.log(value)
+  await SecureStore.setItemAsync(key, value);
+}
 
 export const Auth = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
@@ -63,13 +67,26 @@ export const Auth = ({ navigation }) => {
     // Server
     const [isTokenValid, setIsTokenValid] = useState(null);
 
+    const [cosmicKeyBoolean, setCosmicKeyBoolean] = useState(false);
+
+    async function getValueFor(key) {
+      let result = await SecureStore.getItemAsync(key);
+      if (result) {
+        setCosmicKeyBoolean(true)
+        
+      } else {
+        setCosmicKeyBoolean(false)
+
+      }
+    }
+
+    useEffect(() => {
+      getValueFor('cosmicKey')
+    }, [])
+
     
 
     const checkToken = async (value) => {
-      console.log("* * * * * * * * ")
-      console.log(value)
-      console.log("* * * * * * * * ")
-
       try {
         const response = await fetch('https://cosmicbackend.herokuapp.com/protected-route', {
           method: 'GET',
@@ -79,14 +96,14 @@ export const Auth = ({ navigation }) => {
         });
         if (response.ok) {
           // Token is still valid
-          console.log("Token is still valid")
+          console.log("AUTH - Token is still valid")
 
           setIsTokenValid(true)
           navigation.dispatch(resetActionProfile)
           return true;
         } else {
           // Token is no longer valid
-          console.log("Token is no longer valid")
+          console.log("AUTH - Token is no longer valid")
           setIsTokenValid(false)
           return false;
         }
@@ -116,6 +133,13 @@ export const Auth = ({ navigation }) => {
             authState: true
           })
 
+          if (cosmicKeyBoolean) {
+            console.log("ADDED: bearer, userID, auth")
+            save('bearerToken', `Bearer ${data.login.token}`);
+            save('userID', `${decoded?.data._id}`);
+            save('authState', 'true');
+          }
+
           checkToken(`Bearer ${data.login.token}`)
         }
       } catch (e) {
@@ -129,6 +153,10 @@ export const Auth = ({ navigation }) => {
           userID: null,
           authState: false
         })
+
+        save('bearerToken', null);
+        save('userID', null);
+        save('authState', 'false');
       }
     }
   

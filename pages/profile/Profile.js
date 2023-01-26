@@ -160,8 +160,9 @@ export const ProfileScreen = ({ navigation }) => {
                                                 </Text>
                                             </LinearGradient>
                                         </TouchableOpacity>
+                                        <SecureStorage />
                                     </View>
-                                    <SecureStorage />
+                                    
                                     <View style={{ marginBottom: 200 }}></View>
                                 </>
                             }

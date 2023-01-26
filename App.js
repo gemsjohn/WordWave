@@ -29,6 +29,7 @@ export default function App() {
     let result = await SecureStore.getItemAsync(key);
     if (result) {
       setInitRoute("Key")
+      
     } else {
       setInitRoute("Home")
     }
