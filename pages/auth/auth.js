@@ -254,7 +254,7 @@ export const Auth = ({ navigation }) => {
   
     return (
       <>
-      <View style={Styling.container}>
+      <View style={{...Styling.container, backgroundColor: 'black'}}>
   
         <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
   

@@ -6,44 +6,39 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
+import { CommonActions } from '@react-navigation/native';
 import { Navbar } from '../../components/Navbar';
 import { Styling, windowWidth, windowHeight, HeightRatio, WidthRatio } from '../../Styling';
 import { MainStateContext } from '../../App';
 import * as SecureStore from 'expo-secure-store';
 
+const resetActionAuth = CommonActions.reset({
+  index: 1,
+  routes: [{ name: 'Auth', params: {} }]
+});
+
 export const HomeScreen = ({ navigation }) => {
   const { mainState, setMainState } = useContext(MainStateContext);
 
   const [count, setCount] = useState(0);
-  // const [authState, setAuthState] = useState(false);
   const authState = useRef(false);
-  const [hasCosmicKey, setHasCosmicKey] = useState(false);
   const [displaySignUpModal, setDisplaySignUpModal] = useState(false);
-  const [displaySetUpCosmicKeyModal, setDisplaySetUpCosmicKeyModal] = useState(false);
   const [displayUsername, setDisplayUsername] = useState(false);
 
   const userID = useRef(null);
 
 
   const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-      variables: { id: userID.current }
+    variables: { id: userID.current }
   });
 
 
   async function getValueFor(key) {
     let result = await SecureStore.getItemAsync(key);
-    console.log("- - - -")
-    console.log(authState.current)
     if (result && authState) {
-      // setHasCosmicKey(true)
-      console.log("DISPLAY USER NAME")
       setDisplayUsername(true)
-    } else if (!result && authState.current) {
-      // setHasCosmicKey(false)
-      console.log("SET UP COSMIC KEY")
     } else if (!result && !authState.current) {
-      console.log("SIGN UP MODAL")
-
+      setDisplaySignUpModal(true)
     }
   }
 
@@ -54,7 +49,7 @@ export const HomeScreen = ({ navigation }) => {
       userID.current = mainState.current.userID;
       getValueFor('cosmicKey')
     }, 500)
-    
+
   }, [])
 
 
@@ -65,15 +60,6 @@ export const HomeScreen = ({ navigation }) => {
       setCount(0)
     }
   }, [count])
-
-//   setMainState({
-//     bearerToken: `${localBearerToken}`,
-//     userID: `${localUserID}`,
-//     authState: updatedLocalAuthState,
-//     initialKeyMoment: moment()                        
-// })
-
-
 
   return (
     <>
@@ -86,7 +72,7 @@ export const HomeScreen = ({ navigation }) => {
             style={{
               justifyContent: 'center',
               height: windowHeight
-            }}>          
+            }}>
 
             {/* BODY */}
             <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
@@ -94,8 +80,11 @@ export const HomeScreen = ({ navigation }) => {
               <SafeAreaView style={Styling.container}>
                 <ScrollView style={Styling.scrollView}>
                   {displayUsername &&
-                    <View style={{margin: 10}}>
-                      <Text style={{color: 'white', fontSize: 20}}>
+                    <View style={{ margin: 10 }}>
+                      <Text style={{ 
+                        color: 'white', 
+                        fontSize: 24, 
+                        fontWeight: 'bold' }}>
                         Welcome back {userByID?.user.username}!
                       </Text>
                     </View>
@@ -325,20 +314,54 @@ export const HomeScreen = ({ navigation }) => {
         </View>
         <Navbar nav={navigation} position={'absolute'} from={'home'} />
       </View>
-      {/* <StatusBar
-        barStyle="default"
-        hidden={false}
-        backgroundColor="transparent"
-        translucent={true}
-        networkActivityIndicatorVisible={true}
-      /> */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={displaySignUpModal}
+        onRequestClose={() => {
+          setDisplaySignUpModal(!displaySignUpModal);
+        }}
+      >
+        <View style={Styling.modal_centered_view}>
+          <View style={Styling.modal_view}>
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}>
+              Don't miss out on the opportunity to showcase your skills and 
+              compete with others by signing up or logging in to get your high 
+              score on the leaderboard!
+              </Text>
 
-      {/* <StatusBar
-              animated={true}
-              backgroundColor="transparent"
-              barStyle={'dark-content'}
-              showHideTransition={'none'}
-              hidden={false} /> */}
+              <TouchableOpacity
+                onPress={() => navigation.dispatch(resetActionAuth)}
+                style={{ ...Styling.modalWordButton, marginTop: 10 }}
+              >
+                <LinearGradient
+                  // Button Linear Gradient
+                  colors={['#aacc00', '#80b918']}
+                  style={Styling.modalWordButton}
+                >
+                  <Text
+                    style={{ ...Styling.modalWordButtonText, fontSize: 20, }}
+                    allowFontScaling={false}
+                  >
+                    Sign Up or Login
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => setDisplaySignUpModal(!displaySignUpModal)}>
+                <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>
+                  Close
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+
+
     </>
   );
 }

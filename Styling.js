@@ -116,16 +116,16 @@ export const Styling = StyleSheet.create({
 
   // MODAL STUFF
   modal_centered_view: {
-    // flex: 1,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: HeightRatio(-30)
+    // marginTop: HeightRatio(-30)
     // marginTop: 22,
   },
   modal_view: {
     margin: 20,
-    width: windowWidth - WidthRatio(400),
-    backgroundColor: "rgba(38, 178, 106, 0.90)",
+    width: windowWidth - WidthRatio(100),
+    backgroundColor: "rgba(0, 0, 0, 1.0)",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",

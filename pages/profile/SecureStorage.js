@@ -88,20 +88,20 @@ export const SecureStorage = () => {
   return (
     <>
       
-      <View style={{ ...Styling.container, marginTop: 20, backgroundColor: 'black', borderRadius: 40 }}>
-        <TouchableOpacity
-          onPress={() => setDisplayKeycode(current => !current)}>
-          <Text style={{ color: 'white', fontSize: 25, alignSelf: 'center', margin: 20 }}>
+      <View style={{ marginTop: 20, borderRadius: 40 }}>
+      <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center', margin: 20 }}>
             Set a Keycode for easy login!
           </Text>
-        </TouchableOpacity>
         {displaySetCode &&
-        <Text style={{ color: '#ffff00', fontSize: 25, alignSelf: 'center', margin: 20 }}>
+        <>
+        <Text style={{ color: '#ffff00', fontSize: 25, fontWeight: 'bold', alignSelf: 'center', margin: 10 }}>
           {combinedStringState}
         </Text>
+        <Text style={{ color: '#ffff00', fontSize: 25, fontWeight: 'bold', alignSelf: 'center', margin: 2 }}>
+          Saved!
+        </Text>
+        </>
         }
-        <>
-        {displayKeycode &&
         <>
           <View style={{ marginTop: 20, flexDirection: 'row', alignSelf: 'center' }}>
             {count > 0 ?
@@ -266,7 +266,7 @@ export const SecureStorage = () => {
             </View>
           </View>
 
-          <View>
+          {/* <View>
             <TouchableOpacity
               onPress={() => deleteKey('cosmicKey')}
               style={{backgroundColor: 'red'}}>
@@ -274,9 +274,7 @@ export const SecureStorage = () => {
                   DELETE KEY
                 </Text>
               </TouchableOpacity>
-          </View>
-          </>
-        }
+          </View> */}
         </>
       </View>
     </>

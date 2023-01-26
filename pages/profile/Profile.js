@@ -13,6 +13,7 @@ import { GET_USER_BY_ID } from '../../utils/queries';
 import { RecentGames } from '../game/RecentGames';
 import { Styling } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
+import * as SecureStore from 'expo-secure-store';
 import { MainStateContext } from '../../App';
 import {
     StyleSheet,
@@ -55,6 +56,15 @@ export const ProfileScreen = ({ navigation }) => {
     const [recentGamesOpen, setRecentGamesOpen] = useState(false);
     const [leaderBoardsOpen, setLeaderBoardsOpen] = useState(false);
     const [premiumOpen, setPremiumOpen] = useState(false);
+    const [displaySetUpCosmicKeyModal, setDisplaySetUpCosmicKeyModal] = useState(false);
+
+    const authState = useRef(false);
+    const userID = useRef(null);
+
+    const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
+        variables: { id: userID.current }
+    });
+
     
 
     const resetActionAuth = CommonActions.reset({
@@ -62,9 +72,28 @@ export const ProfileScreen = ({ navigation }) => {
         routes: [{ name: 'Auth', params: {} }]
     });
 
+    async function getValueFor(key) {
+        let result = await SecureStore.getItemAsync(key);
+        if (result && authState) {
+          return;
+        } else if (!result && authState.current) {
+          setDisplaySetUpCosmicKeyModal(true)
+        }
+      }
+    
+    
+      useEffect(() => {
+        setTimeout(() => {
+          authState.current = mainState.current.authState
+          userID.current = mainState.current.userID;
+          getValueFor('cosmicKey')
+        }, 500)
+    
+      }, [])
+
     return (
         <>
-            <View style={Styling.container}>
+            <View style={{...Styling.container, backgroundColor: 'black'}}>
 
                 <SafeAreaView style={Styling.profileContainer}>
                     <ScrollView style={Styling.profileScrollView}>
@@ -135,7 +164,7 @@ export const ProfileScreen = ({ navigation }) => {
                                         }
                                         <View style={Styling.profileDivisionLine}></View>
 
-                                        <SecureStorage />
+                                        
                                         <TouchableOpacity
                                             onPress={() => {
                                                 setMainState({
@@ -172,6 +201,31 @@ export const ProfileScreen = ({ navigation }) => {
                 <Navbar nav={navigation} auth={mainState.current.authState} position={'absolute'} from={'profile'} />
 
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={displaySetUpCosmicKeyModal}
+                onRequestClose={() => {
+                setDisplaySetUpCosmicKeyModal(!displaySetUpCosmicKeyModal);
+                }}
+            >
+                <View style={Styling.modal_centered_view}>
+                <View style={Styling.modal_view}>
+                    <View style={{ flexDirection: 'column' }}>
+                    
+                    <SecureStorage />
+
+                    <TouchableOpacity
+                        onPress={() => setDisplaySetUpCosmicKeyModal(!displaySetUpCosmicKeyModal)}
+                        style={{marginTop: 20}}>
+                        <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>
+                            Close
+                        </Text>
+                    </TouchableOpacity>
+                    </View>
+                </View>
+                </View>
+            </Modal>
 
             <StatusBar
                 barStyle="default"

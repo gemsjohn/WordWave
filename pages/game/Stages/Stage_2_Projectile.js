@@ -1662,7 +1662,7 @@ export const Stage_2_Projectile = (props) => {
         ))}
 
         {/* STAGE TRANSITION MODAL */}
-        <Modal
+        {/* <Modal
           animationType="slide"
           transparent={true}
           visible={stageTransitionModalVisible}
@@ -1689,7 +1689,7 @@ export const Stage_2_Projectile = (props) => {
               </TouchableOpacity>
             </View>
           </View>
-        </Modal>
+        </Modal> */}
 
         {/* GAME OVER MODAL */}
         <Modal
