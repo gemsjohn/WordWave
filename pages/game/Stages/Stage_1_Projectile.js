@@ -70,6 +70,7 @@ export const Stage_1_Projectile = (props) => {
   const scoreFlash_100 = useRef(false);
   const scoreFlash_1000 = useRef(false);
   const level = useRef(0);
+  const [recordLevel, setRecordLevel] = useState(0);
   const [stageTransitionModalVisible, setStageTransitionModalVisible] = useState(false);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
@@ -694,7 +695,7 @@ export const Stage_1_Projectile = (props) => {
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
-        endGame({ continue: false, local: "b", crashes: 0, score: 0, level: 0 });
+        endGame({ continue: false, local: "b", crashes: 0, score: 0, level: level.current });
       }
     }, 200);
   }, [crashes.current, level.current])
@@ -908,9 +909,14 @@ export const Stage_1_Projectile = (props) => {
     } else {
 
       if (input.local == "b") {
+        let localLevel = input.level + 1;
+        console.log("END GAME")
+        console.log(localLevel)
+        setRecordLevel(localLevel)
         setTimeout(() => {
           setHasGameBeenStarted(false);
           setGameOverModalVisible(true)
+          
           setMainState({ upgradeToSpecial_0: false })
 
         }, 100);
@@ -1265,36 +1271,6 @@ export const Stage_1_Projectile = (props) => {
           </View>
         ))}
 
-        {/* STAGE TRANSITION MODAL */}
-        {/* <Modal
-          animationType="slide"
-          transparent={true}
-          visible={stageTransitionModalVisible}
-          onRequestClose={() => {
-            setStageTransitionModalVisible(!stageTransitionModalVisible);
-            isGameInProgress.current = false;
-          }}
-        >
-          <View style={Styling.modal_centered_view}>
-            <View style={Styling.modal_view}>
-              <Text style={Styling.modal_text}>Stage 1 Complete</Text>
-              <View style={{ margin: HeightRatio(20) }}>
-                <Text style={Styling.modal_text_style}>Select Next to proceed.</Text>
-              </View>
-              <TouchableOpacity
-                style={[Styling.modal_button]}
-                onPress={() => {
-                  setStageTransitionModalVisible(!stageTransitionModalVisible);
-                  // setDisplayPlaybutton(true); 
-
-                }}
-              >
-                <Text style={Styling.modal_text_style}>Next</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal> */}
-
         {/* GAME OVER MODAL */}
 
         <Modal
@@ -1316,9 +1292,103 @@ export const Stage_1_Projectile = (props) => {
             }, 500)
           }}
         >
+          <View style={Styling.modal_centered_view}>
+            <View style={Styling.modal_view}>
+              <View style={{ flexDirection: 'column' }}>
+                <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
+                GAME OVER
+                </Text>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{
+                    margin: 20, 
+                    alignSelf: 'center', 
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: 20,
+                    width: windowWidth/4,
+                    height: windowWidth/5
+                  }}>
+                    <Text style={Styling.modal_text_style}>Score: {score.current}</Text>
+                    <Text style={Styling.modal_text_style}>Stage: 1</Text>
+                    <Text style={Styling.modal_text_style}>Level: {recordLevel}</Text>
+                  </View>
+                  <View style={{margin: 20, alignSelf: 'center'}}/>
+                  <View style={{
+                    margin: 20, 
+                    alignSelf: 'center', 
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: 20,
+                    width: windowWidth/4,
+                    height: windowWidth/5
+                  }}>
+                    <Text style={{
+                      ...Styling.modal_text_style, 
+                      alignSelf: 'center',
+                      color: 'yellow'
+                    }}>
+                      CONTINUE?
+                    </Text>
+                    <Text style={{
+                      ...Styling.modal_text_style, 
+                      alignSelf: 'center',
+                      fontSize: 20,
+                      color: 'white',
+                      marginTop: 4
+                    }}>
+                      USE TOKEN
+                    </Text>
+                    <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+                    <TouchableOpacity
+                      onPress={() => console.log("YES")}
+                      style={{backgroundColor: '#05b636', padding: 10, margin: 10, borderRadius: 20}}>
+                      <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>
+                        YES
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => console.log("NO")}
+                      style={{backgroundColor: '#f8200d', padding: 10, margin: 10, borderRadius: 20}}>
+                      <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>
+                        NO
+                      </Text>
+                    </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  onPress={() => props.nav.dispatch(resetActionHome)}>
+                  <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        {/* <Modal
+          animationType="slide"
+          transparent={true}
+          visible={gameOverModalVisible}
+          onRequestClose={() => {
+            setMainState({
+              stage1: true,
+              stage2: false,
+              stage3: false,
+              currentScore: 0,
+              currentLevel: 0,
+              currentCrashes: 0
+            })
+            setTimeout(() => {
+              setGameOverModalVisible(!gameOverModalVisible);
+              isGameInProgress.current = false;
+            }, 500)
+          }}
+        >
           <View style={{ ...Styling.modal_centered_view }}>
             <TouchableOpacity
-              style={{ top: HeightRatio(-40) }}
+              style={{  }}
               onPress={() => {
                 props.nav.dispatch(resetActionHome);
               }}
@@ -1341,7 +1411,7 @@ export const Stage_1_Projectile = (props) => {
                 style={{ height: HeightRatio(1000), width: HeightRatio(940) }} />
             </TouchableOpacity>
           </View>
-        </Modal>
+        </Modal> */}
       </>
     </View>
   );
