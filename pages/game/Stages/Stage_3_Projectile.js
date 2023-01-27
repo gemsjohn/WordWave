@@ -85,7 +85,7 @@ export const Stage_3_Projectile = (props) => {
   const hideCrashesUntilUpdate = useRef(false);
   const skullPlaceholder = useRef(3)
   const skullMoneyPlaceholder = useRef(2)
-
+  const [tokenWarning, setTokenWarning] = useState(false);
   const score = useRef(mainState.current.currentScore);
   const [recordedScore, setRecordedScore] = useState(0);
   const scoreFlash_100 = useRef(false);
@@ -118,13 +118,6 @@ export const Stage_3_Projectile = (props) => {
   const obstacleRotation_1 = useRef(new Animated.Value(0)).current;
   const obstacle_1 = useRef(null)
   let timeoutObstacle_1_ID;
-
-  // [OBSTACLE ANIMATION LARGE] - - - - - 
-  const hasUpdatedObstacle_large = useRef(false);
-  const obstaclePosition_large = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
-  const obstacleRotation_large = useRef(new Animated.Value(0)).current;
-  const obstacle_large = useRef(null)
-  let timeoutObstacle_Large_ID;
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
   const hasUpdatedObstacle_right_angle_0 = useRef(false);
@@ -193,14 +186,6 @@ export const Stage_3_Projectile = (props) => {
     inputRange: [0, 1],
     outputRange: [0.0, 1.0]
   });
-  // const boxInterpolation_twins_0_a = obstacleOpacity_twins_0.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: [0.5, 1.0]
-  // });
-  // const boxInterpolation_twins_0_b = obstacleOpacity_twins_0.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: [1.0, 0.5]
-  // });
   const boxInterpolation_twins_1_a = obstacleOpacity_twins_1.interpolate({
     inputRange: [0, 1],
     outputRange: [0.5, 1.0]
@@ -231,7 +216,13 @@ export const Stage_3_Projectile = (props) => {
     // Return a function that cleans up the effect
     return () => {
       console.log("UNMOUNTED_INNER")
-      endGame({ continue: false, local: "c", crashes: 0, score: 0, level: 0 });
+      endGame({
+        continue: false,
+        local: "c",
+        crashes: 0,
+        score: 0,
+        level: 0,
+      });
       clearTimeout(timeoutId);
     };
   }, []);
@@ -311,11 +302,9 @@ export const Stage_3_Projectile = (props) => {
             if (mainState.current.currentCrashes >= 2) {
               runAuxilliaryGreenHealth();
             }
-
             if (level.current >= 0) {
               letterAnimation();
               runObstacleAnimation_opacity_bot()
-
             }
 
             if (level.current >= 1) {
@@ -325,7 +314,6 @@ export const Stage_3_Projectile = (props) => {
 
             if (level.current >= 2) {
               runObstacleAnimation_right_angle_0();
-              // runUpgradeToSpecial_0();
             }
 
             if (level.current >= 3) {
@@ -343,7 +331,6 @@ export const Stage_3_Projectile = (props) => {
   const letterAnimation = () => {
     if (isGameInProgress.current) {
       hasUpdatedLetterBlock.current = false;
-
       countRef.current = count._value;
       if (mainState.current.currentLetter_countValue != null && !updatedPostResume.current) {
         count.setValue(mainState.current.currentLetter_countValue);
@@ -474,7 +461,6 @@ export const Stage_3_Projectile = (props) => {
       return;
     }
   };
-
 
   const runObstacleAnimation_right_angle_0 = () => {
     if (isGameInProgress.current) {
@@ -900,9 +886,6 @@ export const Stage_3_Projectile = (props) => {
     }
   };
 
-  
-
-
   const [obj1, setObj1] = useState({
     x: 0,
     y: 0,
@@ -910,7 +893,6 @@ export const Stage_3_Projectile = (props) => {
     height: 0,
     radius: 0
   });
-
 
   useEffect(() => {
 
@@ -1087,7 +1069,6 @@ export const Stage_3_Projectile = (props) => {
         }
         obstacle_opacity_bot.current.reset()
       }
-
     });
 
     // AuxilliaryGreenHealth
@@ -1230,7 +1211,7 @@ export const Stage_3_Projectile = (props) => {
       currentLetter_countValue: countRef.current
     })
 
-    if (level.current >= 0) {
+    if (level.current >= 0 && animation.current != null && obstacle_opacity_bot.current != null) {
       animation.current.stop();
       obstacle_opacity_bot.current.stop();
       letterPosition.setValue({ x: 1000, y: 0 })
@@ -1246,7 +1227,6 @@ export const Stage_3_Projectile = (props) => {
       }
     }
 
-
     if (level.current >= 1 && obstacle_0.current != null && obstacle_1.current != null) {
       obstacle_0.current.stop();
       obstacle_1.current.stop();
@@ -1254,7 +1234,6 @@ export const Stage_3_Projectile = (props) => {
       obstaclePosition_1.setValue({ x: 1000, y: 0 })
       hasUpdatedObstacle_0.current = false;
       hasUpdatedObstacle_1.current = false;
-
     }
     if (level.current >= 1 && obstacle_twins_1.current != null) {
       obstacle_twins_1.current.stop();
@@ -1267,18 +1246,12 @@ export const Stage_3_Projectile = (props) => {
       obstacle_right_angle_0.current.stop();
       obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
-
-      // upgradeToSpecial_0.current.stop();
-      // upgradeToSpecial_0_Position.setValue({ x: 1000, y: 0 })
-      // hasUpdatedUpgradeToSpecial_0.current = false;
-
     }
 
     if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
       obstacle_right_angle_1.current.stop();
       obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
-    
     }
 
     setIsPaused(true)
@@ -1296,27 +1269,26 @@ export const Stage_3_Projectile = (props) => {
       pauseTimeout.current = true;
       isGameInProgress.current = true;
 
-      if (level.current >= 0) {
+      if (mainState.current.currentLevel >= 0) {
         letterAnimation();
         runObstacleAnimation_opacity_bot()
 
       }
 
-      if (level.current >= 1) {
+      if (mainState.current.currentLevel >= 1) {
         runObstacleAnimation_1();
         runObstacleAnimation_0();
       }
 
-      if (level.current >= 2) {
+      if (mainState.current.currentLevel >= 2) {
         runObstacleAnimation_right_angle_0();
         // runUpgradeToSpecial_0();
       }
 
-      if (level.current >= 3) {
+      if (mainState.current.currentLevel >= 3) {
         runObstacleAnimation_right_angle_1();
       }
 
-      
       setTimeout(() => {
         pauseTimeout.current = false;
         setResumeSelected(false)
@@ -1324,7 +1296,16 @@ export const Stage_3_Projectile = (props) => {
       }, 15000)
     }, 500)
 
+  }
 
+  const insertToken = () => {
+
+    if (userByID?.user.tokens > 0) {
+      setGameOverModalVisible(!gameOverModalVisible);
+      continueGame();
+    } else {
+      setTokenWarning(true)
+    }
   }
 
   const continueGame = () => {
@@ -1355,23 +1336,22 @@ export const Stage_3_Projectile = (props) => {
     isGameInProgress.current = true;
     setHasGameBeenStarted(true)
 
-    if (level.current >= 0) {
+    if (mainState.current.currentLevel >= 0) {
       letterAnimation();
       runObstacleAnimation_opacity_bot()
 
     }
 
-    if (level.current >= 1) {
+    if (mainState.current.currentLevel >= 1) {
       runObstacleAnimation_1();
       runObstacleAnimation_0();
     }
 
-    if (level.current >= 2) {
+    if (mainState.current.currentLevel >= 2) {
       runObstacleAnimation_right_angle_0();
-      // runUpgradeToSpecial_0();
     }
 
-    if (level.current >= 3) {
+    if (mainState.current.currentLevel >= 3) {
       runObstacleAnimation_right_angle_1();
     }
   }
@@ -1383,8 +1363,7 @@ export const Stage_3_Projectile = (props) => {
   const endGame = (input) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
-    // if (input.local != "c") {
-    if (level.current >= 0) {
+    if (level.current >= 0 && animation.current != null && obstacle_opacity_bot.current != null) {
       animation.current.stop();
       obstacle_opacity_bot.current.stop();
       letterPosition.setValue({ x: 1000, y: 0 })
@@ -1399,7 +1378,6 @@ export const Stage_3_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
       }
     }
-
 
     if (level.current >= 1 && obstacle_0.current != null && obstacle_1.current != null) {
       obstacle_0.current.stop();
@@ -1421,18 +1399,12 @@ export const Stage_3_Projectile = (props) => {
       obstacle_right_angle_0.current.stop();
       obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
-
-      // upgradeToSpecial_0.current.stop();
-      // upgradeToSpecial_0_Position.setValue({ x: 1000, y: 0 })
-      // hasUpdatedUpgradeToSpecial_0.current = false;
-
     }
 
     if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
       obstacle_right_angle_1.current.stop();
       obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
-    
     }
 
     // [HANDLE GAME RESTART]
@@ -1803,6 +1775,7 @@ export const Stage_3_Projectile = (props) => {
             source={require('../../../assets/projectile_red_ufo.png')}
             style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
+
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
             transform: [
@@ -1961,7 +1934,6 @@ export const Stage_3_Projectile = (props) => {
           </View>
         }
 
-
         {/* SKULLS */}
         {Array.from(Array(skullPlaceholder.current).keys()).map((n, i) => (
           <View style={{
@@ -2018,36 +1990,37 @@ export const Stage_3_Projectile = (props) => {
           <View style={Styling.modal_centered_view}>
             <View style={Styling.modal_view}>
               <View style={{ flexDirection: 'column' }}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
-                  GAME OVER
-                </Text>
-                <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
-                  Tokens: {userByID?.user.tokens}
-                </Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                  <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
+                    GAME OVER
+                  </Text>
+                  <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
+                    Tokens: {userByID?.user.tokens}
+                  </Text>
                 </View>
-                
-                <View style={{flexDirection: 'row'}}>
+
+                <View style={{ flexDirection: 'row' }}>
                   <View style={{
-                    margin: 20, 
-                    alignSelf: 'center', 
+                    margin: 20,
+                    alignSelf: 'center',
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     padding: 20,
-                    width: windowWidth/4,
-                    height: windowWidth/4
+                    width: windowWidth / 4,
+                    height: windowWidth / 4
                   }}>
                     <Text style={Styling.modal_text_style}>Score: {recordedScore}</Text>
-                    <Text style={Styling.modal_text_style}>Stage: 3</Text>
+                    <Text style={Styling.modal_text_style}>Stage: 1</Text>
                     <Text style={Styling.modal_text_style}>Level: {recordedLevel}</Text>
                   </View>
-                  <View style={{margin: 20, alignSelf: 'center'}}/>
+                  <View style={{ margin: 20, alignSelf: 'center' }} />
+                  {!tokenWarning ?
                   <View style={{
                     margin: 20, 
                     alignSelf: 'center', 
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     padding: 20,
-                    width: windowWidth/4,
-                    height: windowWidth/4
+                    width: windowWidth / 4,
+                    height: windowWidth / 4
                   }}>
                     <Text style={{
                       ...Styling.modal_text_style, 
@@ -2065,21 +2038,38 @@ export const Stage_3_Projectile = (props) => {
                     }}>
                       USE TOKEN
                     </Text>
-                    <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+                    <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
                     <TouchableOpacity
                       onPress={() => {
-                        setGameOverModalVisible(!gameOverModalVisible); 
                         setTimeout(() => {
-                          continueGame();
+                          insertToken();
                         }, 500)
-                        }}
-                      style={{backgroundColor: '#05b636', padding: 20, margin: 10, borderRadius: 10}}>
+                      }}
+                      style={{ backgroundColor: '#05b636', padding: 20, margin: 10, borderRadius: 10 }}>
                       <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>
                         YES
                       </Text>
                     </TouchableOpacity>
                     </View>
                   </View>
+                  :
+                  <View style={{
+                    margin: 20,
+                    alignSelf: 'center',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: 20,
+                    width: windowWidth / 4,
+                    height: windowWidth / 4
+                  }}>
+                    <Text style={{
+                      ...Styling.modal_text_style,
+                      alignSelf: 'center',
+                      color: 'red'
+                    }}>
+                      Unfortunately, you have run out of tokens!
+                    </Text>
+                  </View>
+                  }
                 </View>
 
                 <TouchableOpacity

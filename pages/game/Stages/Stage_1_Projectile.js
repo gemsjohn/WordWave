@@ -903,7 +903,7 @@ export const Stage_1_Projectile = (props) => {
   const endGame = (input) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
-    
+
     if (level.current >= 0 && animation.current != null && obstacle_0.current != null) {
       animation.current.stop();
       obstacle_0.current.stop();
@@ -1467,8 +1467,6 @@ export const Stage_1_Projectile = (props) => {
                     <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
                       <TouchableOpacity
                         onPress={() => {
-                          // setGameOverModalVisible(!gameOverModalVisible); 
-                          // continueGame();
                           setTimeout(() => {
                             insertToken();
                           }, 500)
