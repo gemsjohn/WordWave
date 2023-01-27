@@ -15,6 +15,7 @@ import {
 import { shuffle } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../../utils/queries';
+import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT } from '../../../utils/mutations';
 import { MainStateContext } from '../../../App';
 import {
   isLetterBlockColliding,
@@ -45,6 +46,14 @@ export const Stage_1_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
   const { mainState, setMainState } = useContext(MainStateContext);
   const userID = useRef(null);
+
+  // APOLLO MUTATIONS
+  const [updateMaxScoreAndStage] = useMutation(UPDATE_MAX_SCORE_AND_STAGE);
+  const [updateTokenCount] = useMutation(UPDATE_TOKEN_COUNT);
+
+  
+
+  
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
@@ -840,9 +849,16 @@ export const Stage_1_Projectile = (props) => {
 
   }
 
-  const insertToken = () => {
-
+  const insertToken = async () => {
+    
     if (userByID?.user.tokens > 0) {
+      await updateTokenCount({
+        variables: {
+          remove: "true",
+          add: "false",
+          amount: "0"
+        }
+      });
       setGameOverModalVisible(!gameOverModalVisible);
       continueGame();
     } else {
@@ -900,7 +916,7 @@ export const Stage_1_Projectile = (props) => {
   // input.local "a" represents a continuance of gameplay
   // input.local "b" represents a loss of game
   // input.local "c" represents the user navigating away from the game
-  const endGame = (input) => {
+  const endGame = async (input) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
 
@@ -942,7 +958,7 @@ export const Stage_1_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
       
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
@@ -1021,8 +1037,16 @@ export const Stage_1_Projectile = (props) => {
           currentLetter_countValue: input.letter_countValue
         })
 
+        await updateMaxScoreAndStage({
+          variables: {
+            maxstage: '1',
+            highscore: `${input.score}`
+          }
+        });
+
         setTimeout(() => {
           // setHasGameBeenStarted(false);
+          refetch();
           setGameOverModalVisible(true)
 
         }, 100);

@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 
 
 export const GET_ME = gql`
-  query Query {
+  query Me {
     me {
       _id
       role
@@ -18,6 +18,8 @@ export const GET_ME = gql`
         stage
         date
       }
+      maxstage
+      highscore
       tokens
       resetToken
       resetTokenExpiry
@@ -26,7 +28,7 @@ export const GET_ME = gql`
 `;
 
 export const GET_USER_BY_ID = gql`
-  query Query($id: ID!) {
+  query User($id: ID!) {
     user(_id: $id) {
       _id
       role
@@ -41,6 +43,8 @@ export const GET_USER_BY_ID = gql`
         stage
         date
       }
+      maxstage
+      highscore
       tokens
       resetToken
       resetTokenExpiry
@@ -49,7 +53,7 @@ export const GET_USER_BY_ID = gql`
 `;
 
 export const GET_USERS = gql`
-  query Query($echo: String) {
+  query Users($echo: String) {
     users(echo: $echo) {
       _id
       role
@@ -64,6 +68,8 @@ export const GET_USERS = gql`
         stage
         date
       }
+      maxstage
+      highscore
       tokens
       resetToken
       resetTokenExpiry
@@ -72,7 +78,7 @@ export const GET_USERS = gql`
 `;
 
 export const GET_USERS_SEARCH = gql`
-  query Query($search: String, $echo: String) {
+  query GetUsers($search: String, $echo: String) {
     getUsers(search: $search, echo: $echo) {
       users {
         _id
@@ -88,6 +94,8 @@ export const GET_USERS_SEARCH = gql`
           stage
           date
         }
+        maxstage
+        highscore
         tokens
         resetToken
         resetTokenExpiry
@@ -97,7 +105,7 @@ export const GET_USERS_SEARCH = gql`
 `;
 
 export const GAMES = gql`
-  query Query($echo: String) {
+  query Games($echo: String) {
     games(echo: $echo) {
       _id
       userid
@@ -110,7 +118,7 @@ export const GAMES = gql`
 `;
 
 export const LEADERBOARD = gql`
-  query Query {
+  query LeaderBoard {
     leaderBoard {
       id
       username

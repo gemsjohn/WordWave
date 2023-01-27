@@ -18,6 +18,8 @@ export const LOGIN_USER = gql`
           stage
           date
         }
+        maxstage
+        highscore
         tokens
         resetToken
         resetTokenExpiry
@@ -27,7 +29,7 @@ export const LOGIN_USER = gql`
 `;
 
 export const UPDATE_USER_PASSWORD = gql`
-  mutation UpdateUserPassword($password: String) {
+  mutation Mutation($password: String) {
     updateUserPassword(password: $password) {
       _id
       role
@@ -42,6 +44,8 @@ export const UPDATE_USER_PASSWORD = gql`
         stage
         date
       }
+      maxstage
+      highscore
       tokens
       resetToken
       resetTokenExpiry
@@ -50,7 +54,7 @@ export const UPDATE_USER_PASSWORD = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation UpdateUser($username: String, $email: String, $profilepicture: String) {
+  mutation Mutation($username: String, $email: String, $profilepicture: String) {
     updateUser(username: $username, email: $email, profilepicture: $profilepicture) {
       _id
       role
@@ -65,6 +69,8 @@ export const UPDATE_USER = gql`
         stage
         date
       }
+      maxstage
+      highscore
       tokens
       resetToken
       resetTokenExpiry
@@ -73,7 +79,7 @@ export const UPDATE_USER = gql`
 `;
 
 export const REQUEST_RESET = gql`
-  mutation RequestReset($email: String) {
+  mutation Mutation($email: String) {
     requestReset(email: $email) {
       _id
       role
@@ -88,6 +94,8 @@ export const REQUEST_RESET = gql`
         stage
         date
       }
+      maxstage
+      highscore
       tokens
       resetToken
       resetTokenExpiry
@@ -96,7 +104,7 @@ export const REQUEST_RESET = gql`
 `;
 
 export const RESET_PASSWORD = gql`
-  mutation ResetPassword($email: String, $password: String, $confirmPassword: String, $resetToken: String) {
+  mutation Mutation($email: String, $password: String, $confirmPassword: String, $resetToken: String) {
     resetPassword(email: $email, password: $password, confirmPassword: $confirmPassword, resetToken: $resetToken) {
       _id
       role
@@ -111,6 +119,8 @@ export const RESET_PASSWORD = gql`
         stage
         date
       }
+      maxstage
+      highscore
       tokens
       resetToken
       resetTokenExpiry
@@ -119,7 +129,7 @@ export const RESET_PASSWORD = gql`
 `;
 
 export const ADD_USER = gql`
-  mutation AddUser($username: String!, $email: String!, $password: String!, $role: [String!], $profilepicture: String, $tokens: String) {
+  mutation Mutation($username: String!, $email: String!, $password: String!, $role: [String!], $profilepicture: String, $tokens: String) {
     addUser(username: $username, email: $email, password: $password, role: $role, profilepicture: $profilepicture, tokens: $tokens) {
       token
       user {
@@ -136,6 +146,8 @@ export const ADD_USER = gql`
           stage
           date
         }
+        maxstage
+        highscore
         tokens
         resetToken
         resetTokenExpiry
@@ -145,7 +157,7 @@ export const ADD_USER = gql`
 `;
 
 export const DELETE_USER = gql`
-  mutation DeleteUser($deleteUserId: ID!, $echo: String) {
+  mutation Mutation($deleteUserId: ID!, $echo: String) {
     deleteUser(id: $deleteUserId, echo: $echo)
   }
 `;
@@ -165,6 +177,56 @@ export const ADD_GAME = gql`
 export const DELETE_GAME = gql`
   mutation DeleteGame($deleteGameId: ID!, $echo: String) {
     deleteGame(id: $deleteGameId, echo: $echo)
+  }
+`;
+
+export const UPDATE_MAX_SCORE_AND_STAGE = gql`
+  mutation Mutation($maxstage: String, $highscore: String) {
+  updateMaxScoreAndStage(maxstage: $maxstage, highscore: $highscore) {
+    _id
+    role
+    username
+    email
+    profilepicture
+    games {
+      _id
+      userid
+      username
+      score
+      stage
+      date
+    }
+    maxstage
+    highscore
+    tokens
+    resetToken
+    resetTokenExpiry
+  }
+}
+`;
+
+export const UPDATE_TOKEN_COUNT = gql`
+  mutation Mutation($remove: String, $add: String, $amount: String) {
+    updateTokenCount(remove: $remove, add: $add, amount: $amount) {
+      _id
+      role
+      username
+      email
+      profilepicture
+      games {
+        _id
+        userid
+        username
+        score
+        stage
+        date
+      }
+      maxstage
+      highscore
+      tokens
+      resetToken
+      resetTokenExpiry
+    }
   }
 `;
 
