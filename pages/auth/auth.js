@@ -264,7 +264,6 @@ export const Auth = ({ navigation }) => {
               height: '100%'
             }}>
         <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
-  
           <ScrollView style={{}} keyboardShouldPersistTaps={'always'} keyboardDismissMode="on-drag">
             
             {!isTokenValid &&

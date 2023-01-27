@@ -132,9 +132,9 @@ export const Styling = StyleSheet.create({
   },
   modal_view: {
     margin: 20,
-    width: windowWidth - WidthRatio(100),
+    width: '100%',
     backgroundColor: "rgba(0, 0, 0, 1.0)",
-    borderRadius: 20,
+    // borderRadius: 20,
     padding: 35,
     alignItems: "center",
     shadowColor: "#c5ffff",

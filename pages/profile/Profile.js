@@ -1,12 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState, useContext, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
 import { CommonActions } from '@react-navigation/native';
-// import { SettingsModal from './Settings';
-import { Picker } from '@react-native-picker/picker'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserDetails } from './UserDetails';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
@@ -16,34 +11,19 @@ import { Navbar } from '../../components/Navbar';
 import * as SecureStore from 'expo-secure-store';
 import { MainStateContext } from '../../App';
 import {
-    StyleSheet,
     Text,
     TouchableOpacity,
     View,
     Dimensions,
-    Pressable,
-    TextInput,
-    ActivityIndicator,
     Modal,
     SafeAreaView,
     ScrollView,
-    Button,
-    Image,
     ImageBackground
 } from 'react-native';
 import {
     faSolid,
-    faX,
-    faClock,
-    faCheck,
-    faGift,
     faFlagCheckered,
-    faCaretDown,
-    faUser,
-    faGear,
     faSliders,
-    faStar,
-    faTrophy
 } from '@fortawesome/free-solid-svg-icons'
 import { SecureStorage } from './SecureStorage';
 
@@ -108,8 +88,8 @@ export const ProfileScreen = ({ navigation }) => {
               justifyContent: 'center',
               height: '100%'
             }}>
-                    <SafeAreaView style={Styling.profileContainer}>
-                        <ScrollView style={Styling.profileScrollView}>
+                    <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
+                        <ScrollView style={{}}>
                             <View style={{}}>
                                 {/* Buttons */}
                                 {mainState.current.authState &&

@@ -98,7 +98,7 @@ export default function App() {
           options={{
           animationEnabled: false,
           headerShown: false,
-          orientation: 'portait_up'
+          orientation: 'portrait_up'
         }}
         />
         <Stack.Screen
