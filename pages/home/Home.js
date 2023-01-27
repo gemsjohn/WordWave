@@ -82,7 +82,7 @@ export const HomeScreen = ({ navigation }) => {
             }}>
 
             {/* BODY */}
-            <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
+            {/* <View style={{ alignSelf: 'center', flexDirection: 'column' }}> */}
 
               <SafeAreaView style={Styling.container}>
                 <ScrollView style={Styling.scrollView}>
@@ -321,7 +321,7 @@ export const HomeScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
 
-            </View>
+            {/* </View> */}
           </ImageBackground>
         </View>
         <Navbar nav={navigation} position={'absolute'} from={'home'} />

@@ -813,33 +813,33 @@ export const Stage_1_Projectile = (props) => {
     // console.log(mainState.current.currentDisplayLetters)
     // console.log(mainState.current.currentLetter_countValue)
     // console.log("- - - - - -")
-
-    setIsPaused(false)
-    isGameInProgress.current = true;
-
-
-    if (mainState.current.currentLevel >= 0) {
-      letterAnimation();
-      runObstacleAnimation_0();
-    }
-
-    if (mainState.current.currentLevel >= 1) {
-      runObstacleAnimation_1();
-    }
-
-    if (mainState.current.currentLevel >= 2) {
-      runObstacleAnimation_right_angle_0();
-    }
-
-    if (mainState.current.currentLevel >= 3) {
-      runObstacleAnimation_right_angle_1();
-    }
-
-    pauseTimeout.current = true;
     setTimeout(() => {
-      pauseTimeout.current = false;
-    }, 15000)
+      setIsPaused(false)
+      isGameInProgress.current = true;
 
+
+      if (mainState.current.currentLevel >= 0) {
+        letterAnimation();
+        runObstacleAnimation_0();
+      }
+
+      if (mainState.current.currentLevel >= 1) {
+        runObstacleAnimation_1();
+      }
+
+      if (mainState.current.currentLevel >= 2) {
+        runObstacleAnimation_right_angle_0();
+      }
+
+      if (mainState.current.currentLevel >= 3) {
+        runObstacleAnimation_right_angle_1();
+      }
+
+      pauseTimeout.current = true;
+      setTimeout(() => {
+        pauseTimeout.current = false;
+      }, 15000)
+    }, 500)
 
   }
 
