@@ -41,8 +41,8 @@ export const GameScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(true);
-    const [stage2, setStage2] = useState(false);
+    const [stage1, setStage1] = useState(false);
+    const [stage2, setStage2] = useState(true);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
 
@@ -133,7 +133,7 @@ export const GameScreen = ({ navigation }) => {
             // if (mainState.current.stage4 != null) {
             //     setStage4(mainState.current.stage4);
             // }
-        }, 250)
+        }, 500)
 
 
     }, [])

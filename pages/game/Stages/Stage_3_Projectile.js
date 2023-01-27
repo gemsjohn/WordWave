@@ -75,6 +75,7 @@ export const Stage_3_Projectile = (props) => {
   const [isPaused, setIsPaused] = useState(false);
   const pauseTimeout = useRef(null);
   const updatedPostResume = useRef(null)
+  const [resumeSelected, setResumeSelected] = useState(false)
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
@@ -236,8 +237,8 @@ export const Stage_3_Projectile = (props) => {
   }, []);
 
   const Generate = (localPrevCrashes) => {
-    console.log("GENERATE")
-    console.log("crashes.current = " + crashes.current)
+    console.log("GENERATE - Stage 3")
+    console.log("score.current = " + score.current)
     setContinuousEndGameCall(false)
     clearTimeout(timeoutCallGenerateID);
     if (localPrevCrashes > 0) {
@@ -1209,7 +1210,7 @@ export const Stage_3_Projectile = (props) => {
     // console.log("PAUSE");
     // console.log("countRef.current")
     // console.log(countRef.current)
-    setIsPaused(true)
+
     isGameInProgress.current = false;
     updatedPostResume.current = false;
 
@@ -1280,37 +1281,48 @@ export const Stage_3_Projectile = (props) => {
     
     }
 
+    setIsPaused(true)
+    setResumeSelected(true)
+    setTimeout(() => {
+    setResumeSelected(false)
+    }, 500)
   }
 
   const resumeGame = () => {
-    setIsPaused(false)
-    isGameInProgress.current = true;
+    setResumeSelected(true)
 
-
-    if (level.current >= 0) {
-      letterAnimation();
-      runObstacleAnimation_opacity_bot()
-
-    }
-
-    if (level.current >= 1) {
-      runObstacleAnimation_1();
-      runObstacleAnimation_0();
-    }
-
-    if (level.current >= 2) {
-      runObstacleAnimation_right_angle_0();
-      // runUpgradeToSpecial_0();
-    }
-
-    if (level.current >= 3) {
-      runObstacleAnimation_right_angle_1();
-    }
-
-    pauseTimeout.current = true;
     setTimeout(() => {
-      pauseTimeout.current = false;
-    }, 15000)
+      setIsPaused(false)
+      pauseTimeout.current = true;
+      isGameInProgress.current = true;
+
+      if (level.current >= 0) {
+        letterAnimation();
+        runObstacleAnimation_opacity_bot()
+
+      }
+
+      if (level.current >= 1) {
+        runObstacleAnimation_1();
+        runObstacleAnimation_0();
+      }
+
+      if (level.current >= 2) {
+        runObstacleAnimation_right_angle_0();
+        // runUpgradeToSpecial_0();
+      }
+
+      if (level.current >= 3) {
+        runObstacleAnimation_right_angle_1();
+      }
+
+      
+      setTimeout(() => {
+        pauseTimeout.current = false;
+        setResumeSelected(false)
+
+      }, 15000)
+    }, 500)
 
 
   }
@@ -1441,6 +1453,12 @@ export const Stage_3_Projectile = (props) => {
         currentLetter_countValue: 0
       })
       if (input.level >= 4) {
+        setLetter('');
+        setRandomWord('');
+        wordPlusSeven.current = [];
+        setLetterPocket([]);
+        setDisplayLetters([]);
+
         // setTimeout(() => {
         //   score.current += 1000;
         //   scoreFlash_1000.current = true;
@@ -1481,8 +1499,23 @@ export const Stage_3_Projectile = (props) => {
       } else {
         let localLevel = input.level + 1;
         level.current = localLevel;
+
+        // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
+        setLetter('');
+        setRandomWord('');
+        wordPlusSeven.current = [];
         setLetterPocket([]);
         setDisplayLetters([]);
+        
+        setMainState({
+          currentScore: score.current,
+          currentLevel: level.current,
+          currentCrashes: input.crashes,
+          currentLetterPocket: [],
+          currentWordPlusSeven: [],
+          currentDisplayLetters: [],
+          currentLetter_countValue: 0
+        })
 
 
         timeoutCallGenerateID = setTimeout(() => {
@@ -1563,7 +1596,7 @@ export const Stage_3_Projectile = (props) => {
           :
           <>
             {/* [PAUSE / RESUME] */}
-            {isPaused ?
+            {isPaused && !resumeSelected ?
               <View style={{
                 position: 'absolute',
                 zIndex: -7,
@@ -1586,7 +1619,7 @@ export const Stage_3_Projectile = (props) => {
               </View>
               :
               <>
-                {!pauseTimeout.current ?
+                {!pauseTimeout.current && !resumeSelected ?
                   <View style={{
                     position: 'absolute',
                     zIndex: -7,

@@ -3,7 +3,7 @@ import React, {
   useRef,
   useEffect,
   useLayoutEffect,
-  useContext,
+  useContext
 } from 'react';
 import {
   Styling,
@@ -50,7 +50,6 @@ export const Stage_2_Projectile = (props) => {
   const { mainState, setMainState } = useContext(MainStateContext);
   const userID = useRef(null);
 
-
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
   const [prevWrongElements, setPrevWrongElements] = useState(0);
@@ -64,6 +63,7 @@ export const Stage_2_Projectile = (props) => {
   const [isPaused, setIsPaused] = useState(false);
   const pauseTimeout = useRef(null);
   const updatedPostResume = useRef(null)
+  const [resumeSelected, setResumeSelected] = useState(false)
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(true)
@@ -73,7 +73,7 @@ export const Stage_2_Projectile = (props) => {
   const hideCrashesUntilUpdate = useRef(false);
   const skullPlaceholder = useRef(3)
   const skullMoneyPlaceholder = useRef(2)
-
+  const [tokenWarning, setTokenWarning] = useState(false);
   const score = useRef(mainState.current.currentScore);
   const [recordedScore, setRecordedScore] = useState(0);
   const scoreFlash_100 = useRef(false);
@@ -194,7 +194,13 @@ export const Stage_2_Projectile = (props) => {
     // Return a function that cleans up the effect
     return () => {
       console.log("UNMOUNTED_INNER")
-      endGame({ continue: false, local: "c", crashes: 0, score: 0, level: 0 });
+      endGame({
+        continue: false,
+        local: "c",
+        crashes: 0,
+        score: 0,
+        level: 0,
+      });
       clearTimeout(timeoutId);
     };
   }, []);
@@ -302,7 +308,6 @@ export const Stage_2_Projectile = (props) => {
   const letterAnimation = () => {
     if (isGameInProgress.current) {
       hasUpdatedLetterBlock.current = false;
-
       countRef.current = count._value;
       if (mainState.current.currentLetter_countValue != null && !updatedPostResume.current) {
         count.setValue(mainState.current.currentLetter_countValue);
@@ -986,13 +991,8 @@ export const Stage_2_Projectile = (props) => {
           local: "a",
           crashes: crashes.current,
           score: score.current,
-          level: level.current,
-          letterPocket: [],
-          wordPlusSeven: [],
-          displayLetters: [],
-          letter_countValue: 0
+          level: level.current
         });
-
       }
     }
     if (letterPocket.length > 0 && isGameInProgress.current) {
@@ -1041,7 +1041,7 @@ export const Stage_2_Projectile = (props) => {
     // console.log("PAUSE");
     // console.log("countRef.current")
     // console.log(countRef.current)
-    setIsPaused(true)
+
     isGameInProgress.current = false;
     updatedPostResume.current = false;
 
@@ -1049,8 +1049,8 @@ export const Stage_2_Projectile = (props) => {
 
 
     setMainState({
-      stage1: true,
-      stage2: false,
+      stage1: false,
+      stage2: true,
       stage3: false,
       currentScore: score.current,
       currentLevel: level.current,
@@ -1061,7 +1061,7 @@ export const Stage_2_Projectile = (props) => {
       currentLetter_countValue: countRef.current
     })
 
-    if (level.current >= 0) {
+    if (level.current >= 0 && animation.current != null) {
       animation.current.stop();
       letterPosition.setValue({ x: 1000, y: 0 })
       hasUpdatedLetterBlock.current = false;
@@ -1109,37 +1109,55 @@ export const Stage_2_Projectile = (props) => {
       hasUpdatedObstacle_right_angle_1.current = false;
     }
 
+    setIsPaused(true)
+    setResumeSelected(true)
+    setTimeout(() => {
+    setResumeSelected(false)
+    }, 500)
   }
 
   const resumeGame = () => {
-    setIsPaused(false)
-    isGameInProgress.current = true;
+    setResumeSelected(true)
 
-
-    if (level.current >= 0) {
-      letterAnimation();
-      runObstacleAnimation_twins_1();
-
-    }
-
-    if (level.current >= 1) {
-      runObstacleAnimation_twins_0();
-    }
-
-    if (level.current >= 2) {
-      runObstacleAnimation_right_angle_0();
-    }
-
-    if (level.current >= 3) {
-      runObstacleAnimation_right_angle_1();
-    }
-
-    pauseTimeout.current = true;
     setTimeout(() => {
-      pauseTimeout.current = false;
-    }, 15000)
+      setIsPaused(false)
+      pauseTimeout.current = true;
+      isGameInProgress.current = true;
 
+      if (mainState.current.currentLevel >= 0) {
+        letterAnimation();
+        runObstacleAnimation_twins_1();
+      }
 
+      if (mainState.current.currentLevel >= 1) {
+        runObstacleAnimation_twins_0();
+      }
+
+      if (mainState.current.currentLevel >= 2) {
+        runObstacleAnimation_right_angle_0();
+      }
+
+      if (mainState.current.currentLevel >= 3) {
+        runObstacleAnimation_right_angle_1();
+      }
+
+      setTimeout(() => {
+        pauseTimeout.current = false;
+        setResumeSelected(false)
+
+      }, 15000)
+    }, 500)
+
+  }
+
+  const insertToken = () => {
+
+    if (userByID?.user.tokens > 0) {
+      setGameOverModalVisible(!gameOverModalVisible);
+      continueGame();
+    } else {
+      setTokenWarning(true)
+    }
   }
 
   const continueGame = () => {
@@ -1170,21 +1188,20 @@ export const Stage_2_Projectile = (props) => {
     isGameInProgress.current = true;
     setHasGameBeenStarted(true)
 
-    if (level.current >= 0) {
+    if (mainState.current.currentLevel >= 0) {
       letterAnimation();
       runObstacleAnimation_twins_1();
-
     }
 
-    if (level.current >= 1) {
+    if (mainState.current.currentLevel >= 1) {
       runObstacleAnimation_twins_0();
     }
 
-    if (level.current >= 2) {
+    if (mainState.current.currentLevel >= 2) {
       runObstacleAnimation_right_angle_0();
     }
 
-    if (level.current >= 3) {
+    if (mainState.current.currentLevel >= 3) {
       runObstacleAnimation_right_angle_1();
     }
   }
@@ -1197,7 +1214,7 @@ export const Stage_2_Projectile = (props) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
 
-    if (level.current >= 0) {
+    if (level.current >= 0 && animation.current != null) {
       animation.current.stop();
       letterPosition.setValue({ x: 1000, y: 0 })
       hasUpdatedLetterBlock.current = false;
@@ -1249,20 +1266,14 @@ export const Stage_2_Projectile = (props) => {
     if (input.continue) {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
-      // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
-      setLetter('');
-      setRandomWord('');
-
-      setMainState({
-        currentScore: score.current,
-        currentLevel: 0,
-        currentCrashes: input.crashes,
-        currentLetterPocket: [],
-        currentWordPlusSeven: [],
-        currentDisplayLetters: [],
-        currentLetter_countValue: 0
-      })
-      if (input.level >= 4) {
+      
+      if (input.level >= 0) {
+        setLetter('');
+        setRandomWord('');
+        wordPlusSeven.current = [];
+        setLetterPocket([]);
+        setDisplayLetters([]);
+        
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1271,13 +1282,15 @@ export const Stage_2_Projectile = (props) => {
           }, 1000)
         }, 501)
 
+        console.log("Score just before transition from 2 - 3:")
+        console.log(score.current)
         setTimeout(() => {
           setMainState({
             stage1: false,
             stage2: false,
             stage3: true,
             currentScore: score.current,
-            currentLevel: input.level,
+            currentLevel: 0,
             currentCrashes: input.crashes,
             currentLetterPocket: [],
             currentWordPlusSeven: [],
@@ -1290,9 +1303,23 @@ export const Stage_2_Projectile = (props) => {
       } else {
         let localLevel = input.level + 1;
         level.current = localLevel;
+
+        // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
+        setLetter('');
+        setRandomWord('');
+        wordPlusSeven.current = [];
         setLetterPocket([]);
         setDisplayLetters([]);
-
+        
+        setMainState({
+          currentScore: score.current,
+          currentLevel: level.current,
+          currentCrashes: input.crashes,
+          currentLetterPocket: [],
+          currentWordPlusSeven: [],
+          currentDisplayLetters: [],
+          currentLetter_countValue: 0
+        })
 
         timeoutCallGenerateID = setTimeout(() => {
           Generate(input.crashes)
@@ -1329,6 +1356,19 @@ export const Stage_2_Projectile = (props) => {
       } else if (input.local == "c") {
         // setHasGameBeenStarted(false);
         setContinuousEndGameCall(true)
+
+        // setMainState({
+        //   stage1: null,
+        //   stage2: null,
+        //   stage3: null,
+        //   currentScore: 0,
+        //   currentLevel: 0,
+        //   currentCrashes: 0,
+        //   currentLetterPocket: [],
+        //   currentWordPlusSeven: [],
+        //   currentDisplayLetters: [],
+        //   currentLetter_countValue: 0
+        // })
 
         // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
         // - Letters
@@ -1372,7 +1412,7 @@ export const Stage_2_Projectile = (props) => {
           :
           <>
             {/* [PAUSE / RESUME] */}
-            {isPaused ?
+            {isPaused && !resumeSelected ?
               <View style={{
                 position: 'absolute',
                 zIndex: -7,
@@ -1395,7 +1435,7 @@ export const Stage_2_Projectile = (props) => {
               </View>
               :
               <>
-                {!pauseTimeout.current ?
+                {!pauseTimeout.current && !resumeSelected ?
                   <View style={{
                     position: 'absolute',
                     zIndex: -7,
@@ -1760,36 +1800,6 @@ export const Stage_2_Projectile = (props) => {
           </View>
         ))}
 
-        {/* STAGE TRANSITION MODAL */}
-        {/* <Modal
-          animationType="slide"
-          transparent={true}
-          visible={stageTransitionModalVisible}
-          onRequestClose={() => {
-            setStageTransitionModalVisible(!stageTransitionModalVisible);
-            isGameInProgress.current = false;
-          }}
-        >
-          <View style={Styling.modal_centered_view}>
-            <View style={Styling.modal_view}>
-              <Text style={Styling.modal_text}>Stage 1 Complete</Text>
-              <View style={{ margin: HeightRatio(20) }}>
-                <Text style={Styling.modal_text_style}>Select Next to proceed.</Text>
-              </View>
-              <TouchableOpacity
-                style={[Styling.modal_button]}
-                onPress={() => {
-                  setStageTransitionModalVisible(!stageTransitionModalVisible);
-                  // setDisplayPlaybutton(true); 
-
-                }}
-              >
-                <Text style={Styling.modal_text_style}>Next</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal> */}
-
         {/* GAME OVER MODAL */}
 
         <Modal
@@ -1837,6 +1847,7 @@ export const Stage_2_Projectile = (props) => {
                     <Text style={Styling.modal_text_style}>Level: {recordedLevel}</Text>
                   </View>
                   <View style={{ margin: 20, alignSelf: 'center' }} />
+                  {!tokenWarning ?
                   <View style={{
                     margin: 20,
                     alignSelf: 'center',
@@ -1864,9 +1875,10 @@ export const Stage_2_Projectile = (props) => {
                     <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
                       <TouchableOpacity
                         onPress={() => {
-                          setGameOverModalVisible(!gameOverModalVisible);
+                          // setGameOverModalVisible(!gameOverModalVisible); 
+                          // continueGame();
                           setTimeout(() => {
-                            continueGame();
+                            insertToken();
                           }, 500)
                         }}
                         style={{ backgroundColor: '#05b636', padding: 20, margin: 10, borderRadius: 10 }}>
@@ -1876,6 +1888,24 @@ export const Stage_2_Projectile = (props) => {
                       </TouchableOpacity>
                     </View>
                   </View>
+                  :
+                  <View style={{
+                    margin: 20,
+                    alignSelf: 'center',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: 20,
+                    width: windowWidth / 4,
+                    height: windowWidth / 4
+                  }}>
+                    <Text style={{
+                      ...Styling.modal_text_style,
+                      alignSelf: 'center',
+                      color: 'red'
+                    }}>
+                      Unfortunately, you have run out of tokens!
+                    </Text>
+                  </View>
+                  }
                 </View>
 
                 <TouchableOpacity
