@@ -1647,20 +1647,19 @@ export const Stage_3_Projectile = (props) => {
               <>
                 <View style={{
                   position: 'absolute',
-                  top: windowHeight - HeightRatio(160),
-                  left: WidthRatio(10),
-                  zIndex: -7, padding:
-                    HeightRatio(20),
-                  borderRadius: HeightRatio(20)
+                  zIndex: -7,
+                  top: windowHeight * 0.76,
+                  left: 20,
+                  backgroundColor: 'transparent',
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(40),
+                    fontSize: 30,
                     fontWeight: 'bold'
                   }}>Score:</Text>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(70),
+                    fontSize: 30,
                     fontWeight: 'bold'
                   }}>{score.current}</Text>
                 </View>
@@ -1697,20 +1696,19 @@ export const Stage_3_Projectile = (props) => {
               <>
                 <View style={{
                   position: 'absolute',
-                  top: windowHeight - HeightRatio(160),
-                  left: WidthRatio(10),
                   zIndex: -7,
-                  padding: HeightRatio(20),
-                  borderRadius: HeightRatio(20)
+                  top: windowHeight * 0.76,
+                  left: 20,
+                  backgroundColor: 'transparent',
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(40),
+                    fontSize: 30,
                     fontWeight: 'bold'
                   }}>Score:</Text>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(70),
+                    fontSize: 30,
                     fontWeight: 'bold'
                   }}>0</Text>
                 </View>
@@ -1922,12 +1920,12 @@ export const Stage_3_Projectile = (props) => {
           <>
             {Array.from(Array(crashes.current).keys()).map((n, i) => (
               <View style={{
-                width: 40, position: 'absolute', zIndex: 0, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(60) + (i * 50)),
-                height: 40,
-                borderRadius: 10,
+                position: 'absolute',
+                zIndex: -7,
+                top: windowHeight * 0.80,
+                left: (windowWidth / 2 + WidthRatio(80) + (i * 50)),
                 backgroundColor: 'transparent',
-                justifyContent: 'center',
-                alignItems: 'center'
+                width: HeightRatio(40)
               }}
                 key={i}
               >
@@ -1954,12 +1952,12 @@ export const Stage_3_Projectile = (props) => {
         {/* SKULLS */}
         {Array.from(Array(skullPlaceholder.current).keys()).map((n, i) => (
           <View style={{
-            width: 40, position: 'absolute', zIndex: -1, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(60) + (i * 50)),
-            height: 40,
-            borderRadius: 10,
+            position: 'absolute',
+            zIndex: -7,
+            top: windowHeight * 0.80,
+            left: (windowWidth / 2 + WidthRatio(80) + (i * 50)),
             backgroundColor: 'transparent',
-            justifyContent: 'center',
-            alignItems: 'center'
+            width: HeightRatio(40)
           }}
             key={i}
           >
@@ -1967,21 +1965,7 @@ export const Stage_3_Projectile = (props) => {
           </View>
         ))}
 
-        {/* SKULL MONEY */}
-        {Array.from(Array(skullMoneyPlaceholder.current).keys()).map((n, i) => (
-          <View style={{
-            width: 40, position: 'absolute', zIndex: -1, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(70) + ((i + 3) * 50)),
-            height: 40,
-            borderRadius: 10,
-            backgroundColor: 'transparent',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-            key={i}
-          >
-            <Image source={require('../../../assets/skull_money.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
-          </View>
-        ))}
+        
 
         {/* GAME OVER MODAL */}
         {displayGameOverText &&
@@ -2010,14 +1994,12 @@ export const Stage_3_Projectile = (props) => {
           zIndex: 25,
           padding: 10,
           backgroundColor: 'rgba(0, 0, 0, 0.9)',
-          flex: 1,
-          width: '100%'
+          height: windowHeight,
+          width: windowWidth,
         }}>
           <Image
             source={require('../../../assets/game_over.png')}
             style={{
-              height: 450,
-              width: 900,
               alignSelf: 'center',
             }}
           />
@@ -2041,7 +2023,7 @@ export const Stage_3_Projectile = (props) => {
           }}>
             <View style={{
               alignSelf: 'center',
-              width: windowWidth / 3,
+              width: WidthRatio(100),
               height: windowWidth / 4
             }}>
 

@@ -1032,7 +1032,6 @@ export const Stage_1_Projectile = (props) => {
           currentDisplayLetters: input.displayLetters,
           currentLetter_countValue: input.letter_countValue
         })
-
         await updateMaxScoreAndStage({
           variables: {
             maxstage: '1',
@@ -1155,11 +1154,11 @@ export const Stage_1_Projectile = (props) => {
             {score.current > 0 ?
               <>
                 <View style={{
-                  position: 'absolute',
-                  top: windowHeight - HeightRatio(160),
-                  left: 20,
-                  zIndex: -7,
-                  borderRadius: 20
+                 position: 'absolute',
+                 zIndex: -7,
+                 top: windowHeight * 0.76,
+                 left: 20,
+                 backgroundColor: 'transparent',
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
@@ -1205,10 +1204,10 @@ export const Stage_1_Projectile = (props) => {
               <>
                 <View style={{
                   position: 'absolute',
-                  top: windowHeight - HeightRatio(160),
-                  left: 20,
                   zIndex: -7,
-                  borderRadius: 20
+                  top: windowHeight * 0.76,
+                  left: 20,
+                  backgroundColor: 'transparent',
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
@@ -1352,15 +1351,10 @@ export const Stage_1_Projectile = (props) => {
               <View style={{
                 position: 'absolute',
                 zIndex: -7,
-                padding: 20,
-                width: 40,
-                top: windowHeight - HeightRatio(115),
+                top: windowHeight * 0.80,
                 left: (windowWidth / 2 + WidthRatio(80) + (i * 50)),
-                height: 40,
-                borderRadius: 10,
                 backgroundColor: 'transparent',
-                justifyContent: 'center',
-                alignItems: 'center'
+                width: HeightRatio(40)
               }}
                 key={i}
               >
@@ -1389,37 +1383,16 @@ export const Stage_1_Projectile = (props) => {
           <View style={{
             position: 'absolute',
             zIndex: -7,
-            padding: 20,
-            width: 40,
-            top: windowHeight - HeightRatio(115),
+            top: windowHeight * 0.80,
             left: (windowWidth / 2 + WidthRatio(80) + (i * 50)),
-            height: 40,
-            borderRadius: 10,
             backgroundColor: 'transparent',
-            justifyContent: 'center',
-            alignItems: 'center'
+            width: HeightRatio(40)
           }}
             key={i}
           >
             <Image source={require('../../../assets/skull_0.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
           </View>
         ))}
-
-        {/* SKULL MONEY */}
-        {/* {Array.from(Array(skullMoneyPlaceholder.current).keys()).map((n, i) => (
-          <View style={{
-            width: 40, position: 'absolute', zIndex: -1, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(70) + ((i + 3) * 50)),
-            height: 40,
-            borderRadius: 10,
-            backgroundColor: 'transparent',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-            key={i}
-          >
-            <Image source={require('../../../assets/skull_money.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
-          </View>
-        ))} */}
 
         {/* GAME OVER MODAL */}
         {displayGameOverText &&
@@ -1448,14 +1421,12 @@ export const Stage_1_Projectile = (props) => {
             zIndex: 25,
             padding: 10,
             backgroundColor: 'rgba(0, 0, 0, 0.9)',
-            flex: 1,
-            width: '100%'
+            height: windowHeight,
+            width: windowWidth,
           }}>
             <Image
               source={require('../../../assets/game_over.png')}
               style={{
-                height: 450,
-                width: 900,
                 alignSelf: 'center',
               }}
             />
@@ -1479,7 +1450,7 @@ export const Stage_1_Projectile = (props) => {
             }}>
               <View style={{
                 alignSelf: 'center',
-                width: windowWidth / 3,
+                width: WidthRatio(100),
                 height: windowWidth / 4
               }}>
 

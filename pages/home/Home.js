@@ -35,6 +35,11 @@ async function deleteKey(key) {
     await SecureStore.deleteItemAsync(key);
 }
 
+const resetActionAuth = CommonActions.reset({
+    index: 1,
+    routes: [{ name: 'Auth', params: {} }]
+});
+
 export const HomeScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
 
