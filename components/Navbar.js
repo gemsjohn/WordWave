@@ -83,9 +83,9 @@ export const Navbar = (props) => {
         index: 1,
         routes: [{ name: 'Game', params: {} }]
     });
-    // const resetActionSettings = CommonActions.reset({
+    // const resetActionLeader = CommonActions.reset({
     //     index: 1,
-    //     routes: [{ name: 'Settings', params: {} }]
+    //     routes: [{ name: 'Leader', params: {} }]
     // });
     const resetActionProfile = CommonActions.reset({
         index: 1,
@@ -166,7 +166,7 @@ export const Navbar = (props) => {
                 </View>
             </TouchableOpacity>
             {/* [[[LEADER BOARD]]] */}
-            {/* <TouchableOpacity
+            <TouchableOpacity
                 onPress={() => { props.nav.dispatch(resetActionLeader); }}
             >
                 <View
@@ -176,11 +176,11 @@ export const Navbar = (props) => {
                     accessible={true}
                     accessibilityLabel="Leader board"
                 >
-                    <FontAwesomeIcon
+                    {/* <FontAwesomeIcon
                         icon={faSolid, faTrophy}
                         style={{ color: '#efea5a', alignSelf: 'center' }}
                         size={25}
-                    />
+                    /> */}
                     <Text 
                         style={{ color: 'white', marginTop: 6, alignSelf: 'center', fontSize: HeightRatio(18) }}
                         allowFontScaling={false}
@@ -188,7 +188,7 @@ export const Navbar = (props) => {
                         Leader
                     </Text>
                 </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             
             {/* [[[PROFILE]]] */}
             {isTokenValid ?

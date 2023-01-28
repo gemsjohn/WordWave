@@ -1437,18 +1437,16 @@ export const Stage_1_Projectile = (props) => {
             }, 500)
           }}
         >
-          <View style={Styling.modal_centered_view}>
+          <View style={{alignSelf: 'center', justifyContent: 'center'}}>
             <View style={Styling.modal_view}>
               <View style={{ flexDirection: 'column' }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                  <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
-                    GAME OVER
-                  </Text>
-                  <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
-                    Tokens: {userByID?.user.tokens}
-                  </Text>
-                </View>
-
+                <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
+                  GAME OVER
+                </Text>
+                <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
+                  Your Current High Score: {userByID?.user.highscore}
+                </Text>
+                
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{
                     margin: 20,
@@ -1487,6 +1485,9 @@ export const Stage_1_Projectile = (props) => {
                       marginTop: 4
                     }}>
                       USE TOKEN
+                    </Text>
+                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
+                      # Remaining: {userByID?.user.tokens}
                     </Text>
                     <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
                       <TouchableOpacity
