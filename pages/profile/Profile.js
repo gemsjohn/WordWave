@@ -43,6 +43,7 @@ export const ProfileScreen = ({ navigation }) => {
     const [recentGamesOpen, setRecentGamesOpen] = useState(false);
     const [leaderBoardsOpen, setLeaderBoardsOpen] = useState(false);
     const [premiumOpen, setPremiumOpen] = useState(false);
+    const [displayUsername, setDisplayUsername] = useState(false);
     const [displaySetUpCosmicKeyModal, setDisplaySetUpCosmicKeyModal] = useState(false);
 
     const authState = useRef(false);
@@ -64,9 +65,11 @@ export const ProfileScreen = ({ navigation }) => {
     async function getValueFor(key) {
         let result = await SecureStore.getItemAsync(key);
         if (result && authState) {
+            setDisplayUsername(true)
             return;
         } else if (!result && authState.current) {
             setDisplaySetUpCosmicKeyModal(true)
+            setDisplayUsername(false)
         }
     }
 
@@ -90,14 +93,48 @@ export const ProfileScreen = ({ navigation }) => {
                         justifyContent: 'center',
                         height: '100%'
                     }}>
-                    <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
+                    <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 0 }}>
                         <ScrollView style={{}}>
                             <View style={{}}>
                                 {/* Buttons */}
                                 {mainState.current.authState &&
                                     <>
                                         <View style={{}}>
-                                            <View style={{ marginTop: windowHeight / 24 }}></View>
+                                            {displayUsername &&
+                                            <>
+                                                <View style={{ marginTop: 0, flexDirection: 'column' }}>
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: 30,
+                                                        fontWeight: 'bold',
+                                                        alignSelf: 'center',
+                                                        margin: 10
+                                                    }}>
+                                                        {userByID?.user.username}
+                                                    </Text>
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: 15,
+                                                        fontWeight: 'bold',
+                                                        alignSelf: 'center'
+
+                                                    }}>
+                                                        Tokens Remaining: {userByID?.user.tokens}
+                                                    </Text>
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: 15,
+                                                        fontWeight: 'bold',
+                                                        alignSelf: 'center',
+                                                        margin: 10
+
+                                                    }}>
+                                                        Your High Score: {userByID?.user.highscore}
+                                                    </Text>
+                                                </View>
+                                                <View style={Styling.profileDivisionLine}></View>
+                                            </>
+                                        }
                                             {/* [[[USER DETAILS]]] */}
                                             <View
                                                 style={{ flexDirection: 'row', margin: 20 }}
@@ -111,7 +148,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                     User Details
                                                 </Text>
                                             </View>
-                                            <View style={{ alignSelf: 'center' }}>
+                                            <View style={{ alignSelf: 'center', marginBottom: 20 }}>
                                                 <UserDetails nav={navigation} />
                                             </View>
 

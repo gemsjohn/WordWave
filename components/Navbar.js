@@ -174,19 +174,9 @@ export const Navbar = (props) => {
                         flexDirection: 'column', marginLeft: 10, marginRight: 10
                     }}
                     accessible={true}
-                    accessibilityLabel="Leader board"
+                    accessibilityLabel="High Scores"
                 >
-                    {/* <FontAwesomeIcon
-                        icon={faSolid, faTrophy}
-                        style={{ color: '#efea5a', alignSelf: 'center' }}
-                        size={25}
-                    /> */}
-                    <Text 
-                        style={{ color: 'white', marginTop: 6, alignSelf: 'center', fontSize: HeightRatio(18) }}
-                        allowFontScaling={false}
-                    >
-                        Leader
-                    </Text>
+                    <Image source={require('../assets/button_scores_nav.png')} style={{height: 60, width: 60}} />
                 </View>
             </TouchableOpacity>
             

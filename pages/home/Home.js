@@ -99,17 +99,18 @@ export const HomeScreen = ({ navigation }) => {
                     }}>
                     {!loading &&
                         <>
-                            <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
+                            <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 0 }}>
                                 <ScrollView style={{}}>
                                     <View style={{}}>
                                         {displayUsername &&
                                             <>
-                                                <View style={{ marginTop: 50, flexDirection: 'column' }}>
+                                                <View style={{ marginTop: 0, flexDirection: 'column' }}>
                                                     <Text style={{
                                                         color: 'white',
                                                         fontSize: 30,
                                                         fontWeight: 'bold',
-                                                        alignSelf: 'center'
+                                                        alignSelf: 'center',
+                                                        margin: 10
                                                     }}>
                                                         {userByID?.user.username}
                                                     </Text>
@@ -121,6 +122,16 @@ export const HomeScreen = ({ navigation }) => {
 
                                                     }}>
                                                         Tokens Remaining: {userByID?.user.tokens}
+                                                    </Text>
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: 15,
+                                                        fontWeight: 'bold',
+                                                        alignSelf: 'center',
+                                                        margin: 10
+
+                                                    }}>
+                                                        Your High Score: {userByID?.user.highscore}
                                                     </Text>
                                                 </View>
                                                 <View style={Styling.profileDivisionLine}></View>

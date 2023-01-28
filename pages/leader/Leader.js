@@ -25,35 +25,33 @@ export const LeaderScreen = ({ navigation }) => {
         <View
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            height: 100,
-            width: 350,
+            height: 60,
+            width: windowWidth - 80,
             alignSelf: 'center',
             borderRadius: 50,
             flexDirection: 'row'
           }}
         >
-          <View style={{ flexDirection: 'column' }}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 30,
-                fontWeight: 'bold',
-                marginTop: 30,
-                marginLeft: 10
-              }}
-              allowFontScaling={false}
-            >
-              {pos}
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'column', alignSelf: 'center', marginLeft: 20 }}>
-            <View style={{ flexDirection: 'column', width: 240 }}>
-              <View style={{ flexDirection: 'row', alignSelf: 'flex-start', margin: windowWidth * 0.01 }}>
+          <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
+              <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 30,
+                  fontWeight: 'bold',
+                  // marginTop: 30,
+                  // marginLeft: 10
+                }}
+                allowFontScaling={false}
+              >
+                {pos}
+              </Text>
                 <Text
                   style={{
                     fontSize: 30,
                     fontWeight: 'bold',
-                    color: '#efea5a'
+                    color: '#53f4a4',
+                    width: 180
                   }}
                   numberOfLines={1}
                   ellipsizeMode='tail'
@@ -61,23 +59,14 @@ export const LeaderScreen = ({ navigation }) => {
                 >
                   {username}
                 </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'column',
-                width: 240,
-              }}
-  
-            >
-              <View style={{ flexDirection: 'row', margin: windowWidth * 0.01 }}>
                 <Text
                   style={{
                     fontSize: 25,
                     fontWeight: 'bold',
                     color: 'white',
                     alignSelf: 'flex-end',
-                    marginLeft: 10,
+                    textAlign: 'right',
+                    width: 180
                   }}
                   numberOfLines={1}
                   ellipsizeMode='tail'
@@ -85,17 +74,11 @@ export const LeaderScreen = ({ navigation }) => {
                 >
                   {score}
                 </Text>
-                <Text
-                  style={{ fontSize: windowWidth * 0.05, fontWeight: 'bold', color: '#83e377', alignSelf: 'flex-end', marginLeft: 4 }}
-                  allowFontScaling={false}
-                >
-                  points
-                </Text>
               </View>
-            </View>
+
           </View>
         </View>
-        <View style={Styling.profileDivisionLine}></View>
+        {/* <View style={Styling.profileDivisionLine}></View> */}
       </View>
       <View style={{marginBottom: 10}}></View>
       </>
@@ -121,8 +104,8 @@ export const LeaderScreen = ({ navigation }) => {
 
           }}
         >
-          <View style={{alignSelf: 'center', flexDirection: 'column', backgroundColor: '(rgba(255, 255, 255, 0.1)', padding: 10, borderRadius: 50, width: 350, marginTop: 80}}>
-            <Text style={{color: 'white', fontSize: 40, fontWeight: 'bold', alignSelf: 'center'}}>Leaderboard</Text>
+          <View style={{alignSelf: 'center', flexDirection: 'column', padding: 10, borderRadius: 50, width: 350, marginTop: 80}}>
+            <Text style={{color: 'yellow', fontSize: 40, fontWeight: 'bold', alignSelf: 'center'}}>HIGH SCORES</Text>
             {/* <Text style={{color: 'white', fontSize: HeightRatio(20), alignSelf: 'center'}}>Last 30 Days</Text> */}
           </View>
           <SafeAreaView style={Styling.flatlistContainer}>
