@@ -88,7 +88,7 @@ export const Stage_1_Projectile = (props) => {
   // [LETTER ANIMATION] - - - - - 
   const hasUpdatedLetterBlock = useRef(false);
   const [letter, setLetter] = useState('');
-  const letterPosition = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current
+  const letterPosition = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current
   const animation = useRef(null)
   const count = new Animated.Value(mainState.current.currentLetter_countValue);
   const countRef = useRef(mainState.current.currentLetter_countValue);
@@ -97,35 +97,35 @@ export const Stage_1_Projectile = (props) => {
 
   // [OBSTACLE ANIMATION 0] - - - - - 
   const hasUpdatedObstacle_0 = useRef(false);
-  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
   const obstacleRotation_0 = useRef(new Animated.Value(0)).current;
   const obstacle_0 = useRef(null)
   let timeoutObstacle_0_ID;
 
   // [OBSTACLE ANIMATION 1] - - - - - 
   const hasUpdatedObstacle_1 = useRef(false);
-  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
   const obstacleRotation_1 = useRef(new Animated.Value(0)).current;
   const obstacle_1 = useRef(null)
   let timeoutObstacle_1_ID;
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
   const hasUpdatedObstacle_right_angle_0 = useRef(false);
-  const obstaclePosition_right_angle_0 = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstaclePosition_right_angle_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
   const obstacleRotation_right_angle_0 = useRef(new Animated.Value(0)).current;
   const obstacle_right_angle_0 = useRef(null)
   let timeoutObstacle_right_angle_0_ID;
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 1] - - - - - 
   const hasUpdatedObstacle_right_angle_1 = useRef(false);
-  const obstaclePosition_right_angle_1 = useRef(new Animated.ValueXY({ x: 1000, y: -HeightRatio(100) })).current;
+  const obstaclePosition_right_angle_1 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
   const obstacleRotation_right_angle_1 = useRef(new Animated.Value(0)).current;
   const obstacle_right_angle_1 = useRef(null)
   let timeoutObstacle_right_angle_1_ID;
 
   // [AUXILLIARY GREEN HEALTH ANIMATION] - - - - - 
   const hasUpdatedAuxilliaryGreenHealth = useRef(false);
-  const auxilliaryGreenHealth_Position = useRef(new Animated.ValueXY({ x: 1000, y: 0 })).current;
+  const auxilliaryGreenHealth_Position = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
   const auxilliaryGreenHealth = useRef(null)
   let timeoutAuxilliaryGreenHealth_ID;
   const retainAuxilliaryGreenHealth = useRef(false);
@@ -702,7 +702,7 @@ export const Stage_1_Projectile = (props) => {
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: 1000, y: 0 })
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
@@ -762,32 +762,32 @@ export const Stage_1_Projectile = (props) => {
       animation.current.stop();
       obstacle_0.current.stop();
 
-      letterPosition.setValue({ x: 1000, y: 0 })
-      obstaclePosition_0.setValue({ x: 1000, y: 0 })
+      letterPosition.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
 
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
 
       if (auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: 1000, y: 0 })
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
         hasUpdatedAuxilliaryGreenHealth.current = false;
       }
     }
     if (level.current >= 1 && obstacle_1.current != null) {
       obstacle_1.current.stop();
-      obstaclePosition_1.setValue({ x: 1000, y: 0 })
+      obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_1.current = false;
     }
     if (level.current >= 2 && obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
     if (level.current >= 3 && obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
     }
 
@@ -920,32 +920,32 @@ export const Stage_1_Projectile = (props) => {
       animation.current.stop();
       obstacle_0.current.stop();
 
-      letterPosition.setValue({ x: 1000, y: 0 })
-      obstaclePosition_0.setValue({ x: 1000, y: 0 })
+      letterPosition.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
 
       hasUpdatedLetterBlock.current = false;
       hasUpdatedObstacle_0.current = false;
 
       if (auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: 1000, y: 0 })
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
         hasUpdatedAuxilliaryGreenHealth.current = false;
       }
     }
     if (level.current >= 1 && obstacle_1.current != null) {
       obstacle_1.current.stop();
-      obstaclePosition_1.setValue({ x: 1000, y: 0 })
+      obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_1.current = false;
     }
     if (level.current >= 2 && obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: 1000, y: 0 })
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
     if (level.current >= 3 && obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: 1000, y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
     }
 
@@ -1157,19 +1157,18 @@ export const Stage_1_Projectile = (props) => {
                 <View style={{
                   position: 'absolute',
                   top: windowHeight - HeightRatio(160),
-                  left: WidthRatio(10),
-                  zIndex: -7, padding:
-                    HeightRatio(20),
-                  borderRadius: HeightRatio(20)
+                  left: 20,
+                  zIndex: -7,
+                  borderRadius: 20
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(40),
+                    fontSize: 30,
                     fontWeight: 'bold'
                   }}>Score:</Text>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(70),
+                    fontSize: 30,
                     fontWeight: 'bold'
                   }}>{score.current}</Text>
                 </View>
@@ -1207,19 +1206,18 @@ export const Stage_1_Projectile = (props) => {
                 <View style={{
                   position: 'absolute',
                   top: windowHeight - HeightRatio(160),
-                  left: WidthRatio(10),
+                  left: 20,
                   zIndex: -7,
-                  padding: HeightRatio(20),
-                  borderRadius: HeightRatio(20)
+                  borderRadius: 20
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(40),
+                    fontSize: 30,
                     fontWeight: 'bold'
                   }}>Score:</Text>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(70),
+                    fontSize: 30,
                     fontWeight: 'bold'
                   }}>0</Text>
                 </View>
@@ -1352,7 +1350,12 @@ export const Stage_1_Projectile = (props) => {
           <>
             {Array.from(Array(crashes.current).keys()).map((n, i) => (
               <View style={{
-                width: 40, position: 'absolute', zIndex: 0, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(60) + (i * 50)),
+                position: 'absolute',
+                zIndex: -7,
+                padding: 20,
+                width: 40,
+                top: windowHeight - HeightRatio(115),
+                left: (windowWidth / 2 + WidthRatio(80) + (i * 50)),
                 height: 40,
                 borderRadius: 10,
                 backgroundColor: 'transparent',
@@ -1384,7 +1387,12 @@ export const Stage_1_Projectile = (props) => {
         {/* SKULLS */}
         {Array.from(Array(skullPlaceholder.current).keys()).map((n, i) => (
           <View style={{
-            width: 40, position: 'absolute', zIndex: -1, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(60) + (i * 50)),
+            position: 'absolute',
+            zIndex: -7,
+            padding: 20,
+            width: 40,
+            top: windowHeight - HeightRatio(115),
+            left: (windowWidth / 2 + WidthRatio(80) + (i * 50)),
             height: 40,
             borderRadius: 10,
             backgroundColor: 'transparent',
@@ -1398,7 +1406,7 @@ export const Stage_1_Projectile = (props) => {
         ))}
 
         {/* SKULL MONEY */}
-        {Array.from(Array(skullMoneyPlaceholder.current).keys()).map((n, i) => (
+        {/* {Array.from(Array(skullMoneyPlaceholder.current).keys()).map((n, i) => (
           <View style={{
             width: 40, position: 'absolute', zIndex: -1, top: windowHeight - 50, left: (windowWidth / 2 + WidthRatio(70) + ((i + 3) * 50)),
             height: 40,
@@ -1411,7 +1419,7 @@ export const Stage_1_Projectile = (props) => {
           >
             <Image source={require('../../../assets/skull_money.png')} style={{ height: 50, width: 50, opacity: 0.4 }} />
           </View>
-        ))}
+        ))} */}
 
         {/* GAME OVER MODAL */}
         {displayGameOverText &&
@@ -1433,246 +1441,246 @@ export const Stage_1_Projectile = (props) => {
             }}>GAME OVER</Text>
           </View>
         }
-        
+
         {gameOverModalVisible &&
-        <View style={{
-          position: 'absolute',
-          zIndex: 25,
-          padding: 10,
-          backgroundColor: 'rgba(0, 0, 0, 0.9)',
-          flex: 1,
-          width: '100%'
-        }}>
-          <Image
-            source={require('../../../assets/game_over.png')}
-            style={{
-              height: 450,
-              width: 900,
-              alignSelf: 'center',
-            }}
-          />
-          <Text style={{
-            color: '#f6c878',
-            fontSize: 30,
-            fontWeight: 'bold',
-            alignSelf: 'center',
-            position: 'absolute',
-            zIndex: 26,
-            top: 90
-          }}>
-            Your Current High Score: {userByID?.user.highscore}
-          </Text>
           <View style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
             position: 'absolute',
-            zIndex: 26,
-            top: 120,
+            zIndex: 25,
+            padding: 10,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            flex: 1,
+            width: '100%'
           }}>
-            <View style={{
-              alignSelf: 'center',
-              width: windowWidth / 3,
-              height: windowWidth / 4
-            }}>
-
-              <View
-                style={{
-                  border: 'solid',
-                  borderColor: 'white',
-                  borderLeftWidth: 1,
-                  borderBottomWidth: 1,
-                  borderBottomLeftRadius: 25,
-                  padding: 10,
-                  width: 300,
-                  flexDirection: 'column',
-                  margin: 2,
-                  backgroundColor: '#25698975',
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 25
-                }}
-
-              >
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Score</Text>
-
-                  <Text
-                    style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
-                    numberOfLines={1}
-                    ellipsizeMode='tail'
-                  >
-                    {recordedScore}
-                  </Text>
-                </View>
-
-
-              </View>
-              <View
-                style={{
-                  border: 'solid',
-                  borderColor: 'white',
-                  borderLeftWidth: 1,
-                  borderBottomWidth: 1,
-                  borderBottomLeftRadius: 25,
-                  padding: 10,
-                  width: 300,
-                  flexDirection: 'column',
-                  margin: 2,
-                  backgroundColor: '#25698975',
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 25
-                }}
-
-              >
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Stage</Text>
-
-                  <Text
-                    style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
-                    numberOfLines={1}
-                    ellipsizeMode='tail'
-                  >
-                    1
-                  </Text>
-                </View>
-
-
-              </View>
-              <View
-                style={{
-                  border: 'solid',
-                  borderColor: 'white',
-                  borderLeftWidth: 1,
-                  borderBottomWidth: 1,
-                  borderBottomLeftRadius: 25,
-                  padding: 10,
-                  width: 300,
-                  flexDirection: 'column',
-                  margin: 2,
-                  backgroundColor: '#25698975',
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 25
-                }}
-
-              >
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Level</Text>
-
-                  <Text
-                    style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
-                    numberOfLines={1}
-                    ellipsizeMode='tail'
-                  >
-                    {recordedLevel}
-                  </Text>
-                </View>
-
-
-              </View>
-            </View>
-            <View style={{ margin: 20, alignSelf: 'center' }} />
-            {!tokenWarning ?
-              <View style={{
-                margin: 20,
+            <Image
+              source={require('../../../assets/game_over.png')}
+              style={{
+                height: 450,
+                width: 900,
                 alignSelf: 'center',
-                backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                borderRadius: 25,
-                // padding: 20,
-                width: windowWidth / 3,
-                height: windowWidth / 4
-              }}>
-                <Text style={{
-                  // ...Styling.modal_text_style,
-                  alignSelf: 'center',
-                  color: '#00e5ff',
-                  fontSize: 30,
-                  fontWeight: 'bold',
-                  textAlign: 'center'
-                }}>
-                  DO YOU WANT TO CONTINUE?
-                </Text>
-                <Text style={{
-                  ...Styling.modal_text_style,
-                  alignSelf: 'center',
-                  fontSize: 25,
-                  color: 'white',
-                  marginTop: 4
-                }}>
-                  USE A TOKEN
-                </Text>
-                <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
-                  {userByID?.user.tokens} remaining
-                </Text>
-                <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setTimeout(() => {
-                        insertToken();
-                      }, 500)
-                    }}
-                    style={{ backgroundColor: '#1a2135', padding: 10, margin: 4, borderRadius: 10, width: 200, borderWidth: 1, borderColor: 'white' }}>
-                    <Text style={{ color: '#00e5ff', fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>
-                      YES
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-
-              </View>
-
-              :
-              <View style={{
-                margin: 20,
-                alignSelf: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                padding: 20,
-                width: windowWidth / 4,
-                height: windowWidth / 4
-              }}>
-                <Text style={{
-                  ...Styling.modal_text_style,
-                  alignSelf: 'center',
-                  color: 'red'
-                }}>
-                  Unfortunately, you have run out of tokens!
-                </Text>
-              </View>
-            }
-
-          </View>
-
-          <TouchableOpacity
-            onPress={() => {
-              props.nav.dispatch(resetActionHome);
-              setMainState({
-                stage1: true,
-                stage2: false,
-                stage3: false,
-                currentScore: 0,
-                currentLevel: 0,
-                currentCrashes: 0
-              })
-              setTimeout(() => {
-                setGameOverModalVisible(!gameOverModalVisible);
-                isGameInProgress.current = false;
-              }, 500)
-            }}
-            style={{
+              }}
+            />
+            <Text style={{
+              color: '#f6c878',
+              fontSize: 30,
+              fontWeight: 'bold',
               alignSelf: 'center',
               position: 'absolute',
               zIndex: 26,
-              top: 400,
-              backgroundColor: 'rgba(0, 0, 0, 0.9)',
-              padding: 10,
-              width: 100,
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: 'white'
-            }}
-          >
-            <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
-              Close
+              top: 90
+            }}>
+              Your Current High Score: {userByID?.user.highscore}
             </Text>
-          </TouchableOpacity>
-        </View>
+            <View style={{
+              flexDirection: 'row',
+              alignSelf: 'center',
+              position: 'absolute',
+              zIndex: 26,
+              top: 120,
+            }}>
+              <View style={{
+                alignSelf: 'center',
+                width: windowWidth / 3,
+                height: windowWidth / 4
+              }}>
+
+                <View
+                  style={{
+                    border: 'solid',
+                    borderColor: 'white',
+                    borderLeftWidth: 1,
+                    borderBottomWidth: 1,
+                    borderBottomLeftRadius: 25,
+                    padding: 10,
+                    width: 300,
+                    flexDirection: 'column',
+                    margin: 2,
+                    backgroundColor: '#25698975',
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 25
+                  }}
+
+                >
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Score</Text>
+
+                    <Text
+                      style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
+                      numberOfLines={1}
+                      ellipsizeMode='tail'
+                    >
+                      {recordedScore}
+                    </Text>
+                  </View>
+
+
+                </View>
+                <View
+                  style={{
+                    border: 'solid',
+                    borderColor: 'white',
+                    borderLeftWidth: 1,
+                    borderBottomWidth: 1,
+                    borderBottomLeftRadius: 25,
+                    padding: 10,
+                    width: 300,
+                    flexDirection: 'column',
+                    margin: 2,
+                    backgroundColor: '#25698975',
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 25
+                  }}
+
+                >
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Stage</Text>
+
+                    <Text
+                      style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
+                      numberOfLines={1}
+                      ellipsizeMode='tail'
+                    >
+                      1
+                    </Text>
+                  </View>
+
+
+                </View>
+                <View
+                  style={{
+                    border: 'solid',
+                    borderColor: 'white',
+                    borderLeftWidth: 1,
+                    borderBottomWidth: 1,
+                    borderBottomLeftRadius: 25,
+                    padding: 10,
+                    width: 300,
+                    flexDirection: 'column',
+                    margin: 2,
+                    backgroundColor: '#25698975',
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 25
+                  }}
+
+                >
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Level</Text>
+
+                    <Text
+                      style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
+                      numberOfLines={1}
+                      ellipsizeMode='tail'
+                    >
+                      {recordedLevel}
+                    </Text>
+                  </View>
+
+
+                </View>
+              </View>
+              <View style={{ margin: 20, alignSelf: 'center' }} />
+              {!tokenWarning ?
+                <View style={{
+                  margin: 20,
+                  alignSelf: 'center',
+                  backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  borderRadius: 25,
+                  // padding: 20,
+                  width: windowWidth / 3,
+                  height: windowWidth / 4
+                }}>
+                  <Text style={{
+                    // ...Styling.modal_text_style,
+                    alignSelf: 'center',
+                    color: '#00e5ff',
+                    fontSize: 30,
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                  }}>
+                    DO YOU WANT TO CONTINUE?
+                  </Text>
+                  <Text style={{
+                    ...Styling.modal_text_style,
+                    alignSelf: 'center',
+                    fontSize: 25,
+                    color: 'white',
+                    marginTop: 4
+                  }}>
+                    USE A TOKEN
+                  </Text>
+                  <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
+                    {userByID?.user.tokens} remaining
+                  </Text>
+                  <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setTimeout(() => {
+                          insertToken();
+                        }, 500)
+                      }}
+                      style={{ backgroundColor: '#1a2135', padding: 10, margin: 4, borderRadius: 10, width: 200, borderWidth: 1, borderColor: 'white' }}>
+                      <Text style={{ color: '#00e5ff', fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>
+                        YES
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                </View>
+
+                :
+                <View style={{
+                  margin: 20,
+                  alignSelf: 'center',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  padding: 20,
+                  width: windowWidth / 4,
+                  height: windowWidth / 4
+                }}>
+                  <Text style={{
+                    ...Styling.modal_text_style,
+                    alignSelf: 'center',
+                    color: 'red'
+                  }}>
+                    Unfortunately, you have run out of tokens!
+                  </Text>
+                </View>
+              }
+
+            </View>
+
+            <TouchableOpacity
+              onPress={() => {
+                props.nav.dispatch(resetActionHome);
+                setMainState({
+                  stage1: true,
+                  stage2: false,
+                  stage3: false,
+                  currentScore: 0,
+                  currentLevel: 0,
+                  currentCrashes: 0
+                })
+                setTimeout(() => {
+                  setGameOverModalVisible(!gameOverModalVisible);
+                  isGameInProgress.current = false;
+                }, 500)
+              }}
+              style={{
+                alignSelf: 'center',
+                position: 'absolute',
+                zIndex: 26,
+                top: 400,
+                backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                padding: 10,
+                width: 100,
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: 'white'
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
+                Close
+              </Text>
+            </TouchableOpacity>
+          </View>
         }
 
       </>

@@ -137,7 +137,7 @@ export const ProfileScreen = ({ navigation }) => {
                                         }
                                             {/* [[[USER DETAILS]]] */}
                                             <View
-                                                style={{ flexDirection: 'row', margin: 20 }}
+                                                style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}
                                             >
                                                 <FontAwesomeIcon
                                                     icon={faSolid, faSliders}

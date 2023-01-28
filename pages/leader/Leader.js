@@ -24,12 +24,13 @@ export const LeaderScreen = ({ navigation }) => {
       <View key={pos}>
         <View
           style={{
-            // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
             height: 60,
             width: windowWidth - 80,
-            alignSelf: 'center',
-            borderRadius: 50,
-            flexDirection: 'row'
+            // alignSelf: 'center',
+            // borderRadius: 50,
+            flexDirection: 'row', 
+            justifyContent: 'space-evenly'
           }}
         >
           <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
@@ -95,13 +96,13 @@ export const LeaderScreen = ({ navigation }) => {
   return (
     <>
       <View style={{ backgroundColor: 'black', height: '100%' }}>
-        <ImageBackground
+        {/* <ImageBackground
           source={require('../../assets/background_leaderboard.png')}
           resizeMode="cover"
           style={{
             justifyContent: 'center',
             height: '100%'
-          }}>
+          }}> */}
 
           <View
             style={{
@@ -110,9 +111,20 @@ export const LeaderScreen = ({ navigation }) => {
 
             }}
           >
-            <View style={{ alignSelf: 'center', flexDirection: 'column', padding: 10, borderRadius: 50, width: 350, marginTop: 80 }}>
-              <Text style={{ color: 'yellow', fontSize: 40, fontWeight: 'bold', alignSelf: 'center' }}>HIGH SCORES</Text>
-              {/* <Text style={{color: 'white', fontSize: HeightRatio(20), alignSelf: 'center'}}>Last 30 Days</Text> */}
+            <View style={{ 
+              alignSelf: 'center', 
+              flexDirection: 'column', 
+              padding: 10, 
+              borderRadius: 50, 
+              width: 350, 
+              marginTop: 80 
+            }}>
+              <Text style={{ 
+                color: 'yellow', 
+                fontSize: 40, 
+                fontWeight: 'bold', 
+                alignSelf: 'center' 
+              }}>HIGH SCORES</Text>
             </View>
             <SafeAreaView style={Styling.flatlistContainer}>
               <FlatList
@@ -125,7 +137,7 @@ export const LeaderScreen = ({ navigation }) => {
 
             </SafeAreaView>
           </View>
-        </ImageBackground>
+        {/* </ImageBackground> */}
 
       </View>
 
