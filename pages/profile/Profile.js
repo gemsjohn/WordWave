@@ -52,7 +52,7 @@ export const ProfileScreen = ({ navigation }) => {
         variables: { id: userID.current }
     });
 
-   
+
 
 
 
@@ -83,13 +83,13 @@ export const ProfileScreen = ({ navigation }) => {
     return (
         <>
             <View style={{ ...Styling.container }}>
-            <ImageBackground
-            source={require('../../assets/home_background.png')}
-            resizeMode="cover"
-            style={{
-              justifyContent: 'center',
-              height: '100%'
-            }}>
+                <ImageBackground
+                    source={require('../../assets/home_background.png')}
+                    resizeMode="cover"
+                    style={{
+                        justifyContent: 'center',
+                        height: '100%'
+                    }}>
                     <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
                         <ScrollView style={{}}>
                             <View style={{}}>
@@ -99,65 +99,24 @@ export const ProfileScreen = ({ navigation }) => {
                                         <View style={{}}>
                                             <View style={{ marginTop: windowHeight / 24 }}></View>
                                             {/* [[[USER DETAILS]]] */}
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    setUserDetailsOpen(!userDetailsOpen);
-                                                    setRecentGamesOpen(false)
-                                                    setLeaderBoardsOpen(false)
-                                                    setPremiumOpen(false)
-                                                }}
+                                            <View
+                                                style={{ flexDirection: 'row', margin: 20 }}
                                             >
-                                                <View
-                                                    style={{ flexDirection: 'row', margin: 20 }}
-                                                >
-                                                    <FontAwesomeIcon
-                                                        icon={faSolid, faSliders}
-                                                        style={{ ...Styling.modalFontAwesomeIcons, color: 'white' }}
-                                                        size={30}
-                                                    />
-                                                    <Text style={Styling.modalScoringVarText} allowFontScaling={false}>
-                                                        User Details
-                                                    </Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                            {userDetailsOpen ?
-                                                <View style={{ alignSelf: 'center' }}>
-                                                    <UserDetails nav={navigation} />
-                                                </View>
-                                                :
-                                                null
-                                            }
+                                                <FontAwesomeIcon
+                                                    icon={faSolid, faSliders}
+                                                    style={{ ...Styling.modalFontAwesomeIcons, color: 'white' }}
+                                                    size={30}
+                                                />
+                                                <Text style={Styling.modalScoringVarText} allowFontScaling={false}>
+                                                    User Details
+                                                </Text>
+                                            </View>
+                                            <View style={{ alignSelf: 'center' }}>
+                                                <UserDetails nav={navigation} />
+                                            </View>
+
                                             <View style={Styling.profileDivisionLine}></View>
-                                            {/* [[[RECENT GAMES]]] */}
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    setUserDetailsOpen(false);
-                                                    setRecentGamesOpen(!recentGamesOpen)
-                                                    setLeaderBoardsOpen(false)
-                                                    setPremiumOpen(false)
-                                                }}
-                                            >
-                                                <View
-                                                    style={{ flexDirection: 'row', margin: 10 }}
-                                                >
-                                                    <FontAwesomeIcon
-                                                        icon={faSolid, faFlagCheckered}
-                                                        style={{ ...Styling.modalFontAwesomeIcons, color: 'white' }}
-                                                        size={30}
-                                                    />
-                                                    <Text style={Styling.modalScoringVarText} allowFontScaling={false}>
-                                                        Recent Games
-                                                    </Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                            {recentGamesOpen ?
-                                                <View style={{ marginLeft: 10 }}>
-                                                    <RecentGames />
-                                                </View>
-                                                :
-                                                null
-                                            }
-                                            <View style={Styling.profileDivisionLine}></View>
+
 
                                             <View>
                                                 <TouchableOpacity
@@ -175,12 +134,12 @@ export const ProfileScreen = ({ navigation }) => {
                                                         padding: 20,
                                                         borderRadius: 40,
                                                         alignSelf: 'center',
-                                                        margin: 10,
+                                                        // margin: 10,
                                                         width: 350
                                                     }}>
                                                         <Text
-                                                        style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
-                                                        allowFontScaling={false}
+                                                            style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
+                                                            allowFontScaling={false}
                                                         >
                                                             Remove/Reset Keycode
                                                         </Text>
@@ -197,7 +156,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                     })
                                                     navigation.dispatch(resetActionAuth)
                                                 }}
-                                                style={{ ...Styling.modalWordButton, marginTop: 10 }}
+                                                style={{ ...Styling.modalWordButton, marginTop: 0 }}
                                             >
                                                 <View style={{
                                                     backgroundColor: 'blue',
@@ -210,8 +169,8 @@ export const ProfileScreen = ({ navigation }) => {
                                                     width: 350
                                                 }}>
                                                     <Text
-                                                    style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
-                                                    allowFontScaling={false}
+                                                        style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
+                                                        allowFontScaling={false}
                                                     >
                                                         Switch User
                                                     </Text>

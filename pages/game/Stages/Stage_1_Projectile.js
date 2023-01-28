@@ -81,6 +81,7 @@ export const Stage_1_Projectile = (props) => {
   const scoreFlash_1000 = useRef(false);
   const level = useRef(mainState.current.currentLevel);
   const [recordedLevel, setRecordedLevel] = useState(0);
+  const [displayGameOverText, setDisplayGameOverText] = useState(false);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
 
@@ -793,7 +794,7 @@ export const Stage_1_Projectile = (props) => {
     setIsPaused(true)
     setResumeSelected(true)
     setTimeout(() => {
-    setResumeSelected(false)
+      setResumeSelected(false)
     }, 500)
   }
 
@@ -845,7 +846,7 @@ export const Stage_1_Projectile = (props) => {
   }
 
   const insertToken = async () => {
-    
+
     if (userByID?.user.tokens > 0) {
       await updateTokenCount({
         variables: {
@@ -952,14 +953,14 @@ export const Stage_1_Projectile = (props) => {
     if (input.continue) {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
-      
-      if (input.level >= 4) {
+
+      if (input.level >= 0) {
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
         setLetterPocket([]);
         setDisplayLetters([]);
-        
+
         setTimeout(() => {
           score.current += 1000;
           scoreFlash_1000.current = true;
@@ -1031,6 +1032,7 @@ export const Stage_1_Projectile = (props) => {
           currentDisplayLetters: input.displayLetters,
           currentLetter_countValue: input.letter_countValue
         })
+
         await updateMaxScoreAndStage({
           variables: {
             maxstage: '1',
@@ -1039,7 +1041,12 @@ export const Stage_1_Projectile = (props) => {
         });
         setTimeout(() => {
           refetch();
-          setGameOverModalVisible(true)
+          setDisplayGameOverText(true)
+          setTimeout(() => {
+            setDisplayGameOverText(false)
+            setGameOverModalVisible(true)
+          }, 1000)
+
 
         }, 100);
       } else if (input.local == "c") {
@@ -1407,122 +1414,266 @@ export const Stage_1_Projectile = (props) => {
         ))}
 
         {/* GAME OVER MODAL */}
+        {displayGameOverText &&
+          <View style={{
+            position: 'absolute',
+            zIndex: 25,
+            top: -25,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            flex: 1,
+            width: '100%'
+          }}>
+            <Text style={{
+              color: 'white',
+              fontSize: 200,
+              fontWeight: 'bold',
+              flexWrap: 'wrap',
+              alignSelf: 'center',
+              textAlign: 'center'
+            }}>GAME OVER</Text>
+          </View>
+        }
+        
+        {gameOverModalVisible &&
+        <View style={{
+          position: 'absolute',
+          zIndex: 25,
+          padding: 10,
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          flex: 1,
+          width: '100%'
+        }}>
+          <Image
+            source={require('../../../assets/game_over.png')}
+            style={{
+              height: 450,
+              width: 900,
+              alignSelf: 'center',
+            }}
+          />
+          <Text style={{
+            color: '#f6c878',
+            fontSize: 30,
+            fontWeight: 'bold',
+            alignSelf: 'center',
+            position: 'absolute',
+            zIndex: 26,
+            top: 90
+          }}>
+            Your Current High Score: {userByID?.user.highscore}
+          </Text>
+          <View style={{
+            flexDirection: 'row',
+            alignSelf: 'center',
+            position: 'absolute',
+            zIndex: 26,
+            top: 120,
+          }}>
+            <View style={{
+              alignSelf: 'center',
+              width: windowWidth / 3,
+              height: windowWidth / 4
+            }}>
 
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={gameOverModalVisible}
-          onRequestClose={() => {
-            setMainState({
-              stage1: true,
-              stage2: false,
-              stage3: false,
-              currentScore: 0,
-              currentLevel: 0,
-              currentCrashes: 0
-            })
-            setTimeout(() => {
-              setGameOverModalVisible(!gameOverModalVisible);
-              isGameInProgress.current = false;
-            }, 500)
-          }}
-        >
-          <View style={{alignSelf: 'center', justifyContent: 'center'}}>
-            <View style={Styling.modal_view}>
-              <View style={{ flexDirection: 'column' }}>
-                <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
-                  GAME OVER
-                </Text>
-                <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
-                  Your Current High Score: {userByID?.user.highscore}
-                </Text>
-                
+              <View
+                style={{
+                  border: 'solid',
+                  borderColor: 'white',
+                  borderLeftWidth: 1,
+                  borderBottomWidth: 1,
+                  borderBottomLeftRadius: 25,
+                  padding: 10,
+                  width: 300,
+                  flexDirection: 'column',
+                  margin: 2,
+                  backgroundColor: '#25698975',
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 25
+                }}
+
+              >
                 <View style={{ flexDirection: 'row' }}>
-                  <View style={{
-                    margin: 20,
-                    alignSelf: 'center',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    padding: 20,
-                    width: windowWidth / 4,
-                    height: windowWidth / 4
-                  }}>
-                    <Text style={Styling.modal_text_style}>Score: {recordedScore}</Text>
-                    <Text style={Styling.modal_text_style}>Stage: 1</Text>
-                    <Text style={Styling.modal_text_style}>Level: {recordedLevel}</Text>
-                  </View>
-                  <View style={{ margin: 20, alignSelf: 'center' }} />
-                  {!tokenWarning ?
-                  <View style={{
-                    margin: 20,
-                    alignSelf: 'center',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    padding: 20,
-                    width: windowWidth / 4,
-                    height: windowWidth / 4
-                  }}>
-                    <Text style={{
-                      ...Styling.modal_text_style,
-                      alignSelf: 'center',
-                      color: 'yellow'
-                    }}>
-                      CONTINUE?
-                    </Text>
-                    <Text style={{
-                      ...Styling.modal_text_style,
-                      alignSelf: 'center',
-                      fontSize: 20,
-                      color: 'white',
-                      marginTop: 4
-                    }}>
-                      USE TOKEN
-                    </Text>
-                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
-                      # Remaining: {userByID?.user.tokens}
-                    </Text>
-                    <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setTimeout(() => {
-                            insertToken();
-                          }, 500)
-                        }}
-                        style={{ backgroundColor: '#05b636', padding: 20, margin: 10, borderRadius: 10 }}>
-                        <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>
-                          YES
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  :
-                  <View style={{
-                    margin: 20,
-                    alignSelf: 'center',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    padding: 20,
-                    width: windowWidth / 4,
-                    height: windowWidth / 4
-                  }}>
-                    <Text style={{
-                      ...Styling.modal_text_style,
-                      alignSelf: 'center',
-                      color: 'red'
-                    }}>
-                      Unfortunately, you have run out of tokens!
-                    </Text>
-                  </View>
-                  }
+                  <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Score</Text>
+
+                  <Text
+                    style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
+                    numberOfLines={1}
+                    ellipsizeMode='tail'
+                  >
+                    {recordedScore}
+                  </Text>
                 </View>
 
-                <TouchableOpacity
-                  onPress={() => props.nav.dispatch(resetActionHome)}>
-                  <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>
-                    Close
+
+              </View>
+              <View
+                style={{
+                  border: 'solid',
+                  borderColor: 'white',
+                  borderLeftWidth: 1,
+                  borderBottomWidth: 1,
+                  borderBottomLeftRadius: 25,
+                  padding: 10,
+                  width: 300,
+                  flexDirection: 'column',
+                  margin: 2,
+                  backgroundColor: '#25698975',
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 25
+                }}
+
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Stage</Text>
+
+                  <Text
+                    style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
+                    numberOfLines={1}
+                    ellipsizeMode='tail'
+                  >
+                    1
                   </Text>
-                </TouchableOpacity>
+                </View>
+
+
+              </View>
+              <View
+                style={{
+                  border: 'solid',
+                  borderColor: 'white',
+                  borderLeftWidth: 1,
+                  borderBottomWidth: 1,
+                  borderBottomLeftRadius: 25,
+                  padding: 10,
+                  width: 300,
+                  flexDirection: 'column',
+                  margin: 2,
+                  backgroundColor: '#25698975',
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 25
+                }}
+
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ color: '#f6c878', marginRight: 10, fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>Level</Text>
+
+                  <Text
+                    style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: 'bold', width: 150, }}
+                    numberOfLines={1}
+                    ellipsizeMode='tail'
+                  >
+                    {recordedLevel}
+                  </Text>
+                </View>
+
+
               </View>
             </View>
+            <View style={{ margin: 20, alignSelf: 'center' }} />
+            {!tokenWarning ?
+              <View style={{
+                margin: 20,
+                alignSelf: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                borderRadius: 25,
+                // padding: 20,
+                width: windowWidth / 3,
+                height: windowWidth / 4
+              }}>
+                <Text style={{
+                  // ...Styling.modal_text_style,
+                  alignSelf: 'center',
+                  color: '#00e5ff',
+                  fontSize: 30,
+                  fontWeight: 'bold',
+                  textAlign: 'center'
+                }}>
+                  DO YOU WANT TO CONTINUE?
+                </Text>
+                <Text style={{
+                  ...Styling.modal_text_style,
+                  alignSelf: 'center',
+                  fontSize: 25,
+                  color: 'white',
+                  marginTop: 4
+                }}>
+                  USE A TOKEN
+                </Text>
+                <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
+                  {userByID?.user.tokens} remaining
+                </Text>
+                <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setTimeout(() => {
+                        insertToken();
+                      }, 500)
+                    }}
+                    style={{ backgroundColor: '#1a2135', padding: 10, margin: 4, borderRadius: 10, width: 200, borderWidth: 1, borderColor: 'white' }}>
+                    <Text style={{ color: '#00e5ff', fontSize: 30, fontWeight: 'bold', alignSelf: 'center' }}>
+                      YES
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+              </View>
+
+              :
+              <View style={{
+                margin: 20,
+                alignSelf: 'center',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                padding: 20,
+                width: windowWidth / 4,
+                height: windowWidth / 4
+              }}>
+                <Text style={{
+                  ...Styling.modal_text_style,
+                  alignSelf: 'center',
+                  color: 'red'
+                }}>
+                  Unfortunately, you have run out of tokens!
+                </Text>
+              </View>
+            }
+
           </View>
-        </Modal>
+
+          <TouchableOpacity
+            onPress={() => {
+              props.nav.dispatch(resetActionHome);
+              setMainState({
+                stage1: true,
+                stage2: false,
+                stage3: false,
+                currentScore: 0,
+                currentLevel: 0,
+                currentCrashes: 0
+              })
+              setTimeout(() => {
+                setGameOverModalVisible(!gameOverModalVisible);
+                isGameInProgress.current = false;
+              }, 500)
+            }}
+            style={{
+              alignSelf: 'center',
+              position: 'absolute',
+              zIndex: 26,
+              top: 400,
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
+              padding: 10,
+              width: 100,
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: 'white'
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
+              Close
+            </Text>
+          </TouchableOpacity>
+        </View>
+        }
 
       </>
     </View>

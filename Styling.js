@@ -394,7 +394,7 @@ export const Styling = StyleSheet.create({
     padding: 20,
     borderRadius: 40,
     alignSelf: 'center',
-    margin: 10,
+    // margin: 10,
     width: 350,
     flexDirection: 'row'
   },
