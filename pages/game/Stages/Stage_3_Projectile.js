@@ -67,16 +67,6 @@ export const Stage_3_Projectile = (props) => {
   const [updateMaxScoreAndStage] = useMutation(UPDATE_MAX_SCORE_AND_STAGE);
   const [updateTokenCount] = useMutation(UPDATE_TOKEN_COUNT);
 
-  
-
-  // const { data } = await updateTokenCount({
-  //   variables: {
-  //     remove: null,
-  //     add: null,
-  //     amount: null
-  //   }
-  // });
-
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
   const [prevWrongElements, setPrevWrongElements] = useState(0);
@@ -243,8 +233,6 @@ export const Stage_3_Projectile = (props) => {
   }, []);
 
   const Generate = (localPrevCrashes) => {
-    console.log("GENERATE - Stage 3")
-    console.log("score.current = " + score.current)
     setContinuousEndGameCall(false)
     clearTimeout(timeoutCallGenerateID);
     if (localPrevCrashes > 0) {
@@ -254,9 +242,7 @@ export const Stage_3_Projectile = (props) => {
       crashes.current = null;
     }
 
-    console.log("Just before level.current <= 0");
     if (level.current <= 0) {
-      console.log("STAGE 2 / currentCrashes: " + mainState.current.currentCrashes)
       crashes.current += mainState.current.currentCrashes
     }
 
@@ -1313,9 +1299,16 @@ export const Stage_3_Projectile = (props) => {
 
   }
 
-  const insertToken = () => {
+  const insertToken = async () => {
 
     if (userByID?.user.tokens > 0) {
+      await updateTokenCount({
+        variables: {
+          remove: "true",
+          add: "false",
+          amount: "0"
+        }
+      });
       setGameOverModalVisible(!gameOverModalVisible);
       continueGame();
     } else {
@@ -1504,7 +1497,6 @@ export const Stage_3_Projectile = (props) => {
           currentLetter_countValue: 0
         })
 
-
         timeoutCallGenerateID = setTimeout(() => {
           Generate(input.crashes)
         }, 500)
@@ -1533,18 +1525,16 @@ export const Stage_3_Projectile = (props) => {
         })
         await updateMaxScoreAndStage({
           variables: {
-            maxstage: 3,
-            highscore: input.score
+            maxstage: '3',
+            highscore: `${input.score}`
           }
         });
-        
         setTimeout(() => {
-          // setHasGameBeenStarted(false);
+          refetch();
           setGameOverModalVisible(true)
 
         }, 100);
       } else if (input.local == "c") {
-        // setHasGameBeenStarted(false);
         setContinuousEndGameCall(true)
 
         // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -2008,17 +1998,15 @@ export const Stage_3_Projectile = (props) => {
             }, 500)
           }}
         >
-          <View style={Styling.modal_centered_view}>
+          <View style={{alignSelf: 'center', justifyContent: 'center'}}>
             <View style={Styling.modal_view}>
               <View style={{ flexDirection: 'column' }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                   <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
                     GAME OVER
                   </Text>
-                  <Text style={{ color: 'white', fontSize: 35, fontWeight: 'bold', alignSelf: 'center' }}>
-                    Tokens: {userByID?.user.tokens}
+                  <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
+                    Your Current High Score: {userByID?.user.highscore}
                   </Text>
-                </View>
 
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{
@@ -2058,6 +2046,9 @@ export const Stage_3_Projectile = (props) => {
                       marginTop: 4
                     }}>
                       USE TOKEN
+                    </Text>
+                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>
+                      # Remaining: {userByID?.user.tokens}
                     </Text>
                     <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
                     <TouchableOpacity

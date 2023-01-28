@@ -130,7 +130,8 @@ export const HomeScreen = ({ navigation }) => {
                                             <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
                                                 {count == 0 &&
                                                     <View style={{
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                                        // backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                                        backgroundColor: 'transparent',
                                                         padding: 10,
                                                         borderRadius: 20,
                                                         width: 400,

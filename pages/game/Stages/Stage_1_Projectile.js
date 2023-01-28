@@ -51,10 +51,6 @@ export const Stage_1_Projectile = (props) => {
   const [updateMaxScoreAndStage] = useMutation(UPDATE_MAX_SCORE_AND_STAGE);
   const [updateTokenCount] = useMutation(UPDATE_TOKEN_COUNT);
 
-  
-
-  
-
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
   const [prevWrongElements, setPrevWrongElements] = useState(0);
@@ -85,7 +81,6 @@ export const Stage_1_Projectile = (props) => {
   const scoreFlash_1000 = useRef(false);
   const level = useRef(mainState.current.currentLevel);
   const [recordedLevel, setRecordedLevel] = useState(0);
-  const [stageTransitionModalVisible, setStageTransitionModalVisible] = useState(false);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   let timeoutCallGenerateID;
 
@@ -1036,22 +1031,18 @@ export const Stage_1_Projectile = (props) => {
           currentDisplayLetters: input.displayLetters,
           currentLetter_countValue: input.letter_countValue
         })
-
         await updateMaxScoreAndStage({
           variables: {
             maxstage: '1',
             highscore: `${input.score}`
           }
         });
-
         setTimeout(() => {
-          // setHasGameBeenStarted(false);
           refetch();
           setGameOverModalVisible(true)
 
         }, 100);
       } else if (input.local == "c") {
-        // setHasGameBeenStarted(false);
         setContinuousEndGameCall(true)
 
         // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1154,7 +1145,6 @@ export const Stage_1_Projectile = (props) => {
                 }
               </>
             }
-
             {score.current > 0 ?
               <>
                 <View style={{
@@ -1534,51 +1524,6 @@ export const Stage_1_Projectile = (props) => {
           </View>
         </Modal>
 
-        {/* <Modal
-          animationType="slide"
-          transparent={true}
-          visible={gameOverModalVisible}
-          onRequestClose={() => {
-            setMainState({
-              stage1: true,
-              stage2: false,
-              stage3: false,
-              currentScore: 0,
-              currentLevel: 0,
-              currentCrashes: 0
-            })
-            setTimeout(() => {
-              setGameOverModalVisible(!gameOverModalVisible);
-              isGameInProgress.current = false;
-            }, 500)
-          }}
-        >
-          <View style={{ ...Styling.modal_centered_view }}>
-            <TouchableOpacity
-              style={{  }}
-              onPress={() => {
-                props.nav.dispatch(resetActionHome);
-              }}
-            >
-              <View style={{
-                // margin: HeightRatio(20), 
-                position: 'absolute',
-                zIndex: 15,
-                top: windowHeight / 2 - HeightRatio(30),
-                left: windowWidth / 2 - WidthRatio(100)
-              }}
-              >
-                <Text style={Styling.modal_text_style}>Score: {score.current}</Text>
-                <Text style={Styling.modal_text_style}>Level:</Text>
-                <Text style={Styling.modal_text_style}>Time:</Text>
-                <Text style={Styling.modal_text_style}>Words:</Text>
-              </View>
-              <Image
-                source={require('../../../assets/game_over.png')}
-                style={{ height: HeightRatio(1000), width: HeightRatio(940) }} />
-            </TouchableOpacity>
-          </View>
-        </Modal> */}
       </>
     </View>
   );
