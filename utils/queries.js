@@ -105,8 +105,8 @@ export const GET_USERS_SEARCH = gql`
 `;
 
 export const GAMES = gql`
-  query Games($echo: String) {
-    games(echo: $echo) {
+  query Query {
+    games {
       _id
       userid
       username
