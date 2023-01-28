@@ -182,27 +182,27 @@ export const DELETE_GAME = gql`
 
 export const UPDATE_MAX_SCORE_AND_STAGE = gql`
   mutation Mutation($maxstage: String, $highscore: String) {
-  updateMaxScoreAndStage(maxstage: $maxstage, highscore: $highscore) {
-    _id
-    role
-    username
-    email
-    profilepicture
-    games {
+    updateMaxScoreAndStage(maxstage: $maxstage, highscore: $highscore) {
       _id
-      userid
+      role
       username
-      score
-      stage
-      date
+      email
+      profilepicture
+      games {
+        _id
+        userid
+        username
+        score
+        stage
+        date
+      }
+      maxstage
+      highscore
+      tokens
+      resetToken
+      resetTokenExpiry
     }
-    maxstage
-    highscore
-    tokens
-    resetToken
-    resetTokenExpiry
   }
-}
 `;
 
 export const UPDATE_TOKEN_COUNT = gql`

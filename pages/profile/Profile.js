@@ -52,6 +52,8 @@ export const ProfileScreen = ({ navigation }) => {
         variables: { id: userID.current }
     });
 
+   
+
 
 
     const resetActionAuth = CommonActions.reset({

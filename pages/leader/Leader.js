@@ -10,50 +10,13 @@ import { Styling } from '../../Styling';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const {
-  width: SCREEN_WIDTH,
-  height: SCREEN_HEIGHT,
-} = Dimensions.get('window');
-
-const scaleWidth = SCREEN_WIDTH / 360;
-const scaleHeight = SCREEN_HEIGHT / 800;
-
-const WidthRatio = (size) => {
-  const newSize = size * scaleWidth;
-  return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
-
-const HeightRatio = (size) => {
-  const newSize = size * scaleHeight;
-  return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-}
-
-export const LeaderScreen = ({ navigation }) => {
-  const [userID, setUserID] = useState('');
-  const [authState, setAuthState] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(null);
-  
-    const CheckAuthState = async () => {
-      let value = await AsyncStorage.getItem('@authState')
-      if (value === 'true') {
-        setAuthState(true)
-      } else if (value === 'false') {
-        setAuthState(false)
-      }
-    }
-  
-    const CurrentUser = async () => {
-      let value = await AsyncStorage.getItem('@userID', value);
-      setUserID(value)
-    }
-
-    
+export const LeaderScreen = ({ navigation }) => {  
   
     const { data: leaderboard, refetch } = useQuery(GAMES);
-    console.log(leaderboard)
+    // console.log(leaderboard)
   
     const DATA = leaderboard?.games;
-    console.log(DATA)
+    // console.log(DATA)
   
   
     const Item = ({ username, score, pos }) => (
@@ -143,8 +106,6 @@ export const LeaderScreen = ({ navigation }) => {
     );
   
     useEffect(() => {
-      CheckAuthState();
-      CurrentUser();
       refetch();
     }, [])
   
