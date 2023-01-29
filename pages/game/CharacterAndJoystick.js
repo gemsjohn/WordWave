@@ -38,7 +38,7 @@ export const CharacterAndJoystick = () => {
   );
   dy.setValue(
     pan.y.interpolate({
-      inputRange: [0, 1],
+      inputRange: [0, 1.0],
       outputRange: [0, 100],
     })
   );

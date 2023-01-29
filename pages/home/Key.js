@@ -104,117 +104,147 @@ export const KeyScreen = ({ navigation }) => {
                         <Image
                             source={require('../../assets/adaptive_icon_0.png')}
                             style={{
-                                height: 100,
-                                width: 100,
+                                height: HeightRatio(200),
+                                width: HeightRatio(200),
                                 borderRadius: 200,
-                                marginTop: 100,
+                                marginTop: HeightRatio(150),
                                 alignSelf: 'center'
                             }} />
-                        <View style={{ marginTop: 100, flexDirection: 'row', alignSelf: 'center' }}>
+                        <View style={{ marginTop: HeightRatio(100), flexDirection: 'row', alignSelf: 'center' }}>
                             {count > 0 ?
                                 <View style={{
                                     backgroundColor: 'rgba(255, 255, 255, 1.0)',
-                                    height: 25,
-                                    width: 25,
-                                    margin: 10
+                                    height: HeightRatio(50),
+                                    width: HeightRatio(50),
+                                    margin: HeightRatio(20)
                                 }} />
 
                                 :
                                 <View style={{
                                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                    height: 25,
-                                    width: 25,
-                                    margin: 10
+                                    height: HeightRatio(50),
+                                    width: HeightRatio(50),
+                                    margin: HeightRatio(20)
                                 }} />
                             }
                             {count > 1 ?
                                 <View style={{
                                     backgroundColor: 'rgba(255, 255, 255, 1.0)',
-                                    height: 25,
-                                    width: 25,
-                                    margin: 10
+                                    height: HeightRatio(50),
+                                    width: HeightRatio(50),
+                                    margin: HeightRatio(20)
                                 }} />
 
                                 :
                                 <View style={{
                                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                    height: 25,
-                                    width: 25,
-                                    margin: 10
+                                    height: HeightRatio(50),
+                                    width: HeightRatio(50),
+                                    margin: HeightRatio(20)
                                 }} />
                             }
                             {count > 2 ?
                                 <View style={{
                                     backgroundColor: 'rgba(255, 255, 255, 1.0)',
-                                    height: 25,
-                                    width: 25,
-                                    margin: 10
+                                    height: HeightRatio(50),
+                                    width: HeightRatio(50),
+                                    margin: HeightRatio(20)
                                 }} />
 
                                 :
                                 <View style={{
                                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                    height: 25,
-                                    width: 25,
-                                    margin: 10
+                                    height: HeightRatio(50),
+                                    width: HeightRatio(50),
+                                    margin: HeightRatio(20)
                                 }} />
                             }
                             {count > 3 ?
                                 <View style={{
                                     backgroundColor: 'rgba(255, 255, 255, 1.0)',
-                                    height: 25,
-                                    width: 25,
-                                    margin: 10
+                                    height: HeightRatio(50),
+                                    width: HeightRatio(50),
+                                    margin: HeightRatio(20)
                                 }} />
 
                                 :
                                 <View style={{
                                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                    height: 25,
-                                    width: 25,
-                                    margin: 10
+                                    height: HeightRatio(50),
+                                    width: HeightRatio(50),
+                                    margin: HeightRatio(20)
                                 }} />
                             }
 
 
                         </View>
-                        <View style={{ marginTop: 100 }}>
+                        <View style={{ marginTop: HeightRatio(100) }}>
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('1')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>1</Text>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('1')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >1</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('2')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>2</Text>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('2')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >2</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('3')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>3</Text>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('3')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >3</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('4')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>4</Text>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('4')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >4</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('5')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>5</Text>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('5')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >5</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('6')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>6</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('7')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>7</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('8')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>8</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('9')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>9</Text>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('6')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >6</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: 70, width: 70, borderRadius: 50, margin: 10 }} onPress={() => handleKeyPress('0')}>
-                                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center', marginTop: 20 }}>0</Text>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('7')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >7</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('8')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >8</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('9')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >9</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(150), width: HeightRatio(150), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('0')}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', marginTop: HeightRatio(40) }}
+                                        allowFontScaling={false}
+                                    >0</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

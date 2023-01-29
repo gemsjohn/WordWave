@@ -1277,7 +1277,7 @@ export const Stage_2_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];

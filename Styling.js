@@ -70,8 +70,8 @@ export const Styling = StyleSheet.create({
   },
   joystick_knob: {
     backgroundColor: "#3aff0050",
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     borderRadius: 100,
     borderWidth: 1,
     borderColor: '#84ff4e',
