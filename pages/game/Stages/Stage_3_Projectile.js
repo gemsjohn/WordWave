@@ -893,7 +893,7 @@ export const Stage_3_Projectile = (props) => {
     y: 0,
     width: 0,
     height: 0,
-    radius: 0
+    // radius: 0
   });
 
   useEffect(() => {
@@ -904,8 +904,8 @@ export const Stage_3_Projectile = (props) => {
         x: mainState.current.charX + WidthRatio(64) + mainState.current.charWidth / 2,
         y: mainState.current.charY - mainState.current.charHeight / 1.2,
         width: mainState.current.charWidth,
-        height: mainState.current.charHeight / 2,
-        radius: mainState.current.charHeight / 2,
+        height: mainState.current.charHeight,
+        // radius: mainState.current.charHeight / 2,
       });
 
       requestAnimationFrame(update);
@@ -969,7 +969,7 @@ export const Stage_3_Projectile = (props) => {
 
     // Obstacle Right Angle 0
     const obstacleListener_right_angle_0 = obstaclePosition_right_angle_0.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(14), width: WidthRatio(24) }
 
       if (isObstacleColliding_right_angle_0(obj1, obj2)) {
         if (!hasUpdatedObstacle_right_angle_0.current) {
@@ -987,7 +987,7 @@ export const Stage_3_Projectile = (props) => {
 
     // Obstacle Right Angle 1
     const obstacleListener_right_angle_1 = obstaclePosition_right_angle_1.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(14), width: WidthRatio(24) }
 
       if (isObstacleColliding_right_angle_1(obj1, obj2)) {
         if (!hasUpdatedObstacle_right_angle_1.current) {
@@ -1005,7 +1005,7 @@ export const Stage_3_Projectile = (props) => {
 
     // Obstacle Right Twins 1
     const obstacleListener_twins_1 = obstaclePosition_twins_1.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(24), width: WidthRatio(18) }
 
       if (isObstacleColliding_twins_1(obj1, obj2)) {
         if (!hasUpdatedObstacle_twins_1.current) {
@@ -1022,7 +1022,7 @@ export const Stage_3_Projectile = (props) => {
     });
     // Obstacle Right Twins 1 Divergence
     const obstacleListener_twins_1_divergence = obstaclePosition_twins_1_divergence.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(7.5), height: WidthRatio(15), width: WidthRatio(24) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(24), width: WidthRatio(18) }
 
       if (isObstacleColliding_twins_1_divgergence(obj1, obj2)) {
         if (!hasUpdatedObstacle_twins_1.current) {
@@ -1040,7 +1040,7 @@ export const Stage_3_Projectile = (props) => {
 
     // Obstacle Opacity Bot
     const obstacleListener_opacity_bot = obstaclePosition_opacity_bot.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12), height: WidthRatio(15), width: WidthRatio(24) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(24), width: WidthRatio(24) }
 
       if (isObstacleColliding_opacity_bot(obj1, obj2)) {
         if (!hasUpdatedObstacle_opacity_bot.current) {
@@ -1058,7 +1058,7 @@ export const Stage_3_Projectile = (props) => {
 
     // Obstacle Opacity Bot Divergence
     const obstacleListener_opacity_bot_divergence = obstaclePosition_opacity_bot_divergence.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, radius: WidthRatio(12), height: WidthRatio(15), width: WidthRatio(24) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(24), width: WidthRatio(24) }
 
       if (isObstacleColliding_opacity_bot_divergence(obj1, obj2)) {
         if (!hasUpdatedObstacle_opacity_bot.current) {
@@ -1770,7 +1770,7 @@ export const Stage_3_Projectile = (props) => {
         {/* Right Angle 0 & 1 */}
         <Animated.View
           style={[Styling.projectile_obstacle_block,
-          { width: WidthRatio(24), height: WidthRatio(24), },
+          // { width: WidthRatio(24), height: WidthRatio(24), },
           {
             transform: [
               { translateX: obstaclePosition_right_angle_0.x },
@@ -1782,7 +1782,7 @@ export const Stage_3_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/projectile_red_ufo.png')}
-            style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
         </Animated.View>
 
         <Animated.View
@@ -1854,7 +1854,7 @@ export const Stage_3_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/projectile_enemy_4.png')}
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+            style={{ height: WidthRatio(24), width: WidthRatio(20) }} />
         </Animated.View>
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
@@ -1869,7 +1869,7 @@ export const Stage_3_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/projectile_enemy_4.png')}
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+            style={{ height: WidthRatio(24), width: WidthRatio(20) }} />
         </Animated.View>
         {/* - - - - - - - - - - */}
 
