@@ -51,14 +51,6 @@ export const Styling = StyleSheet.create({
 
     marginTop: 0
   },
-  profileDivisionLine: {
-    borderColor: '#4cc9f0',
-    borderBottomWidth: 1,
-    width: windowWidth - 80,
-    alignSelf: 'center',
-    marginTop: 10,
-    marginBottom: 10
-  },
   joystick_container: {
     flex: 1,
     alignItems: "flex-start",
@@ -131,11 +123,11 @@ export const Styling = StyleSheet.create({
     // marginTop: 22,
   },
   modal_view: {
-    margin: 20,
+    margin: HeightRatio(20),
     width: '100%',
     backgroundColor: "rgba(0, 0, 0, 1.0)",
     // borderRadius: 20,
-    padding: 35,
+    padding: HeightRatio(35),
     alignItems: "center",
     shadowColor: "#c5ffff",
     shadowOffset: {
@@ -412,7 +404,7 @@ export const Styling = StyleSheet.create({
   profileDivisionLine: {
     borderColor: 'white',
     borderBottomWidth: 2,
-    width: 400,
+    width: WidthRatio(150),
     alignSelf: 'center',
     marginTop: 10,
     marginBottom: 10
