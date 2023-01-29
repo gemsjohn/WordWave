@@ -360,14 +360,14 @@ export const Styling = StyleSheet.create({
     color: 'white',
     display: 'flex',
     justifyContent: 'flex-start',
-    padding: 20,
+    padding: HeightRatio(40),
     border: 'solid',
     borderWidth: 2,
     borderColor: 'white',
-    borderRadius: 40,
+    borderRadius: HeightRatio(80),
     alignSelf: 'center',
-    margin: 10,
-    width: 350
+    margin: HeightRatio(20),
+    width: WidthRatio(160)
   },
   profileContainer: {
     // paddingTop: StatusBar.currentHeight,
