@@ -954,7 +954,7 @@ export const Stage_1_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
@@ -1330,7 +1330,6 @@ export const Stage_1_Projectile = (props) => {
               width: WidthRatio(28), 
               position: 'absolute', 
               top: 10, 
-              // left: HeightRatio(((((letterPositionNum * WidthRatio(30)) / windowWidth) * 100) / 2)) * 3.5 + (i * WidthRatio(30) + (windowWidth/4 + (displayLetters.length))),
               left: ((((displayLetters.length * WidthRatio(30))/windowWidth)*100) + (i * WidthRatio(30))),
               height: WidthRatio(28),
               borderRadius: HeightRatio(20),
@@ -1451,7 +1450,7 @@ export const Stage_1_Projectile = (props) => {
               alignSelf: 'center',
               position: 'absolute',
               zIndex: 26,
-              top: HeightRatio(190),
+              top: HeightRatio(210),
             }}>
               <View style={{
                 alignSelf: 'center',
@@ -1469,7 +1468,7 @@ export const Stage_1_Projectile = (props) => {
                     padding: HeightRatio(20),
                     width: WidthRatio(120),
                     flexDirection: 'column',
-                    margin: HeightRatio(4),
+                    margin: HeightRatio(8),
                     backgroundColor: '#25698975',
                     borderTopLeftRadius: 0,
                     borderTopRightRadius: HeightRatio(50)
@@ -1504,7 +1503,7 @@ export const Stage_1_Projectile = (props) => {
                     padding: HeightRatio(20),
                     width: WidthRatio(120),
                     flexDirection: 'column',
-                    margin: HeightRatio(4),
+                    margin: HeightRatio(8),
                     backgroundColor: '#25698975',
                     borderTopLeftRadius: 0,
                     borderTopRightRadius: HeightRatio(50)
@@ -1539,7 +1538,7 @@ export const Stage_1_Projectile = (props) => {
                     padding: HeightRatio(20),
                     width: WidthRatio(120),
                     flexDirection: 'column',
-                    margin: HeightRatio(4),
+                    margin: HeightRatio(8),
                     backgroundColor: '#25698975',
                     borderTopLeftRadius: 0,
                     borderTopRightRadius: HeightRatio(50)
@@ -1568,7 +1567,7 @@ export const Stage_1_Projectile = (props) => {
               <View style={{ margin: HeightRatio(40), alignSelf: 'center' }} />
               {!tokenWarning ?
                 <View style={{
-                  margin: HeightRatio(40),
+                  margin: HeightRatio(50),
                   alignSelf: 'center',
                   backgroundColor: 'rgba(0, 0, 0, 0.1)',
                   borderRadius: HeightRatio(50),
