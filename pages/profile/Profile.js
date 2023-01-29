@@ -6,7 +6,7 @@ import { UserDetails } from './UserDetails';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
 import { RecentGames } from '../game/RecentGames';
-import { Styling } from '../../Styling';
+import { HeightRatio, WidthRatio, Styling } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
 import * as SecureStore from 'expo-secure-store';
 import { MainStateContext } from '../../App';
@@ -100,35 +100,38 @@ export const ProfileScreen = ({ navigation }) => {
                                 {mainState.current.authState &&
                                     <>
                                         <View style={{}}>
-                                            {displayUsername &&
+                                        {displayUsername &&
                                             <>
-                                                <View style={{ marginTop: 0, flexDirection: 'column' }}>
+                                                <View style={{ flexDirection: 'column' }}>
                                                     <Text style={{
                                                         color: 'white',
-                                                        fontSize: 30,
+                                                        fontSize: HeightRatio(60),
                                                         fontWeight: 'bold',
                                                         alignSelf: 'center',
-                                                        margin: 10
-                                                    }}>
+                                                        margin: HeightRatio(20)
+                                                    }}
+                                                    allowFontScaling={false}>
                                                         {userByID?.user.username}
                                                     </Text>
                                                     <Text style={{
                                                         color: 'white',
-                                                        fontSize: 15,
+                                                        fontSize: HeightRatio(40),
                                                         fontWeight: 'bold',
                                                         alignSelf: 'center'
 
-                                                    }}>
+                                                    }}
+                                                    allowFontScaling={false}>
                                                         Tokens Remaining: {userByID?.user.tokens}
                                                     </Text>
                                                     <Text style={{
                                                         color: 'white',
-                                                        fontSize: 15,
+                                                        fontSize: HeightRatio(40),
                                                         fontWeight: 'bold',
                                                         alignSelf: 'center',
-                                                        margin: 10
+                                                        margin: HeightRatio(20)
 
-                                                    }}>
+                                                    }}
+                                                    allowFontScaling={false}>
                                                         Your High Score: {userByID?.user.highscore}
                                                     </Text>
                                                 </View>
@@ -168,14 +171,14 @@ export const ProfileScreen = ({ navigation }) => {
                                                         backgroundColor: '#f8200d',
                                                         display: 'flex',
                                                         justifyContent: 'flex-start',
-                                                        padding: 20,
-                                                        borderRadius: 40,
+                                                        padding: HeightRatio(40),
+                                                        borderRadius: HeightRatio(80),
                                                         alignSelf: 'center',
-                                                        // margin: 10,
-                                                        width: 350
+                                                        margin: HeightRatio(10),
+                                                        width: WidthRatio(160)
                                                     }}>
                                                         <Text
-                                                            style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
+                                                            style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
                                                             allowFontScaling={false}
                                                         >
                                                             Remove/Reset Keycode
@@ -199,14 +202,14 @@ export const ProfileScreen = ({ navigation }) => {
                                                     backgroundColor: 'blue',
                                                     display: 'flex',
                                                     justifyContent: 'flex-start',
-                                                    padding: 20,
-                                                    borderRadius: 40,
+                                                    padding: HeightRatio(40),
+                                                    borderRadius: HeightRatio(80),
                                                     alignSelf: 'center',
-                                                    margin: 10,
-                                                    width: 350
+                                                    margin: HeightRatio(10),
+                                                    width: WidthRatio(160)
                                                 }}>
                                                     <Text
-                                                        style={{ color: 'white', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}
+                                                        style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
                                                         allowFontScaling={false}
                                                     >
                                                         Switch User
@@ -242,8 +245,11 @@ export const ProfileScreen = ({ navigation }) => {
 
                             <TouchableOpacity
                                 onPress={() => setDisplaySetUpCosmicKeyModal(!displaySetUpCosmicKeyModal)}
-                                style={{ marginTop: 20 }}>
-                                <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>
+                                style={{ marginTop: HeightRatio(20) }}>
+                                <Text
+                                    style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
+                                    allowFontScaling={false}
+                                >
                                     Close
                                 </Text>
                             </TouchableOpacity>

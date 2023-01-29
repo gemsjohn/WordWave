@@ -62,8 +62,8 @@ export const Styling = StyleSheet.create({
   },
   joystick_knob: {
     backgroundColor: "#3aff0050",
-    width: 60,
-    height: 60,
+    width: HeightRatio(120),
+    height: HeightRatio(120),
     borderRadius: 100,
     borderWidth: 1,
     borderColor: '#84ff4e',
@@ -99,7 +99,7 @@ export const Styling = StyleSheet.create({
     zIndex: 10,
   },
   projectile_letter: {
-    fontSize: 35,
+    fontSize: HeightRatio(60),
     fontWeight: 'bold',
     color: 'black',
     alignSelf: 'center',
@@ -109,7 +109,7 @@ export const Styling = StyleSheet.create({
     zIndex: 12,
   },
   projectile_random_word_letter: {
-    fontSize: 40,
+    fontSize: HeightRatio(80),
     fontWeight: 'bold',
     color: 'black',
   },
@@ -154,7 +154,7 @@ export const Styling = StyleSheet.create({
   },
   modal_text_style: {
     color: "white",
-    fontSize: 25,
+    fontSize: HeightRatio(50),
     fontWeight: "bold",
     textAlign: "left",
     marginTop: HeightRatio(5)
@@ -469,7 +469,7 @@ export const Styling = StyleSheet.create({
   },
   modalScoringVarText: {
     color: 'white',
-    fontSize: 40,
+    fontSize: HeightRatio(80),
     fontWeight: 'bold',
   },
   row: {

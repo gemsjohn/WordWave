@@ -142,12 +142,12 @@ export const Navbar = (props) => {
             >
                 <View
                     style={{
-                        flexDirection: 'column', marginLeft: HeightRatio(20), marginRight: HeightRatio(20)
+                        flexDirection: 'column', marginLeft: HeightRatio(10), marginRight: HeightRatio(10)
                     }}
                     accessible={true}
                     accessibilityLabel="Home"
                 >
-                    <Image source={require('../assets/button_home_nav.png')} style={{height: HeightRatio(120), width: HeightRatio(120)}} />
+                    <Image source={require('../assets/button_home_nav.png')} style={{height: HeightRatio(60), width: HeightRatio(60)}} />
                 </View>
             </TouchableOpacity>
            
@@ -157,12 +157,12 @@ export const Navbar = (props) => {
             >
                 <View
                     style={{
-                        flexDirection: 'column', marginLeft: HeightRatio(20), marginRight: HeightRatio(20)
+                        flexDirection: 'column', marginLeft: HeightRatio(10), marginRight: HeightRatio(10)
                     }}
                     accessible={true}
                     accessibilityLabel="Game"
                 >
-                    <Image source={require('../assets/button_game_nav.png')} style={{height: HeightRatio(120), width: HeightRatio(120)}} />
+                    <Image source={require('../assets/button_game_nav.png')} style={{height: HeightRatio(60), width: HeightRatio(60)}} />
                 </View>
             </TouchableOpacity>
             {/* [[[LEADER BOARD]]] */}
@@ -171,12 +171,12 @@ export const Navbar = (props) => {
             >
                 <View
                     style={{
-                        flexDirection: 'column', marginLeft: HeightRatio(20), marginRight: HeightRatio(20)
+                        flexDirection: 'column', marginLeft: HeightRatio(10), marginRight: HeightRatio(10)
                     }}
                     accessible={true}
                     accessibilityLabel="High Scores"
                 >
-                    <Image source={require('../assets/button_scores_nav.png')} style={{height: HeightRatio(120), width: HeightRatio(120)}} />
+                    <Image source={require('../assets/button_scores_nav.png')} style={{height: HeightRatio(60), width: HeightRatio(60)}} />
                 </View>
             </TouchableOpacity>
             
@@ -187,12 +187,12 @@ export const Navbar = (props) => {
                 >
                     <View
                         style={{
-                            flexDirection: 'column', marginLeft: HeightRatio(20), marginRight: HeightRatio(20)
+                            flexDirection: 'column', marginLeft: HeightRatio(10), marginRight: HeightRatio(10)
                         }}
                         accessible={true}
                         accessibilityLabel="User profile"
                     >
-                        <Image source={require('../assets/button_profile_nav.png')} style={{height: HeightRatio(120), width: HeightRatio(120)}} />
+                        <Image source={require('../assets/button_profile_nav.png')} style={{height: HeightRatio(60), width: HeightRatio(60)}} />
                     </View>
                 </TouchableOpacity>
             :
@@ -201,10 +201,10 @@ export const Navbar = (props) => {
                 >
                     <View
                         style={{
-                            flexDirection: 'column', marginLeft: HeightRatio(20), marginRight: HeightRatio(20)
+                            flexDirection: 'column', marginLeft: HeightRatio(10), marginRight: HeightRatio(10)
                         }}
                     >
-                        <Image source={require('../assets/button_profile_nav.png')} style={{height: HeightRatio(120), width: HeightRatio(120)}} />
+                        <Image source={require('../assets/button_profile_nav.png')} style={{height: HeightRatio(60), width: HeightRatio(60)}} />
                     </View>
                 </TouchableOpacity>
 

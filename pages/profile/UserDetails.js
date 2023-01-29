@@ -186,22 +186,23 @@ export const UserDetails = (props) => {
                             borderLeftWidth: 1,
                             borderBottomWidth: 1,
                             // borderTopLeftRadius: 30,
-                            borderBottomLeftRadius: 25,
-                            padding: 10,
-                            width: 400,
+                            borderBottomLeftRadius: HeightRatio(30),
+                            padding: HeightRatio(15),
+                            width: WidthRatio(160),
                             flexDirection: 'column',
-                            margin: 10,
+                            margin: HeightRatio(20),
                             backgroundColor: `${EditableFields[i].edit ? 'rgba(255, 255, 255, 0.1)' : 'transparent'}`,
                             // borderTopRightRadius: 10,
-                            borderTopLeftRadius: 10
+                            borderTopLeftRadius: HeightRatio(20),
+                            alignSelf: 'center'
                         }}
 
                     >
                         <View style={{ flexDirection: 'row', }}>
-                            <Text style={{ color: 'white', marginRight: 10, fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }}>{EditableFields[i].title}</Text>
+                            <Text style={{ color: 'white', marginRight: 10, fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}>{EditableFields[i].title}</Text>
 
                             <Text
-                                style={{ color: '#fcd01f', alignSelf: 'center', fontSize: 16, fontWeight: 'bold', width: 150 }}
+                                style={{ color: '#fcd01f', alignSelf: 'center', fontSize: HeightRatio(32), fontWeight: 'bold', width: 150 }}
                                 numberOfLines={1}
                                 ellipsizeMode='tail'
                             >
@@ -216,7 +217,7 @@ export const UserDetails = (props) => {
                                         position: 'absolute',
                                         zIndex: 10,
                                         alignSelf: 'center',
-                                        left: 340,
+                                        left: WidthRatio(130),
                                         padding: 4,
                                         borderRadius: 4,
                                         flexDirection: 'row'
@@ -226,7 +227,7 @@ export const UserDetails = (props) => {
                                         icon={faSolid, faPenToSquare}
                                         style={{ color: '#00b2ca', justifyContent: 'flex-end', marginRight: 5 }}
                                     />
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }} allowFontScaling={false}>
+                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: HeightRatio(30), alignSelf: 'flex-end' }} allowFontScaling={false}>
                                         EDIT
                                     </Text>
                                 </View>
@@ -242,9 +243,9 @@ export const UserDetails = (props) => {
                                                     {i == 3 &&
                                                         <>
                                                             <TouchableOpacity onPress={() => copyToClipboard()} style={{ marginLeft: 10 }}>
-                                                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)', width: 380, borderRadius: 10, padding: 10, alignSelf: 'center' }}>
+                                                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)', width: WidthRatio(150), borderRadius: 10, padding: 10, alignSelf: 'center' }}>
                                                                     <Text
-                                                                        style={{ color: '#efea5a', fontSize: 20, fontWeight: 'bold', marginLeft: 20 }}
+                                                                        style={{ color: '#efea5a', fontSize: HeightRatio(40), fontWeight: 'bold', marginLeft: 20 }}
                                                                         allowFontScaling={false}
                                                                     >Copy ID {userByID?.user._id}</Text>
                                                                 </View>
@@ -275,12 +276,12 @@ export const UserDetails = (props) => {
                                                                 borderTopWidth: 1,
                                                                 borderLeftWidth: 1,
                                                                 borderBottomWidth: 1,
-                                                                borderTopLeftRadius: 30,
-                                                                borderBottomLeftRadius: 30,
+                                                                borderTopLeftRadius: HeightRatio(30),
+                                                                borderBottomLeftRadius: HeightRatio(30),
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: 270
+                                                                width: WidthRatio(100)
                                                             }}
                                                         />
                                                         {/* [[[SUBMIT BUTTON]]] */}
@@ -338,11 +339,11 @@ export const UserDetails = (props) => {
                                                                 border: 'solid',
                                                                 borderColor: 'white',
                                                                 borderWidth: 1,
-                                                                borderRadius: 30,
+                                                                borderRadius: HeightRatio(30),
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: 350
+                                                                width: WidthRatio(150)
                                                             }}
                                                         />
                                                     </View>
@@ -368,12 +369,12 @@ export const UserDetails = (props) => {
                                                                 borderTopWidth: 1,
                                                                 borderLeftWidth: 1,
                                                                 borderBottomWidth: 1,
-                                                                borderTopLeftRadius: 30,
-                                                                borderBottomLeftRadius: 30,
+                                                                borderTopLeftRadius: HeightRatio(30),
+                                                                borderBottomLeftRadius: HeightRatio(30),
                                                                 alignSelf: 'center',
                                                                 marginTop: 10,
                                                                 marginBottom: 4,
-                                                                width: 270
+                                                                width: WidthRatio(100)
                                                             }}
                                                         />
                                                         {/* [[[SUBMIT BUTTON]]] */}
@@ -412,14 +413,14 @@ export const UserDetails = (props) => {
                                             }
                                             {promptPasswordInput1 != '' && promptPasswordInput2 != '' && promptPasswordInput1 == promptPasswordInput2 &&
                                                 <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                                    <Text style={{ color: 'white', fontSize: windowHeight * 0.03 }}>
+                                                    <Text style={{ color: 'white', fontSize: HeightRatio(40) }}>
                                                         Passwords match!
                                                     </Text>
                                                 </View>
                                             }
                                             {promptPasswordInput1 != '' && promptPasswordInput2 != '' && promptPasswordInput1 != promptPasswordInput2 &&
                                                 <View style={{ flexDirection: 'row', alignSelf: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: 10, borderRadius: 10 }}>
-                                                    <Text style={{ color: 'red', fontSize: windowHeight * 0.03 }}>
+                                                    <Text style={{ color: 'red', fontSize: HeightRatio(40) }}>
                                                         Passwords do not match!
                                                     </Text>
                                                 </View>
