@@ -5,7 +5,7 @@ import { Alert, StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Scro
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Navbar } from '../../components/Navbar';
-import { Styling } from '../../Styling';
+import { HeightRatio, Styling, WidthRatio } from '../../Styling';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -25,12 +25,11 @@ export const LeaderScreen = ({ navigation }) => {
         <View
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            height: 60,
-            width: windowWidth - 80,
-            // alignSelf: 'center',
-            // borderRadius: 50,
+            height: HeightRatio(120),
+            width: WidthRatio(160),
             flexDirection: 'row', 
-            justifyContent: 'space-evenly'
+            justifyContent: 'space-evenly',
+            alignSelf: 'center'
           }}
         >
           <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
@@ -38,10 +37,8 @@ export const LeaderScreen = ({ navigation }) => {
               <Text
                 style={{
                   color: 'white',
-                  fontSize: 30,
+                  fontSize: HeightRatio(40),
                   fontWeight: 'bold',
-                  // marginTop: 30,
-                  // marginLeft: 10
                 }}
                 allowFontScaling={false}
               >
@@ -49,10 +46,10 @@ export const LeaderScreen = ({ navigation }) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 30,
+                  fontSize: HeightRatio(40),
                   fontWeight: 'bold',
                   color: '#53f4a4',
-                  width: 180
+                  width: WidthRatio(70)
                 }}
                 numberOfLines={1}
                 ellipsizeMode='tail'
@@ -62,12 +59,11 @@ export const LeaderScreen = ({ navigation }) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 25,
+                  fontSize: HeightRatio(40),
                   fontWeight: 'bold',
                   color: 'white',
-                  alignSelf: 'flex-end',
                   textAlign: 'right',
-                  width: 180
+                  width: WidthRatio(70)
                 }}
                 numberOfLines={1}
                 ellipsizeMode='tail'
@@ -114,17 +110,20 @@ export const LeaderScreen = ({ navigation }) => {
             <View style={{ 
               alignSelf: 'center', 
               flexDirection: 'column', 
-              padding: 10, 
-              borderRadius: 50, 
-              width: 350, 
-              marginTop: 80 
+              padding: HeightRatio(20), 
+              borderRadius: HeightRatio(100), 
+              width: WidthRatio(160), 
+              marginTop: HeightRatio(160) 
             }}>
-              <Text style={{ 
-                color: 'yellow', 
-                fontSize: 40, 
-                fontWeight: 'bold', 
-                alignSelf: 'center' 
-              }}>HIGH SCORES</Text>
+              <Text 
+                style={{ 
+                  color: 'yellow', 
+                  fontSize: HeightRatio(80), 
+                  fontWeight: 'bold', 
+                  alignSelf: 'center' 
+                }}
+                allowFontScaling={false}
+              >HIGH SCORES</Text>
             </View>
             <SafeAreaView style={Styling.flatlistContainer}>
               <FlatList

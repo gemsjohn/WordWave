@@ -398,9 +398,18 @@ export const HomeScreen = ({ navigation }) => {
 
                             <TouchableOpacity
                                 onPress={() => setDisplaySignUpModal(!displaySignUpModal)}>
-                                <Text style={{ color: 'white', fontSize: HeightRatio(50), alignSelf: 'center' }} allowFontScaling={false}>
-                                    Close
-                                </Text>
+                                <View style={{
+                                    padding: HeightRatio(10),
+                                    alignSelf: 'center',
+                                    margin: HeightRatio(10),
+                                }}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
+                                        allowFontScaling={false}
+                                    >
+                                        Close
+                                    </Text>
+                                </View>
                             </TouchableOpacity>
                         </View>
                     </View>
