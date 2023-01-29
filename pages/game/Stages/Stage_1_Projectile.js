@@ -1156,24 +1156,17 @@ export const Stage_1_Projectile = (props) => {
                 <View style={{
                  position: 'absolute',
                  zIndex: -7,
-                 top: windowHeight * 0.76,
-                 left: 20,
+                 top: windowHeight * 0.84,
+                 left: HeightRatio(30),
                  backgroundColor: 'transparent',
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(60),
+                    fontSize: WidthRatio(12),
                     fontWeight: 'bold'
                   }}
                   allowFontScaling={false}
-                  >Score:</Text>
-                  <Text style={{
-                    color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(60),
-                    fontWeight: 'bold'
-                  }}
-                  allowFontScaling={false}
-                  >{score.current}</Text>
+                  >Score: {score.current}</Text>
                 </View>
                 {scoreFlash_100.current &&
                   <View style={{
@@ -1209,24 +1202,17 @@ export const Stage_1_Projectile = (props) => {
                 <View style={{
                   position: 'absolute',
                   zIndex: -7,
-                  top: windowHeight * 0.76,
-                  left: 20,
+                  top: windowHeight * 0.84,
+                  left: HeightRatio(30),
                   backgroundColor: 'transparent',
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(60),
+                    fontSize: WidthRatio(12),
                     fontWeight: 'bold'
                   }}
                   allowFontScaling={false}
-                  >Score:</Text>
-                  <Text style={{
-                    color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: HeightRatio(60),
-                    fontWeight: 'bold'
-                  }}
-                  allowFontScaling={false}
-                  >0</Text>
+                  >Score: 0</Text>
                 </View>
 
               </>
@@ -1338,20 +1324,26 @@ export const Stage_1_Projectile = (props) => {
         </Animated.View>
 
         <View style={{ borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10) }} />
-        {displayLetters.map((l, i) => (
-          <View style={{
-            width: HeightRatio(120), position: 'absolute', top: 10, left: WidthRatio((WidthRatio(30) - ((((letterPositionNum * HeightRatio(130)) / windowWidth) * 100) / 2)) * 3.7) + ((i * HeightRatio(130))),
-            height: HeightRatio(120),
-            borderRadius: 10,
-            backgroundColor: getBackgroundColor(l),
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-            key={i}
-          >
-            <Text style={Styling.projectile_random_word_letter} allowFontScaling={false}>{l.toUpperCase()}</Text>
-          </View>
-        ))}
+        <View style={{left: (-WidthRatio(20)) + windowWidth/2 - ((displayLetters.length * WidthRatio(30))/2)}}>
+          {displayLetters.map((l, i) => (
+            <View style={{
+              width: WidthRatio(28), 
+              position: 'absolute', 
+              top: 10, 
+              // left: HeightRatio(((((letterPositionNum * WidthRatio(30)) / windowWidth) * 100) / 2)) * 3.5 + (i * WidthRatio(30) + (windowWidth/4 + (displayLetters.length))),
+              left: ((((displayLetters.length * WidthRatio(30))/windowWidth)*100) + (i * WidthRatio(30))),
+              height: WidthRatio(28),
+              borderRadius: HeightRatio(20),
+              backgroundColor: getBackgroundColor(l),
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+              key={i}
+            >
+              <Text style={Styling.projectile_random_word_letter} allowFontScaling={false}>{l.toUpperCase()}</Text>
+            </View>
+          ))}
+        </View>
 
         {crashes.current > 0 && !hideCrashesUntilUpdate.current &&
           <>
@@ -1359,14 +1351,14 @@ export const Stage_1_Projectile = (props) => {
               <View style={{
                 position: 'absolute',
                 zIndex: -7,
-                top: windowHeight * 0.80,
-                left: (windowWidth / 2 + WidthRatio(80) + (i * 50)),
+                top: windowHeight * 0.82,
+                left: (windowWidth / 2 + WidthRatio(80) + (i * WidthRatio(25))),
                 backgroundColor: 'transparent',
                 width: HeightRatio(40)
               }}
                 key={i}
               >
-                <Image source={require('../../../assets/skull_0.png')} style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                <Image source={require('../../../assets/skull_0.png')} style={{ height: WidthRatio(22), width: WidthRatio(22) }} />
               </View>
             ))}
           </>
@@ -1391,14 +1383,14 @@ export const Stage_1_Projectile = (props) => {
           <View style={{
             position: 'absolute',
             zIndex: -7,
-            top: windowHeight * 0.80,
-            left: (windowWidth / 2 + WidthRatio(80) + (i * 50)),
+            top: windowHeight * 0.82,
+            left: (windowWidth / 2 + WidthRatio(80) + (i * WidthRatio(25))),
             backgroundColor: 'transparent',
             width: HeightRatio(40)
           }}
             key={i}
           >
-            <Image source={require('../../../assets/skull_0.png')} style={{ height: HeightRatio(100), width: HeightRatio(100), opacity: 0.4 }} />
+            <Image source={require('../../../assets/skull_0.png')} style={{ height: WidthRatio(22), width: WidthRatio(22), opacity: 0.4 }} />
           </View>
         ))}
 
@@ -1471,22 +1463,22 @@ export const Stage_1_Projectile = (props) => {
                   style={{
                     border: 'solid',
                     borderColor: 'white',
-                    borderLeftWidth: 1,
-                    borderBottomWidth: 1,
+                    borderLeftWidth: HeightRatio(2),
+                    borderBottomWidth: HeightRatio(2),
                     borderBottomLeftRadius: HeightRatio(20),
                     padding: HeightRatio(20),
                     width: WidthRatio(120),
                     flexDirection: 'column',
-                    margin: 2,
+                    margin: HeightRatio(4),
                     backgroundColor: '#25698975',
                     borderTopLeftRadius: 0,
-                    borderTopRightRadius: 25
+                    borderTopRightRadius: HeightRatio(50)
                   }}
 
                 >
                   <View style={{ flexDirection: 'row' }}>
                     <Text 
-                      style={{ color: '#f6c878', marginRight: 10, fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                      style={{ color: '#f6c878', marginRight: HeightRatio(20), fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                       allowFontScaling={false}
                     >Score</Text>
 
@@ -1506,16 +1498,16 @@ export const Stage_1_Projectile = (props) => {
                   style={{
                     border: 'solid',
                     borderColor: 'white',
-                    borderLeftWidth: 1,
-                    borderBottomWidth: 1,
+                    borderLeftWidth: HeightRatio(2),
+                    borderBottomWidth: HeightRatio(2),
                     borderBottomLeftRadius: HeightRatio(20),
                     padding: HeightRatio(20),
                     width: WidthRatio(120),
                     flexDirection: 'column',
-                    margin: 2,
+                    margin: HeightRatio(4),
                     backgroundColor: '#25698975',
                     borderTopLeftRadius: 0,
-                    borderTopRightRadius: 25
+                    borderTopRightRadius: HeightRatio(50)
                   }}
 
                 >
@@ -1541,22 +1533,22 @@ export const Stage_1_Projectile = (props) => {
                   style={{
                     border: 'solid',
                     borderColor: 'white',
-                    borderLeftWidth: 1,
-                    borderBottomWidth: 1,
+                    borderLeftWidth: HeightRatio(2),
+                    borderBottomWidth: HeightRatio(2),
                     borderBottomLeftRadius: HeightRatio(20),
                     padding: HeightRatio(20),
                     width: WidthRatio(120),
                     flexDirection: 'column',
-                    margin: 2,
+                    margin: HeightRatio(4),
                     backgroundColor: '#25698975',
                     borderTopLeftRadius: 0,
-                    borderTopRightRadius: 25
+                    borderTopRightRadius: HeightRatio(50)
                   }}
 
                 >
                   <View style={{ flexDirection: 'row' }}>
                     <Text 
-                      style={{ color: '#f6c878', marginRight: 10, fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                      style={{ color: '#f6c878', marginRight: HeightRatio(20), fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                       allowFontScaling={false}
                     >Level</Text>
 
@@ -1573,19 +1565,17 @@ export const Stage_1_Projectile = (props) => {
 
                 </View>
               </View>
-              <View style={{ margin: 20, alignSelf: 'center' }} />
+              <View style={{ margin: HeightRatio(40), alignSelf: 'center' }} />
               {!tokenWarning ?
                 <View style={{
-                  margin: 20,
+                  margin: HeightRatio(40),
                   alignSelf: 'center',
                   backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                  borderRadius: 25,
-                  // padding: 20,
+                  borderRadius: HeightRatio(50),
                   width: WidthRatio(130),
                   height: windowWidth / 4
                 }}>
                   <Text style={{
-                    // ...Styling.modal_text_style,
                     alignSelf: 'center',
                     color: '#00e5ff',
                     fontSize: HeightRatio(60),
@@ -1600,7 +1590,7 @@ export const Stage_1_Projectile = (props) => {
                     alignSelf: 'center',
                     fontSize: HeightRatio(50),
                     color: 'white',
-                    marginTop: 4
+                    marginTop: HeightRatio(8)
                   }}
                   allowFontScaling={false}>
                     USE A TOKEN
@@ -1617,7 +1607,7 @@ export const Stage_1_Projectile = (props) => {
                           insertToken();
                         }, 500)
                       }}
-                      style={{ backgroundColor: '#1a2135', padding: HeightRatio(10), margin: 4, borderRadius: 10, width: WidthRatio(100), borderWidth: 1, borderColor: 'white' }}>
+                      style={{ backgroundColor: '#1a2135', padding: HeightRatio(10), margin: HeightRatio(8), borderRadius: HeightRatio(20), width: WidthRatio(100), borderWidth: HeightRatio(2), borderColor: 'white' }}>
                       <Text 
                         style={{ color: '#00e5ff', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                         allowFontScaling={false}>
@@ -1630,11 +1620,11 @@ export const Stage_1_Projectile = (props) => {
 
                 :
                 <View style={{
-                  margin: 20,
+                  margin: HeightRatio(40),
                   alignSelf: 'center',
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  padding: 20,
-                  width: windowWidth / 4,
+                  padding: HeightRatio(40),
+                  width: WidthRatio(130),
                   height: windowWidth / 4
                 }}>
                   <Text style={{
@@ -1674,13 +1664,13 @@ export const Stage_1_Projectile = (props) => {
                 backgroundColor: 'rgba(0, 0, 0, 0.9)',
                 padding: HeightRatio(10),
                 width: HeightRatio(180),
-                borderRadius: 10,
-                borderWidth: 1,
+                borderRadius: HeightRatio(20),
+                borderWidth: HeightRatio(2),
                 borderColor: 'white'
               }}
             >
               <Text 
-                style={{ color: 'white', fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}
+                style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                 allowFontScaling={false}>
                 Close
               </Text>

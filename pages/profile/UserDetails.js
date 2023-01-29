@@ -202,7 +202,7 @@ export const UserDetails = (props) => {
                             <Text style={{ color: 'white', marginRight: 10, fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}>{EditableFields[i].title}</Text>
 
                             <Text
-                                style={{ color: '#fcd01f', alignSelf: 'center', fontSize: HeightRatio(32), fontWeight: 'bold', width: 150 }}
+                                style={{ color: '#fcd01f', alignSelf: 'center', fontSize: HeightRatio(25), fontWeight: 'bold', width: 150 }}
                                 numberOfLines={1}
                                 ellipsizeMode='tail'
                             >
@@ -226,6 +226,7 @@ export const UserDetails = (props) => {
                                     <FontAwesomeIcon
                                         icon={faSolid, faPenToSquare}
                                         style={{ color: '#00b2ca', justifyContent: 'flex-end', marginRight: 5 }}
+                                        size={20}
                                     />
                                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: HeightRatio(30), alignSelf: 'flex-end' }} allowFontScaling={false}>
                                         EDIT

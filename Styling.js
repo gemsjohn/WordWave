@@ -47,9 +47,8 @@ export const Styling = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#240046',
+    backgroundColor: '#240046',
 
-    marginTop: 0
   },
   joystick_container: {
     flex: 1,
@@ -99,7 +98,7 @@ export const Styling = StyleSheet.create({
     zIndex: 10,
   },
   projectile_letter: {
-    fontSize: HeightRatio(60),
+    fontSize: HeightRatio(55),
     fontWeight: 'bold',
     color: 'black',
     alignSelf: 'center',
@@ -109,7 +108,7 @@ export const Styling = StyleSheet.create({
     zIndex: 12,
   },
   projectile_random_word_letter: {
-    fontSize: HeightRatio(80),
+    fontSize: HeightRatio(70),
     fontWeight: 'bold',
     color: 'black',
   },

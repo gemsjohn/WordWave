@@ -438,7 +438,7 @@ export const Auth = ({ navigation }) => {
                                 backgroundColor: '#70e000',
                                 display: 'flex',
                                 justifyContent: 'flex-start',
-                                padding: HeightRatio(40),
+                                padding: HeightRatio(20),
                                 borderRadius: HeightRatio(80),
                                 alignSelf: 'center',
                                 margin: HeightRatio(20),
@@ -447,7 +447,7 @@ export const Auth = ({ navigation }) => {
 
                             >
                               <Text
-                                style={{ color: '#001219', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                                style={{ color: '#001219', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                                 allowFontScaling={false}
                               >
                                 SIGN UP
@@ -464,7 +464,7 @@ export const Auth = ({ navigation }) => {
                                 backgroundColor: '#70e000',
                                 display: 'flex',
                                 justifyContent: 'flex-start',
-                                padding: HeightRatio(40),
+                                padding: HeightRatio(20),
                                 borderRadius: HeightRatio(80),
                                 alignSelf: 'center',
                                 margin: HeightRatio(20),
@@ -472,7 +472,7 @@ export const Auth = ({ navigation }) => {
                               }}
                             >
                               <Text
-                                style={{ color: '#001219', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                                style={{ color: '#001219', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                                 allowFontScaling={false}
                               >
                                 SIGN UP
@@ -499,7 +499,7 @@ export const Auth = ({ navigation }) => {
                             backgroundColor: 'blue',
                             display: 'flex',
                             justifyContent: 'flex-start',
-                            padding: HeightRatio(40),
+                            padding: HeightRatio(20),
                             borderRadius: HeightRatio(80),
                             alignSelf: 'center',
                             margin: HeightRatio(20),
@@ -507,7 +507,7 @@ export const Auth = ({ navigation }) => {
                           }}
                         >
                           <Text
-                            style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                            style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                             allowFontScaling={false}
                           >
                             LOGIN</Text>
@@ -567,7 +567,7 @@ export const Auth = ({ navigation }) => {
                                   backgroundColor: '#70e000',
                                   display: 'flex',
                                   justifyContent: 'flex-start',
-                                  padding: HeightRatio(40),
+                                  padding: HeightRatio(20),
                                   borderRadius: HeightRatio(80),
                                   alignSelf: 'center',
                                   margin: HeightRatio(20),
@@ -575,7 +575,7 @@ export const Auth = ({ navigation }) => {
                                 }}
                               >
                                 <Text
-                                  style={{ color: '#001219', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                                  style={{ color: '#001219', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                                   allowFontScaling={false}
                                 >
                                   LOGIN
@@ -593,7 +593,7 @@ export const Auth = ({ navigation }) => {
                                   backgroundColor: '#70e000',
                                   display: 'flex',
                                   justifyContent: 'flex-start',
-                                  padding: HeightRatio(40),
+                                  padding: HeightRatio(20),
                                   borderRadius: HeightRatio(80),
                                   alignSelf: 'center',
                                   margin: HeightRatio(20),
@@ -601,7 +601,7 @@ export const Auth = ({ navigation }) => {
                                 }}
                               >
                                 <Text
-                                  style={{ color: '#001219', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                                  style={{ color: '#001219', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                                   allowFontScaling={false}
                                 >
                                   LOGIN
@@ -653,7 +653,7 @@ export const Auth = ({ navigation }) => {
                                       backgroundColor: '#70e000',
                                       display: 'flex',
                                       justifyContent: 'flex-start',
-                                      padding: HeightRatio(40),
+                                      padding: HeightRatio(20),
                                       borderRadius: HeightRatio(80),
                                       alignSelf: 'center',
                                       margin: HeightRatio(20),
@@ -661,7 +661,7 @@ export const Auth = ({ navigation }) => {
                                     }}
                                   >
                                     <Text
-                                      style={{ color: 'black', alignSelf: 'center', fontSize: HeightRatio(60), fontWeight: 'bold' }}
+                                      style={{ color: 'black', alignSelf: 'center', fontSize: HeightRatio(40), fontWeight: 'bold' }}
                                       allowFontScaling={false}
                                     >SUBMIT</Text>
                                   </View>
@@ -682,7 +682,7 @@ export const Auth = ({ navigation }) => {
                                     backgroundColor: '#ffbe0b',
                                     display: 'flex',
                                     justifyContent: 'flex-start',
-                                    padding: HeightRatio(40),
+                                    padding: HeightRatio(20),
                                     borderRadius: HeightRatio(80),
                                     alignSelf: 'center',
                                     margin: HeightRatio(20),
@@ -690,7 +690,7 @@ export const Auth = ({ navigation }) => {
                                   }}
                                 >
                                   <Text
-                                    style={{ color: 'black', alignSelf: 'center', fontSize: HeightRatio(60), fontWeight: 'bold' }}
+                                    style={{ color: 'black', alignSelf: 'center', fontSize: HeightRatio(40), fontWeight: 'bold' }}
                                     allowFontScaling={false}
                                   >Have a reset token?</Text>
                                 </View>
@@ -853,7 +853,7 @@ export const Auth = ({ navigation }) => {
                                 backgroundColor: 'blue',
                                 display: 'flex',
                                 justifyContent: 'flex-start',
-                                padding: HeightRatio(40),
+                                padding: HeightRatio(20),
                                 borderRadius: HeightRatio(80),
                                 alignSelf: 'center',
                                 margin: HeightRatio(20),
@@ -861,7 +861,7 @@ export const Auth = ({ navigation }) => {
                               }}
                             >
                               <Text
-                                style={{ color: 'white', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                                style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                                 allowFontScaling={false}
                               >
                                 SIGN UP

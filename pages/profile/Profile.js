@@ -178,7 +178,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                         width: WidthRatio(160)
                                                     }}>
                                                         <Text
-                                                            style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
+                                                            style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                                                             allowFontScaling={false}
                                                         >
                                                             Remove/Reset Keycode
@@ -209,7 +209,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                     width: WidthRatio(160)
                                                 }}>
                                                     <Text
-                                                        style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
+                                                        style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                                                         allowFontScaling={false}
                                                     >
                                                         Switch User
