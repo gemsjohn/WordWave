@@ -2,7 +2,7 @@
   "expo": {
     "name": "Cosmic Scramble",
     "slug": "cosmicScramble",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "orientation": "portrait",
     "icon": "./assets/adaptive_icon_0.png",
     "userInterfaceStyle": "light",
@@ -12,7 +12,8 @@
       "backgroundColor": "#000000"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/dfa0a44a-b106-4b60-821f-61b53c7faaf1"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -22,7 +23,7 @@
     },
     "android": {
       "package": "com.cosmicscramble",
-      "versionCode": 13,
+      "versionCode": 14,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive_icon_0.png",
         "backgroundColor": "#FFFFFF"
@@ -35,6 +36,9 @@
       "eas": {
         "projectId": "dfa0a44a-b106-4b60-821f-61b53c7faaf1"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

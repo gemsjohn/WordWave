@@ -25,6 +25,39 @@ export const isObstacleColliding_1 = (obj1, obj2) => {
     );
 }
 
+export const isTriangleColliding_a = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+export const isTriangleColliding_b = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+export const isTriangleColliding_c = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+export const isTriangleColliding_d = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+
 export const isObstacleColliding_large = (obj1, obj2) => {
     // Find the distance between the centers of the two objects
     let xDistance = obj1.x - obj2.x;
