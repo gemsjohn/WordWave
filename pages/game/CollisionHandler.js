@@ -25,6 +25,50 @@ export const isObstacleColliding_1 = (obj1, obj2) => {
     );
 }
 
+export const isObstacleColliding_2 = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+export const isObstacleColliding_3 = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+
+export const isObstacleColliding_4 = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+
+export const isObstacleColliding_5 = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+
+export const isObstacleColliding_6 = (obj1, obj2) => {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+
 export const isTriangleColliding_a = (obj1, obj2) => {
     return (
         obj1.x < obj2.x + obj2.width &&

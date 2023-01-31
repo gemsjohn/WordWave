@@ -29,6 +29,8 @@ import { Stage_1_Projectile } from './Stages/Stage_1_Projectile';
 import { Stage_2_Projectile } from './Stages/Stage_2_Projectile';
 import { Stage_3_Projectile } from './Stages/Stage_3_Projectile';
 import { Stage_4_Projectile } from './Stages/Stage_4_Projectile';
+import { Stage_5_Projectile } from './Stages/Stage_5_Projectile';
+
 
 import {
     View,
@@ -46,8 +48,8 @@ export const GameScreen = ({ navigation }) => {
     const [stage1, setStage1] = useState(false);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
-    const [stage4, setStage4] = useState(true);
-
+    const [stage4, setStage4] = useState(false);
+    const [stage5, setStage5] = useState(true);
 
     const [userID, setUserID] = useState('');
     const [authState, setAuthState] = useState(false);
@@ -90,6 +92,7 @@ export const GameScreen = ({ navigation }) => {
             stage2: null,
             stage3: null,
             stage4: null,
+            stage5: null,
             currentScore: 0,
             currentLevel: 0,
             currentCrashes: 0,
@@ -136,6 +139,9 @@ export const GameScreen = ({ navigation }) => {
             if (mainState.current.stage4 != null) {
                 setStage4(mainState.current.stage4);
             }
+            if (mainState.current.stage5 != null) {
+                setStage5(mainState.current.stage5);
+            }
         }, 500)
 
 
@@ -160,6 +166,7 @@ export const GameScreen = ({ navigation }) => {
                         {stage2 && <Stage_2_Projectile nav={navigation} />}
                         {stage3 && <Stage_3_Projectile nav={navigation} />}
                         {stage4 && <Stage_4_Projectile nav={navigation} />}
+                        {stage5 && <Stage_5_Projectile nav={navigation} />}
 
                     </>
                     :

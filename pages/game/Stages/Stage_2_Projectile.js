@@ -1163,7 +1163,9 @@ export const Stage_2_Projectile = (props) => {
         }
       });
       setGameOverModalVisible(!gameOverModalVisible);
-      continueGame();
+      setTimeout(() => {
+        continueGame();
+      }, 1000)
     } else {
       setTokenWarning(true)
     }

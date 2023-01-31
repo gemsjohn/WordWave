@@ -152,7 +152,8 @@ export const Stage_1_Projectile = (props) => {
       stage1: true,
       stage2: null,
       stage3: null,
-      stage4: null,
+      stage4: false,
+      stage5: false,
       currentScore: null,
       currentLevel: null,
       currentCrashes: null
@@ -751,6 +752,7 @@ export const Stage_1_Projectile = (props) => {
       stage2: false,
       stage3: false,
       stage4: false,
+      stage5: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -858,7 +860,9 @@ export const Stage_1_Projectile = (props) => {
         }
       });
       setGameOverModalVisible(!gameOverModalVisible);
-      continueGame();
+      setTimeout(() => {
+        continueGame();
+      }, 1000)
     } else {
       setTokenWarning(true)
     }
@@ -977,6 +981,8 @@ export const Stage_1_Projectile = (props) => {
             stage2: true,
             stage3: false,
             stage4: false,
+            stage4: false,
+            stage5: false,
             currentScore: score.current,
             currentLevel: 0,
             currentCrashes: input.crashes,
@@ -1028,6 +1034,7 @@ export const Stage_1_Projectile = (props) => {
           stage2: false,
           stage3: false,
           stage4: false,
+          stage5: false,
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
@@ -1158,18 +1165,18 @@ export const Stage_1_Projectile = (props) => {
             {score.current > 0 ?
               <>
                 <View style={{
-                 position: 'absolute',
-                 zIndex: -7,
-                 top: windowHeight * 0.84,
-                 left: HeightRatio(30),
-                 backgroundColor: 'transparent',
+                  position: 'absolute',
+                  zIndex: -7,
+                  top: windowHeight * 0.84,
+                  left: HeightRatio(30),
+                  backgroundColor: 'transparent',
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
                     fontSize: WidthRatio(12),
                     fontWeight: 'bold'
                   }}
-                  allowFontScaling={false}
+                    allowFontScaling={false}
                   >Score: {score.current}</Text>
                 </View>
                 {scoreFlash_100.current &&
@@ -1215,7 +1222,7 @@ export const Stage_1_Projectile = (props) => {
                     fontSize: WidthRatio(12),
                     fontWeight: 'bold'
                   }}
-                  allowFontScaling={false}
+                    allowFontScaling={false}
                   >Score: 0</Text>
                 </View>
 
@@ -1328,13 +1335,13 @@ export const Stage_1_Projectile = (props) => {
         </Animated.View>
 
         <View style={{ borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10) }} />
-        <View style={{left: (-WidthRatio(20)) + windowWidth/2 - ((displayLetters.length * WidthRatio(30))/2)}}>
+        <View style={{ left: (-WidthRatio(20)) + windowWidth / 2 - ((displayLetters.length * WidthRatio(30)) / 2) }}>
           {displayLetters.map((l, i) => (
             <View style={{
-              width: WidthRatio(28), 
-              position: 'absolute', 
-              top: 10, 
-              left: ((((displayLetters.length * WidthRatio(30))/windowWidth)*100) + (i * WidthRatio(30))),
+              width: WidthRatio(28),
+              position: 'absolute',
+              top: 10,
+              left: ((((displayLetters.length * WidthRatio(30)) / windowWidth) * 100) + (i * WidthRatio(30))),
               height: WidthRatio(28),
               borderRadius: HeightRatio(20),
               backgroundColor: getBackgroundColor(l),
@@ -1415,7 +1422,7 @@ export const Stage_1_Projectile = (props) => {
               alignSelf: 'center',
               textAlign: 'center'
             }}
-            allowFontScaling={false}
+              allowFontScaling={false}
             >GAME OVER</Text>
           </View>
         }
@@ -1449,7 +1456,7 @@ export const Stage_1_Projectile = (props) => {
               zIndex: 26,
               top: HeightRatio(150)
             }}
-            allowFontScaling={false}>
+              allowFontScaling={false}>
               Your Current High Score: {userByID?.user.highscore}
             </Text>
             <View style={{
@@ -1483,7 +1490,7 @@ export const Stage_1_Projectile = (props) => {
 
                 >
                   <View style={{ flexDirection: 'row' }}>
-                    <Text 
+                    <Text
                       style={{ color: '#f6c878', marginRight: HeightRatio(20), fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                       allowFontScaling={false}
                     >Score</Text>
@@ -1518,7 +1525,7 @@ export const Stage_1_Projectile = (props) => {
 
                 >
                   <View style={{ flexDirection: 'row' }}>
-                    <Text 
+                    <Text
                       style={{ color: '#f6c878', marginRight: 10, fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                       allowFontScaling={false}
                     >Stage</Text>
@@ -1553,7 +1560,7 @@ export const Stage_1_Projectile = (props) => {
 
                 >
                   <View style={{ flexDirection: 'row' }}>
-                    <Text 
+                    <Text
                       style={{ color: '#f6c878', marginRight: HeightRatio(20), fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                       allowFontScaling={false}
                     >Level</Text>
@@ -1588,7 +1595,7 @@ export const Stage_1_Projectile = (props) => {
                     fontWeight: 'bold',
                     textAlign: 'center',
                   }}
-                  allowFontScaling={false}>
+                    allowFontScaling={false}>
                     DO YOU WANT TO CONTINUE?
                   </Text>
                   <Text style={{
@@ -1598,10 +1605,10 @@ export const Stage_1_Projectile = (props) => {
                     color: 'white',
                     marginTop: HeightRatio(8)
                   }}
-                  allowFontScaling={false}>
+                    allowFontScaling={false}>
                     USE A TOKEN
                   </Text>
-                  <Text 
+                  <Text
                     style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                     allowFontScaling={false}>
                     {userByID?.user.tokens} remaining
@@ -1614,7 +1621,7 @@ export const Stage_1_Projectile = (props) => {
                         }, 500)
                       }}
                       style={{ backgroundColor: '#1a2135', padding: HeightRatio(10), margin: HeightRatio(8), borderRadius: HeightRatio(20), width: WidthRatio(100), borderWidth: HeightRatio(2), borderColor: 'white' }}>
-                      <Text 
+                      <Text
                         style={{ color: '#00e5ff', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                         allowFontScaling={false}>
                         YES
@@ -1638,7 +1645,7 @@ export const Stage_1_Projectile = (props) => {
                     alignSelf: 'center',
                     color: 'red'
                   }}
-                  allowFontScaling={false}>
+                    allowFontScaling={false}>
                     Unfortunately, you have run out of tokens!
                   </Text>
                 </View>
@@ -1654,6 +1661,7 @@ export const Stage_1_Projectile = (props) => {
                   stage2: false,
                   stage3: false,
                   stage4: false,
+                  stage5: false,
                   currentScore: 0,
                   currentLevel: 0,
                   currentCrashes: 0
@@ -1676,7 +1684,7 @@ export const Stage_1_Projectile = (props) => {
                 borderColor: 'white'
               }}
             >
-              <Text 
+              <Text
                 style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                 allowFontScaling={false}>
                 Close
