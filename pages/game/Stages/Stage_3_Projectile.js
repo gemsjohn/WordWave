@@ -1,16 +1,16 @@
-import React, { 
-  useState, 
-  useRef, 
-  useEffect, 
-  useLayoutEffect, 
-  useContext 
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  useContext
 } from 'react';
-import { 
-  Styling, 
-  WidthRatio, 
-  HeightRatio, 
-  windowHeight, 
-  windowWidth 
+import {
+  Styling,
+  WidthRatio,
+  HeightRatio,
+  windowHeight,
+  windowWidth
 } from '../../../Styling';
 import { shuffle } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
@@ -209,7 +209,7 @@ export const Stage_3_Projectile = (props) => {
     isGameInProgress.current = false;
     setMainState({ upgradeToSpecial_0: false })
     setMainState({ deployUpgradeToSpecialAnimation: false })
-    
+
     userID.current = mainState.current.userID;
   }, [])
 
@@ -1156,20 +1156,20 @@ export const Stage_3_Projectile = (props) => {
   useEffect(() => {
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
-          auxilliaryGreenHealth.current.stop();
-          auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
-          hasUpdatedAuxilliaryGreenHealth.current = false;
-          retainAuxilliaryGreenHealth.current = false;
+        auxilliaryGreenHealth.current.stop();
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
+        hasUpdatedAuxilliaryGreenHealth.current = false;
+        retainAuxilliaryGreenHealth.current = false;
 
       } else if (crashes.current >= 2) {
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
-        endGame({ 
-          continue: false, 
-          local: "b", 
-          crashes: crashes.current, 
-          score: score.current, 
+        endGame({
+          continue: false,
+          local: "b",
+          crashes: crashes.current,
+          score: score.current,
           level: level.current,
           letterPocket: letterPocket,
           wordPlusSeven: wordPlusSeven.current,
@@ -1205,6 +1205,12 @@ export const Stage_3_Projectile = (props) => {
       stage2: false,
       stage3: true,
       stage4: false,
+      stage5: false,
+      stage6: false,
+      stage7: false,
+      stage8: false,
+      stage9: false,
+      stage10: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -1245,13 +1251,13 @@ export const Stage_3_Projectile = (props) => {
       hasUpdatedObstacle_twins_1.current = false;
     }
 
-    if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
+    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
       obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
-    if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
+    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
       obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
@@ -1260,7 +1266,7 @@ export const Stage_3_Projectile = (props) => {
     setIsPaused(true)
     setResumeSelected(true)
     setTimeout(() => {
-    setResumeSelected(false)
+      setResumeSelected(false)
     }, 500)
   }
 
@@ -1338,7 +1344,7 @@ export const Stage_3_Projectile = (props) => {
     score.current = mainState.current.currentScore;
     level.current = mainState.current.currentLevel;
     crashes.current = mainState.current.currentCrashes;
-    setLetterPocket(mainState.current.currentLetterPocket) 
+    setLetterPocket(mainState.current.currentLetterPocket)
     wordPlusSeven.current = mainState.current.currentWordPlusSeven;
     setDisplayLetters(mainState.current.currentDisplayLetters)
     countRef.current = mainState.current.currentLetter_countValue + 1;
@@ -1407,13 +1413,13 @@ export const Stage_3_Projectile = (props) => {
       hasUpdatedObstacle_twins_1.current = false;
     }
 
-    if (level.current >= 2 && obstacle_right_angle_0.current != null) { 
+    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
       obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
-    if (level.current >= 3 && obstacle_right_angle_1.current != null) { 
+    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
       obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
@@ -1445,6 +1451,12 @@ export const Stage_3_Projectile = (props) => {
             stage2: false,
             stage3: false,
             stage4: true,
+            stage5: false,
+            stage6: false,
+            stage7: false,
+            stage8: false,
+            stage9: false,
+            stage10: false,
             currentScore: score.current,
             currentLevel: 0,
             currentCrashes: input.crashes,
@@ -1496,6 +1508,12 @@ export const Stage_3_Projectile = (props) => {
           stage2: false,
           stage3: true,
           stage4: false,
+          stage5: false,
+          stage6: false,
+          stage7: false,
+          stage8: false,
+          stage9: false,
+          stage10: false,
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
@@ -1616,9 +1634,9 @@ export const Stage_3_Projectile = (props) => {
                     top: HeightRatio(20),
                     left: HeightRatio(20)
                   }}>
-                      <Image
-                        source={require('../../../assets/clock_icon.png')}
-                        style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                    <Image
+                      source={require('../../../assets/clock_icon.png')}
+                      style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
                   </View>
                 }
               </>
@@ -1626,18 +1644,18 @@ export const Stage_3_Projectile = (props) => {
             {score.current > 0 ?
               <>
                 <View style={{
-                 position: 'absolute',
-                 zIndex: -7,
-                 top: windowHeight * 0.84,
-                 left: HeightRatio(30),
-                 backgroundColor: 'transparent',
+                  position: 'absolute',
+                  zIndex: -7,
+                  top: windowHeight * 0.84,
+                  left: HeightRatio(30),
+                  backgroundColor: 'transparent',
                 }}>
                   <Text style={{
                     color: 'rgba(255, 255, 255, 1.0)',
                     fontSize: WidthRatio(12),
                     fontWeight: 'bold'
                   }}
-                  allowFontScaling={false}
+                    allowFontScaling={false}
                   >Score: {score.current}</Text>
                 </View>
                 {scoreFlash_100.current &&
@@ -1683,7 +1701,7 @@ export const Stage_3_Projectile = (props) => {
                     fontSize: WidthRatio(12),
                     fontWeight: 'bold'
                   }}
-                  allowFontScaling={false}
+                    allowFontScaling={false}
                   >Score: 0</Text>
                 </View>
 
@@ -1875,13 +1893,13 @@ export const Stage_3_Projectile = (props) => {
 
 
         <View style={{ borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10) }} />
-        <View style={{left: (-WidthRatio(20)) + windowWidth/2 - ((displayLetters.length * WidthRatio(30))/2)}}>
+        <View style={{ left: (-WidthRatio(20)) + windowWidth / 2 - ((displayLetters.length * WidthRatio(30)) / 2) }}>
           {displayLetters.map((l, i) => (
             <View style={{
-              width: WidthRatio(28), 
-              position: 'absolute', 
-              top: 10, 
-              left: ((((displayLetters.length * WidthRatio(30))/windowWidth)*100) + (i * WidthRatio(30))),
+              width: WidthRatio(28),
+              position: 'absolute',
+              top: 10,
+              left: ((((displayLetters.length * WidthRatio(30)) / windowWidth) * 100) + (i * WidthRatio(30))),
               height: WidthRatio(28),
               borderRadius: HeightRatio(20),
               backgroundColor: getBackgroundColor(l),
@@ -1962,89 +1980,54 @@ export const Stage_3_Projectile = (props) => {
               alignSelf: 'center',
               textAlign: 'center'
             }}
-            allowFontScaling={false}
+              allowFontScaling={false}
             >GAME OVER</Text>
           </View>
         }
-        
+
         {gameOverModalVisible &&
-        <View style={{
-          position: 'absolute',
-          zIndex: 25,
-          padding: HeightRatio(20),
-          backgroundColor: 'rgba(0, 0, 0, 0.9)',
-          height: windowHeight,
-          width: windowWidth,
-        }}>
-          <Image
-            source={require('../../../assets/game_over.png')}
-            style={{
-              alignSelf: 'center',
-              height: HeightRatio(800),
-              width: HeightRatio(1600)
-            }}
-          />
-          <Text style={{
-            color: '#f6c878',
-            fontSize: HeightRatio(60),
-            fontWeight: 'bold',
-            alignSelf: 'center',
-            position: 'absolute',
-            zIndex: 26,
-            top: HeightRatio(150)
-          }}
-          allowFontScaling={false}>
-            Your Current High Score: {userByID?.user.highscore}
-          </Text>
           <View style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
             position: 'absolute',
-            zIndex: 26,
-            top: HeightRatio(210),
+            zIndex: 25,
+            padding: HeightRatio(20),
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            height: windowHeight,
+            width: windowWidth,
           }}>
-            <View style={{
+            <Image
+              source={require('../../../assets/game_over.png')}
+              style={{
+                alignSelf: 'center',
+                height: HeightRatio(800),
+                width: HeightRatio(1600)
+              }}
+            />
+            <Text style={{
+              color: '#f6c878',
+              fontSize: HeightRatio(60),
+              fontWeight: 'bold',
               alignSelf: 'center',
-              width: WidthRatio(120),
-              height: windowWidth / 4
+              position: 'absolute',
+              zIndex: 26,
+              top: HeightRatio(150)
+            }}
+              allowFontScaling={false}>
+              Your Current High Score: {userByID?.user.highscore}
+            </Text>
+            <View style={{
+              flexDirection: 'row',
+              alignSelf: 'center',
+              position: 'absolute',
+              zIndex: 26,
+              top: HeightRatio(210),
             }}>
+              <View style={{
+                alignSelf: 'center',
+                width: WidthRatio(120),
+                height: windowWidth / 4
+              }}>
 
-              <View
-                style={{
-                  border: 'solid',
-                  borderColor: 'white',
-                  borderLeftWidth: HeightRatio(2),
-                  borderBottomWidth: HeightRatio(2),
-                  borderBottomLeftRadius: HeightRatio(20),
-                  padding: HeightRatio(20),
-                  width: WidthRatio(120),
-                  flexDirection: 'column',
-                  margin: HeightRatio(8),
-                  backgroundColor: '#25698975',
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: HeightRatio(50)
-                }}
-
-              >
-                <View style={{ flexDirection: 'row' }}>
-                  <Text 
-                    style={{ color: '#f6c878', marginRight: HeightRatio(20), fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
-                    allowFontScaling={false}
-                  >Score</Text>
-
-                  <Text
-                    style={{ color: 'white', alignSelf: 'center', fontSize: HeightRatio(60), fontWeight: 'bold', width: WidthRatio(75), }}
-                    allowFontScaling={false}
-                    numberOfLines={1}
-                    ellipsizeMode='tail'
-                  >
-                    {recordedScore}
-                  </Text>
-                </View>
-
-
-              </View>
-              <View
+                <View
                   style={{
                     border: 'solid',
                     borderColor: 'white',
@@ -2062,7 +2045,42 @@ export const Stage_3_Projectile = (props) => {
 
                 >
                   <View style={{ flexDirection: 'row' }}>
-                    <Text 
+                    <Text
+                      style={{ color: '#f6c878', marginRight: HeightRatio(20), fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                      allowFontScaling={false}
+                    >Score</Text>
+
+                    <Text
+                      style={{ color: 'white', alignSelf: 'center', fontSize: HeightRatio(60), fontWeight: 'bold', width: WidthRatio(75), }}
+                      allowFontScaling={false}
+                      numberOfLines={1}
+                      ellipsizeMode='tail'
+                    >
+                      {recordedScore}
+                    </Text>
+                  </View>
+
+
+                </View>
+                <View
+                  style={{
+                    border: 'solid',
+                    borderColor: 'white',
+                    borderLeftWidth: HeightRatio(2),
+                    borderBottomWidth: HeightRatio(2),
+                    borderBottomLeftRadius: HeightRatio(20),
+                    padding: HeightRatio(20),
+                    width: WidthRatio(120),
+                    flexDirection: 'column',
+                    margin: HeightRatio(8),
+                    backgroundColor: '#25698975',
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: HeightRatio(50)
+                  }}
+
+                >
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text
                       style={{ color: '#f6c878', marginRight: 10, fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                       allowFontScaling={false}
                     >Stage</Text>
@@ -2072,14 +2090,14 @@ export const Stage_3_Projectile = (props) => {
                       allowFontScaling={false}
                       numberOfLines={1}
                       ellipsizeMode='tail'
-                  >
-                    3
-                  </Text>
+                    >
+                      3
+                    </Text>
+                  </View>
+
+
                 </View>
-
-
-              </View>
-              <View
+                <View
                   style={{
                     border: 'solid',
                     borderColor: 'white',
@@ -2097,7 +2115,7 @@ export const Stage_3_Projectile = (props) => {
 
                 >
                   <View style={{ flexDirection: 'row' }}>
-                    <Text 
+                    <Text
                       style={{ color: '#f6c878', marginRight: HeightRatio(20), fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                       allowFontScaling={false}
                     >Level</Text>
@@ -2132,7 +2150,7 @@ export const Stage_3_Projectile = (props) => {
                     fontWeight: 'bold',
                     textAlign: 'center',
                   }}
-                  allowFontScaling={false}>
+                    allowFontScaling={false}>
                     DO YOU WANT TO CONTINUE?
                   </Text>
                   <Text style={{
@@ -2142,10 +2160,10 @@ export const Stage_3_Projectile = (props) => {
                     color: 'white',
                     marginTop: HeightRatio(8)
                   }}
-                  allowFontScaling={false}>
+                    allowFontScaling={false}>
                     USE A TOKEN
                   </Text>
-                  <Text 
+                  <Text
                     style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                     allowFontScaling={false}>
                     {userByID?.user.tokens} remaining
@@ -2158,7 +2176,7 @@ export const Stage_3_Projectile = (props) => {
                         }, 500)
                       }}
                       style={{ backgroundColor: '#1a2135', padding: HeightRatio(10), margin: HeightRatio(8), borderRadius: HeightRatio(20), width: WidthRatio(100), borderWidth: HeightRatio(2), borderColor: 'white' }}>
-                      <Text 
+                      <Text
                         style={{ color: '#00e5ff', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
                         allowFontScaling={false}>
                         YES
@@ -2168,65 +2186,71 @@ export const Stage_3_Projectile = (props) => {
 
                 </View>
 
-              :
-              <View style={{
-                margin: HeightRatio(40),
-                alignSelf: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                padding: HeightRatio(40),
-                width: WidthRatio(130),
-                height: windowWidth / 4
-              }}>
-                <Text style={{
-                  ...Styling.modal_text_style,
+                :
+                <View style={{
+                  margin: HeightRatio(40),
                   alignSelf: 'center',
-                  color: 'red'
-                }}
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  padding: HeightRatio(40),
+                  width: WidthRatio(130),
+                  height: windowWidth / 4
+                }}>
+                  <Text style={{
+                    ...Styling.modal_text_style,
+                    alignSelf: 'center',
+                    color: 'red'
+                  }}
+                    allowFontScaling={false}>
+                    Unfortunately, you have run out of tokens!
+                  </Text>
+                </View>
+              }
+
+            </View>
+
+            <TouchableOpacity
+              onPress={() => {
+                props.nav.dispatch(resetActionHome);
+                setMainState({
+                  stage1: true,
+                  stage2: false,
+                  stage3: false,
+                  stage4: false,
+                  stage5: false,
+                  stage6: false,
+                  stage7: false,
+                  stage8: false,
+                  stage9: false,
+                  stage10: false,
+                  currentScore: 0,
+                  currentLevel: 0,
+                  currentCrashes: 0
+                })
+                setTimeout(() => {
+                  setGameOverModalVisible(!gameOverModalVisible);
+                  isGameInProgress.current = false;
+                }, 500)
+              }}
+              style={{
+                alignSelf: 'center',
+                position: 'absolute',
+                zIndex: 26,
+                top: HeightRatio(670),
+                backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                padding: HeightRatio(10),
+                width: HeightRatio(180),
+                borderRadius: HeightRatio(20),
+                borderWidth: HeightRatio(2),
+                borderColor: 'white'
+              }}
+            >
+              <Text
+                style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
                 allowFontScaling={false}>
-                  Unfortunately, you have run out of tokens!
-                </Text>
-              </View>
-            }
-
+                Close
+              </Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            onPress={() => {
-              props.nav.dispatch(resetActionHome);
-              setMainState({
-                stage1: true,
-                stage2: false,
-                stage3: false,
-                stage4: false,
-                currentScore: 0,
-                currentLevel: 0,
-                currentCrashes: 0
-              })
-              setTimeout(() => {
-                setGameOverModalVisible(!gameOverModalVisible);
-                isGameInProgress.current = false;
-              }, 500)
-            }}
-            style={{
-              alignSelf: 'center',
-              position: 'absolute',
-              zIndex: 26,
-              top: HeightRatio(670),
-              backgroundColor: 'rgba(0, 0, 0, 0.9)',
-              padding: HeightRatio(10),
-              width: HeightRatio(180),
-              borderRadius: HeightRatio(20),
-              borderWidth: HeightRatio(2),
-              borderColor: 'white'
-            }}
-          >
-            <Text 
-              style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
-              allowFontScaling={false}>
-              Close
-            </Text>
-          </TouchableOpacity>
-        </View>
         }
 
       </>

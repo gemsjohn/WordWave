@@ -42,7 +42,7 @@ const resetActionHome = CommonActions.reset({
   routes: [{ name: 'Home', params: {} }]
 });
 
-export const Stage_1_Projectile = (props) => {
+export const Stage_6_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
   const { mainState, setMainState } = useContext(MainStateContext);
   const userID = useRef(null);
@@ -148,21 +148,6 @@ export const Stage_1_Projectile = (props) => {
     isGameInProgress.current = false;
     setMainState({ upgradeToSpecial_0: false })
     setMainState({ deployUpgradeToSpecialAnimation: false })
-    setMainState({
-      stage1: true,
-      stage2: null,
-      stage3: null,
-      stage4: null,
-      stage5: null,
-      stage6: null,
-      stage7: null,
-      stage8: null,
-      stage9: null,
-      stage10: null,
-      currentScore: null,
-      currentLevel: null,
-      currentCrashes: null
-    })
 
     userID.current = mainState.current.userID;
   }, [])
@@ -335,22 +320,18 @@ export const Stage_1_Projectile = (props) => {
       obstaclePosition_0.setValue({ x: WidthRatio(370), y: localYPos_0 });
       obstacleRotation_0.setValue(0);
 
+
       obstacle_0.current = Animated.parallel([
         Animated.timing(obstaclePosition_0.x, {
           toValue: -WidthRatio(40),
-          duration: 3000,
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.timing(obstaclePosition_0.y, {
-          toValue: localYPos_1,
-          duration: 3000,
+          toValue: mainState.current.charY - mainState.current.charHeight/2,
+          duration: 1000,
           useNativeDriver: true,
         }),
-        Animated.timing(obstacleRotation_0, {
-          toValue: 3000,
-          duration: 3000,
-          useNativeDriver: true
-        })
 
       ]);
 
@@ -753,12 +734,12 @@ export const Stage_1_Projectile = (props) => {
 
 
     setMainState({
-      stage1: true,
+      stage1: false,
       stage2: false,
       stage3: false,
       stage4: false,
       stage5: false,
-      stage6: false,
+      stage6: true,
       stage7: false,
       stage8: false,
       stage9: false,
@@ -970,7 +951,7 @@ export const Stage_1_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
-      if (input.level >= 4) {
+      if (input.level >= 10) {
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
@@ -988,13 +969,13 @@ export const Stage_1_Projectile = (props) => {
         setTimeout(() => {
           setMainState({
             stage1: false,
-            stage2: true,
+            stage2: false,
             stage3: false,
             stage4: false,
             stage4: false,
             stage5: false,
             stage6: false,
-            stage7: false,
+            stage7: true,
             stage8: false,
             stage9: false,
             stage10: false,
@@ -1045,12 +1026,12 @@ export const Stage_1_Projectile = (props) => {
         setRecordedScore(input.score)
 
         setMainState({
-          stage1: true,
+          stage1: false,
           stage2: false,
           stage3: false,
           stage4: false,
           stage5: false,
-          stage6: false,
+          stage6: true,
           stage7: false,
           stage8: false,
           stage9: false,
@@ -1116,7 +1097,7 @@ export const Stage_1_Projectile = (props) => {
               }}
             >
               <Image
-                source={require('../../../assets/stage_transition_1.png')}
+                source={require('../../../assets/stage_transition_6.png')}
                 style={{ height: HeightRatio(900), width: HeightRatio(900) }}
               />
             </TouchableOpacity>

@@ -152,14 +152,14 @@ export const Stage_5_Projectile = (props) => {
   const obstacle_6 = useRef(null)
   let timeoutObstacle_6_ID;
 
-   // [OSCILLATOR ANIMATION] - - - - - 
-   const hasUpdatedOscillator = useRef(false);
-   const oscillatorPosition = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
-   const oscillatorRotation = useRef(new Animated.Value(0)).current;
-   const oscillator = useRef(null)
-   let timeoutOscillator_ID;
+  // [OSCILLATOR ANIMATION] - - - - - 
+  const hasUpdatedOscillator = useRef(false);
+  const oscillatorPosition = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const oscillatorRotation = useRef(new Animated.Value(0)).current;
+  const oscillator = useRef(null)
+  let timeoutOscillator_ID;
 
-   // [OBSTACLE ANIMATION TWINS 0] - - - - - 
+  // [OBSTACLE ANIMATION TWINS 0] - - - - - 
   const hasUpdatedObstacle_twins_0 = useRef(false);
   const obstaclePosition_twins_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
   const obstaclePosition_twins_0_divergence = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
@@ -307,12 +307,12 @@ export const Stage_5_Projectile = (props) => {
   let shortestDuration;
   const handleRandomDuration = () => {
     randomDurationArray = [];
-    for (let i = 0 ; i < 7; i++) {
+    for (let i = 0; i < 7; i++) {
       let randomDuration = Math.floor(Math.random() * (4000 - 800 + 1) + 1000);
       randomDurationArray.push(randomDuration)
     }
   }
-  
+
 
 
   const letterAnimation = () => {
@@ -329,7 +329,7 @@ export const Stage_5_Projectile = (props) => {
       handleRandomDuration();
 
       shortestDuration = Math.min(...randomDurationArray);
-      
+
       setTimeout(() => {
         if (level.current >= 1) {
           runOscillationAnimation_1();
@@ -346,12 +346,12 @@ export const Stage_5_Projectile = (props) => {
       let roundedNum = Math.round(randomNum);
 
       const runObstacleAnimations = [
-        runObstacleAnimation_0, 
-        runObstacleAnimation_1, 
-        runObstacleAnimation_2, 
-        runObstacleAnimation_3, 
-        runObstacleAnimation_4, 
-        runObstacleAnimation_5, 
+        runObstacleAnimation_0,
+        runObstacleAnimation_1,
+        runObstacleAnimation_2,
+        runObstacleAnimation_3,
+        runObstacleAnimation_4,
+        runObstacleAnimation_5,
         runObstacleAnimation_6
       ];
 
@@ -407,7 +407,7 @@ export const Stage_5_Projectile = (props) => {
       let localYPos_0 = WidthRatio(24) * 0 // 0 - 6
 
       obstaclePosition_0.setValue({ x: WidthRatio(370), y: localYPos_0 });
-      
+
 
       obstacle_0.current = Animated.parallel([
         Animated.timing(obstaclePosition_0.x, {
@@ -599,32 +599,32 @@ export const Stage_5_Projectile = (props) => {
         Animated.sequence([
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * altNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration)/6,
+            duration: (5000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * roundedNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration)/6,
+            duration: (5000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * altNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration)/6,
+            duration: (5000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * roundedNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration)/6,
+            duration: (5000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * altNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration)/6,
+            duration: (5000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * roundedNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration)/6,
+            duration: (5000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
         ])
@@ -673,7 +673,7 @@ export const Stage_5_Projectile = (props) => {
         Animated.sequence([
           Animated.timing(obstacleOpacity_twins_0, {
             toValue: 1,
-            duration: (5000 - shortestDuration)/4,
+            duration: (5000 - shortestDuration) / 4,
             easing: Easing.linear,
             useNativeDriver: true,
             isInteraction: false,
@@ -682,7 +682,7 @@ export const Stage_5_Projectile = (props) => {
           }),
           Animated.timing(obstacleOpacity_twins_0, {
             toValue: 0.5,
-            duration: (5000 - shortestDuration)/4,
+            duration: (5000 - shortestDuration) / 4,
             easing: Easing.linear,
             useNativeDriver: true,
             isInteraction: false,
@@ -691,7 +691,7 @@ export const Stage_5_Projectile = (props) => {
           }),
           Animated.timing(obstacleOpacity_twins_0, {
             toValue: 1,
-            duration: (5000 - shortestDuration)/4,
+            duration: (5000 - shortestDuration) / 4,
             easing: Easing.linear,
             useNativeDriver: true,
             isInteraction: false,
@@ -700,7 +700,7 @@ export const Stage_5_Projectile = (props) => {
           }),
           Animated.timing(obstacleOpacity_twins_0, {
             toValue: 0.5,
-            duration: (5000 - shortestDuration)/4,
+            duration: (5000 - shortestDuration) / 4,
             easing: Easing.linear,
             useNativeDriver: true,
             isInteraction: false,
@@ -798,7 +798,7 @@ export const Stage_5_Projectile = (props) => {
 
     // Obstacle 0
     const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(22), width: WidthRatio(22) }
 
       if (isObstacleColliding_0(obj1, obj2)) {
         if (!hasUpdatedObstacle_0.current) {
@@ -816,7 +816,7 @@ export const Stage_5_Projectile = (props) => {
 
     // Obstacle 1
     const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(22), width: WidthRatio(22) }
 
       if (isObstacleColliding_1(obj1, obj2)) {
         if (!hasUpdatedObstacle_1.current) {
@@ -834,7 +834,7 @@ export const Stage_5_Projectile = (props) => {
 
     // Obstacle 2 ---------
     const obstacleListener_2 = obstaclePosition_2.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(22), width: WidthRatio(22) }
 
       if (isObstacleColliding_2(obj1, obj2)) {
         if (!hasUpdatedObstacle_2.current) {
@@ -852,7 +852,7 @@ export const Stage_5_Projectile = (props) => {
 
     // Obstacle 1
     const obstacleListener_3 = obstaclePosition_3.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(22), width: WidthRatio(22) }
 
       if (isObstacleColliding_3(obj1, obj2)) {
         if (!hasUpdatedObstacle_3.current) {
@@ -870,7 +870,7 @@ export const Stage_5_Projectile = (props) => {
 
     // Obstacle 1
     const obstacleListener_4 = obstaclePosition_4.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(22), width: WidthRatio(22) }
 
       if (isObstacleColliding_4(obj1, obj2)) {
         if (!hasUpdatedObstacle_4.current) {
@@ -888,7 +888,7 @@ export const Stage_5_Projectile = (props) => {
 
     // Obstacle 1
     const obstacleListener_5 = obstaclePosition_5.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(22), width: WidthRatio(22) }
 
       if (isObstacleColliding_5(obj1, obj2)) {
         if (!hasUpdatedObstacle_5.current) {
@@ -906,7 +906,7 @@ export const Stage_5_Projectile = (props) => {
 
     // Obstacle 1
     const obstacleListener_6 = obstaclePosition_6.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(22), width: WidthRatio(22) }
 
       if (isObstacleColliding_6(obj1, obj2)) {
         if (!hasUpdatedObstacle_6.current) {
@@ -1111,6 +1111,11 @@ export const Stage_5_Projectile = (props) => {
       stage3: false,
       stage4: false,
       stage5: true,
+      stage6: false,
+      stage7: false,
+      stage8: false,
+      stage9: false,
+      stage10: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -1323,7 +1328,7 @@ export const Stage_5_Projectile = (props) => {
         letterPosition.setValue({ x: WidthRatio(370), y: 0 })
         hasUpdatedLetterBlock.current = false;
       }
-      
+
       if (obstacle_0.current != null) {
         obstacle_0.current.stop();
         obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
@@ -1415,6 +1420,10 @@ export const Stage_5_Projectile = (props) => {
             stage4: false,
             stage5: false,
             stage6: true,
+            stage7: false,
+            stage8: false,
+            stage9: false,
+            stage10: false,
             currentScore: score.current,
             currentLevel: 0,
             currentCrashes: input.crashes,
@@ -1467,6 +1476,11 @@ export const Stage_5_Projectile = (props) => {
           stage3: false,
           stage4: false,
           stage5: true,
+          stage6: false,
+          stage7: false,
+          stage8: false,
+          stage9: false,
+          stage10: false,
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
@@ -1806,7 +1820,7 @@ export const Stage_5_Projectile = (props) => {
             source={require('../../../assets/projectile_atomic.png')}
             style={{ height: WidthRatio(14), width: WidthRatio(14) }} />
         </Animated.View>
-        
+
         {/* TWINS */}
         <Animated.View
           style={[Styling.projectile_obstacle_block, {
@@ -2215,6 +2229,10 @@ export const Stage_5_Projectile = (props) => {
                   stage4: false,
                   stage5: false,
                   stage6: false,
+                  stage7: false,
+                  stage8: false,
+                  stage9: false,
+                  stage10: false,
                   currentScore: 0,
                   currentLevel: 0,
                   currentCrashes: 0

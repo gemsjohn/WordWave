@@ -341,9 +341,9 @@ export const Stage_4_Projectile = (props) => {
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
       let speed = [];
       if (level.current == 1) {
-        speed = [{top: 5000, bottom: 2000}]
+        speed = [{ top: 5000, bottom: 2000 }]
       } else if (level.current >= 2) {
-        speed = [{top: 3000, bottom: 1000}]
+        speed = [{ top: 3000, bottom: 1000 }]
 
       }
       let randomDuration_a = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
@@ -368,7 +368,7 @@ export const Stage_4_Projectile = (props) => {
       obstacleTriangle_d.setValue({ x: WidthRatio(370), y: HeightRatio(650) });
 
       obstacle_Triangle_a.current = Animated.parallel([
-        
+
         Animated.sequence([
           Animated.timing(obstacleTriangle_a.x, {
             toValue: WidthRatio(300),
@@ -393,7 +393,7 @@ export const Stage_4_Projectile = (props) => {
               useNativeDriver: true,
             }),
           ]),
-          
+
           Animated.timing(obstacleTriangle_a.x, {
             toValue: -WidthRatio(40),
             duration: longestDuration - randomDuration_a,
@@ -422,8 +422,8 @@ export const Stage_4_Projectile = (props) => {
               duration: randomDuration_b,
               useNativeDriver: true,
             }),
-          ]),          
-          
+          ]),
+
           Animated.timing(obstacleTriangle_b.x, {
             toValue: -WidthRatio(40),
             duration: longestDuration - randomDuration_b,
@@ -453,7 +453,7 @@ export const Stage_4_Projectile = (props) => {
               useNativeDriver: true,
             }),
           ]),
-          
+
           Animated.timing(obstacleTriangle_c.x, {
             toValue: -WidthRatio(40),
             duration: longestDuration - randomDuration_c,
@@ -484,7 +484,7 @@ export const Stage_4_Projectile = (props) => {
               useNativeDriver: true,
             }),
           ]),
-          
+
           Animated.timing(obstacleTriangle_d.x, {
             toValue: -WidthRatio(40),
             duration: longestDuration - randomDuration_d,
@@ -1174,6 +1174,11 @@ export const Stage_4_Projectile = (props) => {
       stage3: false,
       stage4: true,
       stage5: false,
+      stage6: false,
+      stage7: false,
+      stage8: false,
+      stage9: false,
+      stage10: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -1211,7 +1216,7 @@ export const Stage_4_Projectile = (props) => {
       hasUpdatedTriangle_a.current = false;
 
     }
-    if (level.current >= 3 && obstacle_opacity_bot.current != null ) {
+    if (level.current >= 3 && obstacle_opacity_bot.current != null) {
       obstacle_opacity_bot.current.stop();
       obstaclePosition_opacity_bot.setValue({ x: WidthRatio(370), y: 0 })
       obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(370), y: 0 })
@@ -1242,7 +1247,7 @@ export const Stage_4_Projectile = (props) => {
       if (mainState.current.currentLevel >= 1) {
         runTriangleAnimation_a_b();
       }
-      
+
       if (mainState.current.currentLevel >= 3) {
         runObstacleAnimation_opacity_bot();
 
@@ -1342,7 +1347,7 @@ export const Stage_4_Projectile = (props) => {
       hasUpdatedTriangle_a.current = false;
 
     }
-    if (level.current >= 3 && obstacle_opacity_bot.current != null ) {
+    if (level.current >= 3 && obstacle_opacity_bot.current != null) {
       obstacle_opacity_bot.current.stop();
       obstaclePosition_opacity_bot.setValue({ x: WidthRatio(370), y: 0 })
       obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(370), y: 0 })
@@ -1380,6 +1385,11 @@ export const Stage_4_Projectile = (props) => {
             stage3: false,
             stage4: false,
             stage5: true,
+            stage6: false,
+            stage7: false,
+            stage8: false,
+            stage9: false,
+            stage10: false,
             currentScore: score.current,
             currentLevel: 0,
             currentCrashes: input.crashes,
@@ -1432,6 +1442,11 @@ export const Stage_4_Projectile = (props) => {
           stage3: false,
           stage4: true,
           stage5: false,
+          stage6: false,
+          stage7: false,
+          stage8: false,
+          stage9: false,
+          stage10: false,
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
@@ -2139,6 +2154,11 @@ export const Stage_4_Projectile = (props) => {
                   stage3: false,
                   stage4: false,
                   stage5: false,
+                  stage6: false,
+                  stage7: false,
+                  stage8: false,
+                  stage9: false,
+                  stage10: false,
                   currentScore: 0,
                   currentLevel: 0,
                   currentCrashes: 0

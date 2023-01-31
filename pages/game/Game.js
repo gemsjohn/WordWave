@@ -30,6 +30,7 @@ import { Stage_2_Projectile } from './Stages/Stage_2_Projectile';
 import { Stage_3_Projectile } from './Stages/Stage_3_Projectile';
 import { Stage_4_Projectile } from './Stages/Stage_4_Projectile';
 import { Stage_5_Projectile } from './Stages/Stage_5_Projectile';
+import { Stage_6_Projectile } from './Stages/Stage_6_Projectile';
 
 
 import {
@@ -45,11 +46,17 @@ export const GameScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(false);
+    const [stage1, setStage1] = useState(true);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
-    const [stage5, setStage5] = useState(true);
+    const [stage5, setStage5] = useState(false);
+    const [stage6, setStage6] = useState(false);
+    const [stage7, setStage7] = useState(false);
+    const [stage8, setStage8] = useState(false);
+    const [stage9, setStage9] = useState(false);
+    const [stage10, setStage10] = useState(false);
+
 
     const [userID, setUserID] = useState('');
     const [authState, setAuthState] = useState(false);
@@ -93,6 +100,11 @@ export const GameScreen = ({ navigation }) => {
             stage3: null,
             stage4: null,
             stage5: null,
+            stage6: null,
+            stage7: null,
+            stage8: null,
+            stage9: null,
+            stage10: null,
             currentScore: 0,
             currentLevel: 0,
             currentCrashes: 0,
@@ -100,7 +112,7 @@ export const GameScreen = ({ navigation }) => {
             currentWordPlusSeven: [],
             currentDisplayLetters: [],
             currentLetter_countValue: 0
-          })
+        })
     }, [])
 
 
@@ -142,6 +154,21 @@ export const GameScreen = ({ navigation }) => {
             if (mainState.current.stage5 != null) {
                 setStage5(mainState.current.stage5);
             }
+            if (mainState.current.stage6 != null) {
+                setStage6(mainState.current.stage6);
+            }
+            if (mainState.current.stage7 != null) {
+                setStage7(mainState.current.stage7);
+            }
+            if (mainState.current.stage8 != null) {
+                setStage8(mainState.current.stage8);
+            }
+            if (mainState.current.stage9 != null) {
+                setStage9(mainState.current.stage9);
+            }
+            if (mainState.current.stage10 != null) {
+                setStage10(mainState.current.stage10);
+            }
         }, 500)
 
 
@@ -167,6 +194,7 @@ export const GameScreen = ({ navigation }) => {
                         {stage3 && <Stage_3_Projectile nav={navigation} />}
                         {stage4 && <Stage_4_Projectile nav={navigation} />}
                         {stage5 && <Stage_5_Projectile nav={navigation} />}
+                        {stage6 && <Stage_6_Projectile nav={navigation} />}
 
                     </>
                     :
