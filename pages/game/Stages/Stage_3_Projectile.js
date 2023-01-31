@@ -1204,6 +1204,7 @@ export const Stage_3_Projectile = (props) => {
       stage1: false,
       stage2: false,
       stage3: true,
+      stage4: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -1420,19 +1421,7 @@ export const Stage_3_Projectile = (props) => {
     if (input.continue) {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
-      // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
-      setLetter('');
-      setRandomWord('');
 
-      setMainState({
-        currentScore: score.current,
-        currentLevel: input.level,
-        currentCrashes: input.crashes,
-        currentLetterPocket: [],
-        currentWordPlusSeven: [],
-        currentDisplayLetters: [],
-        currentLetter_countValue: 0
-      })
       if (input.level >= 4) {
         setLetter('');
         setRandomWord('');
@@ -1440,41 +1429,29 @@ export const Stage_3_Projectile = (props) => {
         setLetterPocket([]);
         setDisplayLetters([]);
 
-        // setTimeout(() => {
-        //   score.current += 1000;
-        //   scoreFlash_1000.current = true;
-        //   setTimeout(() => {
-        //     scoreFlash_1000.current = false;
-        //   }, 1000)
-        // }, 501)
+        setTimeout(() => {
+          score.current += 1000;
+          scoreFlash_1000.current = true;
+          setTimeout(() => {
+            scoreFlash_1000.current = false;
+          }, 1000)
+        }, 501)
 
-        // setTimeout(() => {
-        //   setMainState({
-        //     stage1: false,
-        //     stage2: false,
-        //     stage3: false,
-        //     stage4: true,
-        //     currentScore: score.current,
-        //     currentLevel: input.level,
-        //     currentCrashes: input.crashes,
-        //     currentLetterPocket: [],
-        //     currentWordPlusSeven: [],
-        //     currentDisplayLetters: [],
-        //     currentLetter_countValue: 0
-        //   })
-        // }, 1700)
-
-        endGame({ 
-          continue: false, 
-          local: "b", 
-          crashes: crashes.current, 
-          score: score.current, 
-          level: level.current,
-          letterPocket: letterPocket,
-          wordPlusSeven: wordPlusSeven.current,
-          displayLetters: displayLetters,
-          letter_countValue: countRef.current
-        });
+        setTimeout(() => {
+          setMainState({
+            stage1: false,
+            stage2: false,
+            stage3: false,
+            stage4: true,
+            currentScore: score.current,
+            currentLevel: 0,
+            currentCrashes: input.crashes,
+            currentLetterPocket: [],
+            currentWordPlusSeven: [],
+            currentDisplayLetters: [],
+            currentLetter_countValue: 0
+          })
+        }, 1700)
 
         return;
       } else {
@@ -1487,7 +1464,7 @@ export const Stage_3_Projectile = (props) => {
         wordPlusSeven.current = [];
         setLetterPocket([]);
         setDisplayLetters([]);
-        
+
         setMainState({
           currentScore: score.current,
           currentLevel: level.current,
@@ -1516,6 +1493,7 @@ export const Stage_3_Projectile = (props) => {
           stage1: false,
           stage2: false,
           stage3: true,
+          stage4: false,
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
@@ -2217,6 +2195,7 @@ export const Stage_3_Projectile = (props) => {
                 stage1: true,
                 stage2: false,
                 stage3: false,
+                stage4: false,
                 currentScore: 0,
                 currentLevel: 0,
                 currentCrashes: 0

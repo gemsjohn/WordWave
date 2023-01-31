@@ -1053,6 +1053,7 @@ export const Stage_2_Projectile = (props) => {
       stage1: false,
       stage2: true,
       stage3: false,
+      stage4: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -1295,6 +1296,7 @@ export const Stage_2_Projectile = (props) => {
             stage1: false,
             stage2: false,
             stage3: true,
+            stage4: false,
             currentScore: score.current,
             currentLevel: 0,
             currentCrashes: input.crashes,
@@ -2034,6 +2036,7 @@ export const Stage_2_Projectile = (props) => {
                   stage1: true,
                   stage2: false,
                   stage3: false,
+                  stage4: false,
                   currentScore: 0,
                   currentLevel: 0,
                   currentCrashes: 0
