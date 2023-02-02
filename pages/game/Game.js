@@ -46,12 +46,12 @@ export const GameScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(true);
+    const [stage1, setStage1] = useState(false);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
     const [stage5, setStage5] = useState(false);
-    const [stage6, setStage6] = useState(false);
+    const [stage6, setStage6] = useState(true);
     const [stage7, setStage7] = useState(false);
     const [stage8, setStage8] = useState(false);
     const [stage9, setStage9] = useState(false);
@@ -183,18 +183,21 @@ export const GameScreen = ({ navigation }) => {
                 />
                 {loadingComplete ?
                     <>
-                        <CharacterAndJoystick />
+                        <View style={{position: 'absolute', zIndex: 20}} >
+                            <CharacterAndJoystick />
+                        </View>
 
                         {/* {retainUpgradeToSpecial_0 &&
                             <Special />
                         } */}
-
-                        {stage1 && <Stage_1_Projectile nav={navigation} />}
-                        {stage2 && <Stage_2_Projectile nav={navigation} />}
-                        {stage3 && <Stage_3_Projectile nav={navigation} />}
-                        {stage4 && <Stage_4_Projectile nav={navigation} />}
-                        {stage5 && <Stage_5_Projectile nav={navigation} />}
-                        {stage6 && <Stage_6_Projectile nav={navigation} />}
+                        <View style={{position: 'absolute', zIndex: 10}} >
+                            {stage1 && <Stage_1_Projectile nav={navigation} />}
+                            {stage2 && <Stage_2_Projectile nav={navigation} />}
+                            {stage3 && <Stage_3_Projectile nav={navigation} />}
+                            {stage4 && <Stage_4_Projectile nav={navigation} />}
+                            {stage5 && <Stage_5_Projectile nav={navigation} />}
+                            {stage6 && <Stage_6_Projectile nav={navigation} />}
+                        </View>
 
                     </>
                     :
