@@ -108,7 +108,8 @@ export const Stage_6_Projectile = (props) => {
   const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
   const obstacleRotation_1 = useRef(new Animated.Value(0)).current;
   const obstacle_1 = useRef(null)
-  const var_i = useRef(0);
+  // const var_i = useRef(0);
+  const [var_i, setVar_i] = useState(0);
   let timeoutObstacle_1_ID;
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
@@ -246,10 +247,7 @@ export const Stage_6_Projectile = (props) => {
             if (level.current >= 0) {
               letterAnimation();
               // runObstacleAnimation_0();
-            if (level.current == 0) {
-              runObstacleAnimation_1();
-            }
-
+              runObstacleAnimation_1(0);
 
             }
 
@@ -259,9 +257,6 @@ export const Stage_6_Projectile = (props) => {
 
             if (level.current >= 2) {
               runObstacleAnimation_right_angle_0();
-              if (level.current == 2) {
-                runObstacleAnimation_1();
-              }
             }
 
             if (level.current >= 3) {
@@ -326,7 +321,7 @@ export const Stage_6_Projectile = (props) => {
   };
 
 
-  const runObstacleAnimation_0 = () => {
+  const runObstacleAnimation_0 = (input) => {
     if (isGameInProgress.current) {
       hasUpdatedObstacle_0.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -336,26 +331,19 @@ export const Stage_6_Projectile = (props) => {
         {x: WidthRatio(243), y: HeightRatio(100)},
         {x: WidthRatio(293), y: HeightRatio(550)}
       ]
-
-      // let var_i;
-      let reduceCharYTarget;
-
-      if (level.current == 0) {
-        reduceCharYTarget = 0;
-      } 
       
-      obstaclePosition_0.setValue({ x: feederLocation[var_i.current].x, y: feederLocation[var_i.current].y - HeightRatio(25) });
+      obstaclePosition_0.setValue({ x: feederLocation[input].x, y: feederLocation[input].y - HeightRatio(25) });
       obstacleOpacity_homing_missile.setValue(0);
 
 
       obstacle_0.current = Animated.sequence([
         Animated.timing(obstaclePosition_0.x, {
-          toValue: feederLocation[var_i.current].x,
+          toValue: feederLocation[input].x,
           duration: 50,
           useNativeDriver: true,
         }),
         Animated.timing(obstaclePosition_0.y, {
-          toValue: feederLocation[var_i.current].y,
+          toValue: feederLocation[input].y,
           duration: 50,
           useNativeDriver: true,
         }),
@@ -376,7 +364,7 @@ export const Stage_6_Projectile = (props) => {
             useNativeDriver: true,
           }),
           Animated.timing(obstaclePosition_0.y, {
-            toValue: mainState.current.charY - reduceCharYTarget,
+            toValue: mainState.current.charY,
             duration: 1000,
             useNativeDriver: true,
           }),
@@ -390,25 +378,24 @@ export const Stage_6_Projectile = (props) => {
         projectileCount.current += 1
         if  (projectileCount.current >= 5) {
           if (obstacle_0.current != null) {
-            obstacle_0.current.stop();
             obstaclePosition_0.setValue({ x: WidthRatio(500), y: -WidthRatio(100) });
+            obstacle_0.current.stop();
 
           }
           if (obstacle_1.current != null) {
             obstacle_1.current.stop();
           }
-          if (var_i.current == 0) {
-            var_i.current = 1;
-          } else if (var_i.current == 1) {
-            var_i.current = 0;
+          if (input == 0) {
+            runObstacleAnimation_1(1);
+          } else if (input == 1) {
+            runObstacleAnimation_1(0);
+
           }
-          runObstacleAnimation_1();
-          
           
         } else {
-          obstaclePosition_0.setValue({ x: feederLocation[var_i.current].x, y: feederLocation[var_i.current].y - HeightRatio(25) });
-          runObstacleAnimation_0();
+          runObstacleAnimation_0(input);
         }
+
         
       });
     } else {
@@ -416,7 +403,7 @@ export const Stage_6_Projectile = (props) => {
     }
   };
 
-  const runObstacleAnimation_1 = () => {
+  const runObstacleAnimation_1 = (input) => {
     projectileCount.current = 0;
     if (isGameInProgress.current) {
       hasUpdatedObstacle_1.current = false;
@@ -431,19 +418,16 @@ export const Stage_6_Projectile = (props) => {
 
 
       obstaclePosition_1.setValue({ x: WidthRatio(500), y: localYPos_0 });
-      // obstaclePosition_1.setValue({ x: feederLocation[var_i.current].x, y: feederLocation[var_i.current].y });
-      
-      obstacleRotation_1.setValue(0);
-
+      console.log("var_i: " + var_i)
       obstacle_1.current = 
       Animated.parallel([
         Animated.timing(obstaclePosition_1.x, {
-          toValue: feederLocation[var_i.current].x,
+          toValue: feederLocation[input].x,
           duration: 1500,
           useNativeDriver: true,
         }),
         Animated.timing(obstaclePosition_1.y, {
-          toValue: feederLocation[var_i.current].y,
+          toValue: feederLocation[input].y,
           duration: 1500,
           useNativeDriver: true,
         }),
@@ -452,7 +436,7 @@ export const Stage_6_Projectile = (props) => {
       obstacle_1.current.start(() => {
 
         setTimeout(() => {
-          runObstacleAnimation_0();
+          runObstacleAnimation_0(input);
 
         }, 1700)
         
@@ -462,31 +446,6 @@ export const Stage_6_Projectile = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (var_i.current == 0) {
-  //     console.log("setting to 0")
-  //     setTimeout(() => {
-  //       if (obstacle_1.current != null) {
-  //         obstacle_1.current.stop();
-  //       }
-  //       runObstacleAnimation_1();
-        
-  //       var_i.current = 1;
-  //     }, 5000)
-  //   } else if (var_i.current == 1) {
-  //     console.log("setting to 1")
-
-  //     setTimeout(() => {
-  //       if (obstacle_1.current != null) {
-  //         obstacle_1.current.stop();
-  //       }
-  //       runObstacleAnimation_1();
-
-  //       var_i.current = 0;
-  //     }, 5000)
-  //   }
-    
-  // }, [var_i.current])
 
   const runObstacleAnimation_right_angle_0 = () => {
     if (isGameInProgress.current) {
@@ -926,7 +885,8 @@ export const Stage_6_Projectile = (props) => {
       if (mainState.current.currentLevel >= 0) {
         letterAnimation();
         // runObstacleAnimation_0();
-        runObstacleAnimation_1();
+        let randomInput = Math.floor(Math.random() * 2);
+        runObstacleAnimation_1(randomInput);
 
       }
 
@@ -1001,7 +961,8 @@ export const Stage_6_Projectile = (props) => {
     if (mainState.current.currentLevel >= 0) {
       letterAnimation();
       // runObstacleAnimation_0();
-      runObstacleAnimation_1();
+      let randomInput = Math.floor(Math.random() * 2);
+      runObstacleAnimation_1(randomInput);
 
     }
 
@@ -1027,8 +988,6 @@ export const Stage_6_Projectile = (props) => {
     isGameInProgress.current = false;
 
     if (level.current >= 0) {
-      projectileCount.current = 0;
-      var_i.current = 0;
 
       if (animation.current != null) {
         animation.current.stop();
