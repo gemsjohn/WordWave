@@ -26,7 +26,6 @@ export const GET_ME = gql`
         level
         crashes
         letterPocket
-        wordPlusSeven
         displayLetters
         currentLetterCountValue
         date
@@ -64,7 +63,6 @@ export const GET_USER_BY_ID = gql`
         level
         crashes
         letterPocket
-        wordPlusSeven
         displayLetters
         currentLetterCountValue
         date
@@ -107,7 +105,6 @@ export const GET_USERS = gql`
         level
         crashes
         letterPocket
-        wordPlusSeven
         displayLetters
         currentLetterCountValue
         date
@@ -141,7 +138,6 @@ export const GET_USERS_SEARCH = gql`
         level
         crashes
         letterPocket
-        wordPlusSeven
         displayLetters
         currentLetterCountValue
         date
@@ -190,7 +186,6 @@ query Query {
     level
     crashes
     letterPocket
-    wordPlusSeven
     displayLetters
     currentLetterCountValue
     date

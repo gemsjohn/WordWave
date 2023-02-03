@@ -26,7 +26,6 @@ export const LOGIN_USER = gql`
         level
         crashes
         letterPocket
-        wordPlusSeven
         displayLetters
         currentLetterCountValue
         date
@@ -65,7 +64,6 @@ export const UPDATE_USER_PASSWORD = gql`
       level
       crashes
       letterPocket
-      wordPlusSeven
       displayLetters
       currentLetterCountValue
       date
@@ -103,7 +101,6 @@ export const UPDATE_USER = gql`
       level
       crashes
       letterPocket
-      wordPlusSeven
       displayLetters
       currentLetterCountValue
       date
@@ -141,7 +138,6 @@ export const REQUEST_RESET = gql`
       level
       crashes
       letterPocket
-      wordPlusSeven
       displayLetters
       currentLetterCountValue
       date
@@ -179,7 +175,6 @@ export const RESET_PASSWORD = gql`
       level
       crashes
       letterPocket
-      wordPlusSeven
       displayLetters
       currentLetterCountValue
       date
@@ -219,7 +214,6 @@ export const ADD_USER = gql`
         level
         crashes
         letterPocket
-        wordPlusSeven
         displayLetters
         currentLetterCountValue
         date
@@ -282,7 +276,6 @@ export const UPDATE_MAX_SCORE_AND_STAGE = gql`
       level
       crashes
       letterPocket
-      wordPlusSeven
       displayLetters
       currentLetterCountValue
       date
@@ -320,7 +313,6 @@ export const UPDATE_TOKEN_COUNT = gql`
       level
       crashes
       letterPocket
-      wordPlusSeven
       displayLetters
       currentLetterCountValue
       date
@@ -335,8 +327,8 @@ export const UPDATE_TOKEN_COUNT = gql`
 `;
 
 export const ADD_SAVED_GAME = gql`
-mutation Mutation($userid: String, $stage: String, $score: String, $level: String, $crashes: String, $letterPocket: String, $wordPlusSeven: String, $displayLetters: String, $currentLetterCountValue: String, $date: String) {
-  addSavedGame(userid: $userid, stage: $stage, score: $score, level: $level, crashes: $crashes, letterPocket: $letterPocket, wordPlusSeven: $wordPlusSeven, displayLetters: $displayLetters, currentLetterCountValue: $currentLetterCountValue, date: $date) {
+mutation Mutation($userid: String, $stage: String, $score: String, $level: String, $crashes: String, $letterPocket: String, $displayLetters: String, $currentLetterCountValue: String, $date: String) {
+  addSavedGame(userid: $userid, stage: $stage, score: $score, level: $level, crashes: $crashes, letterPocket: $letterPocket, displayLetters: $displayLetters, currentLetterCountValue: $currentLetterCountValue, date: $date) {
     _id
     userid
     stage
@@ -344,7 +336,6 @@ mutation Mutation($userid: String, $stage: String, $score: String, $level: Strin
     level
     crashes
     letterPocket
-    wordPlusSeven
     displayLetters
     currentLetterCountValue
     date

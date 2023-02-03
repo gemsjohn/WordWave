@@ -64,25 +64,16 @@ export const GameScreen = ({ navigation }) => {
 
     const stage = useRef(null);
 
-    // ADD_GAME
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-        variables: { id: userID.current }
+        variables: { id: mainState.current.userID }
     });
 
-    useEffect(() => {
-        setTimeout(() => {
-            userID.current = mainState.current.userID;
-        }, 500)
-
-    }, [])
-
-    setTimeout(() => {
-        setLoadingComplete(true)
-    }, 1000)
 
     useLayoutEffect(() => {
-        console.log("GAME - USE LAYOUT EFFECT ")
+        console.log("Setup: #1 ")
+        // userID.current = mainState.current.userID;
         refetch();
+
         setMainState({
             stage1: null,
             stage2: null,
@@ -107,26 +98,11 @@ export const GameScreen = ({ navigation }) => {
 
     }, [])
 
-
     useEffect(() => {
-        // This is the effect that should be cleaned up when the component is unmounted
-        const timeoutId = setTimeout(() => {
-            console.log("MOUNTED")
-        }, 1000);
+        console.log("Setup: #2 ")
+        refetch();
 
-        // Return a function that cleans up the effect
-        return () => {
-            console.log("UNMOUNTED")
-            clearTimeout(timeoutId);
-            setLoadingComplete(false)
-        };
-    }, []);
-
-
-    // }, [])
-
-    useEffect(() => {
-        const intervalCheckUpgradeToSpecial_0 = setInterval(() => {
+        setInterval(() => {
             setRetainUpgradeToSpecial_0(mainState.current.upgradeToSpecial_0);
 
             if (mainState.current.stage1 != null) {
@@ -167,26 +143,43 @@ export const GameScreen = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
+        console.log("Setup: #3 ")
+
+
         if (userByID?.user.saved.date != null) {
             setDisplayOptionsToPlaySavedGame(true)
             stage.current = parseInt(userByID?.user.saved.stage) - 1;
+            console.log(userByID?.user.saved)
 
         }
     }, [userByID])
 
+
+    useEffect(() => {
+        // This is the effect that should be cleaned up when the component is unmounted
+        const timeoutId = setTimeout(() => {
+            console.log("MOUNTED")
+            console.log("Setup: #4 ")
+            setLoadingComplete(true)
+            
+        }, 1000);
+
+        // Return a function that cleans up the effect
+        return () => {
+            console.log("UNMOUNTED")
+            clearTimeout(timeoutId);
+            setLoadingComplete(false)
+        };
+    }, []); 
+
     const handleContinueSavedGame = (stage) => {
-        console.log("handleContinueSavedGame")
+        console.log("Setup: #5 ")
+
         let str_0 = `${userByID?.user.saved.letterPocket}`;
         let arr_0 = str_0.split(",");
 
-        let str_1 = `${userByID?.user.saved.wordPlusSeven}`;
-        let arr_1 = str_1.split(",");
-
         let str_2 = `${userByID?.user.saved.displayLetters}`;
         let arr_2 = str_2.split(",");
-
-        console.log("arr_0 ")
-        console.log(arr_1)
 
 
         setMainState({
@@ -195,14 +188,9 @@ export const GameScreen = ({ navigation }) => {
             currentLevel: parseInt(userByID?.user.saved.level),
             currentCrashes: parseInt(userByID?.user.saved.crashes),
             currentLetterPocket: arr_0,
-            currentWordPlusSeven: arr_1,
             currentDisplayLetters: arr_2,
             currentLetter_countValue: parseInt(userByID?.user.saved.currentLetterCountValue),
         })
-
-        console.log("* * * * * ")
-        console.log(mainState.current.currentWordPlusSeven)
-        console.log("* * * * *")
 
         switch (stage) {
             case 1:
