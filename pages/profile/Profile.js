@@ -3,6 +3,7 @@ import { useEffect, useState, useContext, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { CommonActions } from '@react-navigation/native';
 import { UserDetails } from './UserDetails';
+import { SavedGame } from './SavedGame';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
 import { RecentGames } from '../game/RecentGames';
@@ -153,6 +154,25 @@ export const ProfileScreen = ({ navigation }) => {
                                             </View>
                                             <View style={{ alignSelf: 'center', marginBottom: 20 }}>
                                                 <UserDetails nav={navigation} />
+                                            </View>
+
+                                            <View style={Styling.profileDivisionLine}></View>
+
+                                            {/* [[[SAVED GAME DETAILS]]] */}
+                                            <View
+                                                style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={faSolid, faSliders}
+                                                    style={{ ...Styling.modalFontAwesomeIcons, color: 'white' }}
+                                                    size={30}
+                                                />
+                                                <Text style={Styling.modalScoringVarText} allowFontScaling={false}>
+                                                    Saved Game
+                                                </Text>
+                                            </View>
+                                            <View style={{ alignSelf: 'center', marginBottom: 20 }}>
+                                                <SavedGame nav={navigation} />
                                             </View>
 
                                             <View style={Styling.profileDivisionLine}></View>

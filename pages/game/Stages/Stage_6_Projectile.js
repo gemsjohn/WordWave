@@ -15,7 +15,7 @@ import {
 import { shuffle } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../../utils/queries';
-import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT } from '../../../utils/mutations';
+import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT, ADD_SAVED_GAME } from '../../../utils/mutations';
 import { MainStateContext } from '../../../App';
 import {
   isLetterBlockColliding,
@@ -50,6 +50,7 @@ export const Stage_6_Projectile = (props) => {
   // APOLLO MUTATIONS
   const [updateMaxScoreAndStage] = useMutation(UPDATE_MAX_SCORE_AND_STAGE);
   const [updateTokenCount] = useMutation(UPDATE_TOKEN_COUNT);
+  const [addSavedGame] = useMutation(ADD_SAVED_GAME);
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
@@ -83,6 +84,9 @@ export const Stage_6_Projectile = (props) => {
   const [recordedLevel, setRecordedLevel] = useState(0);
   const [displayGameOverText, setDisplayGameOverText] = useState(false);
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
+  const [displayPauseText, setDisplayPauseText] = useState(false)
+  const [openGate, setOpenGate] = useState(false);
+
   let timeoutCallGenerateID;
 
   // [LETTER ANIMATION] - - - - - 
@@ -92,25 +96,22 @@ export const Stage_6_Projectile = (props) => {
   const animation = useRef(null)
   const count = new Animated.Value(mainState.current.currentLetter_countValue);
   const countRef = useRef(mainState.current.currentLetter_countValue);
-  const wordPlusSeven = useRef(mainState.current.currentWordPlusSeven)
+  const wordPlusSeven = useRef(mainState.current.currentWordPlusSeven);
   let timeoutLetter_ID;
 
   // [OBSTACLE ANIMATION 0] - - - - - 
-  const hasUpdatedObstacle_0 = useRef(false);
-  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
-  const obstacleRotation_0 = useRef(new Animated.Value(0)).current;
-  const obstacle_0 = useRef(null)
+  const hasUpdatedObstacle_homing_missile = useRef(false);
+  const obstaclePosition_homing_missile = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
+  const obstacleRotation_homing_missile = useRef(new Animated.Value(0)).current;
+  const obstacle_homing_missile = useRef(null)
   const obstacleOpacity_homing_missile = useRef(new Animated.Value(0)).current;
-  let timeoutObstacle_0_ID;
+  let timeoutObstacle_homing_missile_ID;
 
   // [OBSTACLE ANIMATION 1] - - - - - 
-  const hasUpdatedObstacle_1 = useRef(false);
-  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
-  const obstacleRotation_1 = useRef(new Animated.Value(0)).current;
-  const obstacle_1 = useRef(null)
-  // const var_i = useRef(0);
-  const [var_i, setVar_i] = useState(0);
-  let timeoutObstacle_1_ID;
+  const hasUpdatedObstacle_Distributor = useRef(false);
+  const obstaclePosition_Distributor = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
+  const obstacleRotation_Distributor = useRef(new Animated.Value(0)).current;
+  const obstacle_Distributor = useRef(null)
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
   const hasUpdatedObstacle_right_angle_0 = useRef(false);
@@ -135,11 +136,11 @@ export const Stage_6_Projectile = (props) => {
   const retainAuxilliaryGreenHealth = useRef(false);
 
   // [TESTING]
-  const boxInterpolation_0 = obstacleRotation_0.interpolate({
+  const boxInterpolation_0 = obstacleRotation_homing_missile.interpolate({
     inputRange: [0, 5000],
     outputRange: ['360deg', '0deg']
   });
-  const boxInterpolation_1 = obstacleRotation_1.interpolate({
+  const boxInterpolation_1 = obstacleRotation_Distributor.interpolate({
     inputRange: [0, 5000],
     outputRange: ['360deg', '0deg']
   });
@@ -181,56 +182,91 @@ export const Stage_6_Projectile = (props) => {
   }, []);
 
   const Generate = (localPrevCrashes) => {
-    setContinuousEndGameCall(false)
-    clearTimeout(timeoutCallGenerateID);
-    if (localPrevCrashes > 0) {
-      crashes.current = localPrevCrashes;
+    if (!mainState.current.fromSavedGame) {
+      setOpenGate(true)
+      setContinuousEndGameCall(false)
+      clearTimeout(timeoutCallGenerateID);
+      if (localPrevCrashes > 0) {
+        crashes.current = localPrevCrashes;
+      }
+      else {
+        crashes.current = null;
+      }
+
+      const data = require('../output.json');
+      const index = Math.floor(Math.random() * data.length);
+      const word = data[index].word;
+      const letters = word.split('');
+
+      const randomLetters = [];
+      for (let i = 0; i < 7; i++) {
+        const letterCode = Math.floor(Math.random() * 26) + 65;
+        const letter = String.fromCharCode(letterCode);
+        let lowerCaseLetter = letter.toLowerCase();
+        randomLetters.push(lowerCaseLetter);
+      }
+      setLetterPositionNum(letters.length)
+
+
+
+      let combined = letters.concat(randomLetters);
+      let uniqueCombined = [...new Set(combined)];
+      let scambledCombined = shuffle(uniqueCombined);
+
+      setDisplayPlaybutton(false)
+
+      if (level.current > 0) {
+        score.current += 1000;
+        scoreFlash_1000.current = true;
+        setTimeout(() => {
+          scoreFlash_1000.current = false;
+        }, 1000)
+      }
+
+      setRandomWord(word);
+      setDisplayLetters(letters)
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+
+      console.log("#2 Finish Generate")
+    } else {
+      console.log("- - - - - -  - - ")
+      console.log(letterPocket)
+      console.log(displayLetters)
+      console.log("- - - - - -  - - ")
+      setMainState({
+        fromSavedGame: false
+    })
+
+      const randomLetters = [];
+      for (let i = 0; i < 7; i++) {
+        const letterCode = Math.floor(Math.random() * 26) + 65;
+        const letter = String.fromCharCode(letterCode);
+        let lowerCaseLetter = letter.toLowerCase();
+        randomLetters.push(lowerCaseLetter);
+      }
+      setLetterPositionNum(displayLetters.length)
+
+
+
+      let combined = displayLetters.concat(randomLetters);
+      let uniqueCombined = [...new Set(combined)];
+      let scambledCombined = shuffle(uniqueCombined);
+
+      setDisplayPlaybutton(false)
+
+      setRandomWord(displayLetters.join(","));
+      setDisplayLetters(displayLetters)
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+      setOpenGate(true)
     }
-    else {
-      crashes.current = null;
-    }
-
-    const data = require('../output.json');
-    const index = Math.floor(Math.random() * data.length);
-    const word = data[index].word;
-    const letters = word.split('');
-
-    const randomLetters = [];
-    for (let i = 0; i < 7; i++) {
-      const letterCode = Math.floor(Math.random() * 26) + 65;
-      const letter = String.fromCharCode(letterCode);
-      let lowerCaseLetter = letter.toLowerCase();
-      randomLetters.push(lowerCaseLetter);
-    }
-    setLetterPositionNum(letters.length)
-
-
-
-    let combined = letters.concat(randomLetters);
-    let uniqueCombined = [...new Set(combined)];
-    let scambledCombined = shuffle(uniqueCombined);
-
-    setDisplayPlaybutton(false)
-
-    if (level.current > 0) {
-      score.current += 1000;
-      scoreFlash_1000.current = true;
-      setTimeout(() => {
-        scoreFlash_1000.current = false;
-      }, 1000)
-    }
-
-    setRandomWord(word);
-    setDisplayLetters(letters)
-
-    wordPlusSeven.current = scambledCombined; // Must be last
-
-    console.log("#2 Finish Generate")
   }
 
   useEffect(() => {
+    
 
-    if (wordPlusSeven.current.length > 0) {
+    if (wordPlusSeven.current.length > 0 && openGate) {
       console.log("#3 Word Plus 7 useEffect")
       hideCrashesUntilUpdate.current = false;
       isGameInProgress.current = true;
@@ -238,6 +274,10 @@ export const Stage_6_Projectile = (props) => {
       // [GAME LEVEL CONTROL]
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
+          setMainState({
+            isGameInProgress: isGameInProgress.current
+          })
+
           console.log("#4 About to run animations.")
           console.log("LEVEL: " + level.current)
           updatedPostResume.current = true;
@@ -268,7 +308,9 @@ export const Stage_6_Projectile = (props) => {
         }
       }
     }
-  }, [wordPlusSeven.current])
+  }, [wordPlusSeven.current, openGate])
+
+  
 
 
   const letterAnimation = () => {
@@ -323,26 +365,33 @@ export const Stage_6_Projectile = (props) => {
 
   const runObstacleAnimation_0 = (input) => {
     if (isGameInProgress.current) {
-      hasUpdatedObstacle_0.current = false;
+      hasUpdatedObstacle_homing_missile.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
       let feederLocation = [
-        {x: WidthRatio(243), y: HeightRatio(100)},
-        {x: WidthRatio(293), y: HeightRatio(550)}
+        { x: WidthRatio(243), y: HeightRatio(100) },
+        { x: WidthRatio(293), y: HeightRatio(550) }
       ]
-      
-      obstaclePosition_0.setValue({ x: feederLocation[input].x, y: feederLocation[input].y - HeightRatio(25) });
+
+      obstaclePosition_homing_missile.setValue({ x: feederLocation[input].x, y: feederLocation[input].y - HeightRatio(25) });
       obstacleOpacity_homing_missile.setValue(0);
 
+      let offset;
+      if (input == 1) {
+        offset = mainState.current.charHeight;
+      } else {
+        offset = 0;
+      }
 
-      obstacle_0.current = Animated.sequence([
-        Animated.timing(obstaclePosition_0.x, {
+
+      obstacle_homing_missile.current = Animated.sequence([
+        Animated.timing(obstaclePosition_homing_missile.x, {
           toValue: feederLocation[input].x,
           duration: 50,
           useNativeDriver: true,
         }),
-        Animated.timing(obstaclePosition_0.y, {
+        Animated.timing(obstaclePosition_homing_missile.y, {
           toValue: feederLocation[input].y,
           duration: 50,
           useNativeDriver: true,
@@ -358,32 +407,32 @@ export const Stage_6_Projectile = (props) => {
             loop: true,
             delay: 0,
           }),
-          Animated.timing(obstaclePosition_0.x, {
-            toValue: (mainState.current.charX + WidthRatio(64) - mainState.current.charWidth/2),
+          Animated.timing(obstaclePosition_homing_missile.x, {
+            toValue: (mainState.current.charX + WidthRatio(64) - mainState.current.charWidth / 2),
             duration: 1000,
             useNativeDriver: true,
           }),
-          Animated.timing(obstaclePosition_0.y, {
-            toValue: mainState.current.charY,
+          Animated.timing(obstaclePosition_homing_missile.y, {
+            toValue: mainState.current.charY - offset,
             duration: 1000,
             useNativeDriver: true,
           }),
-  
+
         ]),
       ])
-      
-      
 
-      obstacle_0.current.start(() => {
+
+
+      obstacle_homing_missile.current.start(() => {
         projectileCount.current += 1
-        if  (projectileCount.current >= 5) {
-          if (obstacle_0.current != null) {
-            obstaclePosition_0.setValue({ x: WidthRatio(500), y: -WidthRatio(100) });
-            obstacle_0.current.stop();
+        if (projectileCount.current >= 5) {
+          if (obstacle_homing_missile.current != null) {
+            obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: -WidthRatio(100) });
+            obstacle_homing_missile.current.stop();
 
           }
-          if (obstacle_1.current != null) {
-            obstacle_1.current.stop();
+          if (obstacle_Distributor.current != null) {
+            obstacle_Distributor.current.stop();
           }
           if (input == 0) {
             runObstacleAnimation_1(1);
@@ -391,12 +440,12 @@ export const Stage_6_Projectile = (props) => {
             runObstacleAnimation_1(0);
 
           }
-          
+
         } else {
           runObstacleAnimation_0(input);
         }
 
-        
+
       });
     } else {
       return;
@@ -406,40 +455,39 @@ export const Stage_6_Projectile = (props) => {
   const runObstacleAnimation_1 = (input) => {
     projectileCount.current = 0;
     if (isGameInProgress.current) {
-      hasUpdatedObstacle_1.current = false;
-      
+      hasUpdatedObstacle_Distributor.current = false;
+
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
       let feederLocation = [
-        {x: WidthRatio(250), y: HeightRatio(50)},
-        {x: WidthRatio(300), y: HeightRatio(500)}
+        { x: WidthRatio(250), y: HeightRatio(50) },
+        { x: WidthRatio(300), y: HeightRatio(500) }
       ]
 
 
-      obstaclePosition_1.setValue({ x: WidthRatio(500), y: localYPos_0 });
-      console.log("var_i: " + var_i)
-      obstacle_1.current = 
-      Animated.parallel([
-        Animated.timing(obstaclePosition_1.x, {
-          toValue: feederLocation[input].x,
-          duration: 1500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(obstaclePosition_1.y, {
-          toValue: feederLocation[input].y,
-          duration: 1500,
-          useNativeDriver: true,
-        }),
-      ]);
+      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: localYPos_0 });
+      obstacle_Distributor.current =
+        Animated.parallel([
+          Animated.timing(obstaclePosition_Distributor.x, {
+            toValue: feederLocation[input].x,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(obstaclePosition_Distributor.y, {
+            toValue: feederLocation[input].y,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+        ]);
 
-      obstacle_1.current.start(() => {
+      obstacle_Distributor.current.start(() => {
 
         setTimeout(() => {
           runObstacleAnimation_0(input);
 
         }, 1700)
-        
+
       })
     } else {
       return;
@@ -600,37 +648,37 @@ export const Stage_6_Projectile = (props) => {
     });
 
     // Obstacle 0
-    const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
+    const obstacleListener_0 = obstaclePosition_homing_missile.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
 
       if (isObstacleColliding_0(obj1, obj2)) {
-        if (!hasUpdatedObstacle_0.current) {
+        if (!hasUpdatedObstacle_homing_missile.current) {
           crashes.current += 1;
-          hasUpdatedObstacle_0.current = true;
+          hasUpdatedObstacle_homing_missile.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
             flashOouchOnCrash.current = false;
           }, 500)
         }
-        obstacle_0.current.reset()
+        obstacle_homing_missile.current.reset()
       }
 
     });
 
     // Obstacle 1
-    const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
+    const obstacleListener_1 = obstaclePosition_Distributor.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
 
       if (isObstacleColliding_1(obj1, obj2)) {
-        if (!hasUpdatedObstacle_1.current) {
+        if (!hasUpdatedObstacle_Distributor.current) {
           crashes.current += 1;
-          hasUpdatedObstacle_1.current = true;
+          hasUpdatedObstacle_Distributor.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
             flashOouchOnCrash.current = false;
           }, 500)
         }
-        obstacle_1.current.reset()
+        obstacle_Distributor.current.reset()
       }
 
     });
@@ -689,8 +737,8 @@ export const Stage_6_Projectile = (props) => {
 
     return () => {
       letterPosition.removeListener(wordBlockListener);
-      obstaclePosition_0.removeListener(obstacleListener_0);
-      obstaclePosition_1.removeListener(obstacleListener_1);
+      obstaclePosition_homing_missile.removeListener(obstacleListener_0);
+      obstaclePosition_Distributor.removeListener(obstacleListener_1);
       obstaclePosition_right_angle_0.removeListener(obstacleListener_right_angle_0);
       obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1);
 
@@ -781,15 +829,11 @@ export const Stage_6_Projectile = (props) => {
   }
 
   const pauseGame = () => {
-    // console.log("PAUSE");
-    // console.log("countRef.current")
-    // console.log(countRef.current)
-
     isGameInProgress.current = false;
     updatedPostResume.current = false;
+    setDisplayPauseText(true)
 
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
-
 
     setMainState({
       stage1: false,
@@ -808,7 +852,8 @@ export const Stage_6_Projectile = (props) => {
       currentLetterPocket: uniqueLetterPocket,
       currentWordPlusSeven: wordPlusSeven.current,
       currentDisplayLetters: displayLetters,
-      currentLetter_countValue: countRef.current
+      currentLetter_countValue: countRef.current,
+      isGameInProgress: isGameInProgress.current
     })
 
     if (level.current >= 0) {
@@ -819,16 +864,16 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedLetterBlock.current = false;
       }
 
-      if (obstacle_0.current != null) {
-        obstacle_0.current.stop();
-        obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedObstacle_0.current = false;
+      if (obstacle_homing_missile.current != null) {
+        obstacle_homing_missile.current.stop();
+        obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedObstacle_homing_missile.current = false;
       }
 
-      if (obstacle_1.current != null) {
-        obstacle_1.current.stop();
-        obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedObstacle_1.current = false;
+      if (obstacle_Distributor.current != null) {
+        obstacle_Distributor.current.stop();
+        obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedObstacle_Distributor.current = false;
       }
 
       if (auxilliaryGreenHealth.current != null) {
@@ -837,10 +882,10 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
       }
     }
-    // if (level.current >= 1 && obstacle_1.current != null) {
-    //   obstacle_1.current.stop();
-    //   obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
-    //   hasUpdatedObstacle_1.current = false;
+    // if (level.current >= 1 && obstacle_Distributor.current != null) {
+    //   obstacle_Distributor.current.stop();
+    //   obstaclePosition_Distributor.setValue({ x: WidthRatio(370), y: 0 })
+    //   hasUpdatedObstacle_Distributor.current = false;
     // }
     // if (level.current >= 2 && obstacle_right_angle_0.current != null) {
     //   obstacle_right_angle_0.current.stop();
@@ -876,11 +921,16 @@ export const Stage_6_Projectile = (props) => {
     // console.log(mainState.current.currentLetter_countValue)
     // console.log("- - - - - -")
     setResumeSelected(true)
+    setDisplayPauseText(false)
 
     setTimeout(() => {
       setIsPaused(false)
       pauseTimeout.current = true;
       isGameInProgress.current = true;
+
+      setMainState({
+        isGameInProgress: isGameInProgress.current
+      })
 
       if (mainState.current.currentLevel >= 0) {
         letterAnimation();
@@ -911,6 +961,45 @@ export const Stage_6_Projectile = (props) => {
 
   }
 
+  const saveAndContinueLater = async () => {
+    await addSavedGame({
+      variables: {
+        userid: `${userByID?.user._id}`,
+        stage: '6',
+        score: `${mainState.current.currentScore}`,
+        level: `${mainState.current.currentLevel}`,
+        crashes: `${mainState.current.currentCrashes}`,
+        letterPocket: `${mainState.current.currentLetterPocket}`,
+        wordPlusSeven: `${mainState.current.currentWordPlusSeven}`,
+        displayLetters: `${mainState.current.currentDisplayLetters}`,
+        currentLetterCountValue: `${mainState.current.currentLetter_countValue}`
+      }
+    });
+    setMainState({
+      stage1: true,
+      stage2: false,
+      stage3: false,
+      stage4: false,
+      stage5: false,
+      stage6: false,
+      stage7: false,
+      stage8: false,
+      stage9: false,
+      stage10: false,
+      currentScore: 0,
+      currentLevel: 0,
+      currentCrashes: 0,
+      isGameInProgress: false
+    })
+    props.nav.dispatch(resetActionHome);
+    
+    setTimeout(() => {
+      setDisplayPauseText(!displayPauseText);
+      isGameInProgress.current = false;
+    }, 500)
+
+  };
+
   const insertToken = async () => {
 
     if (userByID?.user.tokens > 0) {
@@ -921,6 +1010,7 @@ export const Stage_6_Projectile = (props) => {
           amount: "0"
         }
       });
+
       setGameOverModalVisible(!gameOverModalVisible);
       setTimeout(() => {
         continueGame();
@@ -957,6 +1047,10 @@ export const Stage_6_Projectile = (props) => {
     hideCrashesUntilUpdate.current = false;
     isGameInProgress.current = true;
     setHasGameBeenStarted(true)
+
+    setMainState({
+      isGameInProgress: isGameInProgress.current
+    })
 
     if (mainState.current.currentLevel >= 0) {
       letterAnimation();
@@ -995,16 +1089,16 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedLetterBlock.current = false;
       }
 
-      if (obstacle_0.current != null) {
-        obstacle_0.current.stop();
-        obstaclePosition_0.setValue({ x: WidthRatio(500), y: -WidthRatio(100) })
-        hasUpdatedObstacle_0.current = false;
+      if (obstacle_homing_missile.current != null) {
+        obstacle_homing_missile.current.stop();
+        obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: -WidthRatio(100) })
+        hasUpdatedObstacle_homing_missile.current = false;
       }
 
-      if (obstacle_1.current != null) {
-        obstacle_1.current.stop();
-        obstaclePosition_1.setValue({ x: WidthRatio(500), y: -WidthRatio(100) })
-        hasUpdatedObstacle_1.current = false;
+      if (obstacle_Distributor.current != null) {
+        obstacle_Distributor.current.stop();
+        obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: -WidthRatio(100) })
+        hasUpdatedObstacle_Distributor.current = false;
       }
 
       if (auxilliaryGreenHealth.current != null) {
@@ -1013,7 +1107,7 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
       }
     }
-    
+
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
@@ -1111,8 +1205,10 @@ export const Stage_6_Projectile = (props) => {
           currentLetterPocket: input.letterPocket,
           currentWordPlusSeven: input.wordPlusSeven,
           currentDisplayLetters: input.displayLetters,
-          currentLetter_countValue: input.letter_countValue
+          currentLetter_countValue: input.letter_countValue,
+          isGameInProgress: isGameInProgress.current
         })
+
         await updateMaxScoreAndStage({
           variables: {
             maxstage: '1',
@@ -1157,6 +1253,7 @@ export const Stage_6_Projectile = (props) => {
           <>
             <TouchableOpacity
               onPress={() => { Generate() }}
+
               style={{
                 position: 'absolute',
                 zIndex: 15,
@@ -1329,8 +1426,8 @@ export const Stage_6_Projectile = (props) => {
             Styling.projectile_obstacle_block,
             {
               transform: [
-                { translateX: obstaclePosition_0.x },
-                { translateY: obstaclePosition_0.y }],
+                { translateX: obstaclePosition_homing_missile.x },
+                { translateY: obstaclePosition_homing_missile.y }],
 
               opacity: boxInterpolation_homing_missile,
             },
@@ -1347,8 +1444,8 @@ export const Stage_6_Projectile = (props) => {
             Styling.projectile_obstacle_block,
             {
               transform: [
-                { translateX: obstaclePosition_1.x },
-                { translateY: obstaclePosition_1.y }],
+                { translateX: obstaclePosition_Distributor.x },
+                { translateY: obstaclePosition_Distributor.y }],
             },
           ]}
         >
@@ -1474,6 +1571,47 @@ export const Stage_6_Projectile = (props) => {
             <Image source={require('../../../assets/skull_0.png')} style={{ height: WidthRatio(22), width: WidthRatio(22), opacity: 0.4 }} />
           </View>
         ))}
+
+        {/* GAME PAUSE MODAL */}
+        {displayPauseText &&
+          <View style={{
+            position: 'absolute',
+            zIndex: 25,
+            top: HeightRatio(125),
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            // flex: 1,
+            // width: '100%',
+            width: windowWidth,
+            alignSelf: 'center'
+          }}>
+            <Text style={{
+              color: 'white',
+              fontSize: HeightRatio(280),
+              fontWeight: 'bold',
+              // flexWrap: 'wrap',
+              alignSelf: 'center',
+              textAlign: 'center'
+            }}
+              allowFontScaling={false}
+            >PAUSE</Text>
+            <Text style={{
+              color: 'white',
+              fontSize: HeightRatio(50),
+              fontWeight: 'bold',
+              // flexWrap: 'wrap',
+              alignSelf: 'center',
+              textAlign: 'center'
+            }}
+              allowFontScaling={false}
+            >Save and continue later?</Text>
+            <TouchableOpacity
+              onPress={() => saveAndContinueLater()}
+              style={{ backgroundColor: '#03d81a', width: WidthRatio(50), borderRadius: HeightRatio(10), alignSelf: 'center', margin: HeightRatio(25) }}>
+              <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center', margin: HeightRatio(10) }}> Sure </Text>
+            </TouchableOpacity>
+          </View>
+        }
 
 
         {/* GAME OVER MODAL */}
@@ -1741,7 +1879,8 @@ export const Stage_6_Projectile = (props) => {
                   stage10: false,
                   currentScore: 0,
                   currentLevel: 0,
-                  currentCrashes: 0
+                  currentCrashes: 0, 
+                  isGameInProgress: false
                 })
                 setTimeout(() => {
                   setGameOverModalVisible(!gameOverModalVisible);

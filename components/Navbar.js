@@ -107,9 +107,6 @@ export const Navbar = (props) => {
             console.log("profile")
         }
 
-
-        // checkToken();
-
     }, [])
 
     if (localKeyMoment != mainState.current.initialKeyMoment) {
@@ -167,7 +164,12 @@ export const Navbar = (props) => {
                 >
                     {/* [[[HOME]]] */}
                     <TouchableOpacity
-                        onPress={() => { props.nav.dispatch(resetActionHome); }}
+                        onPress={() => { 
+                            props.nav.dispatch(resetActionHome); 
+                            setMainState({
+                                isGameInProgress: false
+                            })
+                        }}
                     >
                         <View
                             style={{
@@ -182,7 +184,12 @@ export const Navbar = (props) => {
 
                     {/* [[[GAME]]] */}
                     <TouchableOpacity
-                        onPress={() => { props.nav.dispatch(resetActionGame); }}
+                        onPress={() => { 
+                            props.nav.dispatch(resetActionGame); 
+                            setMainState({
+                                isGameInProgress: false
+                            })
+                        }}
                     >
                         <View
                             style={{
@@ -196,7 +203,12 @@ export const Navbar = (props) => {
                     </TouchableOpacity>
                     {/* [[[LEADER BOARD]]] */}
                     <TouchableOpacity
-                        onPress={() => { props.nav.dispatch(resetActionLeader); }}
+                        onPress={() => { 
+                            props.nav.dispatch(resetActionLeader); 
+                            setMainState({
+                                isGameInProgress: false
+                            })
+                        }}
                     >
                         <View
                             style={{
@@ -212,7 +224,12 @@ export const Navbar = (props) => {
                     {/* [[[PROFILE]]] */}
                     {isTokenValid ?
                         <TouchableOpacity
-                            onPress={() => { props.nav.dispatch(resetActionProfile); }}
+                            onPress={() => { 
+                                props.nav.dispatch(resetActionProfile); 
+                                setMainState({
+                                    isGameInProgress: false
+                                })
+                            }}
                         >
                             <View
                                 style={{

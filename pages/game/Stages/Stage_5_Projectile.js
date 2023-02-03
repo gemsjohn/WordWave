@@ -15,7 +15,7 @@ import {
 import { shuffle } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../../utils/queries';
-import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT } from '../../../utils/mutations';
+import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT, ADD_SAVED_GAME } from '../../../utils/mutations';
 import { MainStateContext } from '../../../App';
 import {
   isLetterBlockColliding,
@@ -58,6 +58,7 @@ export const Stage_5_Projectile = (props) => {
   // APOLLO MUTATIONS
   const [updateMaxScoreAndStage] = useMutation(UPDATE_MAX_SCORE_AND_STAGE);
   const [updateTokenCount] = useMutation(UPDATE_TOKEN_COUNT);
+  const [addSavedGame] = useMutation(ADD_SAVED_GAME);
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
@@ -284,6 +285,10 @@ export const Stage_5_Projectile = (props) => {
       // [GAME LEVEL CONTROL]
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
+          setMainState({
+            isGameInProgress: isGameInProgress.current
+          })
+
           console.log("#4 About to run animations.")
           console.log("LEVEL: " + level.current)
           updatedPostResume.current = true;
@@ -1223,6 +1228,10 @@ export const Stage_5_Projectile = (props) => {
       pauseTimeout.current = true;
       isGameInProgress.current = true;
 
+      setMainState({
+        isGameInProgress: isGameInProgress.current
+      })
+
       if (mainState.current.currentLevel >= 0) {
         letterAnimation();
         // runObstacleAnimation_0();
@@ -1248,6 +1257,44 @@ export const Stage_5_Projectile = (props) => {
     }, 500)
 
   }
+
+  const saveAndContinueLater = async () => {
+    await addSavedGame({
+      variables: {
+        userid: `${userByID?.user._id}`,
+        stage: '5',
+        score: `${mainState.current.currentScore}`,
+        level: `${mainState.current.currentLevel}`,
+        crashes: `${mainState.current.currentCrashes}`,
+        letterPocket: `${mainState.current.currentLetterPocket}`,
+        wordPlusSeven: `${mainState.current.currentWordPlusSeven}`,
+        displayLetters: `${mainState.current.currentDisplayLetters}`,
+        currentLetterCountValue: `${mainState.current.currentLetter_countValue}`
+      }
+    });
+
+    props.nav.dispatch(resetActionHome);
+    setMainState({
+      stage1: true,
+      stage2: false,
+      stage3: false,
+      stage4: false,
+      stage5: false,
+      stage6: false,
+      stage7: false,
+      stage8: false,
+      stage9: false,
+      stage10: false,
+      currentScore: 0,
+      currentLevel: 0,
+      currentCrashes: 0
+    })
+    setTimeout(() => {
+      setDisplayPauseText(!displayPauseText);
+      isGameInProgress.current = false;
+    }, 500)
+
+  };
 
   const insertToken = async () => {
 
@@ -1295,6 +1342,10 @@ export const Stage_5_Projectile = (props) => {
     hideCrashesUntilUpdate.current = false;
     isGameInProgress.current = true;
     setHasGameBeenStarted(true)
+
+    setMainState({
+      isGameInProgress: isGameInProgress.current
+    })
 
     if (mainState.current.currentLevel >= 0) {
       letterAnimation();
@@ -1487,7 +1538,8 @@ export const Stage_5_Projectile = (props) => {
           currentLetterPocket: input.letterPocket,
           currentWordPlusSeven: input.wordPlusSeven,
           currentDisplayLetters: input.displayLetters,
-          currentLetter_countValue: input.letter_countValue
+          currentLetter_countValue: input.letter_countValue,
+          isGameInProgress: isGameInProgress.current
         })
         await updateMaxScoreAndStage({
           variables: {
@@ -1969,6 +2021,48 @@ export const Stage_5_Projectile = (props) => {
             <Image source={require('../../../assets/skull_0.png')} style={{ height: WidthRatio(22), width: WidthRatio(22), opacity: 0.4 }} />
           </View>
         ))}
+        
+         {/* GAME PAUSE MODAL */}
+         {displayPauseText &&
+          <View style={{
+            position: 'absolute',
+            zIndex: 25,
+            top: HeightRatio(125),
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            // flex: 1,
+            // width: '100%',
+            width: windowWidth,
+            alignSelf: 'center'
+          }}>
+            <Text style={{
+              color: 'white',
+              fontSize: HeightRatio(280),
+              fontWeight: 'bold',
+              // flexWrap: 'wrap',
+              alignSelf: 'center',
+              textAlign: 'center'
+            }}
+              allowFontScaling={false}
+            >PAUSE</Text>
+            <Text style={{
+              color: 'white',
+              fontSize: HeightRatio(50),
+              fontWeight: 'bold',
+              // flexWrap: 'wrap',
+              alignSelf: 'center',
+              textAlign: 'center'
+            }}
+              allowFontScaling={false}
+            >Save and continue later?</Text>
+            <TouchableOpacity
+              onPress={() => saveAndContinueLater()}
+              style={{ backgroundColor: '#03d81a', width: WidthRatio(50), borderRadius: HeightRatio(10), alignSelf: 'center', margin: HeightRatio(25) }}>
+              <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center', margin: HeightRatio(10) }}> Sure </Text>
+            </TouchableOpacity>
+          </View>
+        }
+
 
         {/* GAME OVER MODAL */}
         {displayGameOverText &&

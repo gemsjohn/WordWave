@@ -39,11 +39,14 @@ import {
     Image,
     ActivityIndicator,
     UIManager,
+    Text,
+    TouchableOpacity
 } from 'react-native';
 
 export const GameScreen = ({ navigation }) => {
     const sharedStateRef = useRef({});
     const { mainState, setMainState } = useContext(MainStateContext);
+    const userID = useRef(null);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
     const [stage1, setStage1] = useState(false);
@@ -56,37 +59,22 @@ export const GameScreen = ({ navigation }) => {
     const [stage8, setStage8] = useState(false);
     const [stage9, setStage9] = useState(false);
     const [stage10, setStage10] = useState(false);
+    const [isGameInProgress, setIsGameInProgress] = useState(false);
+    const [displayOptionsToPlaySavedGame, setDisplayOptionsToPlaySavedGame] = useState(false);
 
-
-    const [userID, setUserID] = useState('');
-    const [authState, setAuthState] = useState(false);
-
-    // // REACT Navigation
-    // const resetActionGame = CommonActions.reset({
-    //     index: 1,
-    //     routes: [{ name: 'Game', params: {} }]
-    // });
+    const stage = useRef(null);
 
     // ADD_GAME
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-        variables: { id: userID }
+        variables: { id: userID.current }
     });
-    // console.log(userByID?.user)
-    const [addGame] = useMutation(ADD_GAME);
 
-    const CheckAuthState = async () => {
-        let value = await AsyncStorage.getItem('@authState')
-        if (value === 'true') {
-            setAuthState(true);
-        } else if (value === 'false') {
-            setAuthState(false);
-        }
-    }
+    useEffect(() => {
+        setTimeout(() => {
+            userID.current = mainState.current.userID;
+        }, 500)
 
-    const CurrentUser = async () => {
-        let value = await AsyncStorage.getItem('@userID', value);
-        setUserID(value);
-    }
+    }, [])
 
     setTimeout(() => {
         setLoadingComplete(true)
@@ -94,6 +82,7 @@ export const GameScreen = ({ navigation }) => {
 
     useLayoutEffect(() => {
         console.log("GAME - USE LAYOUT EFFECT ")
+        refetch();
         setMainState({
             stage1: null,
             stage2: null,
@@ -111,14 +100,15 @@ export const GameScreen = ({ navigation }) => {
             currentLetterPocket: [],
             currentWordPlusSeven: [],
             currentDisplayLetters: [],
-            currentLetter_countValue: 0
+            currentLetter_countValue: 0,
+            fromSavedGame: false
         })
+
+
     }, [])
 
 
     useEffect(() => {
-        CheckAuthState();
-        CurrentUser();
         // This is the effect that should be cleaned up when the component is unmounted
         const timeoutId = setTimeout(() => {
             console.log("MOUNTED")
@@ -169,10 +159,109 @@ export const GameScreen = ({ navigation }) => {
             if (mainState.current.stage10 != null) {
                 setStage10(mainState.current.stage10);
             }
+
+            setIsGameInProgress(mainState.current.isGameInProgress);
         }, 500)
 
 
     }, [])
+
+    useEffect(() => {
+        if (userByID?.user.saved.date != null) {
+            setDisplayOptionsToPlaySavedGame(true)
+            stage.current = parseInt(userByID?.user.saved.stage) - 1;
+
+        }
+    }, [userByID])
+
+    const handleContinueSavedGame = (stage) => {
+        console.log("handleContinueSavedGame")
+        let str_0 = `${userByID?.user.saved.letterPocket}`;
+        let arr_0 = str_0.split(",");
+
+        let str_1 = `${userByID?.user.saved.wordPlusSeven}`;
+        let arr_1 = str_1.split(",");
+
+        let str_2 = `${userByID?.user.saved.displayLetters}`;
+        let arr_2 = str_2.split(",");
+
+        console.log("arr_0 ")
+        console.log(arr_1)
+
+
+        setMainState({
+            fromSavedGame: true,
+            currentScore: parseInt(userByID?.user.saved.score),
+            currentLevel: parseInt(userByID?.user.saved.level),
+            currentCrashes: parseInt(userByID?.user.saved.crashes),
+            currentLetterPocket: arr_0,
+            currentWordPlusSeven: arr_1,
+            currentDisplayLetters: arr_2,
+            currentLetter_countValue: parseInt(userByID?.user.saved.currentLetterCountValue),
+        })
+
+        console.log("* * * * * ")
+        console.log(mainState.current.currentWordPlusSeven)
+        console.log("* * * * *")
+
+        switch (stage) {
+            case 1:
+                setStage1(true);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                break;
+            case 2:
+                setStage1(false);
+                setStage2(true);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                break;
+            case 3:
+                setStage1(false);
+                setStage2(false);
+                setStage3(true);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                break;
+            case 4:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(true);
+                setStage5(false);
+                setStage6(false);
+                break;
+            case 5:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(true);
+                setStage6(false);
+                break;
+            case 6:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(true);
+                break;
+            default:
+                break;
+        }
+
+        
+        setDisplayOptionsToPlaySavedGame(false)
+    };
+    
+
 
     return (
         <>
@@ -183,21 +272,48 @@ export const GameScreen = ({ navigation }) => {
                 />
                 {loadingComplete ?
                     <>
-                        <View style={{position: 'absolute', zIndex: 20}} >
-                            <CharacterAndJoystick />
-                        </View>
+                        {isGameInProgress &&
+                            <View style={{ position: 'absolute', zIndex: 20 }} >
+                                <CharacterAndJoystick />
+                            </View>
+                        }
 
                         {/* {retainUpgradeToSpecial_0 &&
                             <Special />
                         } */}
-                        <View style={{position: 'absolute', zIndex: 10}} >
-                            {stage1 && <Stage_1_Projectile nav={navigation} />}
-                            {stage2 && <Stage_2_Projectile nav={navigation} />}
-                            {stage3 && <Stage_3_Projectile nav={navigation} />}
-                            {stage4 && <Stage_4_Projectile nav={navigation} />}
-                            {stage5 && <Stage_5_Projectile nav={navigation} />}
-                            {stage6 && <Stage_6_Projectile nav={navigation} />}
-                        </View>
+                        {displayOptionsToPlaySavedGame ?
+                            <View style={{ flexDirection: 'column' }}>
+                                <Text style={{ color: 'white', fontSize: HeightRatio(50), textAlign: 'center' }}>
+                                    Would you like to continue your previously saved game?
+                                </Text>
+                                <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                    <TouchableOpacity
+                                        onPress={() => setDisplayOptionsToPlaySavedGame(false)}
+                                        style={{ backgroundColor: 'red', width: WidthRatio(30) }}>
+                                        <Text style={{ color: 'white', fontSize: HeightRatio(50), textAlign: 'center' }}>
+                                            No
+                                        </Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        onPress={() => handleContinueSavedGame(stage)}
+                                        style={{ backgroundColor: 'green', width: WidthRatio(30) }}>
+                                        <Text style={{ color: 'white', fontSize: HeightRatio(50), textAlign: 'center' }}>
+                                            Yes
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            :
+                            <View style={{ position: 'absolute', zIndex: 10 }} >
+                                {stage1 && <Stage_1_Projectile nav={navigation} />}
+                                {stage2 && <Stage_2_Projectile nav={navigation} />}
+                                {stage3 && <Stage_3_Projectile nav={navigation} />}
+                                {stage4 && <Stage_4_Projectile nav={navigation} />}
+                                {stage5 && <Stage_5_Projectile nav={navigation} />}
+                                {stage6 && <Stage_6_Projectile nav={navigation} />}
+                            </View>
+                        }
 
                     </>
                     :
@@ -217,7 +333,9 @@ export const GameScreen = ({ navigation }) => {
 
 
             </View>
-            <Navbar nav={navigation} auth={authState} position={'absolute'} from={'game'} />
+            {isGameInProgress &&
+                <Navbar nav={navigation} position={'absolute'} from={'game'} />
+            }
             <StatusBar
                 animated={true}
                 backgroundColor="transparent"
