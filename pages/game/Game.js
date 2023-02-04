@@ -53,8 +53,8 @@ export const GameScreen = ({ navigation }) => {
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
-    const [stage5, setStage5] = useState(false);
-    const [stage6, setStage6] = useState(true);
+    const [stage5, setStage5] = useState(true);
+    const [stage6, setStage6] = useState(false);
     const [stage7, setStage7] = useState(false);
     const [stage8, setStage8] = useState(false);
     const [stage9, setStage9] = useState(false);
@@ -175,8 +175,23 @@ export const GameScreen = ({ navigation }) => {
     const handleContinueSavedGame = (stage) => {
         console.log("Setup: #5 ")
 
+        console.log(`${userByID?.user.saved.letterPocket}`)
+
         let str_0 = `${userByID?.user.saved.letterPocket}`;
-        let arr_0 = str_0.split(",");
+        let arr_0;
+        if (str_0 == "") {
+            arr_0 = [];
+        } else {
+            arr_0 = str_0.split(",");
+        }
+
+        arr_0
+        let filteredArr_0 =  arr_0.filter(function(value) {
+        return value !== "";
+        });
+
+        console.log(filteredArr_0)
+
 
         let str_2 = `${userByID?.user.saved.displayLetters}`;
         let arr_2 = str_2.split(",");
@@ -187,7 +202,7 @@ export const GameScreen = ({ navigation }) => {
             currentScore: parseInt(userByID?.user.saved.score),
             currentLevel: parseInt(userByID?.user.saved.level),
             currentCrashes: parseInt(userByID?.user.saved.crashes),
-            currentLetterPocket: arr_0,
+            currentLetterPocket: filteredArr_0,
             currentDisplayLetters: arr_2,
             currentLetter_countValue: parseInt(userByID?.user.saved.currentLetterCountValue),
         })

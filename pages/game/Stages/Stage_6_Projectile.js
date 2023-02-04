@@ -86,7 +86,6 @@ export const Stage_6_Projectile = (props) => {
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   const [displayPauseText, setDisplayPauseText] = useState(false)
   const [openGate, setOpenGate] = useState(false);
-
   let timeoutCallGenerateID;
 
   // [LETTER ANIMATION] - - - - - 
@@ -265,7 +264,6 @@ export const Stage_6_Projectile = (props) => {
 
   useEffect(() => {
     
-
     if (wordPlusSeven.current.length > 0 && openGate) {
       console.log("Stage, #3 wordPlusSeven & openGate")
       hideCrashesUntilUpdate.current = false;
@@ -303,8 +301,6 @@ export const Stage_6_Projectile = (props) => {
   }, [wordPlusSeven.current, openGate])
 
   
-
-
   const letterAnimation = () => {
     if (isGameInProgress.current) {
       hasUpdatedLetterBlock.current = false;
@@ -485,7 +481,6 @@ export const Stage_6_Projectile = (props) => {
       return;
     }
   };
-
 
   const runObstacleAnimation_right_angle_0 = () => {
     if (isGameInProgress.current) {
@@ -794,7 +789,6 @@ export const Stage_6_Projectile = (props) => {
   }, [letterPocket])
 
   useEffect(() => {
-
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
@@ -859,7 +853,6 @@ export const Stage_6_Projectile = (props) => {
     })
 
     if (level.current >= 0) {
-
       if (animation.current != null) {
         animation.current.stop();
         letterPosition.setValue({ x: WidthRatio(500), y: 0 })
@@ -884,22 +877,6 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
       }
     }
-    // if (level.current >= 1 && obstacle_Distributor.current != null) {
-    //   obstacle_Distributor.current.stop();
-    //   obstaclePosition_Distributor.setValue({ x: WidthRatio(370), y: 0 })
-    //   hasUpdatedObstacle_Distributor.current = false;
-    // }
-    // if (level.current >= 2 && obstacle_right_angle_0.current != null) {
-    //   obstacle_right_angle_0.current.stop();
-    //   obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
-    //   hasUpdatedObstacle_right_angle_0.current = false;
-    // }
-
-    // if (level.current >= 3 && obstacle_right_angle_1.current != null) {
-    //   obstacle_right_angle_1.current.stop();
-    //   obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
-    //   hasUpdatedObstacle_right_angle_1.current = false;
-    // }
 
     setIsPaused(true)
     setResumeSelected(true)
@@ -942,17 +919,6 @@ export const Stage_6_Projectile = (props) => {
 
       }
 
-      // if (mainState.current.currentLevel >= 1) {
-      //   runObstacleAnimation_1();
-      // }
-
-      // if (mainState.current.currentLevel >= 2) {
-      //   runObstacleAnimation_right_angle_0();
-      // }
-
-      // if (mainState.current.currentLevel >= 3) {
-      //   runObstacleAnimation_right_angle_1();
-      // }
 
       setTimeout(() => {
         pauseTimeout.current = false;
@@ -976,6 +942,7 @@ export const Stage_6_Projectile = (props) => {
         currentLetterCountValue: `${mainState.current.currentLetter_countValue}`
       }
     });
+    // props.nav.dispatch(resetActionHome);
     setMainState({
       stage1: true,
       stage2: false,
@@ -1011,7 +978,6 @@ export const Stage_6_Projectile = (props) => {
           amount: "0"
         }
       });
-
       setGameOverModalVisible(!gameOverModalVisible);
       setTimeout(() => {
         continueGame();
@@ -1061,17 +1027,6 @@ export const Stage_6_Projectile = (props) => {
 
     }
 
-    // if (mainState.current.currentLevel >= 1) {
-    //   runObstacleAnimation_1();
-    // }
-
-    // if (mainState.current.currentLevel >= 2) {
-    //   runObstacleAnimation_right_angle_0();
-    // }
-
-    // if (mainState.current.currentLevel >= 3) {
-    //   runObstacleAnimation_right_angle_1();
-    // }
   }
 
   // [END GAME] 
@@ -1083,7 +1038,6 @@ export const Stage_6_Projectile = (props) => {
     isGameInProgress.current = false;
 
     if (level.current >= 0) {
-
       if (animation.current != null) {
         animation.current.stop();
         letterPosition.setValue({ x: WidthRatio(500), y: 0 })
@@ -1138,7 +1092,6 @@ export const Stage_6_Projectile = (props) => {
             stage2: false,
             stage3: false,
             stage4: false,
-            stage4: false,
             stage5: false,
             stage6: false,
             stage7: true,
@@ -1157,11 +1110,6 @@ export const Stage_6_Projectile = (props) => {
 
         return;
       } else {
-        console.log("* * * * * * * * ")
-        console.log("input.level")
-        console.log(input.level)
-        console.log("* * * * * * * * ")
-
         let localLevel = input.level + 1;
         level.current = localLevel;
 
@@ -1216,10 +1164,9 @@ export const Stage_6_Projectile = (props) => {
           currentLetter_countValue: input.letter_countValue,
           isGameInProgress: isGameInProgress.current
         })
-
         await updateMaxScoreAndStage({
           variables: {
-            maxstage: '1',
+            maxstage: '6',
             highscore: `${input.score}`
           }
         });
@@ -1278,7 +1225,6 @@ export const Stage_6_Projectile = (props) => {
           </>
         }
 
-        {hasGenerateBeenSelected &&
           <>
           {/* [PAUSE / RESUME] */}
           {isPaused && !resumeSelected ?
@@ -1406,7 +1352,6 @@ export const Stage_6_Projectile = (props) => {
             </>
           }
         </>
-        }
 
         {/* Letter Blocks */}
         <Animated.View
@@ -1758,7 +1703,7 @@ export const Stage_6_Projectile = (props) => {
                       numberOfLines={1}
                       ellipsizeMode='tail'
                     >
-                      1
+                      6
                     </Text>
                   </View>
 
