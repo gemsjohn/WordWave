@@ -59,7 +59,7 @@ export const HomeScreen = ({ navigation }) => {
 
     async function getValueFor(key) {
         let result = await SecureStore.getItemAsync(key);
-        if (result && authState) {
+        if (result && authState.current) {
             setDisplayUsername(true)
         } else if (!result && !authState.current) {
             setDisplaySignUpModal(true)
@@ -73,6 +73,7 @@ export const HomeScreen = ({ navigation }) => {
         setTimeout(() => {
             authState.current = mainState.current.authState
             userID.current = mainState.current.userID;
+            console.log(mainState.current.userID)
             getValueFor('cosmicKey')
             setTimeout(() => {
                 setLoading(false)

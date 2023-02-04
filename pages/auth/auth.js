@@ -25,6 +25,12 @@ async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
 
+async function deleteKey(key) {
+  // console.log("** DELETE **")
+  // console.log(key)
+  await SecureStore.deleteItemAsync(key);
+}
+
 export const Auth = ({ navigation }) => {
   const { mainState, setMainState } = useContext(MainStateContext);
   // const [authState, setAuthState] = useState(false);
@@ -125,6 +131,8 @@ export const Auth = ({ navigation }) => {
 
       if (data.login.token) {
         console.log("Login Success")
+        deleteKey('cosmicKey');
+
         const decoded = jwtDecode(data.login.token)
         setDisplayLoading(false);
 

@@ -109,7 +109,7 @@ export const Navbar = (props) => {
 
     }, [])
 
-    if (localKeyMoment != mainState.current.initialKeyMoment) {
+    if (localKeyMoment != mainState.current.initialKeyMoment && mainState.current.bearerToken != null) {
         checkToken();
     }
 

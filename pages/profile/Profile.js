@@ -235,6 +235,8 @@ export const ProfileScreen = ({ navigation }) => {
 
                                             <TouchableOpacity
                                                 onPress={() => {
+                                                    deleteKey('cosmicKey');
+
                                                     setMainState({
                                                         bearerToken: null,
                                                         userID: null,

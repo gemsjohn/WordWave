@@ -31,6 +31,8 @@ export const KeyScreen = ({ navigation }) => {
         let result = await SecureStore.getItemAsync(key);
         if (result) {
             setKey(result.split(''));
+            setPageLoadComplete(true)
+
         } else {
             navigation.dispatch(resetActionHome);
         }
@@ -39,11 +41,11 @@ export const KeyScreen = ({ navigation }) => {
     useEffect(() => {
         getValueFor('cosmicKey')
         console.log("#1")
-        setTimeout(() => {
-            console.log("#2")
+        // setTimeout(() => {
+        //     console.log("#2")
 
-            setPageLoadComplete(true)
-        }, 1000)
+        //     setPageLoadComplete(true)
+        // }, 1000)
     }, [])
 
     function areArraysEqual(arr1, arr2) {
