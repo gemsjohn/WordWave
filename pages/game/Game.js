@@ -163,7 +163,7 @@ export const GameScreen = ({ navigation }) => {
             console.log("MOUNTED")
             console.log("Setup: #4 ")
             setLoadingComplete(true)
-            
+
         }, 1000);
 
         // Return a function that cleans up the effect
@@ -172,7 +172,7 @@ export const GameScreen = ({ navigation }) => {
             clearTimeout(timeoutId);
             setLoadingComplete(false)
         };
-    }, []); 
+    }, []);
 
     const handleContinueSavedGame = (input) => {
         console.log("Setup: #5 ")
@@ -188,8 +188,8 @@ export const GameScreen = ({ navigation }) => {
         }
 
         arr_0
-        let filteredArr_0 =  arr_0.filter(function(value) {
-        return value !== "";
+        let filteredArr_0 = arr_0.filter(function (value) {
+            return value !== "";
         });
 
         console.log(filteredArr_0)
@@ -262,7 +262,7 @@ export const GameScreen = ({ navigation }) => {
                 break;
         }
 
-        
+
         setDisplayOptionsToPlaySavedGame(false)
     };
 
@@ -275,7 +275,7 @@ export const GameScreen = ({ navigation }) => {
         console.log(stage6)
 
     }, [stage1, stage2, stage3, stage4, stage5, stage6])
-    
+
 
 
     return (
@@ -297,28 +297,79 @@ export const GameScreen = ({ navigation }) => {
                             <Special />
                         } */}
                         {displayOptionsToPlaySavedGame ?
-                            <View style={{ flexDirection: 'column' }}>
-                                <Text style={{ color: 'white', fontSize: HeightRatio(50), textAlign: 'center' }}>
-                                    Would you like to continue your previously saved game?
-                                </Text>
-                                <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                    <TouchableOpacity
-                                        onPress={() => setDisplayOptionsToPlaySavedGame(false)}
-                                        style={{ backgroundColor: 'red', width: WidthRatio(30) }}>
-                                        <Text style={{ color: 'white', fontSize: HeightRatio(50), textAlign: 'center' }}>
-                                            No
-                                        </Text>
-                                    </TouchableOpacity>
+                            <>
+                                <View style={{
+                                    position: 'absolute',
+                                    zIndex: 25,
+                                    top: HeightRatio(125),
+                                    left: 0,
+                                    height: HeightRatio(550),
+                                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                                    // flex: 1,
+                                    // width: '100%',
+                                    width: windowWidth,
+                                    alignSelf: 'center'
+                                }}>
+                                    <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                        <View>
 
-                                    <TouchableOpacity
-                                        onPress={() => handleContinueSavedGame(stage.current)}
-                                        style={{ backgroundColor: 'green', width: WidthRatio(30) }}>
-                                        <Text style={{ color: 'white', fontSize: HeightRatio(50), textAlign: 'center' }}>
-                                            Yes
-                                        </Text>
-                                    </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => setDisplayOptionsToPlaySavedGame(false)}
+                                                style={{
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                                    width: WidthRatio(150),
+                                                    height: HeightRatio(500),
+                                                    borderRadius: HeightRatio(10),
+                                                    borderBottomLeftRadius: HeightRatio(200),
+                                                    borderTopLeftRadius: HeightRatio(200),
+                                                    alignSelf: 'center',
+                                                    justifyContent: 'center',
+                                                    margin: HeightRatio(25)
+                                                }}>
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(100),
+                                                    fontWeight: 'bold',
+                                                    alignSelf: 'center',
+                                                    textAlign: 'center'
+                                                }}
+                                                    allowFontScaling={false}
+                                                >
+                                                    New Game
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+
+                                        <View>
+                                            <TouchableOpacity
+                                                onPress={() => handleContinueSavedGame(stage.current)}
+                                                style={{
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                                    height: HeightRatio(500),
+                                                    width: WidthRatio(150),
+                                                    borderRadius: HeightRatio(10),
+                                                    borderBottomRightRadius: HeightRatio(200),
+                                                    borderTopRightRadius: HeightRatio(200),
+                                                    alignSelf: 'center',
+                                                    justifyContent: 'center',
+                                                    margin: HeightRatio(25)
+                                                }}>
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(100),
+                                                    fontWeight: 'bold',
+                                                    alignSelf: 'center',
+                                                    textAlign: 'center'
+                                                }}
+                                                    allowFontScaling={false}
+                                                >
+                                                    Continue
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
+                            </>
                             :
                             <View style={{ position: 'absolute', zIndex: 10 }} >
                                 {stage1 && <Stage_1_Projectile nav={navigation} />}
