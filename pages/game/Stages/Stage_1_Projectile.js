@@ -277,6 +277,10 @@ export const Stage_1_Projectile = (props) => {
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     setPrevWrongElements(wrongElements.length)
 
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+    setPrevSimilarElements(similarElements.length)
+
     wordPlusSeven.current = scambledCombined; // Must be last
     setOpenGate(true)
   }
@@ -293,7 +297,8 @@ export const Stage_1_Projectile = (props) => {
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
           setMainState({
-            isGameInProgress: isGameInProgress.current
+            isGameInProgress: isGameInProgress.current,
+            gameOverScreen: false
           })
 
           updatedPostResume.current = true;
@@ -1126,7 +1131,9 @@ export const Stage_1_Projectile = (props) => {
             currentLetterPocket: [],
             currentWordPlusSeven: [],
             currentDisplayLetters: [],
-            currentLetter_countValue: 0
+            currentLetter_countValue: 0,
+            gameOverScreen: false
+
           })
         }, 1700)
 
@@ -1184,7 +1191,8 @@ export const Stage_1_Projectile = (props) => {
           currentWordPlusSeven: input.wordPlusSeven,
           currentDisplayLetters: input.displayLetters,
           currentLetter_countValue: input.letter_countValue,
-          isGameInProgress: isGameInProgress.current
+          isGameInProgress: isGameInProgress.current,
+          gameOverScreen: true
         })
         await updateMaxScoreAndStage({
           variables: {

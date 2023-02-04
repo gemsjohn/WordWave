@@ -187,8 +187,11 @@ export const Stage_2_Projectile = (props) => {
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
-    setMainState({ upgradeToSpecial_0: false })
-    setMainState({ deployUpgradeToSpecialAnimation: false })
+    setMainState({ 
+      upgradeToSpecial_0: false, 
+      deployUpgradeToSpecialAnimation: false, 
+      gameOverScreen: false 
+    })
 
     userID.current = mainState.current.userID;
   }, [])
@@ -295,6 +298,11 @@ export const Stage_2_Projectile = (props) => {
 
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     setPrevWrongElements(wrongElements.length)
+    
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+    setPrevSimilarElements(similarElements.length)
+
 
     wordPlusSeven.current = scambledCombined; // Must be last
     setOpenGate(true)
@@ -1014,6 +1022,7 @@ export const Stage_2_Projectile = (props) => {
     const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     if (wrongElements.length > prevWrongElements) {
+      console.log("#1 - - - - - - - - ")
       crashes.current += 1;
       score.current = score.current - 25;
       flashOouchOnCrash.current = true;
@@ -1023,6 +1032,7 @@ export const Stage_2_Projectile = (props) => {
     }
 
     if (similarElements.length > prevSimilarElements) {
+      console.log("#2 - - - - - - - - ")
       score.current = score.current + 100;
       scoreFlash_100.current = true;
     }
@@ -1414,7 +1424,9 @@ export const Stage_2_Projectile = (props) => {
             currentLetterPocket: [],
             currentWordPlusSeven: [],
             currentDisplayLetters: [],
-            currentLetter_countValue: 0
+            currentLetter_countValue: 0,
+            gameOverScreen: false
+
           })
         }, 1700)
 
@@ -1472,7 +1484,8 @@ export const Stage_2_Projectile = (props) => {
           currentWordPlusSeven: input.wordPlusSeven,
           currentDisplayLetters: input.displayLetters,
           currentLetter_countValue: input.letter_countValue,
-          isGameInProgress: isGameInProgress.current
+          isGameInProgress: isGameInProgress.current,
+          gameOverScreen: true
         })
         await updateMaxScoreAndStage({
           variables: {

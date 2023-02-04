@@ -61,6 +61,7 @@ export const GameScreen = ({ navigation }) => {
     const [stage10, setStage10] = useState(false);
     const [isGameInProgress, setIsGameInProgress] = useState(false);
     const [displayOptionsToPlaySavedGame, setDisplayOptionsToPlaySavedGame] = useState(false);
+    const [gameOverScreen, setGameOverScreen] = useState(false);
 
     const stage = useRef(null);
 
@@ -92,7 +93,8 @@ export const GameScreen = ({ navigation }) => {
             currentWordPlusSeven: [],
             currentDisplayLetters: [],
             currentLetter_countValue: 0,
-            fromSavedGame: false
+            fromSavedGame: false,
+            gameOverScreen: false
         })
 
 
@@ -137,6 +139,7 @@ export const GameScreen = ({ navigation }) => {
             }
 
             setIsGameInProgress(mainState.current.isGameInProgress);
+            setGameOverScreen(mainState.current.gameOverScreen)
         }, 500)
 
 
@@ -399,9 +402,9 @@ export const GameScreen = ({ navigation }) => {
 
 
             </View>
-            {/* {isGameInProgress && */}
+            {!gameOverScreen &&
                 <Navbar nav={navigation} position={'absolute'} from={'game'} />
-            {/* } */}
+            }
             <StatusBar
                 animated={true}
                 backgroundColor="transparent"
