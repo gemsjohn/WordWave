@@ -156,7 +156,6 @@ export const ProfileScreen = ({ navigation }) => {
                                             <View style={{ alignSelf: 'center', marginBottom: 20 }}>
                                                 <UserDetails nav={navigation} />
                                             </View>
-
                                             <View style={Styling.profileDivisionLine}></View>
 
                                             {/* [[[SAVED GAME DETAILS]]] */}
@@ -172,27 +171,35 @@ export const ProfileScreen = ({ navigation }) => {
                                                     Saved Game
                                                 </Text>
                                             </View>
-                                            <View style={{
-                                                alignSelf: 'center',
-                                                marginBottom: 20,
-                                                width: WidthRatio(160),
-                                                // backgroundColor: 'red',
-                                                border: 'solid',
-                                                borderColor: 'white',
-                                                borderTopWidth: 1,
-                                                borderLeftWidth: 1,
-                                                borderBottomWidth: 1,
-                                                borderBottomLeftRadius: HeightRatio(30),
-                                                padding: HeightRatio(15),
-                                                width: WidthRatio(160),
-                                                flexDirection: 'column',
-                                                margin: HeightRatio(20),
-                                                backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                                                borderTopLeftRadius: HeightRatio(20),
-                                                alignSelf: 'center'
-                                            }}>
-                                                <SavedGame nav={navigation} />
-                                            </View>
+                                            {userByID?.user.saved != null && userByID?.user.saved.date != null ?
+                                                <View style={{
+                                                    alignSelf: 'center',
+                                                    marginBottom: 20,
+                                                    width: WidthRatio(160),
+                                                    // backgroundColor: 'red',
+                                                    border: 'solid',
+                                                    borderColor: 'white',
+                                                    borderTopWidth: 1,
+                                                    borderLeftWidth: 1,
+                                                    borderBottomWidth: 1,
+                                                    borderBottomLeftRadius: HeightRatio(30),
+                                                    padding: HeightRatio(15),
+                                                    width: WidthRatio(160),
+                                                    flexDirection: 'column',
+                                                    margin: HeightRatio(20),
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                                                    borderTopLeftRadius: HeightRatio(20),
+                                                    alignSelf: 'center'
+                                                }}>
+                                                    <SavedGame nav={navigation} />
+                                                </View>
+                                                :
+                                                <View style={{alignSelf: 'center', marginBottom: HeightRatio(50)}}>
+                                                    <Text style={{color: 'white', fontSize: HeightRatio(50)}}>
+                                                        None
+                                                    </Text>
+                                                </View>
+                                            }
 
                                             <View style={Styling.profileDivisionLine}></View>
 

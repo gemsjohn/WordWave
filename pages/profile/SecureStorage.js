@@ -60,9 +60,9 @@ export const SecureStorage = () => {
       setCount(0)
       setDisplayKeycode(false)
       setDisplaySetCode(true)
-      setTimeout(() => {
-        setDisplaySetCode(false)
-      }, 5000);
+      // setTimeout(() => {
+      //   setDisplaySetCode(false)
+      // }, 5000);
     } else {
       setWarning(true)
       setTimeout(() => {
@@ -87,14 +87,14 @@ export const SecureStorage = () => {
 
   return (
     <>
-
+      {!displaySetCode ?
       <View style={{ marginTop: HeightRatio(20), borderRadius: 40 }}>
         <Text
           style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center', margin: HeightRatio(30) }}
           allowFontScaling={false}>
           Set a Keycode for easy login!
         </Text>
-        {displaySetCode &&
+        {/* {displaySetCode &&
           <>
             <Text
               style={{ color: '#ffff00', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', margin: 10 }}
@@ -107,7 +107,7 @@ export const SecureStorage = () => {
               Saved!
             </Text>
           </>
-        }
+        } */}
         <>
           <View style={{ marginTop: HeightRatio(30), flexDirection: 'row', alignSelf: 'center' }}>
             {count > 0 ?
@@ -311,6 +311,13 @@ export const SecureStorage = () => {
           </View>
         </>
       </View>
+      :
+      <View style={{alignSelf: 'center'}}>
+        <Text style={{fontSize: HeightRatio(200), color: 'white'}}>
+        &nbsp; Saved &nbsp;
+        </Text>
+      </View>
+      }
     </>
 
   );
