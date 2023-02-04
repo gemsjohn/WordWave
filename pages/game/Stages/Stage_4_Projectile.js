@@ -271,8 +271,14 @@ export const Stage_4_Projectile = (props) => {
     setDisplayPlaybutton(false)
 
     setRandomWord(displayLetters.join(""));
-    console.log(displayLetters.join(""))
     setDisplayLetters(displayLetters)
+
+    let savedWord = displayLetters.join("");
+    let letters = savedWord.split('');
+
+
+    const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+    setPrevWrongElements(wrongElements.length)
 
     wordPlusSeven.current = scambledCombined; // Must be last
     setOpenGate(true)
@@ -1124,14 +1130,6 @@ export const Stage_4_Projectile = (props) => {
         flashOouchOnCrash.current = false;
       }, 500)
     }
-
-    console.log(" + + + + + + + + + + + ")
-    console.log(letterPocket)
-    console.log(similarElements)
-    console.log(uniqueLetters)
-    console.log(continuousEndGameCall)
-    console.log(isGameInProgress.current)
-    console.log(" + + + + + + + + + + + ")
 
     if (similarElements.length > prevSimilarElements) {
       score.current += 100;

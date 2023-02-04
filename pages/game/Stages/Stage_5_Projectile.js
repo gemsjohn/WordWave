@@ -303,11 +303,8 @@ export const Stage_5_Projectile = (props) => {
       setDisplayPlaybutton(false)
 
       setRandomWord(displayLetters.join(""));
-      console.log(displayLetters.join(""))
       setDisplayLetters(displayLetters)
 
-      console.log(displayLetters)
-      
       let savedWord = displayLetters.join("");
       let letters = savedWord.split('');
 
@@ -324,7 +321,6 @@ export const Stage_5_Projectile = (props) => {
 
     if (wordPlusSeven.current.length > 0 && openGate) {
       console.log("Stage, #3 wordPlusSeven & openGate")
-    console.log(letterPocket)
       hideCrashesUntilUpdate.current = false;
       isGameInProgress.current = true;
 
@@ -1090,8 +1086,6 @@ export const Stage_5_Projectile = (props) => {
           flashOouchOnCrash.current = false;
         }, 500)
       }
-
-      
 
       if (similarElements.length > prevSimilarElements) {
         console.log("Stage, Similar Element")
