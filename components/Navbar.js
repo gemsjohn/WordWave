@@ -144,7 +144,7 @@ export const Navbar = (props) => {
                             style={{ color: 'white', fontSize: HeightRatio(20), fontWeight: 'bold', alignSelf: 'center' }}
                             allowFontScaling={false}
                         >
-                            Menu
+                            Exit
                         </Text>
                     </TouchableOpacity>
                 </View>

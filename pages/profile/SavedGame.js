@@ -19,7 +19,12 @@ import {
     DELETE_USER
 } from '../../utils/mutations';
 
-export const SavedGame = () => {
+const resetActionGame = CommonActions.reset({
+    index: 1,
+    routes: [{ name: 'Game', params: {} }]
+});
+
+export const SavedGame = (props) => {
     const { mainState, setMainState } = useContext(MainStateContext);
     const [displayLetters, setDisplayLetters] = useState([])
 
@@ -47,44 +52,79 @@ export const SavedGame = () => {
 
 
     return (
-        <View style={{ alignSelf: 'center', backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(300), width: HeightRatio(450) }}>
-
-
-            {displayLetters.map((l, i) => (
-                <View style={{
-                    width: WidthRatio(14),
-                    position: 'absolute',
-                    top: 10,
-                    left: ((((displayLetters.length * WidthRatio(16)) / windowWidth) * 100) + (i * WidthRatio(16))),
-                    height: WidthRatio(14),
-                    borderRadius: HeightRatio(20),
-                    backgroundColor: 'rgba(255, 255, 255, 0.65)',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-                    key={i}
-                >
-                    <Text style={{...Styling.projectile_random_word_letter, fontSize: HeightRatio(35)}} allowFontScaling={false}>{l.toUpperCase()}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{
+                // alignSelf: 'center', 
+                // height: HeightRatio(300), 
+                // width: HeightRatio(450) 
+            }}>
+                <View style={{ flexDirection: 'row' }}>
+                    {displayLetters.map((l, i) => (
+                        <View style={{
+                            width: WidthRatio(15),
+                            // position: 'absolute',
+                            // top: 10,
+                            left: ((i * WidthRatio(2))),
+                            height: WidthRatio(15),
+                            borderRadius: HeightRatio(20),
+                            backgroundColor: 'rgba(255, 255, 255, 0.65)',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            alignSelf: 'center'
+                        }}
+                            key={i}
+                        >
+                            <Text style={{ ...Styling.projectile_random_word_letter, fontSize: HeightRatio(35) }} allowFontScaling={false}>{l.toUpperCase()}</Text>
+                        </View>
+                    ))}
                 </View>
-            ))}
-            <View style={{position: 'absolute', top: WidthRatio(18), left: WidthRatio(10), marginTop: WidthRatio(4)}}>
-                <Text style={{ color: 'white', fontSize: 20, backgroundColor: 'rgba(255, 255, 255, 0.25)', width: ((((displayLetters.length * WidthRatio(16)) / windowWidth) * 100) + (displayLetters.length * WidthRatio(16))) }}>
-                    Stage: {userByID?.user.saved.stage}
-                </Text>
-                <Text style={{ color: 'white', fontSize: 20, backgroundColor: 'rgba(0, 0, 0, 0.25)', width: ((((displayLetters.length * WidthRatio(16)) / windowWidth) * 100) + (displayLetters.length * WidthRatio(16))) }}>
-                    Level: {userByID?.user.saved.level}
-                </Text>
-                <Text style={{ color: 'white', fontSize: 20, backgroundColor: 'rgba(255, 255, 255, 0.25)', width: ((((displayLetters.length * WidthRatio(16)) / windowWidth) * 100) + (displayLetters.length * WidthRatio(16))) }}>
-                    Score: {userByID?.user.saved.score}
-                </Text>
-                <TouchableOpacity
-                    onPress={() => console.log("Play Saved Game")}
-                    style={{backgroundColor: 'blue', width: WidthRatio(40), alignSelf: 'center', borderRadius: HeightRatio(20), padding: HeightRatio(20), marginTop: HeightRatio(10)}}>
-                        <Text style={{color: 'white', fontSize: 20, textAlign: 'center'}}>
-                            Play 
-                        </Text>
-                    </TouchableOpacity>
+
+                <View style={{ flexDirection: 'column' }}>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: HeightRatio(50),
+                        margin: HeightRatio(10),
+                    }}>
+                        Stage: {userByID?.user.saved.stage}
+                    </Text>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: HeightRatio(50),
+                        margin: HeightRatio(10)
+                    }}>
+                        Level: {userByID?.user.saved.level}
+                    </Text>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: HeightRatio(50),
+                        margin: HeightRatio(10)
+                    }}>
+                        Stage: {userByID?.user.saved.stage}
+                    </Text>
+                </View>
+
             </View>
+
+            <TouchableOpacity
+                onPress={() => {
+                    props.nav.dispatch(resetActionGame);
+                    setMainState({
+                        isGameInProgress: false
+                    })
+                }}
+                style={{
+                    alignSelf: 'center',
+                    height: HeightRatio(200),
+                    width: HeightRatio(200),
+                    backgroundColor: '#35faa9',
+                    borderRadius: HeightRatio(50),
+                    justifyContent: 'center'
+                }}
+            >
+                <Text style={{ color: 'black', fontSize: HeightRatio(50), alignSelf: 'center' }}>
+                    PLAY &nbsp;
+                </Text>
+            </TouchableOpacity>
         </View>
     )
 }

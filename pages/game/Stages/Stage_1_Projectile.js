@@ -1484,7 +1484,6 @@ export const Stage_1_Projectile = (props) => {
               <View style={{
                 width: WidthRatio(28),
                 position: 'absolute',
-                zIndex: 15,
                 top: 10,
                 left: ((((displayLetters.length * WidthRatio(30)) / windowWidth) * 100) + (i * WidthRatio(30))),
                 height: WidthRatio(28),

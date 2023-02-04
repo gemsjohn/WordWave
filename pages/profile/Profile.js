@@ -25,6 +25,7 @@ import {
     faSolid,
     faFlagCheckered,
     faSliders,
+    faGamepad,
 } from '@fortawesome/free-solid-svg-icons'
 import { SecureStorage } from './SecureStorage';
 
@@ -101,44 +102,44 @@ export const ProfileScreen = ({ navigation }) => {
                                 {mainState.current.authState &&
                                     <>
                                         <View style={{}}>
-                                        {displayUsername &&
-                                            <>
-                                                <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{
-                                                        color: 'white',
-                                                        fontSize: HeightRatio(60),
-                                                        fontWeight: 'bold',
-                                                        alignSelf: 'center',
-                                                        margin: HeightRatio(20)
-                                                    }}
-                                                    allowFontScaling={false}>
-                                                        {userByID?.user.username}
-                                                    </Text>
-                                                    <Text style={{
-                                                        color: 'white',
-                                                        fontSize: HeightRatio(40),
-                                                        fontWeight: 'bold',
-                                                        alignSelf: 'center'
+                                            {displayUsername &&
+                                                <>
+                                                    <View style={{ flexDirection: 'column' }}>
+                                                        <Text style={{
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(60),
+                                                            fontWeight: 'bold',
+                                                            alignSelf: 'center',
+                                                            margin: HeightRatio(20)
+                                                        }}
+                                                            allowFontScaling={false}>
+                                                            {userByID?.user.username}
+                                                        </Text>
+                                                        <Text style={{
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(40),
+                                                            fontWeight: 'bold',
+                                                            alignSelf: 'center'
 
-                                                    }}
-                                                    allowFontScaling={false}>
-                                                        Tokens Remaining: {userByID?.user.tokens}
-                                                    </Text>
-                                                    <Text style={{
-                                                        color: 'white',
-                                                        fontSize: HeightRatio(40),
-                                                        fontWeight: 'bold',
-                                                        alignSelf: 'center',
-                                                        margin: HeightRatio(20)
+                                                        }}
+                                                            allowFontScaling={false}>
+                                                            Tokens Remaining: {userByID?.user.tokens}
+                                                        </Text>
+                                                        <Text style={{
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(40),
+                                                            fontWeight: 'bold',
+                                                            alignSelf: 'center',
+                                                            margin: HeightRatio(20)
 
-                                                    }}
-                                                    allowFontScaling={false}>
-                                                        Your High Score: {userByID?.user.highscore}
-                                                    </Text>
-                                                </View>
-                                                <View style={Styling.profileDivisionLine}></View>
-                                            </>
-                                        }
+                                                        }}
+                                                            allowFontScaling={false}>
+                                                            Your High Score: {userByID?.user.highscore}
+                                                        </Text>
+                                                    </View>
+                                                    <View style={Styling.profileDivisionLine}></View>
+                                                </>
+                                            }
                                             {/* [[[USER DETAILS]]] */}
                                             <View
                                                 style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}
@@ -163,7 +164,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                 style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}
                                             >
                                                 <FontAwesomeIcon
-                                                    icon={faSolid, faSliders}
+                                                    icon={faSolid, faGamepad}
                                                     style={{ ...Styling.modalFontAwesomeIcons, color: 'white' }}
                                                     size={30}
                                                 />
@@ -171,7 +172,25 @@ export const ProfileScreen = ({ navigation }) => {
                                                     Saved Game
                                                 </Text>
                                             </View>
-                                            <View style={{ alignSelf: 'center', marginBottom: 20 }}>
+                                            <View style={{
+                                                alignSelf: 'center',
+                                                marginBottom: 20,
+                                                width: WidthRatio(160),
+                                                // backgroundColor: 'red',
+                                                border: 'solid',
+                                                borderColor: 'white',
+                                                borderTopWidth: 1,
+                                                borderLeftWidth: 1,
+                                                borderBottomWidth: 1,
+                                                borderBottomLeftRadius: HeightRatio(30),
+                                                padding: HeightRatio(15),
+                                                width: WidthRatio(160),
+                                                flexDirection: 'column',
+                                                margin: HeightRatio(20),
+                                                backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                                                borderTopLeftRadius: HeightRatio(20),
+                                                alignSelf: 'center'
+                                            }}>
                                                 <SavedGame nav={navigation} />
                                             </View>
 

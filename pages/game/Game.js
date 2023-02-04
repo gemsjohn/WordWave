@@ -399,9 +399,9 @@ export const GameScreen = ({ navigation }) => {
 
 
             </View>
-            {isGameInProgress &&
+            {/* {isGameInProgress && */}
                 <Navbar nav={navigation} position={'absolute'} from={'game'} />
-            }
+            {/* } */}
             <StatusBar
                 animated={true}
                 backgroundColor="transparent"
