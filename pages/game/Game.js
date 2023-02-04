@@ -49,11 +49,11 @@ export const GameScreen = ({ navigation }) => {
     const userID = useRef(null);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(false);
+    const [stage1, setStage1] = useState(true);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
-    const [stage5, setStage5] = useState(true);
+    const [stage5, setStage5] = useState(false);
     const [stage6, setStage6] = useState(false);
     const [stage7, setStage7] = useState(false);
     const [stage8, setStage8] = useState(false);
@@ -148,9 +148,11 @@ export const GameScreen = ({ navigation }) => {
 
         if (userByID?.user.saved.date != null) {
             setDisplayOptionsToPlaySavedGame(true)
-            stage.current = parseInt(userByID?.user.saved.stage) - 1;
+            stage.current = parseInt(userByID?.user.saved.stage);
             console.log(userByID?.user.saved)
 
+        } else {
+            setDisplayOptionsToPlaySavedGame(false)
         }
     }, [userByID])
 
@@ -172,10 +174,10 @@ export const GameScreen = ({ navigation }) => {
         };
     }, []); 
 
-    const handleContinueSavedGame = (stage) => {
+    const handleContinueSavedGame = (input) => {
         console.log("Setup: #5 ")
 
-        console.log(`${userByID?.user.saved.letterPocket}`)
+        console.log(input)
 
         let str_0 = `${userByID?.user.saved.letterPocket}`;
         let arr_0;
@@ -207,7 +209,7 @@ export const GameScreen = ({ navigation }) => {
             currentLetter_countValue: parseInt(userByID?.user.saved.currentLetterCountValue),
         })
 
-        switch (stage) {
+        switch (input) {
             case 1:
                 setStage1(true);
                 setStage2(false);
@@ -263,6 +265,16 @@ export const GameScreen = ({ navigation }) => {
         
         setDisplayOptionsToPlaySavedGame(false)
     };
+
+    useEffect(() => {
+        console.log(stage1)
+        console.log(stage2)
+        console.log(stage3)
+        console.log(stage4)
+        console.log(stage5)
+        console.log(stage6)
+
+    }, [stage1, stage2, stage3, stage4, stage5, stage6])
     
 
 
@@ -299,7 +311,7 @@ export const GameScreen = ({ navigation }) => {
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
-                                        onPress={() => handleContinueSavedGame(stage)}
+                                        onPress={() => handleContinueSavedGame(stage.current)}
                                         style={{ backgroundColor: 'green', width: WidthRatio(30) }}>
                                         <Text style={{ color: 'white', fontSize: HeightRatio(50), textAlign: 'center' }}>
                                             Yes

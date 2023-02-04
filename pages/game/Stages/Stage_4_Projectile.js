@@ -234,7 +234,7 @@ export const Stage_4_Projectile = (props) => {
     setDisplayPlaybutton(false)
 
     if (level.current > 0) {
-      score.current += 1000;
+      score.current = score.current + 1000;
       scoreFlash_1000.current = true;
       setTimeout(() => {
         scoreFlash_1000.current = false;
@@ -303,6 +303,10 @@ export const Stage_4_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
+            if (mainState.current.currentCrashes >= 2) {
+              runAuxilliaryGreenHealth();
+            }
+            
             if (level.current >= 0) {
               letterAnimation();
               runOscillationAnimation_1();
@@ -918,6 +922,7 @@ export const Stage_4_Projectile = (props) => {
       if (isTriangleColliding_a(obj1, obj2)) {
         if (!hasUpdatedTriangle_a.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedTriangle_a.current = true;
           flashOouchOnCrash.current = true;
           console.log("collision a - - - - ")
@@ -938,6 +943,7 @@ export const Stage_4_Projectile = (props) => {
       if (isTriangleColliding_b(obj1, obj2)) {
         if (!hasUpdatedTriangle_a.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedTriangle_a.current = true;
           flashOouchOnCrash.current = true;
           console.log("collision b - - - - ")
@@ -958,6 +964,7 @@ export const Stage_4_Projectile = (props) => {
       if (isTriangleColliding_c(obj1, obj2)) {
         if (!hasUpdatedTriangle_a.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedTriangle_a.current = true;
           flashOouchOnCrash.current = true;
           console.log("collision c - - - - ")
@@ -978,6 +985,7 @@ export const Stage_4_Projectile = (props) => {
       if (isTriangleColliding_d(obj1, obj2)) {
         if (!hasUpdatedTriangle_a.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedTriangle_a.current = true;
           flashOouchOnCrash.current = true;
           console.log("collision d - - - - ")
@@ -998,6 +1006,7 @@ export const Stage_4_Projectile = (props) => {
       if (isOscillatorColliding(obj1, obj2)) {
         if (!hasUpdatedOscillator.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedOscillator.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -1016,6 +1025,7 @@ export const Stage_4_Projectile = (props) => {
       if (isObstacleColliding_right_angle_0(obj1, obj2)) {
         if (!hasUpdatedObstacle_right_angle_0.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_right_angle_0.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -1034,6 +1044,7 @@ export const Stage_4_Projectile = (props) => {
       if (isObstacleColliding_right_angle_1(obj1, obj2)) {
         if (!hasUpdatedObstacle_right_angle_1.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_right_angle_1.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -1052,6 +1063,7 @@ export const Stage_4_Projectile = (props) => {
       if (isObstacleColliding_opacity_bot(obj1, obj2)) {
         if (!hasUpdatedObstacle_opacity_bot.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_opacity_bot.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -1070,6 +1082,7 @@ export const Stage_4_Projectile = (props) => {
       if (isObstacleColliding_opacity_bot_divergence(obj1, obj2)) {
         if (!hasUpdatedObstacle_opacity_bot.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_opacity_bot.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -1125,6 +1138,7 @@ export const Stage_4_Projectile = (props) => {
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     if (wrongElements.length > prevWrongElements) {
       crashes.current += 1;
+      score.current = score.current - 25;
       flashOouchOnCrash.current = true;
       setTimeout(() => {
         flashOouchOnCrash.current = false;
@@ -1132,7 +1146,7 @@ export const Stage_4_Projectile = (props) => {
     }
 
     if (similarElements.length > prevSimilarElements) {
-      score.current += 100;
+      score.current = score.current + 100;
       scoreFlash_100.current = true;
     }
     setPrevSimilarElements(similarElements.length)
@@ -1456,7 +1470,7 @@ export const Stage_4_Projectile = (props) => {
         setDisplayLetters([]);
 
         setTimeout(() => {
-          score.current += 1000;
+          score.current = score.current + 1000;
           scoreFlash_1000.current = true;
           setTimeout(() => {
             scoreFlash_1000.current = false;
@@ -1584,7 +1598,7 @@ export const Stage_4_Projectile = (props) => {
         {displayPlaybutton &&
           <>
             <TouchableOpacity
-              onPress={() => { Generate() }}
+              onPress={() => { Generate(mainState.current.currentCrashes) }}
               style={{
                 position: 'absolute',
                 zIndex: 15,
@@ -1661,7 +1675,7 @@ export const Stage_4_Projectile = (props) => {
                 }
               </>
             }
-            {score.current > 0 ?
+            {score.current != null ?
               <>
                 <View style={{
                   position: 'absolute',

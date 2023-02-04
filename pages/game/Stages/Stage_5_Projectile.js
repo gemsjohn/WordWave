@@ -266,7 +266,7 @@ export const Stage_5_Projectile = (props) => {
       setDisplayPlaybutton(false)
 
       if (level.current > 0) {
-        score.current += 1000;
+        score.current = score.current + 1000;
         scoreFlash_1000.current = true;
         setTimeout(() => {
           scoreFlash_1000.current = false;
@@ -335,6 +335,10 @@ export const Stage_5_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
+            if (mainState.current.currentCrashes >= 2) {
+              runAuxilliaryGreenHealth();
+            }
+            
             if (level.current >= 0) {
               letterAnimation();
             }
@@ -848,6 +852,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_0(obj1, obj2)) {
         if (!hasUpdatedObstacle_0.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_0.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -866,6 +871,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_1(obj1, obj2)) {
         if (!hasUpdatedObstacle_1.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_1.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -884,6 +890,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_2(obj1, obj2)) {
         if (!hasUpdatedObstacle_2.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_2.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -902,6 +909,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_3(obj1, obj2)) {
         if (!hasUpdatedObstacle_3.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_3.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -920,6 +928,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_4(obj1, obj2)) {
         if (!hasUpdatedObstacle_4.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_4.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -938,6 +947,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_5(obj1, obj2)) {
         if (!hasUpdatedObstacle_5.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_5.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -956,6 +966,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_6(obj1, obj2)) {
         if (!hasUpdatedObstacle_6.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_6.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -974,6 +985,7 @@ export const Stage_5_Projectile = (props) => {
       if (isOscillatorColliding(obj1, obj2)) {
         if (!hasUpdatedOscillator.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedOscillator.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -992,6 +1004,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_twins_0(obj1, obj2)) {
         if (!hasUpdatedObstacle_twins_0.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_twins_0.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -1009,6 +1022,7 @@ export const Stage_5_Projectile = (props) => {
       if (isObstacleColliding_twins_0_divgergence(obj1, obj2)) {
         if (!hasUpdatedObstacle_twins_0.current) {
           crashes.current += 1;
+          score.current = score.current - 25;
           hasUpdatedObstacle_twins_0.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
@@ -1081,6 +1095,7 @@ export const Stage_5_Projectile = (props) => {
       if (wrongElements.length > prevWrongElements) {
         console.log("Stage, Wrong Element")
         crashes.current += 1;
+        score.current = score.current - 25;
         flashOouchOnCrash.current = true;
         setTimeout(() => {
           flashOouchOnCrash.current = false;
@@ -1089,7 +1104,7 @@ export const Stage_5_Projectile = (props) => {
 
       if (similarElements.length > prevSimilarElements) {
         console.log("Stage, Similar Element")
-        score.current += 100;
+        score.current = score.current + 100;
         scoreFlash_100.current = true;
       }
       setPrevSimilarElements(similarElements.length)
@@ -1490,7 +1505,7 @@ export const Stage_5_Projectile = (props) => {
         setDisplayLetters([]);
 
         setTimeout(() => {
-          score.current += 1000;
+          score.current = score.current + 1000;
           scoreFlash_1000.current = true;
           setTimeout(() => {
             scoreFlash_1000.current = false;
@@ -1618,7 +1633,7 @@ export const Stage_5_Projectile = (props) => {
         {displayPlaybutton &&
           <>
             <TouchableOpacity
-              onPress={() => { Generate() }}
+              onPress={() => { Generate(mainState.current.currentCrashes) }}
               style={{
                 position: 'absolute',
                 zIndex: 15,
@@ -1695,7 +1710,7 @@ export const Stage_5_Projectile = (props) => {
               }
             </>
           }
-          {score.current > 0 ?
+          {score.current != null ?
             <>
               <View style={{
                 position: 'absolute',
