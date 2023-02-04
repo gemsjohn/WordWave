@@ -342,7 +342,7 @@ export const Stage_3_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
-            if (mainState.current.currentCrashes >= 2) {
+            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2) {
               runAuxilliaryGreenHealth();
             }
             if (level.current >= 0) {
