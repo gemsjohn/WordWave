@@ -307,7 +307,7 @@ export const GameScreen = ({ navigation }) => {
                                     top: HeightRatio(125),
                                     left: 0,
                                     height: HeightRatio(550),
-                                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                                    // backgroundColor: 'rgba(0, 0, 0, 0.9)',
                                     // flex: 1,
                                     // width: '100%',
                                     width: windowWidth,
@@ -319,7 +319,7 @@ export const GameScreen = ({ navigation }) => {
                                             <TouchableOpacity
                                                 onPress={() => setDisplayOptionsToPlaySavedGame(false)}
                                                 style={{
-                                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
                                                     width: WidthRatio(150),
                                                     height: HeightRatio(500),
                                                     borderRadius: HeightRatio(10),
@@ -347,7 +347,7 @@ export const GameScreen = ({ navigation }) => {
                                             <TouchableOpacity
                                                 onPress={() => handleContinueSavedGame(stage.current)}
                                                 style={{
-                                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
                                                     height: HeightRatio(500),
                                                     width: WidthRatio(150),
                                                     borderRadius: HeightRatio(10),

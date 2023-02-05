@@ -142,12 +142,12 @@ export const Auth = ({ navigation }) => {
           authState: true
         })
 
-        if (cosmicKeyBoolean) {
+        // if (cosmicKeyBoolean) {
           console.log("ADDED: bearer, userID, auth")
           save('bearerToken', `Bearer ${data.login.token}`);
           save('userID', `${decoded?.data._id}`);
           save('authState', 'true');
-        }
+        // }
 
         checkToken(`Bearer ${data.login.token}`)
       }

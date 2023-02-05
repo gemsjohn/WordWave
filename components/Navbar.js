@@ -1,13 +1,15 @@
 import React, { useEffect, useInsertionEffect, useState, useContext, useRef } from 'react';
 import { View, Text, Button, Dimensions, Image, TouchableOpacity, PixelRatio } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSolid, faUser, faPlus, faUpLong, faMagnifyingGlass, faComment, faPen, faW, faF, faFlagCheckered, faGear, faTrophy, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faSolid, faBars } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import { GET_USER_BY_ID, GET_ME } from '../utils/queries';
 import { MainStateContext } from '../App';
 import moment from 'moment';
+import { Styling } from '../Styling';
+
 
 const {
     width: SCREEN_WIDTH,
@@ -136,16 +138,19 @@ export const Navbar = (props) => {
                     <TouchableOpacity
                         onPress={() => setMinimizeNav(false)}
                         style={{
-                            backgroundColor: 'black',
-                            borderRadius: HeightRatio(5),
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            borderRadius: HeightRatio(100),
+                            height: HeightRatio(50),
+                            width: HeightRatio(50),
                             padding: HeightRatio(5),
+                            justifyContent: 'center',
+                            alignSelf: 'center'
                         }}>
-                        <Text
-                            style={{ color: 'white', fontSize: HeightRatio(20), fontWeight: 'bold', alignSelf: 'center' }}
-                            allowFontScaling={false}
-                        >
-                            Exit
-                        </Text>
+                        <FontAwesomeIcon
+                            icon={faSolid, faBars}
+                            style={{ color: 'white', alignSelf: 'center' }}
+                            size={20}
+                        />
                     </TouchableOpacity>
                 </View>
                 :
@@ -164,8 +169,8 @@ export const Navbar = (props) => {
                 >
                     {/* [[[HOME]]] */}
                     <TouchableOpacity
-                        onPress={() => { 
-                            props.nav.dispatch(resetActionHome); 
+                        onPress={() => {
+                            props.nav.dispatch(resetActionHome);
                             setMainState({
                                 isGameInProgress: false
                             })
@@ -184,8 +189,8 @@ export const Navbar = (props) => {
 
                     {/* [[[GAME]]] */}
                     <TouchableOpacity
-                        onPress={() => { 
-                            props.nav.dispatch(resetActionGame); 
+                        onPress={() => {
+                            props.nav.dispatch(resetActionGame);
                             setMainState({
                                 isGameInProgress: false
                             })
@@ -203,8 +208,8 @@ export const Navbar = (props) => {
                     </TouchableOpacity>
                     {/* [[[LEADER BOARD]]] */}
                     <TouchableOpacity
-                        onPress={() => { 
-                            props.nav.dispatch(resetActionLeader); 
+                        onPress={() => {
+                            props.nav.dispatch(resetActionLeader);
                             setMainState({
                                 isGameInProgress: false
                             })
@@ -224,8 +229,8 @@ export const Navbar = (props) => {
                     {/* [[[PROFILE]]] */}
                     {isTokenValid ?
                         <TouchableOpacity
-                            onPress={() => { 
-                                props.nav.dispatch(resetActionProfile); 
+                            onPress={() => {
+                                props.nav.dispatch(resetActionProfile);
                                 setMainState({
                                     isGameInProgress: false
                                 })

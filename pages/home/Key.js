@@ -63,6 +63,8 @@ export const KeyScreen = ({ navigation }) => {
         } else if (localAuthState == 'false' || !localAuthState) {
             updatedLocalAuthState = false;
         }
+
+        console.log(localUserID)
         setMainState({
             bearerToken: `${localBearerToken}`,
             userID: `${localUserID}`,
