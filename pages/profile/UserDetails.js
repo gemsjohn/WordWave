@@ -238,7 +238,7 @@ export const UserDetails = (props) => {
                                         zIndex: 10,
                                         top: HeightRatio(30),
                                         alignSelf: 'center',
-                                        left: WidthRatio(130),
+                                        left: WidthRatio(120),
                                         padding: HeightRatio(20),
                                         borderRadius: HeightRatio(20),
                                         flexDirection: 'row',
