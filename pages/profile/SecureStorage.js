@@ -9,8 +9,6 @@ async function save(key, value) {
 }
 
 async function deleteKey(key) {
-  console.log("** DELETE **")
-  console.log(key)
   await SecureStore.deleteItemAsync(key);
 }
 
@@ -77,13 +75,6 @@ export const SecureStorage = () => {
     userID.current = mainState.current.userID;
   }, [])
 
-  useEffect(() => {
-    console.log(count)
-    if (count > 3) {
-      console.log(keyArray)
-
-    }
-  }, [count])
 
   return (
     <>
@@ -94,20 +85,6 @@ export const SecureStorage = () => {
           allowFontScaling={false}>
           Set a Keycode for easy login!
         </Text>
-        {/* {displaySetCode &&
-          <>
-            <Text
-              style={{ color: '#ffff00', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', margin: 10 }}
-              allowFontScaling={false}>
-              {combinedStringState}
-            </Text>
-            <Text
-              style={{ color: '#ffff00', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center', margin: 2 }}
-              allowFontScaling={false}>
-              Saved!
-            </Text>
-          </>
-        } */}
         <>
           <View style={{ marginTop: HeightRatio(30), flexDirection: 'row', alignSelf: 'center' }}>
             {count > 0 ?

@@ -19,7 +19,8 @@ import {
     Modal,
     SafeAreaView,
     ScrollView,
-    ImageBackground
+    ImageBackground,
+    Image
 } from 'react-native';
 import {
     faSolid,
@@ -33,8 +34,6 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 async function deleteKey(key) {
-    // console.log("** DELETE **")
-    // console.log(key)
     await SecureStore.deleteItemAsync(key);
 }
 
@@ -47,6 +46,8 @@ export const ProfileScreen = ({ navigation }) => {
     const [premiumOpen, setPremiumOpen] = useState(false);
     const [displayUsername, setDisplayUsername] = useState(false);
     const [displaySetUpCosmicKeyModal, setDisplaySetUpCosmicKeyModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+
 
     const authState = useRef(false);
     const userID = useRef(null);
@@ -54,10 +55,6 @@ export const ProfileScreen = ({ navigation }) => {
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
         variables: { id: userID.current }
     });
-
-
-
-
 
     const resetActionAuth = CommonActions.reset({
         index: 1,
@@ -77,10 +74,14 @@ export const ProfileScreen = ({ navigation }) => {
 
 
     useEffect(() => {
+        setLoading(true)
         setTimeout(() => {
             authState.current = mainState.current.authState
             userID.current = mainState.current.userID;
             getValueFor('cosmicKey')
+            setTimeout(() => {
+                setLoading(false)
+            }, 500)
         }, 500)
 
     }, [])
@@ -88,13 +89,14 @@ export const ProfileScreen = ({ navigation }) => {
     return (
         <>
             <View style={{ ...Styling.container }}>
-                <ImageBackground
+                {/* <ImageBackground
                     source={require('../../assets/home_background.png')}
                     resizeMode="cover"
                     style={{
                         justifyContent: 'center',
                         height: '100%'
-                    }}>
+                    }}> */}
+                {!loading &&
                     <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 0 }}>
                         <ScrollView style={{}}>
                             <View style={{}}>
@@ -102,19 +104,106 @@ export const ProfileScreen = ({ navigation }) => {
                                 {mainState.current.authState &&
                                     <>
                                         <View style={{}}>
-                                            {displayUsername &&
+                                            <View style={{
+                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                borderBottomRightRadius: HeightRatio(150),
+                                                borderBottomLeftRadius: HeightRatio(150),
+                                                borderBottomWidth: 1,
+                                                borderRightWidth: 1,
+                                                borderLeftWidth: 1,
+                                                borderColor: 'white',
+                                                height: HeightRatio(200),
+                                                width: windowWidth,
+
+                                            }}>
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(70),
+                                                    fontWeight: 'bold',
+                                                    alignSelf: 'center',
+                                                    marginTop: HeightRatio(60)
+                                                }}
+                                                    allowFontScaling={false}>
+                                                    {userByID?.user.username}
+                                                </Text>
+                                            </View>
+                                            <View style={{
+                                                position: 'absolute',
+                                                zIndex: 10,
+                                                top: HeightRatio(250),
+                                                left: HeightRatio(20),
+                                                height: HeightRatio(110),
+                                                width: HeightRatio(250),
+                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                borderRadius: HeightRatio(20),
+                                                borderWidth: 1,
+                                                borderColor: 'white',
+                                                flexDirection: 'column',
+                                                
+                                                
+                                            }}>
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(30),
+                                                    textAlign: 'center',
+                                                    marginTop: HeightRatio(20)
+                                                }}>
+                                                    HIGH SCORE
+                                                </Text>
+                                                
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(30),
+                                                    textAlign: 'center',
+                                                    marginTop: HeightRatio(10)
+                                                }}>
+                                                    {userByID?.user.highscore}
+                                                </Text>
+                                            </View>
+                                            <View style={{
+                                                position: 'absolute',
+                                                zIndex: 10,
+                                                top: HeightRatio(380),
+                                                left: HeightRatio(20),
+                                                height: HeightRatio(110),
+                                                width: HeightRatio(250),
+                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                borderRadius: HeightRatio(20),
+                                                borderWidth: 1,
+                                                borderColor: 'white',
+                                                flexDirection: 'column',
+                                                
+                                                
+                                            }}>
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(30),
+                                                    textAlign: 'center',
+                                                    marginTop: HeightRatio(20)
+                                                }}>
+                                                    TOKENS
+                                                </Text>
+                                                
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(30),
+                                                    textAlign: 'center',
+                                                    marginTop: HeightRatio(10)
+                                                }}>
+                                                    {userByID?.user.tokens}
+                                                </Text>
+                                            </View>
+                                            <Image
+                                                source={require('../../assets/profile_alien_full.png')}
+                                                style={{
+                                                    height: HeightRatio(600),
+                                                    width: HeightRatio(600),
+                                                    alignSelf: 'center'
+                                                }} />
+                                            {/* {displayUsername &&
                                                 <>
                                                     <View style={{ flexDirection: 'column' }}>
-                                                        <Text style={{
-                                                            color: 'white',
-                                                            fontSize: HeightRatio(60),
-                                                            fontWeight: 'bold',
-                                                            alignSelf: 'center',
-                                                            margin: HeightRatio(20)
-                                                        }}
-                                                            allowFontScaling={false}>
-                                                            {userByID?.user.username}
-                                                        </Text>
+
                                                         <Text style={{
                                                             color: 'white',
                                                             fontSize: HeightRatio(40),
@@ -139,7 +228,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                     </View>
                                                     <View style={Styling.profileDivisionLine}></View>
                                                 </>
-                                            }
+                                            } */}
                                             {/* [[[USER DETAILS]]] */}
                                             <View
                                                 style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}
@@ -194,8 +283,8 @@ export const ProfileScreen = ({ navigation }) => {
                                                     <SavedGame nav={navigation} />
                                                 </View>
                                                 :
-                                                <View style={{alignSelf: 'center', marginBottom: HeightRatio(50)}}>
-                                                    <Text style={{color: 'white', fontSize: HeightRatio(50)}}>
+                                                <View style={{ alignSelf: 'center', marginBottom: HeightRatio(50) }}>
+                                                    <Text style={{ color: 'white', fontSize: HeightRatio(50) }}>
                                                         None
                                                     </Text>
                                                 </View>
@@ -273,7 +362,8 @@ export const ProfileScreen = ({ navigation }) => {
                             </View >
                         </ScrollView>
                     </SafeAreaView>
-                </ImageBackground>
+                }
+                {/* </ImageBackground> */}
                 <Navbar nav={navigation} auth={mainState.current.authState} position={'absolute'} from={'profile'} />
 
             </View>

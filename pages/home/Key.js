@@ -40,12 +40,7 @@ export const KeyScreen = ({ navigation }) => {
 
     useEffect(() => {
         getValueFor('cosmicKey')
-        console.log("#1")
-        // setTimeout(() => {
-        //     console.log("#2")
 
-        //     setPageLoadComplete(true)
-        // }, 1000)
     }, [])
 
     function areArraysEqual(arr1, arr2) {
@@ -64,7 +59,6 @@ export const KeyScreen = ({ navigation }) => {
             updatedLocalAuthState = false;
         }
 
-        console.log(localUserID)
         setMainState({
             bearerToken: `${localBearerToken}`,
             userID: `${localUserID}`,

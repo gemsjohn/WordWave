@@ -30,8 +30,6 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 async function deleteKey(key) {
-    // console.log("** DELETE **")
-    // console.log(key)
     await SecureStore.deleteItemAsync(key);
 }
 
@@ -73,7 +71,6 @@ export const HomeScreen = ({ navigation }) => {
         setTimeout(() => {
             authState.current = mainState.current.authState
             userID.current = mainState.current.userID;
-            console.log(mainState.current.userID)
             getValueFor('cosmicKey')
             setTimeout(() => {
                 setLoading(false)

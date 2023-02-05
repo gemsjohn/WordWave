@@ -74,25 +74,6 @@ export const Auth = ({ navigation }) => {
   // Server
   const [isTokenValid, setIsTokenValid] = useState(null);
 
-  const [cosmicKeyBoolean, setCosmicKeyBoolean] = useState(false);
-
-  async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      setCosmicKeyBoolean(true)
-
-    } else {
-      setCosmicKeyBoolean(false)
-
-    }
-  }
-
-  useEffect(() => {
-    getValueFor('cosmicKey')
-  }, [])
-
-
-
   const checkToken = async (value) => {
     try {
       const response = await fetch('https://cosmicbackend.herokuapp.com/protected-route', {
@@ -103,14 +84,14 @@ export const Auth = ({ navigation }) => {
       });
       if (response.ok) {
         // Token is still valid
-        console.log("AUTH - Token is still valid")
+        // console.log("AUTH - Token is still valid")
 
         setIsTokenValid(true)
         navigation.dispatch(resetActionProfile)
         return true;
       } else {
         // Token is no longer valid
-        console.log("AUTH - Token is no longer valid")
+        // console.log("AUTH - Token is no longer valid")
         setIsTokenValid(false)
         return false;
       }
@@ -130,7 +111,7 @@ export const Auth = ({ navigation }) => {
       });
 
       if (data.login.token) {
-        console.log("Login Success")
+        console.log("Auth - Successful Login")
         deleteKey('cosmicKey');
 
         const decoded = jwtDecode(data.login.token)
@@ -142,17 +123,16 @@ export const Auth = ({ navigation }) => {
           authState: true
         })
 
-        // if (cosmicKeyBoolean) {
-          console.log("ADDED: bearer, userID, auth")
+          console.log("Auth - Adding bearerToken, userID, and authState to SecureStore")
+
           save('bearerToken', `Bearer ${data.login.token}`);
           save('userID', `${decoded?.data._id}`);
           save('authState', 'true');
-        // }
 
         checkToken(`Bearer ${data.login.token}`)
       }
     } catch (e) {
-      console.log("Login Error")
+      console.log("Auth - Login Error")
       setDisplayLoading(false);
       console.error(e);
       setDisplayLoginFailureAlert(true)
@@ -219,7 +199,6 @@ export const Auth = ({ navigation }) => {
   };
 
   const handleRequestReset = async () => {
-    console.log(promptResetEmail)
     try {
       await requestReset({
         variables: {
@@ -236,7 +215,6 @@ export const Auth = ({ navigation }) => {
 
   const handleResetPassword = async () => {
     if (promptResetEmail != '' && promptResetPassword_0 != '' && promptResetPassword_1 != '' && promptResetToken != '' && promptResetPassword_0 == promptResetPassword_1) {
-      console.log("handleResetPassword")
       try {
         await resetPassword({
           variables: {
@@ -246,7 +224,6 @@ export const Auth = ({ navigation }) => {
             resetToken: promptResetToken
           }
         })
-        console.log("Ok all set, try to log in.")
         setDisplayResetSuccessModal(true);
         setPromptResetEmail('');
         setResetRequestStatus('');

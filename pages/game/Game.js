@@ -72,7 +72,6 @@ export const GameScreen = ({ navigation }) => {
 
     useLayoutEffect(() => {
         console.log("Setup: #1 ")
-        // userID.current = mainState.current.userID;
         refetch();
 
         setMainState({
@@ -152,7 +151,6 @@ export const GameScreen = ({ navigation }) => {
         if (userByID?.user.saved.date != null) {
             setDisplayOptionsToPlaySavedGame(true)
             stage.current = parseInt(userByID?.user.saved.stage);
-            console.log(userByID?.user.saved)
 
         } else {
             setDisplayOptionsToPlaySavedGame(false)
@@ -180,8 +178,6 @@ export const GameScreen = ({ navigation }) => {
     const handleContinueSavedGame = (input) => {
         console.log("Setup: #5 ")
 
-        console.log(input)
-
         let str_0 = `${userByID?.user.saved.letterPocket}`;
         let arr_0;
         if (str_0 == "") {
@@ -194,8 +190,6 @@ export const GameScreen = ({ navigation }) => {
         let filteredArr_0 = arr_0.filter(function (value) {
             return value !== "";
         });
-
-        console.log(filteredArr_0)
 
 
         let str_2 = `${userByID?.user.saved.displayLetters}`;
@@ -268,18 +262,6 @@ export const GameScreen = ({ navigation }) => {
 
         setDisplayOptionsToPlaySavedGame(false)
     };
-
-    useEffect(() => {
-        console.log(stage1)
-        console.log(stage2)
-        console.log(stage3)
-        console.log(stage4)
-        console.log(stage5)
-        console.log(stage6)
-
-    }, [stage1, stage2, stage3, stage4, stage5, stage6])
-
-
 
     return (
         <>
