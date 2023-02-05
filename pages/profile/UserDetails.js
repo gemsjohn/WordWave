@@ -12,11 +12,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MainStateContext } from '../../App';
 import { SecureStorage } from './SecureStorage';
 import { windowHeight, windowWidth, HeightRatio, WidthRatio, Styling } from '../../Styling';
-import { 
-    UPDATE_USER, 
-    LOGIN_USER, 
-    UPDATE_USER_PASSWORD, 
-    DELETE_USER 
+import { LinearGradient } from 'expo-linear-gradient';
+import {
+    UPDATE_USER,
+    LOGIN_USER,
+    UPDATE_USER_PASSWORD,
+    DELETE_USER
 } from '../../utils/mutations';
 
 export const UserDetails = (props) => {
@@ -91,7 +92,7 @@ export const UserDetails = (props) => {
         },
         {
             title: 'Delete Account',
-            detail: '',
+            detail: `${userByID?.user._id}`,
             edit: showEditableFieldDelete,
             setedit: setShowEditableFieldDelete,
             prompt: promptDeleteInput,
@@ -161,7 +162,7 @@ export const UserDetails = (props) => {
     // [[[PRODUCT USER DETAIL SECTIONS]]]
     for (let i = 0; i < EditableFields.length; i++) {
         userDetailsArray[i] =
-            <View style={{ width: 450}} key={i}>
+            <View style={{ width: 450 }} key={i}>
                 <TouchableOpacity
                     onPress={() => {
                         setShowEditableFieldUsername(false);
@@ -180,29 +181,44 @@ export const UserDetails = (props) => {
                 >
                     <View
                         style={{
-                            border: 'solid',
-                            borderColor: 'white',
-                            borderTopWidth: 1,
-                            borderLeftWidth: 1,
-                            borderBottomWidth: 1,
-                            // borderTopLeftRadius: 30,
-                            borderBottomLeftRadius: HeightRatio(30),
+                            borderRadius: HeightRatio(30),
                             padding: HeightRatio(15),
                             width: WidthRatio(160),
                             flexDirection: 'column',
                             margin: HeightRatio(20),
-                            backgroundColor: `${EditableFields[i].edit ? 'rgba(255, 255, 255, 0.1)' : 'transparent'}`,
-                            // borderTopRightRadius: 10,
-                            borderTopLeftRadius: HeightRatio(20),
                             alignSelf: 'center'
                         }}
 
                     >
-                        <View style={{ flexDirection: 'row', }}>
-                            <Text style={{ color: 'white', marginRight: 10, fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}>{EditableFields[i].title}</Text>
+                        <LinearGradient
+                            colors={['#0b132b', '#181d21']}
+                            style={{
+                                ...Styling.background,
+                                height: HeightRatio(150),
+                                borderRadius: HeightRatio(20),
+                                borderWidth: 2,
+                                borderColor: 'rgba(255, 255, 255, 0.25)',
+                                opacity: 0.5
+                            }}
+                        />
+                        <View style={{ flexDirection: 'column', }}>
+                            <Text style={{
+                                color: 'white',
+                                fontSize: HeightRatio(50),
+                                fontWeight: 'bold',
+                                margin: HeightRatio(10)
+                            }}>{EditableFields[i].title}</Text>
 
                             <Text
-                                style={{ color: '#fcd01f', alignSelf: 'center', fontSize: HeightRatio(25), fontWeight: 'bold', width: 150 }}
+                                style={{
+                                    color: '#fcd01f',
+                                    // alignSelf: 'center', 
+                                    fontSize: HeightRatio(40),
+                                    fontWeight: 'bold',
+                                    margin: HeightRatio(10),
+                                    marginLeft: HeightRatio(20),
+                                    width: WidthRatio(100)
+                                }}
                                 numberOfLines={1}
                                 ellipsizeMode='tail'
                             >
@@ -216,19 +232,24 @@ export const UserDetails = (props) => {
                                     style={{
                                         position: 'absolute',
                                         zIndex: 10,
+                                        top: HeightRatio(30),
                                         alignSelf: 'center',
                                         left: WidthRatio(130),
-                                        padding: 4,
-                                        borderRadius: 4,
-                                        flexDirection: 'row'
+                                        padding: HeightRatio(20),
+                                        borderRadius: HeightRatio(20),
+                                        flexDirection: 'row',
+                                        backgroundColor: '#35faa9',
                                     }}
                                 >
-                                    <FontAwesomeIcon
-                                        icon={faSolid, faPenToSquare}
-                                        style={{ color: '#00b2ca', justifyContent: 'flex-end', marginRight: 5 }}
-                                        size={20}
-                                    />
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: HeightRatio(30), alignSelf: 'flex-end' }} allowFontScaling={false}>
+                                    <Text
+                                        style={{
+                                            color: 'black',
+                                            fontWeight: 'bold',
+                                            fontSize: HeightRatio(30),
+                                            alignSelf: 'flex-end'
+                                        }}
+                                        allowFontScaling={false}
+                                    >
                                         EDIT
                                     </Text>
                                 </View>
@@ -243,76 +264,87 @@ export const UserDetails = (props) => {
                                                 <>
                                                     {i == 3 &&
                                                         <>
-                                                            <TouchableOpacity onPress={() => copyToClipboard()} style={{ marginLeft: 10 }}>
-                                                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)', width: WidthRatio(150), borderRadius: 10, padding: 10, alignSelf: 'center' }}>
+                                                            <TouchableOpacity onPress={() => copyToClipboard()} style={{}}>
+                                                                <View style={{
+                                                                    flexDirection: 'row',
+                                                                    backgroundColor: 'blue',
+                                                                    width: WidthRatio(150),
+                                                                    borderRadius: HeightRatio(20),
+                                                                    padding: HeightRatio(20),
+                                                                    alignSelf: 'center',
+                                                                    marginTop: HeightRatio(20)
+                                                                }}>
                                                                     <Text
-                                                                        style={{ color: '#efea5a', fontSize: HeightRatio(40), fontWeight: 'bold', marginLeft: 20 }}
+                                                                        style={{ color: 'white', fontSize: HeightRatio(30), fontWeight: 'bold' }}
                                                                         allowFontScaling={false}
                                                                     >Copy ID {userByID?.user._id}</Text>
                                                                 </View>
                                                             </TouchableOpacity>
                                                         </>
                                                     }
-                                                    <View style={{ flexDirection: 'row', alignSelf: 'center', margin: 10 }}>
-
-                                                        <TextInput
-                                                            type="text"
-                                                            name={EditableFields[i].title}
-                                                            placeholder={i == 3 ? 'Paste ID' : EditableFields[i].title}
-                                                            placeholderTextColor='white'
-                                                            value={EditableFields[i].prompt}
-                                                            onChangeText={EditableFields[i].setprompt}
-                                                            multiline
-                                                            numberOfLines={1}
-                                                            allowFontScaling={false}
-                                                            style={{
-                                                                outline: 'none',
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                color: 'white',
-                                                                display: 'flex',
-                                                                justifyContent: 'flex-start',
-                                                                padding: 20,
-                                                                border: 'solid',
-                                                                borderColor: 'white',
-                                                                borderTopWidth: 1,
-                                                                borderLeftWidth: 1,
-                                                                borderBottomWidth: 1,
-                                                                borderTopLeftRadius: HeightRatio(30),
-                                                                borderBottomLeftRadius: HeightRatio(30),
-                                                                alignSelf: 'center',
-                                                                marginTop: 10,
-                                                                marginBottom: 4,
-                                                                width: WidthRatio(100)
-                                                            }}
-                                                        />
-                                                        {/* [[[SUBMIT BUTTON]]] */}
-                                                        <TouchableOpacity
-                                                            onPress={() => {
-                                                                handleFormSubmit();
-                                                                setShowEditableFieldUsername(false);
-                                                                setShowEditableFieldEmail(false);
-                                                                setShowEditableFieldPassword(false);
-                                                                setShowEditableFieldVerification(false);
-                                                                setShowEditableFieldDelete(false);
-                                                            }}
-                                                            style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                // width: windowWidth - 30,
-                                                                padding: 10,
-                                                                // borderRadius: 10,
-                                                                border: 'solid',
-                                                                borderColor: 'white',
-                                                                borderTopWidth: 1,
-                                                                borderRightWidth: 1,
-                                                                borderBottomWidth: 1,
-                                                                borderTopRightRadius: 30,
-                                                                borderBottomRightRadius: 30,
-                                                                marginTop: 10,
-                                                                marginBottom: 4,
-                                                            }}
-                                                        >
-                                                            <Text style={{ color: '#ccff33', marginTop: 15, marginRight: 15 }} allowFontScaling={false}>SUBMIT</Text>
-                                                        </TouchableOpacity>
+                                                    <View style={{ flexDirection: 'column', alignSelf: 'center', margin: 10 }}>
+                                                        <Text style={{
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(40),
+                                                            margin: HeightRatio(10),
+                                                            marginTop: HeightRatio(20),
+                                                            marginBottom: HeightRatio(20)
+                                                        }}>
+                                                            {i == 3 ? 'Paste ID' : 'New ' + EditableFields[i].title}
+                                                        </Text>
+                                                        <View style={{ flexDirection: 'row' }}>
+                                                            <TextInput
+                                                                type="text"
+                                                                name={EditableFields[i].title}
+                                                                placeholder={i == 3 ? 'Paste ID' : EditableFields[i].title}
+                                                                placeholderTextColor='white'
+                                                                value={EditableFields[i].prompt}
+                                                                onChangeText={EditableFields[i].setprompt}
+                                                                multiline
+                                                                numberOfLines={1}
+                                                                allowFontScaling={false}
+                                                                style={{
+                                                                    outline: 'none',
+                                                                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                                                    color: 'white',
+                                                                    display: 'flex',
+                                                                    justifyContent: 'flex-start',
+                                                                    padding: 20,
+                                                                    border: 'solid',
+                                                                    borderColor: 'white',
+                                                                    borderWidth: 2,
+                                                                    alignSelf: 'center',
+                                                                    borderRadius: HeightRatio(20),
+                                                                    width: WidthRatio(120)
+                                                                }}
+                                                            />
+                                                            {/* [[[SUBMIT BUTTON]]] */}
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    handleFormSubmit();
+                                                                    setShowEditableFieldUsername(false);
+                                                                    setShowEditableFieldEmail(false);
+                                                                    setShowEditableFieldPassword(false);
+                                                                    setShowEditableFieldVerification(false);
+                                                                    setShowEditableFieldDelete(false);
+                                                                }}
+                                                                style={{
+                                                                    backgroundColor: 'rgba(53, 250, 169, 0.25)',
+                                                                    padding: 10,
+                                                                    justifyContent: 'center',
+                                                                    margin: HeightRatio(10),
+                                                                    borderTopRightRadius: HeightRatio(20),
+                                                                    borderBottomRightRadius: HeightRatio(20)
+                                                                }}
+                                                            >
+                                                                <Text
+                                                                    style={{
+                                                                        color: 'white',
+                                                                    }}
+                                                                    allowFontScaling={false}
+                                                                >SUBMIT &nbsp;</Text>
+                                                            </TouchableOpacity>
+                                                        </View>
                                                     </View>
                                                 </>
                                             }
@@ -320,7 +352,14 @@ export const UserDetails = (props) => {
 
                                             {i == 2 &&
                                                 <>
-                                                    <View style={{ flexDirection: 'row', alignSelf: 'center', margin: 10 }}>
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(40),
+                                                        margin: HeightRatio(20)
+                                                    }}>
+                                                        New Password
+                                                    </Text>
+                                                    <View style={{ flexDirection: 'row', margin: 10 }}>
                                                         <TextInput
                                                             type="password"
                                                             name={EditableFields[i].title}
@@ -339,12 +378,10 @@ export const UserDetails = (props) => {
                                                                 padding: 20,
                                                                 border: 'solid',
                                                                 borderColor: 'white',
-                                                                borderWidth: 1,
-                                                                borderRadius: HeightRatio(30),
-                                                                alignSelf: 'center',
-                                                                marginTop: 10,
-                                                                marginBottom: 4,
-                                                                width: WidthRatio(150)
+                                                                borderWidth: 2,
+                                                                // alignSelf: 'center',
+                                                                borderRadius: HeightRatio(20),
+                                                                width: WidthRatio(120)
                                                             }}
                                                         />
                                                     </View>
@@ -367,15 +404,10 @@ export const UserDetails = (props) => {
                                                                 padding: 20,
                                                                 border: 'solid',
                                                                 borderColor: 'white',
-                                                                borderTopWidth: 1,
-                                                                borderLeftWidth: 1,
-                                                                borderBottomWidth: 1,
-                                                                borderTopLeftRadius: HeightRatio(30),
-                                                                borderBottomLeftRadius: HeightRatio(30),
+                                                                borderWidth: 2,
                                                                 alignSelf: 'center',
-                                                                marginTop: 10,
-                                                                marginBottom: 4,
-                                                                width: WidthRatio(100)
+                                                                borderRadius: HeightRatio(20),
+                                                                width: WidthRatio(120)
                                                             }}
                                                         />
                                                         {/* [[[SUBMIT BUTTON]]] */}
@@ -389,23 +421,20 @@ export const UserDetails = (props) => {
                                                                 setShowEditableFieldDelete(false);
                                                             }}
                                                             style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                // width: windowWidth - 30,
+                                                                backgroundColor: 'rgba(53, 250, 169, 0.25)',
                                                                 padding: 10,
-                                                                // borderRadius: 10,
-                                                                border: 'solid',
-                                                                borderColor: 'white',
-                                                                borderTopWidth: 1,
-                                                                borderRightWidth: 1,
-                                                                borderBottomWidth: 1,
-                                                                borderTopRightRadius: 30,
-                                                                borderBottomRightRadius: 30,
-                                                                marginTop: 10,
-                                                                marginBottom: 4,
+                                                                justifyContent: 'center',
+                                                                margin: HeightRatio(10),
+                                                                borderTopRightRadius: HeightRatio(20),
+                                                                borderBottomRightRadius: HeightRatio(20)
                                                             }}
-
                                                         >
-                                                            <Text style={{ color: '#ccff33', marginTop: 15, marginRight: 15 }} allowFontScaling={false}>SUBMIT</Text>
+                                                            <Text
+                                                                style={{
+                                                                    color: 'white',
+                                                                }}
+                                                                allowFontScaling={false}
+                                                            >SUBMIT &nbsp;</Text>
                                                         </TouchableOpacity>
 
                                                     </View>

@@ -11,6 +11,8 @@ import { HeightRatio, WidthRatio, Styling } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
 import * as SecureStore from 'expo-secure-store';
 import { MainStateContext } from '../../App';
+import { LinearGradient } from 'expo-linear-gradient';
+
 import {
     Text,
     TouchableOpacity,
@@ -104,20 +106,27 @@ export const ProfileScreen = ({ navigation }) => {
                                 {mainState.current.authState &&
                                     <>
                                         <View style={{}}>
-                                            <View style={{
-                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                            {/* <View style={{
+                                                backgroundColor: '#35faa9',
                                                 borderBottomRightRadius: HeightRatio(150),
                                                 borderBottomLeftRadius: HeightRatio(150),
-                                                borderBottomWidth: 1,
-                                                borderRightWidth: 1,
-                                                borderLeftWidth: 1,
-                                                borderColor: 'white',
                                                 height: HeightRatio(200),
                                                 width: windowWidth,
 
                                             }}>
+                                                <LinearGradient
+                                                    colors={['#00944d', '#35faa9']}
+                                                    style={{
+                                                        ...Styling.background,
+                                                        borderBottomRightRadius: HeightRatio(150),
+                                                borderBottomLeftRadius: HeightRatio(150),
+                                                height: HeightRatio(200),
+                                                width: windowWidth,
+                                                        opacity: 1.0
+                                                    }}
+                                                />
                                                 <Text style={{
-                                                    color: 'white',
+                                                    color: 'black',
                                                     fontSize: HeightRatio(70),
                                                     fontWeight: 'bold',
                                                     alignSelf: 'center',
@@ -127,72 +136,81 @@ export const ProfileScreen = ({ navigation }) => {
                                                     {userByID?.user.username}
                                                 </Text>
                                             </View>
-                                            <View style={{
-                                                position: 'absolute',
-                                                zIndex: 10,
-                                                top: HeightRatio(250),
-                                                left: HeightRatio(20),
-                                                height: HeightRatio(110),
-                                                width: HeightRatio(250),
-                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                                borderRadius: HeightRatio(20),
-                                                borderWidth: 1,
-                                                borderColor: 'white',
-                                                flexDirection: 'column',
-                                                
-                                                
-                                            }}>
-                                                <Text style={{
-                                                    color: 'white',
-                                                    fontSize: HeightRatio(30),
-                                                    textAlign: 'center',
-                                                    marginTop: HeightRatio(20)
+
+                                            <View style={{ flexDirection: 'row', marginTop: HeightRatio(20), alignSelf: 'center' }}>
+                                                <View style={{
+                                                    height: HeightRatio(110),
+                                                    width: HeightRatio(250),
+                                                    flexDirection: 'column',
+                                                    margin: HeightRatio(10)
+
                                                 }}>
-                                                    HIGH SCORE
-                                                </Text>
-                                                
-                                                <Text style={{
-                                                    color: 'white',
-                                                    fontSize: HeightRatio(30),
-                                                    textAlign: 'center',
-                                                    marginTop: HeightRatio(10)
+                                                    <LinearGradient
+                                                        colors={['#0b132b', '#181d21']}
+                                                        style={{
+                                                            ...Styling.background,
+                                                            height: HeightRatio(108),
+                                                            borderRadius: HeightRatio(20),
+                                                            borderWidth: 2,
+                                                            borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                            opacity: 0.5
+                                                        }}
+                                                    />
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(20)
+                                                    }}>
+                                                        HIGH SCORE
+                                                    </Text>
+
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(10)
+                                                    }}>
+                                                        {userByID?.user.highscore}
+                                                    </Text>
+                                                </View>
+                                                <View style={{
+                                                    height: HeightRatio(110),
+                                                    width: HeightRatio(250),
+                                                    flexDirection: 'column',
+                                                    margin: HeightRatio(10)
                                                 }}>
-                                                    {userByID?.user.highscore}
-                                                </Text>
-                                            </View>
-                                            <View style={{
-                                                position: 'absolute',
-                                                zIndex: 10,
-                                                top: HeightRatio(380),
-                                                left: HeightRatio(20),
-                                                height: HeightRatio(110),
-                                                width: HeightRatio(250),
-                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                                borderRadius: HeightRatio(20),
-                                                borderWidth: 1,
-                                                borderColor: 'white',
-                                                flexDirection: 'column',
-                                                
-                                                
-                                            }}>
-                                                <Text style={{
-                                                    color: 'white',
-                                                    fontSize: HeightRatio(30),
-                                                    textAlign: 'center',
-                                                    marginTop: HeightRatio(20)
-                                                }}>
-                                                    TOKENS
-                                                </Text>
-                                                
-                                                <Text style={{
-                                                    color: 'white',
-                                                    fontSize: HeightRatio(30),
-                                                    textAlign: 'center',
-                                                    marginTop: HeightRatio(10)
-                                                }}>
-                                                    {userByID?.user.tokens}
-                                                </Text>
-                                            </View>
+                                                    <LinearGradient
+                                                        colors={['#0b132b', '#181d21']}
+                                                        style={{
+                                                            ...Styling.background,
+                                                            height: HeightRatio(108),
+                                                            borderRadius: HeightRatio(20),
+                                                            borderWidth: 2,
+                                                            borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                            opacity: 0.5
+                                                        }}
+                                                    />
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(20)
+                                                    }}>
+                                                        TOKENS
+                                                    </Text>
+
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(10)
+                                                    }}>
+                                                        {userByID?.user.tokens}
+                                                    </Text>
+                                                </View>
+                                            </View> */}
+
                                             <Image
                                                 source={require('../../assets/profile_alien_full.png')}
                                                 style={{
@@ -200,35 +218,79 @@ export const ProfileScreen = ({ navigation }) => {
                                                     width: HeightRatio(600),
                                                     alignSelf: 'center'
                                                 }} />
-                                            {/* {displayUsername &&
-                                                <>
-                                                    <View style={{ flexDirection: 'column' }}>
+<View style={{ flexDirection: 'row', marginTop: HeightRatio(20), alignSelf: 'center' }}>
+                                                <View style={{
+                                                    height: HeightRatio(110),
+                                                    width: HeightRatio(250),
+                                                    flexDirection: 'column',
+                                                    margin: HeightRatio(10)
 
-                                                        <Text style={{
-                                                            color: 'white',
-                                                            fontSize: HeightRatio(40),
-                                                            fontWeight: 'bold',
-                                                            alignSelf: 'center'
-
+                                                }}>
+                                                    <LinearGradient
+                                                        colors={['#0b132b', '#181d21']}
+                                                        style={{
+                                                            ...Styling.background,
+                                                            height: HeightRatio(108),
+                                                            borderRadius: HeightRatio(20),
+                                                            borderWidth: 2,
+                                                            borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                            opacity: 0.5
                                                         }}
-                                                            allowFontScaling={false}>
-                                                            Tokens Remaining: {userByID?.user.tokens}
-                                                        </Text>
-                                                        <Text style={{
-                                                            color: 'white',
-                                                            fontSize: HeightRatio(40),
-                                                            fontWeight: 'bold',
-                                                            alignSelf: 'center',
-                                                            margin: HeightRatio(20)
+                                                    />
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(20)
+                                                    }}>
+                                                        HIGH SCORE
+                                                    </Text>
 
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(10)
+                                                    }}>
+                                                        {userByID?.user.highscore}
+                                                    </Text>
+                                                </View>
+                                                <View style={{
+                                                    height: HeightRatio(110),
+                                                    width: HeightRatio(250),
+                                                    flexDirection: 'column',
+                                                    margin: HeightRatio(10)
+                                                }}>
+                                                    <LinearGradient
+                                                        colors={['#0b132b', '#181d21']}
+                                                        style={{
+                                                            ...Styling.background,
+                                                            height: HeightRatio(108),
+                                                            borderRadius: HeightRatio(20),
+                                                            borderWidth: 2,
+                                                            borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                            opacity: 0.5
                                                         }}
-                                                            allowFontScaling={false}>
-                                                            Your High Score: {userByID?.user.highscore}
-                                                        </Text>
-                                                    </View>
-                                                    <View style={Styling.profileDivisionLine}></View>
-                                                </>
-                                            } */}
+                                                    />
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(20)
+                                                    }}>
+                                                        TOKENS
+                                                    </Text>
+
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(10)
+                                                    }}>
+                                                        {userByID?.user.tokens}
+                                                    </Text>
+                                                </View>
+                                            </View>
                                             {/* [[[USER DETAILS]]] */}
                                             <View
                                                 style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}
@@ -242,14 +304,15 @@ export const ProfileScreen = ({ navigation }) => {
                                                     User Details
                                                 </Text>
                                             </View>
-                                            <View style={{ alignSelf: 'center', marginBottom: 20 }}>
+                                            <View style={{ alignSelf: 'center' }}>
                                                 <UserDetails nav={navigation} />
                                             </View>
-                                            <View style={Styling.profileDivisionLine}></View>
+
+                                            {/* <View style={Styling.profileDivisionLine}></View> */}
 
                                             {/* [[[SAVED GAME DETAILS]]] */}
                                             <View
-                                                style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}
+                                                style={{ flexDirection: 'row', margin: HeightRatio(20), alignSelf: 'center' }}
                                             >
                                                 <FontAwesomeIcon
                                                     icon={faSolid, faGamepad}
@@ -265,13 +328,6 @@ export const ProfileScreen = ({ navigation }) => {
                                                     alignSelf: 'center',
                                                     marginBottom: 20,
                                                     width: WidthRatio(160),
-                                                    // backgroundColor: 'red',
-                                                    border: 'solid',
-                                                    borderColor: 'white',
-                                                    borderTopWidth: 1,
-                                                    borderLeftWidth: 1,
-                                                    borderBottomWidth: 1,
-                                                    borderBottomLeftRadius: HeightRatio(30),
                                                     padding: HeightRatio(15),
                                                     width: WidthRatio(160),
                                                     flexDirection: 'column',
@@ -280,6 +336,10 @@ export const ProfileScreen = ({ navigation }) => {
                                                     borderTopLeftRadius: HeightRatio(20),
                                                     alignSelf: 'center'
                                                 }}>
+                                                    <LinearGradient
+                                                        colors={['#0b132b', '#181d21']}
+                                                        style={{ ...Styling.background, height: HeightRatio(300), borderRadius: HeightRatio(30), opacity: 0.5 }}
+                                                    />
                                                     <SavedGame nav={navigation} />
                                                 </View>
                                                 :
@@ -290,7 +350,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                 </View>
                                             }
 
-                                            <View style={Styling.profileDivisionLine}></View>
+                                            {/* <View style={Styling.profileDivisionLine}></View> */}
 
 
                                             <View>
@@ -385,7 +445,7 @@ export const ProfileScreen = ({ navigation }) => {
                                 onPress={() => setDisplaySetUpCosmicKeyModal(!displaySetUpCosmicKeyModal)}
                                 style={{ marginTop: HeightRatio(20) }}>
                                 <Text
-                                    style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
+                                    style={{ color: '#35faa9', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
                                     allowFontScaling={false}
                                 >
                                     Close

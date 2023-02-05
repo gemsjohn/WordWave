@@ -8,6 +8,7 @@ import { HeightRatio, Styling, WidthRatio } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
 import * as SecureStore from 'expo-secure-store';
 import { MainStateContext } from '../../App';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
     Text,
     TouchableOpacity,
@@ -93,246 +94,310 @@ export const HomeScreen = ({ navigation }) => {
     return (
         <>
             <View style={{ ...Styling.container }}>
-                <ImageBackground
+                {/* <ImageBackground
                     source={require('../../assets/home_background.png')}
                     resizeMode="cover"
                     style={{
                         justifyContent: 'center',
                         height: '100%'
-                    }}>
-                    {!loading &&
-                        <>
-                            <SafeAreaView style={{ height: '90%', marginBottom: HeightRatio(60) }}>
-                                <ScrollView style={{}}>
-                                    <View style={{}}>
-                                        {displayUsername &&
-                                            <>
-                                                <View style={{ flexDirection: 'column' }}>
-                                                    <Text style={{
-                                                        color: 'white',
-                                                        fontSize: HeightRatio(60),
-                                                        fontWeight: 'bold',
-                                                        alignSelf: 'center',
-                                                        margin: HeightRatio(20)
-                                                    }}
-                                                    allowFontScaling={false}>
-                                                        {userByID?.user.username}
-                                                    </Text>
-                                                    <Text style={{
-                                                        color: 'white',
-                                                        fontSize: HeightRatio(40),
-                                                        fontWeight: 'bold',
-                                                        alignSelf: 'center'
+                    }}> */}
+                {!loading &&
+                    <>
+                        <SafeAreaView style={{ marginBottom: HeightRatio(60) }}>
+                            <ScrollView style={{}}>
+                                <View style={{}}>
+                                    {displayUsername &&
+                                        <>
+                                            <View style={{
+                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                borderBottomRightRadius: HeightRatio(150),
+                                                borderBottomLeftRadius: HeightRatio(150),
+                                                borderBottomWidth: 1,
+                                                borderRightWidth: 1,
+                                                borderLeftWidth: 1,
+                                                borderColor: 'white',
+                                                height: HeightRatio(200),
+                                                width: windowWidth,
 
-                                                    }}
+                                            }}>
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(70),
+                                                    fontWeight: 'bold',
+                                                    alignSelf: 'center',
+                                                    marginTop: HeightRatio(60)
+                                                }}
                                                     allowFontScaling={false}>
-                                                        Tokens Remaining: {userByID?.user.tokens}
-                                                    </Text>
+                                                    {userByID?.user.username}
+                                                </Text>
+                                            </View>
+
+                                            <View style={{ flexDirection: 'row', marginTop: HeightRatio(20), alignSelf: 'center' }}>
+                                                <View style={{
+                                                    height: HeightRatio(110),
+                                                    width: HeightRatio(250),
+                                                    flexDirection: 'column',
+                                                    margin: HeightRatio(10)
+
+                                                }}>
+                                                    <LinearGradient
+                                                        colors={['#0b132b', '#181d21']}
+                                                        style={{
+                                                            ...Styling.background,
+                                                            height: HeightRatio(108),
+                                                            borderRadius: HeightRatio(20),
+                                                            borderWidth: 2,
+                                                            borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                            opacity: 0.5
+                                                        }}
+                                                    />
                                                     <Text style={{
                                                         color: 'white',
-                                                        fontSize: HeightRatio(40),
-                                                        fontWeight: 'bold',
-                                                        alignSelf: 'center',
-                                                        margin: HeightRatio(20)
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(20)
+                                                    }}>
+                                                        HIGH SCORE
+                                                    </Text>
 
-                                                    }}
-                                                    allowFontScaling={false}>
-                                                        Your High Score: {userByID?.user.highscore}
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(10)
+                                                    }}>
+                                                        {userByID?.user.highscore}
                                                     </Text>
                                                 </View>
-                                                <View style={Styling.profileDivisionLine}></View>
-                                            </>
-                                        }
-                                        {!displaySignUpModal &&
-                                            <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
-                                                {count == 0 &&
-                                                    <View style={{
-                                                        // backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                        backgroundColor: 'transparent',
-                                                        padding: HeightRatio(20),
-                                                        borderRadius: HeightRatio(40),
-                                                        width: WidthRatio(160),
+                                                <View style={{
+                                                    height: HeightRatio(110),
+                                                    width: HeightRatio(250),
+                                                    flexDirection: 'column',
+                                                    margin: HeightRatio(10)
+                                                }}>
+                                                    <LinearGradient
+                                                        colors={['#0b132b', '#181d21']}
+                                                        style={{
+                                                            ...Styling.background,
+                                                            height: HeightRatio(108),
+                                                            borderRadius: HeightRatio(20),
+                                                            borderWidth: 2,
+                                                            borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                            opacity: 0.5
+                                                        }}
+                                                    />
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(20)
+                                                    }}>
+                                                        TOKENS
+                                                    </Text>
+
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(30),
+                                                        textAlign: 'center',
+                                                        marginTop: HeightRatio(10)
+                                                    }}>
+                                                        {userByID?.user.tokens}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View style={Styling.profileDivisionLine}></View>
+                                        </>
+                                    }
+                                    {!displaySignUpModal &&
+                                        <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
+                                            {count == 0 &&
+                                                <View style={{
+                                                    // backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                                    backgroundColor: 'transparent',
+                                                    padding: HeightRatio(20),
+                                                    borderRadius: HeightRatio(40),
+                                                    width: WidthRatio(160),
+                                                    margin: HeightRatio(20),
+                                                    alignSelf: 'center',
+                                                    justifyContent: 'center',
+                                                    flexDirection: 'column'
+                                                }}>
+                                                    <Text style={{
+                                                        color: '#fcd01f',
+                                                        fontSize: HeightRatio(50),
+                                                        fontWeight: 'bold',
+                                                        margin: HeightRatio(4),
+                                                    }}
+                                                        allowFontScaling={false}>
+                                                        Objective
+                                                    </Text>
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: HeightRatio(40),
+                                                        fontWeight: 'bold',
                                                         margin: HeightRatio(20),
+                                                        alignSelf: 'center'
+                                                    }}
+                                                        allowFontScaling={false}>
+                                                        Collect letters to spell the word at the top of the screen,
+                                                        avoid obstacles and enemies. Complete all 5 levels to advance
+                                                        to the next stage. Game over after colliding with 3 objects.
+                                                    </Text>
+
+                                                    <View style={{ ...Styling.profileDivisionLine }}></View>
+
+                                                    <Text style={{
+                                                        color: '#fcd01f',
+                                                        fontSize: HeightRatio(50),
+                                                        fontWeight: 'bold',
+                                                        marginTop: HeightRatio(20)
+                                                    }}
+                                                        allowFontScaling={false}>
+                                                        Collect <Text style={{ color: 'white' }}>
+                                                            the correct letters.
+                                                        </Text>
+                                                    </Text>
+                                                    <Image
+                                                        source={require('../../assets/Example_0.png')}
+                                                        style={{ height: HeightRatio(200), width: HeightRatio(300), alignSelf: 'center' }} />
+
+                                                    <View style={{ ...Styling.profileDivisionLine }}></View>
+
+
+                                                    <Text style={{
+                                                        color: '#f8200d',
+                                                        fontSize: HeightRatio(50),
+                                                        fontWeight: 'bold',
+                                                        marginTop: HeightRatio(20)
+                                                    }}
+                                                        allowFontScaling={false}>
+                                                        Avoid <Text style={{ color: 'white' }}>
+                                                            the wrong letters.
+                                                        </Text>
+                                                    </Text>
+
+                                                    <Text style={{
+                                                        color: '#f8200d',
+                                                        fontSize: HeightRatio(50),
+                                                        fontWeight: 'bold',
+                                                        marginTop: HeightRatio(20)
+                                                    }}
+                                                        allowFontScaling={false}>
+                                                        Avoid <Text style={{ color: 'white' }}>
+                                                            obstacles.
+                                                        </Text>
+                                                    </Text>
+
+                                                    <View style={{
+                                                        flexDirection: 'row',
+                                                        flexWrap: 'wrap',
                                                         alignSelf: 'center',
                                                         justifyContent: 'center',
-                                                        flexDirection: 'column'
+                                                        marginTop: HeightRatio(20)
                                                     }}>
-                                                        <Text style={{
-                                                            color: '#fcd01f',
-                                                            fontSize: HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            margin: HeightRatio(4),
-                                                        }}
-                                                        allowFontScaling={false}>
-                                                            Objective
-                                                        </Text>
-                                                        <Text style={{
-                                                            color: 'white',
-                                                            fontSize: HeightRatio(40),
-                                                            fontWeight: 'bold',
-                                                            margin: HeightRatio(20),
-                                                            alignSelf: 'center'
-                                                        }}
-                                                        allowFontScaling={false}>
-                                                            Collect letters to spell the word at the top of the screen,
-                                                            avoid obstacles and enemies. Complete all 5 levels to advance
-                                                            to the next stage. Game over after colliding with 3 objects.
-                                                        </Text>
 
-                                                        <View style={{...Styling.profileDivisionLine}}></View>
-
-                                                        <Text style={{
-                                                            color: '#fcd01f',
-                                                            fontSize: HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            marginTop: HeightRatio(20)
-                                                        }}
-                                                        allowFontScaling={false}>
-                                                            Collect <Text style={{ color: 'white' }}>
-                                                                the correct letters.
-                                                            </Text>
-                                                        </Text>
-                                                        <Image
-                                                            source={require('../../assets/Example_0.png')}
-                                                            style={{ height: HeightRatio(200), width: HeightRatio(300), alignSelf: 'center' }} />
-
-                                                        <View style={{...Styling.profileDivisionLine}}></View>
-
-
-                                                        <Text style={{
-                                                            color: '#f8200d',
-                                                            fontSize:  HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            marginTop: HeightRatio(20)
-                                                        }}
-                                                        allowFontScaling={false}>
-                                                            Avoid <Text style={{ color: 'white' }}>
-                                                                the wrong letters.
-                                                            </Text>
-                                                        </Text>
-
-                                                        <Text style={{
-                                                            color: '#f8200d',
-                                                            fontSize:  HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            marginTop: HeightRatio(20)
-                                                        }}
-                                                        allowFontScaling={false}>
-                                                            Avoid <Text style={{ color: 'white' }}>
-                                                                obstacles.
-                                                            </Text>
-                                                        </Text>
-                                                        
+                                                        {/* CHARACTER: Asteroid */}
                                                         <View style={{
-                                                            flexDirection: 'row',
-                                                            flexWrap: 'wrap',
-                                                            alignSelf: 'center',
-                                                            justifyContent: 'center',
-                                                            marginTop: HeightRatio(20)
+                                                            backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                                            borderRadius: 10,
+                                                            padding: 10,
+                                                            margin: 5,
+                                                            width: 100,
+                                                            height: 100
                                                         }}>
-
-                                                            {/* CHARACTER: Asteroid */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_asteroid_2.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text style={{ color: 'white', alignSelf: 'center', marginTop: 5 }}>Asteroid</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Red UFO */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_red_ufo.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text style={{ color: 'white', alignSelf: 'center', marginTop: 5 }}>Red UFO</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Twin */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_enemy_4.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text style={{ color: 'white', alignSelf: 'center', marginTop: 5 }}>Twin</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Opacity Bot */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_enemy_3.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text style={{ color: 'white', alignSelf: 'center', marginTop: 5 }}>Opacity Bot</Text>
-                                                            </View>
+                                                            <Image
+                                                                source={require('../../assets/projectile_asteroid_2.png')}
+                                                                style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                                            <Text style={{ color: 'white', alignSelf: 'center', marginTop: 5 }}>Asteroid</Text>
                                                         </View>
 
-                                                        <View style={{...Styling.profileDivisionLine}}></View>
+                                                        {/* CHARACTER: Red UFO */}
+                                                        <View style={{
+                                                            backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                                            borderRadius: 10,
+                                                            padding: 10,
+                                                            margin: 5,
+                                                            width: 100,
+                                                            height: 100
+                                                        }}>
+                                                            <Image
+                                                                source={require('../../assets/projectile_red_ufo.png')}
+                                                                style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                                            <Text style={{ color: 'white', alignSelf: 'center', marginTop: 5 }}>Red UFO</Text>
+                                                        </View>
 
-                                                        <Text style={{
-                                                            color: '#fcd01f',
-                                                            fontSize:  HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            marginTop: HeightRatio(20)
-                                                        }}
-                                                        allowFontScaling={false}>
-                                                            Game over? <Text style={{ color: 'white' }}>
-                                                                Well, that depends.
-                                                            </Text>
-                                                        </Text>
-                                                        <Image
-                                                            source={require('../../assets/Example_0b.png')}
-                                                            style={{ height: 200, width: 200, alignSelf: 'center', marginTop: 20 }} />
-                                                        <Text style={{
-                                                            color: '#00fcff',
-                                                            fontSize:  HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            marginTop: HeightRatio(20)
-                                                        }}
-                                                        allowFontScaling={false}>
-                                                            But wait, <Text style={{ color: 'white' }}>
-                                                                use a token to continue!
-                                                            </Text>
-                                                        </Text>
+                                                        {/* CHARACTER: Twin */}
+                                                        <View style={{
+                                                            backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                                            borderRadius: 10,
+                                                            padding: 10,
+                                                            margin: 5,
+                                                            width: 100,
+                                                            height: 100
+                                                        }}>
+                                                            <Image
+                                                                source={require('../../assets/projectile_enemy_4.png')}
+                                                                style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                                            <Text style={{ color: 'white', alignSelf: 'center', marginTop: 5 }}>Twin</Text>
+                                                        </View>
+
+                                                        {/* CHARACTER: Opacity Bot */}
+                                                        <View style={{
+                                                            backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                                            borderRadius: 10,
+                                                            padding: 10,
+                                                            margin: 5,
+                                                            width: 100,
+                                                            height: 100
+                                                        }}>
+                                                            <Image
+                                                                source={require('../../assets/projectile_enemy_3.png')}
+                                                                style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                                            <Text style={{ color: 'white', alignSelf: 'center', marginTop: 5 }}>Opacity Bot</Text>
+                                                        </View>
                                                     </View>
-                                                }
-                                                
 
-                                                <View style={{ height: HeightRatio(200) }}></View>
+                                                    <View style={{ ...Styling.profileDivisionLine }}></View>
 
-                                            </View>
-                                        }
-                                    </View >
-                                </ScrollView>
-                            </SafeAreaView>
-                        </>
-                    }
-                </ImageBackground>
+                                                    <Text style={{
+                                                        color: '#fcd01f',
+                                                        fontSize: HeightRatio(50),
+                                                        fontWeight: 'bold',
+                                                        marginTop: HeightRatio(20)
+                                                    }}
+                                                        allowFontScaling={false}>
+                                                        Game over? <Text style={{ color: 'white' }}>
+                                                            Well, that depends.
+                                                        </Text>
+                                                    </Text>
+                                                    <Image
+                                                        source={require('../../assets/Example_0b.png')}
+                                                        style={{ height: 200, width: 200, alignSelf: 'center', marginTop: 20 }} />
+                                                    <Text style={{
+                                                        color: '#00fcff',
+                                                        fontSize: HeightRatio(50),
+                                                        fontWeight: 'bold',
+                                                        marginTop: HeightRatio(20)
+                                                    }}
+                                                        allowFontScaling={false}>
+                                                        But wait, <Text style={{ color: 'white' }}>
+                                                            use a token to continue!
+                                                        </Text>
+                                                    </Text>
+                                                </View>
+                                            }
+
+
+                                            <View style={{ height: HeightRatio(200) }}></View>
+
+                                        </View>
+                                    }
+                                </View >
+                            </ScrollView>
+                        </SafeAreaView>
+                    </>
+                }
+                {/* </ImageBackground> */}
                 <Navbar nav={navigation} auth={mainState.current.authState} position={'absolute'} from={'profile'} />
 
             </View>
@@ -347,16 +412,16 @@ export const HomeScreen = ({ navigation }) => {
                 <View style={Styling.modal_centered_view}>
                     <View style={Styling.modal_view}>
                         <View style={{ flexDirection: 'column', width: WidthRatio(160) }}>
-                            <Text 
-                                style={{ color: '#fcd01f', fontSize: HeightRatio(50), fontWeight: 'bold' }} 
+                            <Text
+                                style={{ color: '#fcd01f', fontSize: HeightRatio(50), fontWeight: 'bold' }}
                                 allowFontScaling={false}>
                                 Main thing : <Text style={{ color: 'white' }}>
                                     Sign up!
                                 </Text>
                             </Text>
                             <View style={{ height: 10 }}></View>
-                            <Text 
-                                style={{ color: '#fcd01f', fontSize: HeightRatio(50), fontWeight: 'bold' }} 
+                            <Text
+                                style={{ color: '#fcd01f', fontSize: HeightRatio(50), fontWeight: 'bold' }}
                                 allowFontScaling={false}>
                                 Details : <Text style={{ color: 'white' }}>
                                     Enhance your gaming experience and put your skills on display by

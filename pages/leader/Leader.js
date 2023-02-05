@@ -24,14 +24,31 @@ export const LeaderScreen = ({ navigation }) => {
       <View key={pos}>
         <View
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            // backgroundColor: 'rgba(255, 255, 255, 0.1)',
             height: HeightRatio(120),
             width: WidthRatio(160),
-            flexDirection: 'row', 
+            flexDirection: 'row',
             justifyContent: 'space-evenly',
-            alignSelf: 'center'
+            alignSelf: 'center',
+            // borderRadius: HeightRatio(40),
+            // borderTopLeftRadius: HeightRatio(70),
+            // borderBottomRightRadius: HeightRatio(70)
+
           }}
         >
+          <LinearGradient
+            colors={['#0b132b', '#181d21']}
+            style={{
+              ...Styling.background,
+              height: HeightRatio(108),
+              borderRadius: HeightRatio(40),
+            borderTopLeftRadius: HeightRatio(70),
+            borderBottomRightRadius: HeightRatio(70),
+              borderWidth: 2,
+              // borderColor: 'rgba(255, 255, 255, 0.25)',
+              opacity: 0.5
+            }}
+          />
           <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
               <Text
@@ -61,7 +78,7 @@ export const LeaderScreen = ({ navigation }) => {
                 style={{
                   fontSize: HeightRatio(40),
                   fontWeight: 'bold',
-                  color: 'white',
+                  color: '#fcd01f',
                   textAlign: 'right',
                   width: WidthRatio(70)
                 }}
@@ -92,51 +109,38 @@ export const LeaderScreen = ({ navigation }) => {
   return (
     <>
       <View style={{ backgroundColor: 'black', height: '100%' }}>
-        {/* <ImageBackground
-          source={require('../../assets/background_leaderboard.png')}
-          resizeMode="cover"
+        <Image
+          source={require('../../assets/high_scores_background.png')}
           style={{
-            justifyContent: 'center',
-            height: '100%'
-          }}> */}
+            width: windowWidth,
+            height: HeightRatio(400),
+            position: 'absolute',
+            zIndex: -10,
+            borderBottomLeftRadius: HeightRatio(100),
+            borderBottomRightRadius: HeightRatio(100)
+          }}
+        />
 
-          <View
-            style={{
-              alignSelf: 'center',
-              // marginTop: WidthRatio(30)
+        <View
+          style={{
+            alignSelf: 'center',
+            // marginTop: WidthRatio(30)
 
-            }}
-          >
-            <View style={{ 
-              alignSelf: 'center', 
-              flexDirection: 'column', 
-              padding: HeightRatio(20), 
-              borderRadius: HeightRatio(100), 
-              width: WidthRatio(160), 
-              marginTop: HeightRatio(160) 
-            }}>
-              <Text 
-                style={{ 
-                  color: 'yellow', 
-                  fontSize: HeightRatio(80), 
-                  fontWeight: 'bold', 
-                  alignSelf: 'center' 
-                }}
-                allowFontScaling={false}
-              >HIGH SCORES</Text>
-            </View>
-            <SafeAreaView style={Styling.flatlistContainer}>
-              <FlatList
-                data={DATA}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-              />
-              <View style={{ marginBottom: 70 }}></View>
-              <Navbar nav={navigation} position={'relative'} from={'leader'} />
+          }}
+        >
 
-            </SafeAreaView>
-          </View>
-        {/* </ImageBackground> */}
+          <SafeAreaView style={{ ...Styling.flatlistContainer, marginTop: HeightRatio(450) }}>
+            <FlatList
+              data={DATA}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+            />
+            <View style={{ marginBottom: 70 }}></View>
+
+          </SafeAreaView>
+          <Navbar nav={navigation} position={'relative'} from={'leader'} />
+
+        </View>
 
       </View>
 

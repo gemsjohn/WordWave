@@ -46,18 +46,12 @@ export const SavedGame = (props) => {
             setDisplayLetters(arr)
         }, 500)
 
-        console.log(str)
-
     }, [userByID])
 
 
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View style={{
-                // alignSelf: 'center', 
-                // height: HeightRatio(300), 
-                // width: HeightRatio(450) 
-            }}>
+            <View style={{}}>
                 <View style={{ flexDirection: 'row' }}>
                     {displayLetters.map((l, i) => (
                         <View style={{
@@ -99,7 +93,7 @@ export const SavedGame = (props) => {
                         fontSize: HeightRatio(50),
                         margin: HeightRatio(10)
                     }}>
-                        Stage: {userByID?.user.saved.stage}
+                        Score: {userByID?.user.saved.score}
                     </Text>
                 </View>
 
@@ -113,15 +107,15 @@ export const SavedGame = (props) => {
                     })
                 }}
                 style={{
-                    alignSelf: 'center',
-                    height: HeightRatio(200),
+                    height: HeightRatio(100),
                     width: HeightRatio(200),
                     backgroundColor: '#35faa9',
                     borderRadius: HeightRatio(50),
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    alignSelf: 'center'
                 }}
             >
-                <Text style={{ color: 'black', fontSize: HeightRatio(50), alignSelf: 'center' }}>
+                <Text style={{ color: 'black', fontSize: HeightRatio(30), fontWeight: 'bold', alignSelf: 'center' }}>
                     PLAY &nbsp;
                 </Text>
             </TouchableOpacity>
