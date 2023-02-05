@@ -114,7 +114,8 @@ export const KeyScreen = ({ navigation }) => {
                                     backgroundColor: 'rgba(255, 255, 255, 1.0)',
                                     height: HeightRatio(50),
                                     width: HeightRatio(50),
-                                    margin: HeightRatio(20)
+                                    margin: HeightRatio(20),
+                                    borderTopRightRadius: HeightRatio(30)
                                 }} />
 
                                 :
@@ -122,7 +123,8 @@ export const KeyScreen = ({ navigation }) => {
                                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
                                     height: HeightRatio(50),
                                     width: HeightRatio(50),
-                                    margin: HeightRatio(20)
+                                    margin: HeightRatio(20),
+                                    borderTopRightRadius: HeightRatio(30)
                                 }} />
                             }
                             {count > 1 ?
@@ -130,7 +132,8 @@ export const KeyScreen = ({ navigation }) => {
                                     backgroundColor: 'rgba(255, 255, 255, 1.0)',
                                     height: HeightRatio(50),
                                     width: HeightRatio(50),
-                                    margin: HeightRatio(20)
+                                    margin: HeightRatio(20),
+                                    borderTopRightRadius: HeightRatio(30)
                                 }} />
 
                                 :
@@ -138,7 +141,8 @@ export const KeyScreen = ({ navigation }) => {
                                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
                                     height: HeightRatio(50),
                                     width: HeightRatio(50),
-                                    margin: HeightRatio(20)
+                                    margin: HeightRatio(20),
+                                    borderTopRightRadius: HeightRatio(30)
                                 }} />
                             }
                             {count > 2 ?
@@ -146,7 +150,8 @@ export const KeyScreen = ({ navigation }) => {
                                     backgroundColor: 'rgba(255, 255, 255, 1.0)',
                                     height: HeightRatio(50),
                                     width: HeightRatio(50),
-                                    margin: HeightRatio(20)
+                                    margin: HeightRatio(20),
+                                    borderTopRightRadius: HeightRatio(30)
                                 }} />
 
                                 :
@@ -154,7 +159,8 @@ export const KeyScreen = ({ navigation }) => {
                                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
                                     height: HeightRatio(50),
                                     width: HeightRatio(50),
-                                    margin: HeightRatio(20)
+                                    margin: HeightRatio(20),
+                                    borderTopRightRadius: HeightRatio(30)
                                 }} />
                             }
                             {count > 3 ?
@@ -162,7 +168,8 @@ export const KeyScreen = ({ navigation }) => {
                                     backgroundColor: 'rgba(255, 255, 255, 1.0)',
                                     height: HeightRatio(50),
                                     width: HeightRatio(50),
-                                    margin: HeightRatio(20)
+                                    margin: HeightRatio(20),
+                                    borderTopRightRadius: HeightRatio(30)
                                 }} />
 
                                 :
@@ -170,7 +177,8 @@ export const KeyScreen = ({ navigation }) => {
                                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
                                     height: HeightRatio(50),
                                     width: HeightRatio(50),
-                                    margin: HeightRatio(20)
+                                    margin: HeightRatio(20),
+                                    borderTopRightRadius: HeightRatio(30)
                                 }} />
                             }
 

@@ -148,7 +148,7 @@ export const GameScreen = ({ navigation }) => {
         console.log("Setup: #3 ")
 
 
-        if (userByID?.user.saved.date != null) {
+        if (userByID?.user.saved != null && userByID?.user.saved.date != null) {
             setDisplayOptionsToPlaySavedGame(true)
             stage.current = parseInt(userByID?.user.saved.stage);
 

@@ -194,7 +194,7 @@ export const UserDetails = (props) => {
                             colors={['#0b132b', '#181d21']}
                             style={{
                                 ...Styling.background,
-                                height: HeightRatio(150),
+                                height: HeightRatio(190),
                                 borderRadius: HeightRatio(20),
                                 borderWidth: 2,
                                 borderColor: 'rgba(255, 255, 255, 0.25)',
@@ -202,12 +202,15 @@ export const UserDetails = (props) => {
                             }}
                         />
                         <View style={{ flexDirection: 'column', }}>
-                            <Text style={{
-                                color: 'white',
-                                fontSize: HeightRatio(50),
-                                fontWeight: 'bold',
-                                margin: HeightRatio(10)
-                            }}>{EditableFields[i].title}</Text>
+                            <Text 
+                                style={{
+                                    color: 'white',
+                                    fontSize: HeightRatio(50),
+                                    fontWeight: 'bold',
+                                    margin: HeightRatio(10)
+                                }} 
+                                allowFontScaling={false}
+                            >{EditableFields[i].title}</Text>
 
                             <Text
                                 style={{
@@ -221,6 +224,7 @@ export const UserDetails = (props) => {
                                 }}
                                 numberOfLines={1}
                                 ellipsizeMode='tail'
+                                allowFontScaling={false}
                             >
                                 {EditableFields[i].detail}
                             </Text>
@@ -272,7 +276,7 @@ export const UserDetails = (props) => {
                                                                     borderRadius: HeightRatio(20),
                                                                     padding: HeightRatio(20),
                                                                     alignSelf: 'center',
-                                                                    marginTop: HeightRatio(20)
+                                                                    marginTop: HeightRatio(30)
                                                                 }}>
                                                                     <Text
                                                                         style={{ color: 'white', fontSize: HeightRatio(30), fontWeight: 'bold' }}
@@ -283,13 +287,16 @@ export const UserDetails = (props) => {
                                                         </>
                                                     }
                                                     <View style={{ flexDirection: 'column', alignSelf: 'center', margin: 10 }}>
-                                                        <Text style={{
-                                                            color: 'white',
-                                                            fontSize: HeightRatio(40),
-                                                            margin: HeightRatio(10),
-                                                            marginTop: HeightRatio(20),
-                                                            marginBottom: HeightRatio(20)
-                                                        }}>
+                                                        <Text 
+                                                            style={{
+                                                                color: 'white',
+                                                                fontSize: HeightRatio(40),
+                                                                margin: HeightRatio(10),
+                                                                marginTop: HeightRatio(20),
+                                                                marginBottom: HeightRatio(20)
+                                                            }}
+                                                            allowFontScaling={false}
+                                                        >
                                                             {i == 3 ? 'Paste ID' : 'New ' + EditableFields[i].title}
                                                         </Text>
                                                         <View style={{ flexDirection: 'row' }}>
@@ -315,7 +322,7 @@ export const UserDetails = (props) => {
                                                                     borderWidth: 2,
                                                                     alignSelf: 'center',
                                                                     borderRadius: HeightRatio(20),
-                                                                    width: WidthRatio(120)
+                                                                    width: WidthRatio(120),
                                                                 }}
                                                             />
                                                             {/* [[[SUBMIT BUTTON]]] */}
@@ -352,11 +359,14 @@ export const UserDetails = (props) => {
 
                                             {i == 2 &&
                                                 <>
-                                                    <Text style={{
-                                                        color: 'white',
-                                                        fontSize: HeightRatio(40),
-                                                        margin: HeightRatio(20)
-                                                    }}>
+                                                    <Text 
+                                                        style={{
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(40),
+                                                            margin: HeightRatio(20)
+                                                        }}
+                                                        allowFontScaling={false}
+                                                    >
                                                         New Password
                                                     </Text>
                                                     <View style={{ flexDirection: 'row', margin: 10 }}>
@@ -443,14 +453,20 @@ export const UserDetails = (props) => {
                                             }
                                             {promptPasswordInput1 != '' && promptPasswordInput2 != '' && promptPasswordInput1 == promptPasswordInput2 &&
                                                 <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                                    <Text style={{ color: 'white', fontSize: HeightRatio(40) }}>
+                                                    <Text 
+                                                        style={{ color: 'white', fontSize: HeightRatio(40) }}
+                                                        allowFontScaling={false}
+                                                    >
                                                         Passwords match!
                                                     </Text>
                                                 </View>
                                             }
                                             {promptPasswordInput1 != '' && promptPasswordInput2 != '' && promptPasswordInput1 != promptPasswordInput2 &&
                                                 <View style={{ flexDirection: 'row', alignSelf: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: 10, borderRadius: 10 }}>
-                                                    <Text style={{ color: 'red', fontSize: HeightRatio(40) }}>
+                                                    <Text 
+                                                        style={{ color: 'red', fontSize: HeightRatio(40) }}
+                                                        allowFontScaling={false}
+                                                    >
                                                         Passwords do not match!
                                                     </Text>
                                                 </View>
@@ -524,12 +540,18 @@ export const UserDetails = (props) => {
                             </TouchableOpacity>
                         </View>
                         {/* MIDDLE ROW */}
-                        <Text style={styles.modalText}>Are you sure you want to delete your account?</Text>
+                        <Text 
+                            style={styles.modalText}
+                            allowFontScaling={false}
+                        >Are you sure you want to delete your account?</Text>
                         <TouchableOpacity
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => handleDeleteAccount()}
                         >
-                            <Text style={styles.textStyle}>Delete</Text>
+                            <Text 
+                                style={styles.textStyle}
+                                allowFontScaling={false}
+                            >Delete</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

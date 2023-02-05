@@ -68,31 +68,43 @@ export const SavedGame = (props) => {
                         }}
                             key={i}
                         >
-                            <Text style={{ ...Styling.projectile_random_word_letter, fontSize: HeightRatio(35) }} allowFontScaling={false}>{l.toUpperCase()}</Text>
+                            <Text 
+                                style={{ ...Styling.projectile_random_word_letter, fontSize: HeightRatio(35) }} 
+                                allowFontScaling={false}
+                            >{l.toUpperCase()}</Text>
                         </View>
                     ))}
                 </View>
 
                 <View style={{ flexDirection: 'column' }}>
-                    <Text style={{
-                        color: 'white',
-                        fontSize: HeightRatio(50),
-                        margin: HeightRatio(10),
-                    }}>
+                    <Text 
+                        style={{
+                            color: 'white',
+                            fontSize: HeightRatio(50),
+                            margin: HeightRatio(10),
+                        }}
+                        allowFontScaling={false}
+                    >
                         Stage: {userByID?.user.saved.stage}
                     </Text>
-                    <Text style={{
-                        color: 'white',
-                        fontSize: HeightRatio(50),
-                        margin: HeightRatio(10)
-                    }}>
+                    <Text 
+                        style={{
+                            color: 'white',
+                            fontSize: HeightRatio(50),
+                            margin: HeightRatio(10)
+                        }}
+                        allowFontScaling={false}
+                    >
                         Level: {userByID?.user.saved.level}
                     </Text>
-                    <Text style={{
-                        color: 'white',
-                        fontSize: HeightRatio(50),
-                        margin: HeightRatio(10)
-                    }}>
+                    <Text 
+                        style={{
+                            color: 'white',
+                            fontSize: HeightRatio(50),
+                            margin: HeightRatio(10)
+                        }}
+                        allowFontScaling={false}
+                    >
                         Score: {userByID?.user.saved.score}
                     </Text>
                 </View>
@@ -115,8 +127,11 @@ export const SavedGame = (props) => {
                     alignSelf: 'center'
                 }}
             >
-                <Text style={{ color: 'black', fontSize: HeightRatio(30), fontWeight: 'bold', alignSelf: 'center' }}>
-                    PLAY &nbsp;
+                <Text 
+                    style={{ color: 'black', fontSize: HeightRatio(30), fontWeight: 'bold', textAlign: 'center' }}
+                    allowFontScaling={false}
+                >
+                    PLAY
                 </Text>
             </TouchableOpacity>
         </View>
