@@ -1898,7 +1898,7 @@ export const Stage_4_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/projectile_enemy_3.png')}
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+            style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
         <Animated.View
           style={[Styling.projectile_obstacle_block, {

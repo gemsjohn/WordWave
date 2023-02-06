@@ -33,6 +33,7 @@ import { Stage_5_Projectile } from './Stages/Stage_5_Projectile';
 import { Stage_6_Projectile } from './Stages/Stage_6_Projectile';
 
 
+
 import {
     View,
     Platform,
@@ -214,6 +215,7 @@ export const GameScreen = ({ navigation }) => {
                 setStage4(false);
                 setStage5(false);
                 setStage6(false);
+                setStage7(false);
                 break;
             case 2:
                 setStage1(false);
@@ -222,6 +224,7 @@ export const GameScreen = ({ navigation }) => {
                 setStage4(false);
                 setStage5(false);
                 setStage6(false);
+                setStage7(false);
                 break;
             case 3:
                 setStage1(false);
@@ -230,6 +233,7 @@ export const GameScreen = ({ navigation }) => {
                 setStage4(false);
                 setStage5(false);
                 setStage6(false);
+                setStage7(false);
                 break;
             case 4:
                 setStage1(false);
@@ -238,6 +242,7 @@ export const GameScreen = ({ navigation }) => {
                 setStage4(true);
                 setStage5(false);
                 setStage6(false);
+                setStage7(false);
                 break;
             case 5:
                 setStage1(false);
@@ -246,6 +251,7 @@ export const GameScreen = ({ navigation }) => {
                 setStage4(false);
                 setStage5(true);
                 setStage6(false);
+                setStage7(false);
                 break;
             case 6:
                 setStage1(false);
@@ -254,6 +260,17 @@ export const GameScreen = ({ navigation }) => {
                 setStage4(false);
                 setStage5(false);
                 setStage6(true);
+                setStage7(false);
+
+                break;
+            case 6:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                setStage7(true)
                 break;
             default:
                 break;

@@ -241,7 +241,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                     alignSelf: 'center',
                                                     marginBottom: 20,
                                                     width: WidthRatio(160),
-                                                    padding: HeightRatio(15),
+                                                    padding: HeightRatio(25),
                                                     width: WidthRatio(160),
                                                     flexDirection: 'column',
                                                     margin: HeightRatio(20),
@@ -251,7 +251,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                 }}>
                                                     <LinearGradient
                                                         colors={['#0b132b', '#181d21']}
-                                                        style={{ ...Styling.background, height: HeightRatio(300), borderRadius: HeightRatio(30), opacity: 0.5 }}
+                                                        style={{ ...Styling.background, height: HeightRatio(325), borderRadius: HeightRatio(30), opacity: 0.5 }}
                                                     />
                                                     <SavedGame nav={navigation} />
                                                 </View>

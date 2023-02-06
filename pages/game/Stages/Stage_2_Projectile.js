@@ -1760,7 +1760,7 @@ export const Stage_2_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/projectile_red_ufo.png')}
-            style={{ height: WidthRatio(15), width: WidthRatio(20) }} />
+            style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
 
         {/* TWINS */}

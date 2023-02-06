@@ -105,86 +105,91 @@ export const KeyScreen = ({ navigation }) => {
                                 height: HeightRatio(200),
                                 width: HeightRatio(200),
                                 borderRadius: 200,
-                                marginTop: HeightRatio(100),
+                                marginTop: HeightRatio(50),
                                 alignSelf: 'center'
                             }} />
-                        <View style={{ marginTop: HeightRatio(100), flexDirection: 'row', alignSelf: 'center' }}>
-                            {count > 0 ?
-                                <View style={{
-                                    backgroundColor: 'rgba(255, 255, 255, 1.0)',
-                                    height: HeightRatio(50),
-                                    width: HeightRatio(50),
-                                    margin: HeightRatio(20),
-                                    borderTopRightRadius: HeightRatio(30)
-                                }} />
+                        <View style={{ marginTop: HeightRatio(50), alignSelf: 'center' }}>
+                            <View style={{flexDirection: 'row'}}>
+                                {count > 0 ?
+                                    <View style={{
+                                        backgroundColor: 'rgba(255, 255, 255, 1.0)',
+                                        height: HeightRatio(70),
+                                        width: HeightRatio(70),
+                                        margin: HeightRatio(20),
+                                        borderTopLeftRadius: HeightRatio(70)
+                                    }} />
 
-                                :
-                                <View style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                    height: HeightRatio(50),
-                                    width: HeightRatio(50),
-                                    margin: HeightRatio(20),
-                                    borderTopRightRadius: HeightRatio(30)
-                                }} />
-                            }
-                            {count > 1 ?
-                                <View style={{
-                                    backgroundColor: 'rgba(255, 255, 255, 1.0)',
-                                    height: HeightRatio(50),
-                                    width: HeightRatio(50),
-                                    margin: HeightRatio(20),
-                                    borderTopRightRadius: HeightRatio(30)
-                                }} />
+                                    :
+                                    <View style={{
+                                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        height: HeightRatio(70),
+                                        width: HeightRatio(70),
+                                        margin: HeightRatio(20),
+                                        borderTopLeftRadius: HeightRatio(70)
+                                    }} />
+                                }
+                                {count > 1 ?
+                                    <View style={{
+                                        backgroundColor: 'rgba(255, 255, 255, 1.0)',
+                                        height: HeightRatio(70),
+                                        width: HeightRatio(70),
+                                        margin: HeightRatio(20),
+                                        borderTopRightRadius: HeightRatio(70)
+                                    }} />
 
-                                :
-                                <View style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                    height: HeightRatio(50),
-                                    width: HeightRatio(50),
-                                    margin: HeightRatio(20),
-                                    borderTopRightRadius: HeightRatio(30)
-                                }} />
-                            }
-                            {count > 2 ?
-                                <View style={{
-                                    backgroundColor: 'rgba(255, 255, 255, 1.0)',
-                                    height: HeightRatio(50),
-                                    width: HeightRatio(50),
-                                    margin: HeightRatio(20),
-                                    borderTopRightRadius: HeightRatio(30)
-                                }} />
+                                    :
+                                    <View style={{
+                                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        height: HeightRatio(70),
+                                        width: HeightRatio(70),
+                                        margin: HeightRatio(20),
+                                        borderTopRightRadius: HeightRatio(70)
+                                    }} />
+                                }
+                            </View>
 
-                                :
-                                <View style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                    height: HeightRatio(50),
-                                    width: HeightRatio(50),
-                                    margin: HeightRatio(20),
-                                    borderTopRightRadius: HeightRatio(30)
-                                }} />
-                            }
-                            {count > 3 ?
-                                <View style={{
-                                    backgroundColor: 'rgba(255, 255, 255, 1.0)',
-                                    height: HeightRatio(50),
-                                    width: HeightRatio(50),
-                                    margin: HeightRatio(20),
-                                    borderTopRightRadius: HeightRatio(30)
-                                }} />
+                            <View style={{flexDirection: 'row'}}>
+                                {count > 3 ?
+                                    <View style={{
+                                        backgroundColor: 'rgba(255, 255, 255, 1.0)',
+                                        height: HeightRatio(70),
+                                        width: HeightRatio(70),
+                                        margin: HeightRatio(20),
+                                        borderBottomLeftRadius: HeightRatio(70)
+                                    }} />
 
-                                :
-                                <View style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                    height: HeightRatio(50),
-                                    width: HeightRatio(50),
-                                    margin: HeightRatio(20),
-                                    borderTopRightRadius: HeightRatio(30)
-                                }} />
-                            }
+                                    :
+                                    <View style={{
+                                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        height: HeightRatio(70),
+                                        width: HeightRatio(70),
+                                        margin: HeightRatio(20),
+                                        borderBottomLeftRadius: HeightRatio(70)
+                                    }} />
+                                }
+                                {count > 2 ?
+                                    <View style={{
+                                        backgroundColor: 'rgba(255, 255, 255, 1.0)',
+                                        height: HeightRatio(70),
+                                        width: HeightRatio(70),
+                                        margin: HeightRatio(20),
+                                        borderBottomRightRadius: HeightRatio(70)
+                                    }} />
+
+                                    :
+                                    <View style={{
+                                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        height: HeightRatio(70),
+                                        width: HeightRatio(70),
+                                        margin: HeightRatio(20),
+                                        borderBottomRightRadius: HeightRatio(70)
+                                    }} />
+                                }
+                            </View>
 
 
                         </View>
-                        <View style={{ marginTop: HeightRatio(100) }}>
+                        <View style={{ marginTop: HeightRatio(50) }}>
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                                 <TouchableOpacity style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', height: HeightRatio(120), width: HeightRatio(120), borderRadius: HeightRatio(200), margin: HeightRatio(20) }} onPress={() => handleKeyPress('1')}>
                                     <Text

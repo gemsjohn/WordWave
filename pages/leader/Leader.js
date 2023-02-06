@@ -135,9 +135,19 @@ export const LeaderScreen = ({ navigation }) => {
               renderItem={renderItem}
               keyExtractor={item => item.id}
             />
-            <View style={{ marginBottom: 70 }}></View>
+            <Image
+            source={require('../../assets/down_arrow.png')}
+            style={{
+              height:HeightRatio(50), 
+              width: HeightRatio(50),
+              alignSelf: 'center',
+              marginTop: HeightRatio(30)
+            }}
+          />
+            <View style={{ marginBottom: HeightRatio(30) }}></View>
 
           </SafeAreaView>
+          
           <Navbar nav={navigation} position={'relative'} from={'leader'} />
 
         </View>

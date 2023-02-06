@@ -40,6 +40,7 @@ export const SavedGame = (props) => {
     }, [])
 
     useEffect(() => {
+        refetch();
         let str = `${userByID?.user.saved.displayLetters}`;
         setTimeout(() => {
             let arr = str.split(",");
@@ -47,6 +48,7 @@ export const SavedGame = (props) => {
         }, 500)
 
     }, [userByID])
+
 
 
     return (
@@ -101,7 +103,7 @@ export const SavedGame = (props) => {
                         style={{
                             color: 'white',
                             fontSize: HeightRatio(50),
-                            margin: HeightRatio(10)
+                            margin: HeightRatio(10),
                         }}
                         allowFontScaling={false}
                     >

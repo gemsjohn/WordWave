@@ -86,6 +86,7 @@ export const Stage_6_Projectile = (props) => {
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   const [displayPauseText, setDisplayPauseText] = useState(false)
   const [openGate, setOpenGate] = useState(false);
+  const [toBeContinuedModal, setToBeContinuedModal] = useState(false);
   let timeoutCallGenerateID;
 
   // [LETTER ANIMATION] - - - - - 
@@ -273,7 +274,7 @@ export const Stage_6_Projectile = (props) => {
   }
 
   useEffect(() => {
-    
+
     if (wordPlusSeven.current.length > 0 && openGate) {
       console.log("Stage, #3 wordPlusSeven & openGate")
       hideCrashesUntilUpdate.current = false;
@@ -314,7 +315,7 @@ export const Stage_6_Projectile = (props) => {
     }
   }, [wordPlusSeven.current, openGate])
 
-  
+
   const letterAnimation = () => {
     if (isGameInProgress.current) {
       hasUpdatedLetterBlock.current = false;
@@ -971,7 +972,7 @@ export const Stage_6_Projectile = (props) => {
       isGameInProgress: false
     })
     props.nav.dispatch(resetActionHome);
-    
+
     setTimeout(() => {
       setDisplayPauseText(!displayPauseText);
       isGameInProgress.current = false;
@@ -1082,7 +1083,7 @@ export const Stage_6_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
-      if (input.level >= 10) {
+      if (input.level >= 0) {
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
@@ -1097,28 +1098,37 @@ export const Stage_6_Projectile = (props) => {
           }, 1000)
         }, 501)
 
-        setTimeout(() => {
-          setMainState({
-            stage1: false,
-            stage2: false,
-            stage3: false,
-            stage4: false,
-            stage5: false,
-            stage6: false,
-            stage7: true,
-            stage8: false,
-            stage9: false,
-            stage10: false,
-            currentScore: score.current,
-            currentLevel: 0,
-            currentCrashes: input.crashes,
-            currentLetterPocket: [],
-            currentWordPlusSeven: [],
-            currentDisplayLetters: [],
-            currentLetter_countValue: 0,
-            gameOverScreen: false
-          })
-        }, 1700)
+      setTimeout(() => {
+        setToBeContinuedModal(true);
+      }, 1700)
+
+
+        // setTimeout(() => {
+        //   console.log("- - - - - ")
+        //   console.log(score.current)
+        //   console.log("- - - - - ")
+
+        //   setMainState({
+        //     stage1: false,
+        //     stage2: false,
+        //     stage3: false,
+        //     stage4: false,
+        //     stage5: false,
+        //     stage6: false,
+        //     stage7: true,
+        //     stage8: false,
+        //     stage9: false,
+        //     stage10: false,
+        //     currentScore: score.current,
+        //     currentLevel: 0,
+        //     currentCrashes: input.crashes,
+        //     currentLetterPocket: [],
+        //     currentWordPlusSeven: [],
+        //     currentDisplayLetters: [],
+        //     currentLetter_countValue: 0,
+        //     gameOverScreen: false
+        //   })
+        // }, 1700)
 
         return;
       } else {
@@ -1213,6 +1223,19 @@ export const Stage_6_Projectile = (props) => {
     }
   }
 
+  const toBeContinued = async () => {
+    console.log("toBeContinued")
+    
+
+    setTimeout(() => {
+      setToBeContinuedModal(false)
+      isGameInProgress.current = false;
+      props.nav.dispatch(resetActionHome);
+
+    }, 1500)
+
+  };
+
 
   return (
     <View>
@@ -1238,7 +1261,7 @@ export const Stage_6_Projectile = (props) => {
           </>
         }
 
-          <>
+        <>
           {/* [PAUSE / RESUME] */}
           {isPaused && !resumeSelected ?
             <View style={{
@@ -1583,6 +1606,48 @@ export const Stage_6_Projectile = (props) => {
           </View>
         }
 
+{toBeContinuedModal &&
+            <View>
+                <View style={{
+                position: 'absolute',
+                zIndex: 25,
+                top: HeightRatio(0),
+                left: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                // flex: 1,
+                // width: '100%',
+                width: windowWidth,
+                alignSelf: 'center'
+            }}>
+                <Text style={{
+                color: 'white',
+                fontSize: HeightRatio(180),
+                fontWeight: 'bold',
+                // flexWrap: 'wrap',
+                alignSelf: 'center',
+                textAlign: 'center'
+                }}
+                allowFontScaling={false}
+                >TO BE CONTINUED...</Text>
+                <Text style={{
+                color: 'white',
+                fontSize: HeightRatio(50),
+                fontWeight: 'bold',
+                // flexWrap: 'wrap',
+                alignSelf: 'center',
+                textAlign: 'center'
+                }}
+                allowFontScaling={false}
+                >Save your place and return when there are more stages.</Text>
+                <TouchableOpacity
+                onPress={() => toBeContinued()}
+                style={{ backgroundColor: '#03d81a', width: WidthRatio(50), borderRadius: HeightRatio(10), alignSelf: 'center', margin: HeightRatio(25) }}>
+                <Text style={{ color: 'black', fontSize: 20, alignSelf: 'center', margin: HeightRatio(10) }}> Save </Text>
+                </TouchableOpacity>
+            </View>
+            </View>
+        }
+
 
         {/* GAME OVER MODAL */}
         {displayGameOverText &&
@@ -1849,7 +1914,7 @@ export const Stage_6_Projectile = (props) => {
                   stage10: false,
                   currentScore: 0,
                   currentLevel: 0,
-                  currentCrashes: 0, 
+                  currentCrashes: 0,
                   isGameInProgress: false
                 })
                 setTimeout(() => {

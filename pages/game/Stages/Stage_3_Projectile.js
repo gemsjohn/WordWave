@@ -1884,7 +1884,7 @@ export const Stage_3_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/projectile_red_ufo.png')}
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+            style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
 
         <Animated.View
@@ -1900,7 +1900,7 @@ export const Stage_3_Projectile = (props) => {
         >
           <Image
             source={require('../../../assets/projectile_red_ufo.png')}
-            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+            style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
 
         {/* Opacity Bot */}

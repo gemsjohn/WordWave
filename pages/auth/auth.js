@@ -123,11 +123,11 @@ export const Auth = ({ navigation }) => {
           authState: true
         })
 
-          console.log("Auth - Adding bearerToken, userID, and authState to SecureStore")
+        console.log("Auth - Adding bearerToken, userID, and authState to SecureStore")
 
-          save('bearerToken', `Bearer ${data.login.token}`);
-          save('userID', `${decoded?.data._id}`);
-          save('authState', 'true');
+        save('bearerToken', `Bearer ${data.login.token}`);
+        save('userID', `${decoded?.data._id}`);
+        save('authState', 'true');
 
         checkToken(`Bearer ${data.login.token}`)
       }
@@ -176,11 +176,20 @@ export const Auth = ({ navigation }) => {
           authState: true
         })
 
+        console.log("Auth - Adding bearerToken, userID, and authState to SecureStore")
+
+        save('bearerToken', `Bearer ${data.addUser.token}`);
+        save('userID', `${decoded?.data._id}`);
+        save('authState', 'true');
+
         checkToken(`Bearer ${data.addUser.token}`)
       }
     } catch (e) {
       setDisplayLoading(false);
-      console.error(e);
+      setPromptEmailInput("")
+      setPromptUsernameInput("")
+      setPromptPasswordInput("")
+
       Alert.alert(
         "Sign Up Failed",
         `${e}`,
@@ -194,6 +203,10 @@ export const Auth = ({ navigation }) => {
         userID: null,
         authState: false
       })
+
+      save('bearerToken', null);
+      save('userID', null);
+      save('authState', 'false');
 
     }
   };
