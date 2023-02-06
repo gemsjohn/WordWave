@@ -41,6 +41,7 @@ export const SavedGame = (props) => {
 
     useEffect(() => {
         refetch();
+        
         let str = `${userByID?.user.saved.displayLetters}`;
         setTimeout(() => {
             let arr = str.split(",");
@@ -48,6 +49,7 @@ export const SavedGame = (props) => {
         }, 500)
 
     }, [userByID])
+
 
 
 

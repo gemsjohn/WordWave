@@ -345,7 +345,8 @@ export const Stage_1_Projectile = (props) => {
       }
 
       setLetter(wordPlusSeven.current[count._value]);
-      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      // let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_0 = Math.floor(Math.random() * (HeightRatio(670) - HeightRatio(30))) + HeightRatio(30);
       letterPosition.setValue({ x: WidthRatio(370), y: localYPos_0 })
       animation.current = Animated.parallel([
         Animated.timing(letterPosition.x, {

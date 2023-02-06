@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState, useContext, useRef } from 'react';
+import { useEffect, useState, useContext, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { CommonActions } from '@react-navigation/native';
 import { useMutation, useQuery } from '@apollo/client';
@@ -18,7 +18,8 @@ import {
     SafeAreaView,
     ScrollView,
     ImageBackground,
-    Image
+    Image,
+    RefreshControl
 } from 'react-native';
 import {
     faSolid,
@@ -49,6 +50,15 @@ export const HomeScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
 
     const userID = useRef(null);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
 
 
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
@@ -104,7 +114,12 @@ export const HomeScreen = ({ navigation }) => {
                 {!loading &&
                     <>
                         <SafeAreaView style={{ marginBottom: HeightRatio(60) }}>
-                            <ScrollView style={{}}>
+                            <ScrollView 
+                                style={{}}
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                                }
+                            >
                                 <View style={{}}>
                                     <Image
                                         source={require('../../assets/home_background_image.png')}
