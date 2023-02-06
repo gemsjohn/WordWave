@@ -67,12 +67,13 @@ export const GameScreen = ({ navigation }) => {
     const stage = useRef(null);
 
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-        variables: { id: mainState.current.userID }
+        variables: { id: userID.current }
     });
 
 
     useLayoutEffect(() => {
         console.log("Setup: #1 ")
+        userID.current = mainState.current.userID;
         refetch();
 
         setMainState({
@@ -148,14 +149,16 @@ export const GameScreen = ({ navigation }) => {
     useEffect(() => {
         console.log("Setup: #3 ")
 
-
-        if (userByID?.user.saved != null && userByID?.user.saved.date != null) {
-            setDisplayOptionsToPlaySavedGame(true)
-            stage.current = parseInt(userByID?.user.saved.stage);
-
-        } else {
-            setDisplayOptionsToPlaySavedGame(false)
+        if (!mainState.current.isGameInProgress) {
+            if (userByID?.user.saved != null && userByID?.user.saved.date != null ) {
+                setDisplayOptionsToPlaySavedGame(true)
+                stage.current = parseInt(userByID?.user.saved.stage);
+    
+            } else {
+                setDisplayOptionsToPlaySavedGame(false)
+            }
         }
+        
     }, [userByID])
 
 

@@ -339,7 +339,7 @@ export const Stage_5_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
-            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2) {
+            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
               runAuxilliaryGreenHealth();
             }
 
@@ -1146,7 +1146,7 @@ export const Stage_5_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
-      } else if (crashes.current >= 2) {
+      } else if (crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {

@@ -233,7 +233,7 @@ export const HomeScreen = ({ navigation }) => {
                                                         width: HeightRatio(600),
                                                         flexDirection: 'column',
                                                         margin: HeightRatio(10),
-                                                        backgroundColor: '#ffff10',
+                                                        backgroundColor: '#fbd505',
                                                         borderRadius: HeightRatio(20),
                                                         borderWidth: 1,
                                                     }}>

@@ -305,7 +305,7 @@ export const Stage_1_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
-            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2) {
+            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
               runAuxilliaryGreenHealth();
             }
 
@@ -753,7 +753,6 @@ export const Stage_1_Projectile = (props) => {
       }, 500)
     }
     
-
     if (similarElements.length > prevSimilarElements) {
       console.log("Stage, Similar Element")
       score.current = score.current + 100;
@@ -794,7 +793,7 @@ export const Stage_1_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
-      } else if (crashes.current >= 2) {
+      } else if (crashes.current >= 2  && auxilliaryGreenHealth.current == null) {
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
@@ -850,15 +849,19 @@ export const Stage_1_Projectile = (props) => {
       isGameInProgress: isGameInProgress.current
     })
 
-    if (level.current >= 0 && animation.current != null && obstacle_0.current != null) {
-      animation.current.stop();
-      obstacle_0.current.stop();
+    if (level.current >= 0) {
+      if (animation.current != null) {
+        animation.current.stop();
+        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedLetterBlock.current = false;
+      }
 
-      letterPosition.setValue({ x: WidthRatio(370), y: 0 })
-      obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
+      if (obstacle_0.current != null) {
+        obstacle_0.current.stop();
+        obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
+        hasUpdatedObstacle_0.current = false;
+      }
 
-      hasUpdatedLetterBlock.current = false;
-      hasUpdatedObstacle_0.current = false;
 
       if (auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
@@ -1058,15 +1061,18 @@ export const Stage_1_Projectile = (props) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
 
-    if (level.current >= 0 && animation.current != null && obstacle_0.current != null) {
-      animation.current.stop();
-      obstacle_0.current.stop();
+    if (level.current >= 0) {
+      if (animation.current != null) {
+        animation.current.stop();
+        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedLetterBlock.current = false;
+      }
 
-      letterPosition.setValue({ x: WidthRatio(370), y: 0 })
-      obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
-
-      hasUpdatedLetterBlock.current = false;
-      hasUpdatedObstacle_0.current = false;
+      if (obstacle_0.current != null) {
+        obstacle_0.current.stop();
+        obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
+        hasUpdatedObstacle_0.current = false;
+      }
 
       if (auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();

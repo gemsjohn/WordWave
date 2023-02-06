@@ -100,19 +100,22 @@ export const Stage_6_Projectile = (props) => {
   const wordPlusSeven = useRef(mainState.current.currentWordPlusSeven);
   let timeoutLetter_ID;
 
-  // [OBSTACLE ANIMATION 0] - - - - - 
+  // [HOMING MISSILE ANIMATION 0] - - - - - 
   const hasUpdatedObstacle_homing_missile = useRef(false);
   const obstaclePosition_homing_missile = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
   const obstacleRotation_homing_missile = useRef(new Animated.Value(0)).current;
   const obstacle_homing_missile = useRef(null)
   const obstacleOpacity_homing_missile = useRef(new Animated.Value(0)).current;
+  const projectileCount = useRef(0);
+
   let timeoutObstacle_homing_missile_ID;
 
-  // [OBSTACLE ANIMATION 1] - - - - - 
+  // [HOMING MISSLE DISTRIBUTOR ANIMATION 1] - - - - - 
   const hasUpdatedObstacle_Distributor = useRef(false);
   const obstaclePosition_Distributor = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
   const obstacleRotation_Distributor = useRef(new Animated.Value(0)).current;
   const obstacle_Distributor = useRef(null)
+  const inputIterator = useRef(0)
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
   const hasUpdatedObstacle_right_angle_0 = useRef(false);
@@ -120,7 +123,6 @@ export const Stage_6_Projectile = (props) => {
   const obstacleRotation_right_angle_0 = useRef(new Animated.Value(0)).current;
   const obstacle_right_angle_0 = useRef(null)
   let timeoutObstacle_right_angle_0_ID;
-  const projectileCount = useRef(0);
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 1] - - - - - 
   const hasUpdatedObstacle_right_angle_1 = useRef(false);
@@ -219,7 +221,7 @@ export const Stage_6_Projectile = (props) => {
       setDisplayPlaybutton(false)
 
       if (level.current > 0) {
-        score.current = score.current + 1000;
+        score.current = mainState.current.currentScore + 1000;
         scoreFlash_1000.current = true;
         setTimeout(() => {
           scoreFlash_1000.current = false;
@@ -285,20 +287,23 @@ export const Stage_6_Projectile = (props) => {
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
           setMainState({
-            isGameInProgress: isGameInProgress.current
+            isGameInProgress: isGameInProgress.current,
+            gameOverScreen: false
           })
 
           updatedPostResume.current = true;
           pauseTimeout.current = false;
+          inputIterator.current = 0;
+          projectileCount.current = 0;
 
           setTimeout(() => {
-            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2) {
+            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
               runAuxilliaryGreenHealth();
             }
 
             if (level.current >= 0) {
               letterAnimation();
-              runObstacleAnimation_1(0);
+              runObstacleAnimation_1(inputIterator.current);
             }
 
             if (level.current >= 2) {
@@ -368,7 +373,14 @@ export const Stage_6_Projectile = (props) => {
   };
 
 
-  const runObstacleAnimation_0 = (input) => {
+  const runObstacleAnimation_0 = () => {
+
+    console.log("= = = = = = = ")
+    console.log(inputIterator.current)
+    console.log(level.current)
+    console.log(projectileCount.current)
+    console.log("= = = = = = = ")
+
     if (isGameInProgress.current) {
       hasUpdatedObstacle_homing_missile.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
@@ -379,11 +391,11 @@ export const Stage_6_Projectile = (props) => {
         { x: WidthRatio(293), y: HeightRatio(550) }
       ]
 
-      obstaclePosition_homing_missile.setValue({ x: feederLocation[input].x, y: feederLocation[input].y - HeightRatio(25) });
+      obstaclePosition_homing_missile.setValue({ x: feederLocation[inputIterator.current].x, y: feederLocation[inputIterator.current].y - HeightRatio(25) });
       obstacleOpacity_homing_missile.setValue(0);
 
       let offset;
-      if (input == 1) {
+      if (inputIterator.current == 1) {
         offset = mainState.current.charHeight;
       } else {
         offset = 0;
@@ -392,12 +404,12 @@ export const Stage_6_Projectile = (props) => {
 
       obstacle_homing_missile.current = Animated.sequence([
         Animated.timing(obstaclePosition_homing_missile.x, {
-          toValue: feederLocation[input].x,
+          toValue: feederLocation[inputIterator.current].x,
           duration: 50,
           useNativeDriver: true,
         }),
         Animated.timing(obstaclePosition_homing_missile.y, {
-          toValue: feederLocation[input].y,
+          toValue: feederLocation[inputIterator.current].y,
           duration: 50,
           useNativeDriver: true,
         }),
@@ -439,15 +451,22 @@ export const Stage_6_Projectile = (props) => {
           if (obstacle_Distributor.current != null) {
             obstacle_Distributor.current.stop();
           }
-          if (input == 0) {
-            runObstacleAnimation_1(1);
-          } else if (input == 1) {
-            runObstacleAnimation_1(0);
+          if (inputIterator.current == 0) {
+            inputIterator.current = 1
+            runObstacleAnimation_1(inputIterator.current);
+          } else if (inputIterator.current == 1) {
+            inputIterator.current = 0
+            runObstacleAnimation_1(inputIterator.current);
 
           }
 
         } else {
-          runObstacleAnimation_0(input);
+          if (timeoutObstacle_homing_missile_ID) {
+            clearTimeout(timeoutObstacle_homing_missile_ID)
+          }
+          timeoutObstacle_homing_missile_ID = setTimeout(() => {
+            runObstacleAnimation_0(inputIterator.current);
+          }, 200)
         }
 
 
@@ -457,7 +476,11 @@ export const Stage_6_Projectile = (props) => {
     }
   };
 
-  const runObstacleAnimation_1 = (input) => {
+  const runObstacleAnimation_1 = () => {
+    console.log("* * * * * * * * * *")
+    console.log(inputIterator.current)
+    console.log(level.current)
+    console.log("* * * * * * * * * *")
     projectileCount.current = 0;
     if (isGameInProgress.current) {
       hasUpdatedObstacle_Distributor.current = false;
@@ -475,12 +498,12 @@ export const Stage_6_Projectile = (props) => {
       obstacle_Distributor.current =
         Animated.parallel([
           Animated.timing(obstaclePosition_Distributor.x, {
-            toValue: feederLocation[input].x,
+            toValue: feederLocation[inputIterator.current].x,
             duration: 1500,
             useNativeDriver: true,
           }),
           Animated.timing(obstaclePosition_Distributor.y, {
-            toValue: feederLocation[input].y,
+            toValue: feederLocation[inputIterator.current].y,
             duration: 1500,
             useNativeDriver: true,
           }),
@@ -489,7 +512,7 @@ export const Stage_6_Projectile = (props) => {
       obstacle_Distributor.current.start(() => {
 
         setTimeout(() => {
-          runObstacleAnimation_0(input);
+          runObstacleAnimation_0(inputIterator.current);
 
         }, 1700)
 
@@ -763,6 +786,7 @@ export const Stage_6_Projectile = (props) => {
       const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
       const wrongElements = letterPocket.filter((element) => !letters.includes(element));
       if (wrongElements.length > prevWrongElements) {
+        console.log("Wrong Elements")
         crashes.current += 1;
         score.current = score.current - 25;
         flashOouchOnCrash.current = true;
@@ -772,6 +796,7 @@ export const Stage_6_Projectile = (props) => {
       }
 
       if (similarElements.length > prevSimilarElements) {
+        console.log("Similar Elements")
         score.current = score.current + 100;
         scoreFlash_100.current = true;
       }
@@ -805,15 +830,17 @@ export const Stage_6_Projectile = (props) => {
   useEffect(() => {
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
+        console.log("crashes.current < 2 && auxilliaryGreenHealth.current != null")
         auxilliaryGreenHealth.current.stop();
         auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
-      } else if (crashes.current >= 2) {
+      } else if (crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
+        console.log("3 Crashes, endGame")
         endGame({
           continue: false,
           local: "b",
@@ -879,6 +906,18 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedObstacle_homing_missile.current = false;
       }
 
+      if (obstacle_right_angle_1.current != null) {
+        obstacle_right_angle_1.current.stop();
+        obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+        hasUpdatedObstacle_right_angle_1.current = false;
+      }
+
+      if (auxilliaryGreenHealth.current != null) {
+        auxilliaryGreenHealth.current.stop();
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedAuxilliaryGreenHealth.current = false;
+      }
+
       if (obstacle_Distributor.current != null) {
         obstacle_Distributor.current.stop();
         obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
@@ -929,6 +968,7 @@ export const Stage_6_Projectile = (props) => {
         letterAnimation();
         // runObstacleAnimation_0();
         let randomInput = Math.floor(Math.random() * 2);
+        inputIterator.current = randomInput;
         runObstacleAnimation_1(randomInput);
 
       }
@@ -1027,6 +1067,18 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedObstacle_Distributor.current = false;
       }
 
+      if (obstacle_right_angle_1.current != null) {
+        obstacle_right_angle_1.current.stop();
+        obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+        hasUpdatedObstacle_right_angle_1.current = false;
+      }
+
+      if (auxilliaryGreenHealth.current != null) {
+        auxilliaryGreenHealth.current.stop();
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedAuxilliaryGreenHealth.current = false;
+      }
+
       if (auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
         auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
@@ -1111,6 +1163,7 @@ export const Stage_6_Projectile = (props) => {
       letterAnimation();
       // runObstacleAnimation_0();
       let randomInput = Math.floor(Math.random() * 2);
+      inputIterator.current = randomInput;
       runObstacleAnimation_1(randomInput);
 
     }
@@ -1122,10 +1175,15 @@ export const Stage_6_Projectile = (props) => {
   // input.local "b" represents a loss of game
   // input.local "c" represents the user navigating away from the game
   const endGame = async (input) => {
+    console.log("endGame Function #1")
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
+    console.log("endGame Function #2")
+
 
     if (level.current >= 0) {
+      inputIterator.current = 0;
+      projectileCount.current = 0;
       if (animation.current != null) {
         animation.current.stop();
         letterPosition.setValue({ x: WidthRatio(500), y: 0 })
@@ -1144,6 +1202,18 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedObstacle_Distributor.current = false;
       }
 
+      if (obstacle_right_angle_0.current != null) {
+        obstacle_right_angle_0.current.stop();
+        obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
+        hasUpdatedObstacle_right_angle_0.current = false;
+      }
+
+      if (obstacle_right_angle_1.current != null) {
+        obstacle_right_angle_1.current.stop();
+        obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+        hasUpdatedObstacle_right_angle_1.current = false;
+      }
+
       if (auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
         auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
@@ -1159,7 +1229,7 @@ export const Stage_6_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
@@ -1174,6 +1244,7 @@ export const Stage_6_Projectile = (props) => {
           }, 1000)
         }, 501)
 
+        // [[[[  TO BE CONTINUED!!!!!  ]]]]
         setTimeout(() => {
           setDisplayToBeCotinuedText(true);
         }, 1700)
