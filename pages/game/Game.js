@@ -149,7 +149,7 @@ export const GameScreen = ({ navigation }) => {
     useEffect(() => {
         console.log("Setup: #3 ")
 
-        if (!mainState.current.isGameInProgress) {
+        if (!isGameInProgress) {
             if (userByID?.user.saved != null && userByID?.user.saved.date != null ) {
                 setDisplayOptionsToPlaySavedGame(true)
                 stage.current = parseInt(userByID?.user.saved.stage);

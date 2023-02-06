@@ -181,6 +181,7 @@ export const Stage_3_Projectile = (props) => {
   const auxilliaryGreenHealth = useRef(null)
   let timeoutAuxilliaryGreenHealth_ID;
   const retainAuxilliaryGreenHealth = useRef(false);
+  const deployedGreenHealthOnGenerate = useRef(false);
 
   // [TESTING]
   const boxInterpolation_0 = obstacleRotation_0.interpolate({
@@ -348,6 +349,7 @@ export const Stage_3_Projectile = (props) => {
           setTimeout(() => {
             if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
               runAuxilliaryGreenHealth();
+              deployedGreenHealthOnGenerate.current = true;
             }
             if (level.current >= 0) {
               letterAnimation();
@@ -1139,6 +1141,7 @@ export const Stage_3_Projectile = (props) => {
           crashes.current -= 1;
           hasUpdatedAuxilliaryGreenHealth.current = true;
         }
+        deployedGreenHealthOnGenerate.current = false;
         auxilliaryGreenHealth.current.reset();
       }
     });
@@ -1217,7 +1220,7 @@ export const Stage_3_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
-      } else if (crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+      } else if (crashes.current >= 2 && deployedGreenHealthOnGenerate.current == false) {
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
