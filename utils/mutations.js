@@ -30,6 +30,14 @@ export const LOGIN_USER = gql`
         currentLetterCountValue
         date
       }
+      tobecontinued {
+        _id
+        userid
+        username
+        score
+        stage
+        date
+      }
       maxstage
       highscore
       tokens
@@ -41,8 +49,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const UPDATE_USER_PASSWORD = gql`
-  mutation Mutation($password: String) {
-  updateUserPassword(password: $password) {
+  mutation Mutation {
+  updateUserPassword {
     _id
     role
     username
@@ -66,6 +74,14 @@ export const UPDATE_USER_PASSWORD = gql`
       letterPocket
       displayLetters
       currentLetterCountValue
+      date
+    }
+    tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
       date
     }
     maxstage
@@ -105,6 +121,14 @@ export const UPDATE_USER = gql`
       currentLetterCountValue
       date
     }
+    tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
+      date
+    }
     maxstage
     highscore
     tokens
@@ -140,6 +164,14 @@ export const REQUEST_RESET = gql`
       letterPocket
       displayLetters
       currentLetterCountValue
+      date
+    }
+    tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
       date
     }
     maxstage
@@ -179,6 +211,14 @@ export const RESET_PASSWORD = gql`
       currentLetterCountValue
       date
     }
+    tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
+      date
+    }
     maxstage
     highscore
     tokens
@@ -216,6 +256,14 @@ export const ADD_USER = gql`
         letterPocket
         displayLetters
         currentLetterCountValue
+        date
+      }
+      tobecontinued {
+        _id
+        userid
+        username
+        score
+        stage
         date
       }
       maxstage
@@ -280,6 +328,14 @@ export const UPDATE_MAX_SCORE_AND_STAGE = gql`
       currentLetterCountValue
       date
     }
+    tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
+      date
+    }
     maxstage
     highscore
     tokens
@@ -317,6 +373,14 @@ export const UPDATE_TOKEN_COUNT = gql`
       currentLetterCountValue
       date
     }
+    tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
+      date
+    }
     maxstage
     highscore
     tokens
@@ -338,6 +402,19 @@ mutation Mutation($userid: String, $stage: String, $score: String, $level: Strin
     letterPocket
     displayLetters
     currentLetterCountValue
+    date
+  }
+}
+`;
+
+export const TO_BE_CONTINUED = gql`
+mutation Mutation($userid: String, $username: String, $score: String, $stage: String, $date: String) {
+  addToBeContinued(userid: $userid, username: $username, score: $score, stage: $stage, date: $date) {
+    _id
+    userid
+    username
+    score
+    stage
     date
   }
 }

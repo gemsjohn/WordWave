@@ -15,7 +15,7 @@ import {
 import { shuffle } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../../utils/queries';
-import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT, ADD_SAVED_GAME } from '../../../utils/mutations';
+import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT, ADD_SAVED_GAME, TO_BE_CONTINUED } from '../../../utils/mutations';
 import { MainStateContext } from '../../../App';
 import {
   isLetterBlockColliding,
@@ -51,6 +51,7 @@ export const Stage_6_Projectile = (props) => {
   const [updateMaxScoreAndStage] = useMutation(UPDATE_MAX_SCORE_AND_STAGE);
   const [updateTokenCount] = useMutation(UPDATE_TOKEN_COUNT);
   const [addSavedGame] = useMutation(ADD_SAVED_GAME);
+  const [addToBeContinued] = useMutation(TO_BE_CONTINUED);
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
@@ -86,7 +87,7 @@ export const Stage_6_Projectile = (props) => {
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   const [displayPauseText, setDisplayPauseText] = useState(false)
   const [openGate, setOpenGate] = useState(false);
-  const [toBeContinuedModal, setToBeContinuedModal] = useState(false);
+  const [displayToBeCotinuedText, setDisplayToBeCotinuedText] = useState(false)
   let timeoutCallGenerateID;
 
   // [LETTER ANIMATION] - - - - - 
@@ -981,6 +982,80 @@ export const Stage_6_Projectile = (props) => {
 
   };
 
+  const toBeContinuedSetup = () => {
+    isGameInProgress.current = false;
+    // updatedPostResume.current = false;
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+
+    setMainState({
+      stage1: false,
+      stage2: false,
+      stage3: false,
+      stage4: false,
+      stage5: false,
+      stage6: false,
+      stage7: false,
+      stage8: false,
+      stage9: false,
+      stage10: false,
+      currentScore: score.current,
+      currentLevel: level.current,
+      currentCrashes: crashes.current,
+      currentLetterPocket: uniqueLetterPocket,
+      currentWordPlusSeven: wordPlusSeven.current,
+      currentDisplayLetters: displayLetters,
+      currentLetter_countValue: countRef.current,
+      isGameInProgress: isGameInProgress.current
+    })
+
+    if (level.current >= 0) {
+      if (animation.current != null) {
+        animation.current.stop();
+        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedLetterBlock.current = false;
+      }
+
+      if (obstacle_homing_missile.current != null) {
+        obstacle_homing_missile.current.stop();
+        obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedObstacle_homing_missile.current = false;
+      }
+
+      if (obstacle_Distributor.current != null) {
+        obstacle_Distributor.current.stop();
+        obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedObstacle_Distributor.current = false;
+      }
+
+      if (auxilliaryGreenHealth.current != null) {
+        auxilliaryGreenHealth.current.stop();
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedAuxilliaryGreenHealth.current = false;
+      }
+    }
+
+    setTimeout(() => {
+      toBeContinuedHandler()
+    }, 1000)
+  }
+
+  const toBeContinuedHandler = async () => {
+    await addToBeContinued({
+      variables: {
+        userid: `${userID.current}`,
+        username: `${userByID?.user.username}`,
+        score: `${mainState.current.currentScore}`,
+        stage: "7",
+        date: null
+      }
+    })
+
+    setTimeout(() => {
+      setDisplayToBeCotinuedText(false)
+      props.nav.dispatch(resetActionHome);
+    }, 1000)
+  }
+
   const insertToken = async () => {
 
     if (userByID?.user.tokens > 0) {
@@ -1099,9 +1174,9 @@ export const Stage_6_Projectile = (props) => {
           }, 1000)
         }, 501)
 
-      setTimeout(() => {
-        setToBeContinuedModal(true);
-      }, 1700)
+        setTimeout(() => {
+          setDisplayToBeCotinuedText(true);
+        }, 1700)
 
 
         // setTimeout(() => {
@@ -1223,19 +1298,6 @@ export const Stage_6_Projectile = (props) => {
       }
     }
   }
-
-  const toBeContinued = async () => {
-    console.log("toBeContinued")
-    
-
-    setTimeout(() => {
-      setToBeContinuedModal(false)
-      isGameInProgress.current = false;
-      props.nav.dispatch(resetActionHome);
-
-    }, 1500)
-
-  };
 
 
   return (
@@ -1607,46 +1669,46 @@ export const Stage_6_Projectile = (props) => {
           </View>
         }
 
-{toBeContinuedModal &&
-            <View>
-                <View style={{
-                position: 'absolute',
-                zIndex: 25,
-                top: HeightRatio(0),
-                left: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                // flex: 1,
-                // width: '100%',
-                width: windowWidth,
-                alignSelf: 'center'
+        {displayToBeCotinuedText &&
+          <View>
+            <View style={{
+              position: 'absolute',
+              zIndex: 25,
+              top: HeightRatio(0),
+              left: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
+              // flex: 1,
+              // width: '100%',
+              width: windowWidth,
+              alignSelf: 'center'
             }}>
-                <Text style={{
+              <Text style={{
                 color: 'white',
-                fontSize: HeightRatio(180),
+                fontSize: HeightRatio(150),
                 fontWeight: 'bold',
                 // flexWrap: 'wrap',
                 alignSelf: 'center',
                 textAlign: 'center'
-                }}
+              }}
                 allowFontScaling={false}
-                >TO BE CONTINUED...</Text>
-                <Text style={{
+              >YOU HAVE BEAT THE GAME, FOR NOW!</Text>
+              <Text style={{
                 color: 'white',
                 fontSize: HeightRatio(50),
                 fontWeight: 'bold',
                 // flexWrap: 'wrap',
                 alignSelf: 'center',
                 textAlign: 'center'
-                }}
+              }}
                 allowFontScaling={false}
-                >Save your place and return when there are more stages.</Text>
-                <TouchableOpacity
-                onPress={() => toBeContinued()}
+              >Save your place and we'll let you know when more stages are available.</Text>
+              <TouchableOpacity
+                onPress={() => toBeContinuedSetup()}
                 style={{ backgroundColor: '#03d81a', width: WidthRatio(50), borderRadius: HeightRatio(10), alignSelf: 'center', margin: HeightRatio(25) }}>
                 <Text style={{ color: 'black', fontSize: 20, alignSelf: 'center', margin: HeightRatio(10) }}> Save </Text>
-                </TouchableOpacity>
+              </TouchableOpacity>
             </View>
-            </View>
+          </View>
         }
 
 

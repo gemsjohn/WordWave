@@ -56,7 +56,7 @@ export const HomeScreen = ({ navigation }) => {
         setRefreshing(true);
         refetch();
         setTimeout(() => {
-        setRefreshing(false);
+            setRefreshing(false);
         }, 2000);
     }, []);
 
@@ -114,7 +114,7 @@ export const HomeScreen = ({ navigation }) => {
                 {!loading &&
                     <>
                         <SafeAreaView style={{ marginBottom: HeightRatio(60) }}>
-                            <ScrollView 
+                            <ScrollView
                                 style={{}}
                                 refreshControl={
                                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -226,6 +226,36 @@ export const HomeScreen = ({ navigation }) => {
                                                     </Text>
                                                 </View> */}
                                             </View>
+                                            {userByID?.user.tobecontinued != null &&
+                                                <View style={{ flexDirection: 'row', marginTop: HeightRatio(10), alignSelf: 'center' }}>
+                                                    <View style={{
+                                                        height: HeightRatio(130),
+                                                        width: HeightRatio(600),
+                                                        flexDirection: 'column',
+                                                        margin: HeightRatio(10),
+                                                        backgroundColor: '#ffff10',
+                                                        borderRadius: HeightRatio(20),
+                                                        borderWidth: 1,
+                                                    }}>
+                                                        <Text style={{
+                                                            color: 'black',
+                                                            fontSize: HeightRatio(30),
+                                                            textAlign: 'center',
+                                                            marginTop: HeightRatio(20)
+                                                        }} allowFontScaling={false}>
+                                                            YOU BEAT THE GAME WITH A SCORE OF:
+                                                        </Text>
+                                                        <Text style={{
+                                                            color: 'black',
+                                                            fontSize: HeightRatio(30),
+                                                            textAlign: 'center',
+                                                            marginTop: HeightRatio(20)
+                                                        }} allowFontScaling={false}>
+                                                            {userByID?.user.tobecontinued.score}
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            }
                                         </>
                                         :
                                         <View style={{ height: HeightRatio(600) }} />
@@ -354,7 +384,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/projectile_asteroid_2.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Asteroid</Text>
@@ -372,7 +402,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/projectile_red_ufo.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Red UFO</Text>
@@ -390,7 +420,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/projectile_enemy_4.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Twin</Text>
@@ -408,7 +438,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/projectile_enemy_3.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Opacity Bot</Text>
@@ -425,7 +455,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/projectile_atomic.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Atomic Oscillator</Text>
@@ -443,7 +473,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/projectiles_triangle.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Triangle</Text>
@@ -461,7 +491,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/projectile_fire_ball_1.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Fireball</Text>
@@ -479,7 +509,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/projectile_enemy_0.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Fire Boss</Text>
@@ -497,7 +527,7 @@ export const HomeScreen = ({ navigation }) => {
                                                                 <Image
                                                                     source={require('../../assets/block_keyboard_key.png')}
                                                                     style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text 
+                                                                <Text
                                                                     style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
                                                                     allowFontScaling={false}
                                                                 >Blank Key</Text>
@@ -508,16 +538,16 @@ export const HomeScreen = ({ navigation }) => {
 
 
                                                     <View style={{
-                                                       backgroundColor: '#043648',
-                                                       borderColor: 'rgba(255, 255, 255, 0.25)',
-                                                       borderWidth: 1,
-                                                       padding: HeightRatio(20),
-                                                       borderRadius: HeightRatio(40),
-                                                       width: WidthRatio(160),
-                                                       margin: HeightRatio(20),
-                                                       alignSelf: 'center',
-                                                       justifyContent: 'center',
-                                                       flexDirection: 'column'
+                                                        backgroundColor: '#043648',
+                                                        borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                        borderWidth: 1,
+                                                        padding: HeightRatio(20),
+                                                        borderRadius: HeightRatio(40),
+                                                        width: WidthRatio(160),
+                                                        margin: HeightRatio(20),
+                                                        alignSelf: 'center',
+                                                        justifyContent: 'center',
+                                                        flexDirection: 'column'
                                                     }}>
                                                         <Text style={{
                                                             color: '#fcd01f',
@@ -549,7 +579,7 @@ export const HomeScreen = ({ navigation }) => {
                                                         justifyContent: 'center',
                                                         flexDirection: 'column'
                                                     }}>
-                                                       
+
                                                         <Text style={{
                                                             color: '#00fcff',
                                                             fontSize: HeightRatio(50),
@@ -635,7 +665,7 @@ export const HomeScreen = ({ navigation }) => {
 
                             <Text style={{ color: '#fcd01f', fontSize: HeightRatio(50), fontWeight: 'bold' }} allowFontScaling={false}>
                                 Oh yeah? : <Text style={{ color: 'white' }}>
-                                    As an added bonus, you'll also receive <Text style={{color: '#6de5e9'}}>5 free</Text> tokens,
+                                    As an added bonus, you'll also receive <Text style={{ color: '#6de5e9' }}>5 free</Text> tokens,
                                     providing you with the chance to keep playing even if you hit a setback.
                                 </Text>
                             </Text>

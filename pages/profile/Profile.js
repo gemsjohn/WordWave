@@ -219,6 +219,36 @@ export const ProfileScreen = ({ navigation }) => {
                                                     </Text>
                                                 </View>
                                             </View>
+                                            {userByID?.user.tobecontinued != null &&
+                                                <View style={{ flexDirection: 'row', marginTop: HeightRatio(10), alignSelf: 'center' }}>
+                                                    <View style={{
+                                                        height: HeightRatio(130),
+                                                        width: HeightRatio(600),
+                                                        flexDirection: 'column',
+                                                        margin: HeightRatio(10),
+                                                        backgroundColor: '#ffff10',
+                                                        borderRadius: HeightRatio(20),
+                                                        borderWidth: 1,
+                                                    }}>
+                                                        <Text style={{
+                                                            color: 'black',
+                                                            fontSize: HeightRatio(30),
+                                                            textAlign: 'center',
+                                                            marginTop: HeightRatio(20)
+                                                        }} allowFontScaling={false}>
+                                                            YOU BEAT THE GAME WITH A SCORE OF:
+                                                        </Text>
+                                                        <Text style={{
+                                                            color: 'black',
+                                                            fontSize: HeightRatio(30),
+                                                            textAlign: 'center',
+                                                            marginTop: HeightRatio(20)
+                                                        }} allowFontScaling={false}>
+                                                            {userByID?.user.tobecontinued.score}
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            }
                                             {/* [[[USER DETAILS]]] */}
                                             <View
                                                 style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}

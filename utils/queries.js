@@ -30,6 +30,14 @@ export const GET_ME = gql`
         currentLetterCountValue
         date
       }
+      tobecontinued {
+        _id
+        userid
+        username
+        score
+        stage
+        date
+      }
       maxstage
       highscore
       tokens
@@ -67,6 +75,14 @@ export const GET_USER_BY_ID = gql`
         currentLetterCountValue
         date
       }
+      tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
+      date
+    }
       maxstage
       highscore
       tokens
@@ -109,6 +125,14 @@ export const GET_USERS = gql`
         currentLetterCountValue
         date
       }
+      tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
+      date
+    }
     }
   }
 `;
@@ -142,6 +166,14 @@ export const GET_USERS_SEARCH = gql`
         currentLetterCountValue
         date
       }
+      tobecontinued {
+      _id
+      userid
+      username
+      score
+      stage
+      date
+    }
       maxstage
       highscore
       tokens
