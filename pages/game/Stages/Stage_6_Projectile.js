@@ -160,8 +160,11 @@ export const Stage_6_Projectile = (props) => {
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
-    setMainState({ upgradeToSpecial_0: false })
-    setMainState({ deployUpgradeToSpecialAnimation: false, gameOverScreen: false })
+    setMainState({ 
+      upgradeToSpecial_0: false, 
+      deployUpgradeToSpecialAnimation: false, 
+      gameOverScreen: false 
+    })
 
     userID.current = mainState.current.userID;
   }, [])
@@ -171,7 +174,6 @@ export const Stage_6_Projectile = (props) => {
     const timeoutId = setTimeout(() => {
       console.log("MOUNTED_INNER")
       setDisplayPlaybutton(true)
-
     }, 1000);
 
     // Return a function that cleans up the effect
@@ -190,7 +192,6 @@ export const Stage_6_Projectile = (props) => {
 
   const Generate = (localPrevCrashes) => {
     console.log("Stage, #1 Generate")
-
     if (!mainState.current.fromSavedGame) {
       console.log("Stage, #2 fromSavedGame: false ")
 
@@ -298,7 +299,6 @@ export const Stage_6_Projectile = (props) => {
           updatedPostResume.current = true;
           pauseTimeout.current = false;
 
-
           setTimeout(() => {
             if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
               deployedGreenHealthOnGenerate.current = true;
@@ -326,14 +326,11 @@ export const Stage_6_Projectile = (props) => {
               runObstacleAnimation_1();
             }
 
-
             if (level.current >= 2) {
-
               runObstacleAnimation_right_angle_0();
             }
 
             if (level.current >= 3) {
-
               runObstacleAnimation_right_angle_1();
             }
 
@@ -514,7 +511,6 @@ export const Stage_6_Projectile = (props) => {
       return;
     }
   };
-
 
   const runObstacleAnimation_right_angle_0 = () => {
     if (isGameInProgress.current) {
@@ -894,9 +890,6 @@ export const Stage_6_Projectile = (props) => {
       hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
-
-
-
     setIsPaused(true)
     setResumeSelected(true)
     setTimeout(() => {
@@ -930,15 +923,22 @@ export const Stage_6_Projectile = (props) => {
         isGameInProgress: isGameInProgress.current
       })
 
-      if (mainState.current.currentLevel >= 0) {
-        letterAnimation();
-        // runObstacleAnimation_0();
-        let randomInput = Math.floor(Math.random() * 2);
-        inputIterator.current = randomInput;
-        runObstacleAnimation_1();
+      setTimeout(() => {
+        if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+          deployedGreenHealthOnGenerate.current = true;
+          runAuxilliaryGreenHealth();
+        }
 
-      }
-
+        if (mainState.current.currentLevel >= 0) {
+          letterAnimation();
+          // runObstacleAnimation_0();
+          let randomInput = Math.floor(Math.random() * 2);
+          inputIterator.current = randomInput;
+          runObstacleAnimation_1();
+  
+        }
+      }, 1500)
+      
 
       setTimeout(() => {
         pauseTimeout.current = false;
@@ -962,7 +962,6 @@ export const Stage_6_Projectile = (props) => {
         currentLetterCountValue: `${mainState.current.currentLetter_countValue}`
       }
     });
-    // props.nav.dispatch(resetActionHome);
     setMainState({
       stage1: true,
       stage2: false,
@@ -1144,43 +1143,44 @@ export const Stage_6_Projectile = (props) => {
     hideCrashesUntilUpdate.current = false;
     setHasGameBeenStarted(true)
 
+    setTimeout(() => {
+      if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+        deployedGreenHealthOnGenerate.current = true;
+        runAuxilliaryGreenHealth();
+      }
+  
+      if (level.current == 0) {
+        inputIterator.current = 0;
+      }
+      if (level.current == 1) {
+        inputIterator.current = 1;
+      }
+      if (level.current == 2) {
+        inputIterator.current = 0;
+      }
+      if (level.current == 3) {
+        inputIterator.current = 1;
+      }
+      if (level.current == 4) {
+        inputIterator.current = 0;
+      }
+  
+      if (level.current >= 0) {
+        letterAnimation();
+        runObstacleAnimation_1();
+      }
+  
+  
+      if (level.current >= 2) {
+        runObstacleAnimation_right_angle_0();
+      }
+  
+      if (level.current >= 3) {
+        runObstacleAnimation_right_angle_1();
+      }
 
-
-    if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
-      deployedGreenHealthOnGenerate.current = true;
-      runAuxilliaryGreenHealth();
-    }
-
-    if (level.current == 0) {
-      inputIterator.current = 0;
-    }
-    if (level.current == 1) {
-      inputIterator.current = 1;
-    }
-    if (level.current == 2) {
-      inputIterator.current = 0;
-    }
-    if (level.current == 3) {
-      inputIterator.current = 1;
-    }
-    if (level.current == 4) {
-      inputIterator.current = 0;
-    }
-
-    if (level.current >= 0) {
-      letterAnimation();
-      runObstacleAnimation_1();
-    }
-
-
-    if (level.current >= 2) {
-      runObstacleAnimation_right_angle_0();
-    }
-
-    if (level.current >= 3) {
-      runObstacleAnimation_right_angle_1();
-    }
-
+    }, 1500)
+    
   }
 
   // [END GAME] 
@@ -1238,7 +1238,6 @@ export const Stage_6_Projectile = (props) => {
       hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
-
     // [HANDLE GAME RESTART]
     if (input.continue) {
       console.log("END GAME - Continuation #1")
@@ -1246,7 +1245,7 @@ export const Stage_6_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
-      if (input.level >= 0) {
+      if (input.level >= 4) {
         console.log("END GAME - Reached Level 4")
 
         setLetter('');
@@ -1401,7 +1400,6 @@ export const Stage_6_Projectile = (props) => {
           <>
             <TouchableOpacity
               onPress={() => { Generate(mainState.current.currentCrashes); }}
-
               style={{
                 position: 'absolute',
                 zIndex: 15,
@@ -1443,7 +1441,7 @@ export const Stage_6_Projectile = (props) => {
             </View>
             :
             <>
-              {!pauseTimeout.current && !resumeSelected ?
+              {!pauseTimeout.current && !resumeSelected && isGameInProgress.current ?
                 <View style={{
                   position: 'absolute',
                   zIndex: -7,

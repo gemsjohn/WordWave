@@ -649,43 +649,43 @@ export const Stage_5_Projectile = (props) => {
       oscillator.current = Animated.parallel([
         Animated.timing(oscillatorPosition.x, {
           toValue: -WidthRatio(40),
-          duration: 5000 - shortestDuration,
+          duration: 6000 - shortestDuration,
           useNativeDriver: true,
         }),
         Animated.timing(oscillatorRotation, {
-          toValue: 5000 - shortestDuration,
+          toValue: 6000 - shortestDuration,
           duration: 6000,
           useNativeDriver: true
         }),
         Animated.sequence([
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * altNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration) / 6,
+            duration: (6000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * roundedNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration) / 6,
+            duration: (6000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * altNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration) / 6,
+            duration: (6000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * roundedNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration) / 6,
+            duration: (6000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * altNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration) / 6,
+            duration: (6000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
           Animated.timing(oscillatorPosition.y, {
             toValue: (boundaries[0].top * roundedNum) + boundaries[0].bottom,
-            duration: (5000 - shortestDuration) / 6,
+            duration: (6000 - shortestDuration) / 6,
             useNativeDriver: true,
           }),
         ])
@@ -1172,7 +1172,7 @@ export const Stage_5_Projectile = (props) => {
         });
       }
     }, 200);
-  }, [crashes.current, level.current])
+  }, [crashes.current])
 
   const getBackgroundColor = (input) => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -1704,7 +1704,7 @@ export const Stage_5_Projectile = (props) => {
             </View>
             :
             <>
-              {!pauseTimeout.current && !resumeSelected ?
+              {!pauseTimeout.current && !resumeSelected && isGameInProgress.current ?
                 <View style={{
                   position: 'absolute',
                   zIndex: -7,

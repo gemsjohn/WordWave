@@ -150,8 +150,11 @@ export const Stage_1_Projectile = (props) => {
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
-    setMainState({ upgradeToSpecial_0: false })
-    setMainState({ deployUpgradeToSpecialAnimation: false })
+    setMainState({
+      upgradeToSpecial_0: false,
+      deployUpgradeToSpecialAnimation: false,
+      gameOverScreen: false
+    })
     setMainState({
       stage1: true,
       stage2: null,
@@ -195,96 +198,92 @@ export const Stage_1_Projectile = (props) => {
   const Generate = (localPrevCrashes) => {
     console.log("Stage, #1 Generate")
     if (!mainState.current.fromSavedGame) {
-      console.log("Stage, #2 This is ")
+      console.log("Stage, #2 fromSavedGame: false ")
 
       setOpenGate(true)
-    setContinuousEndGameCall(false)
-    clearTimeout(timeoutCallGenerateID);
-    if (localPrevCrashes > 0) {
-      crashes.current = localPrevCrashes;
+      setContinuousEndGameCall(false)
+      clearTimeout(timeoutCallGenerateID);
+      if (localPrevCrashes > 0) {
+        crashes.current = localPrevCrashes;
+      }
+      else {
+        crashes.current = 0;
+      }
+
+      const data = require('../output.json');
+      const index = Math.floor(Math.random() * data.length);
+      const word = data[index].word;
+      const letters = word.split('');
+
+      const randomLetters = [];
+      for (let i = 0; i < 7; i++) {
+        const letterCode = Math.floor(Math.random() * 26) + 65;
+        const letter = String.fromCharCode(letterCode);
+        let lowerCaseLetter = letter.toLowerCase();
+        randomLetters.push(lowerCaseLetter);
+      }
+      setLetterPositionNum(letters.length)
+
+      let combined = letters.concat(randomLetters);
+      let uniqueCombined = [...new Set(combined)];
+      let scambledCombined = shuffle(uniqueCombined);
+
+      setDisplayPlaybutton(false)
+
+      if (level.current > 0) {
+        score.current = mainState.current.currentScore + 1000;
+        scoreFlash_1000.current = true;
+        setTimeout(() => {
+          scoreFlash_1000.current = false;
+        }, 1000)
+      }
+
+      setRandomWord(word);
+      setDisplayLetters(letters)
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+
+    } else {
+      console.log("Stage, #2 fromSavedGame: true")
+
+      setContinuousEndGameCall(false)
+
+      setMainState({
+        fromSavedGame: false
+      })
+
+      const randomLetters = [];
+      for (let i = 0; i < 7; i++) {
+        const letterCode = Math.floor(Math.random() * 26) + 65;
+        const letter = String.fromCharCode(letterCode);
+        let lowerCaseLetter = letter.toLowerCase();
+        randomLetters.push(lowerCaseLetter);
+      }
+      setLetterPositionNum(displayLetters.length)
+
+      let combined = displayLetters.concat(randomLetters);
+      let uniqueCombined = [...new Set(combined)];
+      let scambledCombined = shuffle(uniqueCombined);
+
+      setDisplayPlaybutton(false)
+
+      setRandomWord(displayLetters.join(""));
+      setDisplayLetters(displayLetters)
+
+      let savedWord = displayLetters.join("");
+      let letters = savedWord.split('');
+
+
+      const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+      setPrevWrongElements(wrongElements.length)
+
+      let uniqueLetterPocket = Array.from(new Set(letterPocket));
+      const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+      setPrevSimilarElements(similarElements.length)
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+      setOpenGate(true)
     }
-    else {
-      crashes.current = 0;
-    }
-
-    // if (level.current <= 0) {
-    //   crashes.current += mainState.current.currentCrashes
-    // }
-
-    const data = require('../output.json');
-    const index = Math.floor(Math.random() * data.length);
-    const word = data[index].word;
-    const letters = word.split('');
-
-    const randomLetters = [];
-    for (let i = 0; i < 7; i++) {
-      const letterCode = Math.floor(Math.random() * 26) + 65;
-      const letter = String.fromCharCode(letterCode);
-      let lowerCaseLetter = letter.toLowerCase();
-      randomLetters.push(lowerCaseLetter);
-    }
-    setLetterPositionNum(letters.length)
-
-    let combined = letters.concat(randomLetters);
-    let uniqueCombined = [...new Set(combined)];
-    let scambledCombined = shuffle(uniqueCombined);
-
-    setDisplayPlaybutton(false)
-
-    if (level.current > 0) {
-      score.current = mainState.current.currentScore + 1000;
-      scoreFlash_1000.current = true;
-      setTimeout(() => {
-        scoreFlash_1000.current = false;
-      }, 1000)
-    }
-
-    setRandomWord(word);
-    setDisplayLetters(letters)
-
-    wordPlusSeven.current = scambledCombined; // Must be last
-
-  } else {
-    console.log("Stage, #2 fromSavedGame: true")
-
-    setContinuousEndGameCall(false)
-
-    setMainState({
-      fromSavedGame: false
-    })
-
-    const randomLetters = [];
-    for (let i = 0; i < 7; i++) {
-      const letterCode = Math.floor(Math.random() * 26) + 65;
-      const letter = String.fromCharCode(letterCode);
-      let lowerCaseLetter = letter.toLowerCase();
-      randomLetters.push(lowerCaseLetter);
-    }
-    setLetterPositionNum(displayLetters.length)
-
-    let combined = displayLetters.concat(randomLetters);
-    let uniqueCombined = [...new Set(combined)];
-    let scambledCombined = shuffle(uniqueCombined);
-
-    setDisplayPlaybutton(false)
-
-    setRandomWord(displayLetters.join(""));
-    setDisplayLetters(displayLetters)
-      
-    let savedWord = displayLetters.join("");
-    let letters = savedWord.split('');
-
-
-    const wrongElements = letterPocket.filter((element) => !letters.includes(element));
-    setPrevWrongElements(wrongElements.length)
-
-    let uniqueLetterPocket = Array.from(new Set(letterPocket));
-    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
-    setPrevSimilarElements(similarElements.length)
-
-    wordPlusSeven.current = scambledCombined; // Must be last
-    setOpenGate(true)
-  }
   }
 
   useEffect(() => {
@@ -314,7 +313,6 @@ export const Stage_1_Projectile = (props) => {
             if (level.current >= 0) {
               letterAnimation();
               runObstacleAnimation_0();
-              
             }
 
             if (level.current >= 1) {
@@ -704,7 +702,6 @@ export const Stage_1_Projectile = (props) => {
       let obj2 = { x: value.x, y: value.y, width: WidthRatio(12), height: WidthRatio(12) }
 
       if (isAuxilliaryGreenHealth_Colliding(obj1, obj2)) {
-        // console.log("UPGRADE COLLISION!!!!!!")
         if (!hasUpdatedAuxilliaryGreenHealth.current) {
           retainAuxilliaryGreenHealth.current = true;
           crashes.current -= 1;
@@ -728,63 +725,47 @@ export const Stage_1_Projectile = (props) => {
 
   useEffect(() => {
     if (openGate) {
-    let uniqueLetterPocket = Array.from(new Set(letterPocket));
-    let letters = randomWord.split('');
-    let uniqueLetters = Array.from(new Set(letters));
+      let uniqueLetterPocket = Array.from(new Set(letterPocket));
+      let letters = randomWord.split('');
+      let uniqueLetters = Array.from(new Set(letters));
 
-    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
-    const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+      const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+      const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+      if (wrongElements.length > prevWrongElements) {
+        crashes.current += 1;
+        score.current = score.current - 25;
+        flashOouchOnCrash.current = true;
+        setTimeout(() => {
+          flashOouchOnCrash.current = false;
+        }, 500)
+      }
 
-    console.log(" + + + + + + + + + + + ")
-    console.log(uniqueLetterPocket)
-    console.log(letters)
-    console.log(uniqueLetters)
-    console.log(wrongElements)
-    console.log(similarElements)
-
-    console.log(continuousEndGameCall)
-    console.log(isGameInProgress.current)
-    console.log(" + + + + + + + + + + + ")
-
-    if (wrongElements.length > prevWrongElements) {
-      console.log("Stage, Wrong Element")
-      crashes.current += 1;
-      score.current = score.current - 25;
-      flashOouchOnCrash.current = true;
+      if (similarElements.length > prevSimilarElements) {
+        score.current = score.current + 100;
+        scoreFlash_100.current = true;
+      }
+      setPrevSimilarElements(similarElements.length)
+      setPrevWrongElements(wrongElements.length)
       setTimeout(() => {
-        flashOouchOnCrash.current = false;
+        scoreFlash_100.current = false;
       }, 500)
-    }
-    
-    if (similarElements.length > prevSimilarElements) {
-      console.log("Stage, Similar Element")
-      score.current = score.current + 100;
-      scoreFlash_100.current = true;
-    }
-    setPrevSimilarElements(similarElements.length)
-    setPrevWrongElements(wrongElements.length)
-    setTimeout(() => {
-      scoreFlash_100.current = false;
-    }, 500)
 
-    if (!continuousEndGameCall) {
-      if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
-        console.log("CURRENT LEVEL:   " + level.current)
-        console.log("CURRENT CRASHES:   " + crashes.current)
+      if (!continuousEndGameCall) {
+        if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
 
-        endGame({
-          continue: true,
-          local: "a",
-          crashes: crashes.current,
-          score: score.current,
-          level: level.current
-        });
+          endGame({
+            continue: true,
+            local: "a",
+            crashes: crashes.current,
+            score: score.current,
+            level: level.current
+          });
+        }
+      }
+      if (letterPocket.length > 0 && isGameInProgress.current) {
+        animation.current.reset()
       }
     }
-    if (letterPocket.length > 0 && isGameInProgress.current) {
-      animation.current.reset()
-    }
-  }
 
   }, [letterPocket])
 
@@ -796,7 +777,7 @@ export const Stage_1_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
-      } else if (crashes.current >= 2  && deployedGreenHealthOnGenerate.current == false) {
+      } else if (crashes.current >= 2 && deployedGreenHealthOnGenerate.current == false) {
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
@@ -852,41 +833,39 @@ export const Stage_1_Projectile = (props) => {
       isGameInProgress: isGameInProgress.current
     })
 
-    if (level.current >= 0) {
-      if (animation.current != null) {
-        animation.current.stop();
-        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedLetterBlock.current = false;
-      }
-
-      if (obstacle_0.current != null) {
-        obstacle_0.current.stop();
-        obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_0.current = false;
-      }
-
-
-      if (auxilliaryGreenHealth.current != null) {
-        auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedAuxilliaryGreenHealth.current = false;
-      }
+    if (animation.current != null) {
+      animation.current.stop();
+      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedLetterBlock.current = false;
     }
-    if (level.current >= 1 && obstacle_1.current != null) {
+
+    if (obstacle_0.current != null) {
+      obstacle_0.current.stop();
+      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_0.current = false;
+    }
+
+    if (obstacle_1.current != null) {
       obstacle_1.current.stop();
-      obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_1.current = false;
     }
-    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
+    if (obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
-    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
+    if (obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
+    }
+
+    if (auxilliaryGreenHealth.current != null) {
+      auxilliaryGreenHealth.current.stop();
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
     setIsPaused(true)
@@ -922,22 +901,29 @@ export const Stage_1_Projectile = (props) => {
         isGameInProgress: isGameInProgress.current
       })
 
-      if (mainState.current.currentLevel >= 0) {
-        letterAnimation();
-        runObstacleAnimation_0();
-      }
+      setTimeout(() => {
+        if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+          deployedGreenHealthOnGenerate.current = true;
+          runAuxilliaryGreenHealth();
+        }
 
-      if (mainState.current.currentLevel >= 1) {
-        runObstacleAnimation_1();
-      }
+        if (mainState.current.currentLevel >= 0) {
+          letterAnimation();
+          runObstacleAnimation_0();
+        }
 
-      if (mainState.current.currentLevel >= 2) {
-        runObstacleAnimation_right_angle_0();
-      }
+        if (mainState.current.currentLevel >= 1) {
+          runObstacleAnimation_1();
+        }
 
-      if (mainState.current.currentLevel >= 3) {
-        runObstacleAnimation_right_angle_1();
-      }
+        if (mainState.current.currentLevel >= 2) {
+          runObstacleAnimation_right_angle_0();
+        }
+
+        if (mainState.current.currentLevel >= 3) {
+          runObstacleAnimation_right_angle_1();
+        }
+      }, 1500)
 
       setTimeout(() => {
         pauseTimeout.current = false;
@@ -961,7 +947,6 @@ export const Stage_1_Projectile = (props) => {
         currentLetterCountValue: `${mainState.current.currentLetter_countValue}`
       }
     });
-    // props.nav.dispatch(resetActionHome);
     setMainState({
       stage1: true,
       stage2: false,
@@ -1030,31 +1015,38 @@ export const Stage_1_Projectile = (props) => {
     countRef.current = mainState.current.currentLetter_countValue + 1;
 
 
-    hideCrashesUntilUpdate.current = false;
     isGameInProgress.current = true;
-    setHasGameBeenStarted(true)
-
     setMainState({
       isGameInProgress: isGameInProgress.current,
       gameOverScreen: false
     })
 
-    if (mainState.current.currentLevel >= 0) {
-      letterAnimation();
-      runObstacleAnimation_0();
-    }
+    hideCrashesUntilUpdate.current = false;
+    setHasGameBeenStarted(true)
 
-    if (mainState.current.currentLevel >= 1) {
-      runObstacleAnimation_1();
-    }
+    setTimeout(() => {
+      if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+        deployedGreenHealthOnGenerate.current = true;
+        runAuxilliaryGreenHealth();
+      }
 
-    if (mainState.current.currentLevel >= 2) {
-      runObstacleAnimation_right_angle_0();
-    }
+      if (mainState.current.currentLevel >= 0) {
+        letterAnimation();
+        runObstacleAnimation_0();
+      }
 
-    if (mainState.current.currentLevel >= 3) {
-      runObstacleAnimation_right_angle_1();
-    }
+      if (mainState.current.currentLevel >= 1) {
+        runObstacleAnimation_1();
+      }
+
+      if (mainState.current.currentLevel >= 2) {
+        runObstacleAnimation_right_angle_0();
+      }
+
+      if (mainState.current.currentLevel >= 3) {
+        runObstacleAnimation_right_angle_1();
+      }
+    }, 1500)
   }
 
   // [END GAME] 
@@ -1065,46 +1057,45 @@ export const Stage_1_Projectile = (props) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
 
-    if (level.current >= 0) {
-      if (animation.current != null) {
-        animation.current.stop();
-        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedLetterBlock.current = false;
-      }
-
-      if (obstacle_0.current != null) {
-        obstacle_0.current.stop();
-        obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_0.current = false;
-      }
-
-      if (auxilliaryGreenHealth.current != null) {
-        auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedAuxilliaryGreenHealth.current = false;
-      }
+    if (animation.current != null) {
+      animation.current.stop();
+      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedLetterBlock.current = false;
     }
-    if (level.current >= 1 && obstacle_1.current != null) {
+
+    if (obstacle_0.current != null) {
+      obstacle_0.current.stop();
+      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_0.current = false;
+    }
+
+    if (obstacle_1.current != null) {
       obstacle_1.current.stop();
-      obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_1.current = false;
     }
-    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
+
+    if (obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
-    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
+    if (obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
+    }
+
+    if (auxilliaryGreenHealth.current != null) {
+      auxilliaryGreenHealth.current.stop();
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
-      console.log(" - - - input.continue - - - ")
-      console.log(input.level)
+
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
@@ -1245,13 +1236,13 @@ export const Stage_1_Projectile = (props) => {
   return (
     <View>
       <>
-      {displayPlaybutton &&
+        {displayPlaybutton &&
           <>
             <TouchableOpacity
-              onPress={() => { Generate(mainState.current.currentCrashes) }}
+              onPress={() => { Generate(mainState.current.currentCrashes); }}
               style={{
                 position: 'absolute',
-                zIndex: 20,
+                zIndex: 15,
                 left: windowWidth / 2 - HeightRatio(450),
                 top: windowHeight / 2 - HeightRatio(450),
                 zIndex: -5
@@ -1263,135 +1254,135 @@ export const Stage_1_Projectile = (props) => {
               />
             </TouchableOpacity>
           </>
-      }
+        }
 
-          <>
-            {/* [PAUSE / RESUME] */}
-            {isPaused && !resumeSelected ?
+        <>
+          {/* [PAUSE / RESUME] */}
+          {isPaused && !resumeSelected ?
+            <View style={{
+              position: 'absolute',
+              zIndex: -7,
+              top: HeightRatio(20),
+              left: HeightRatio(20)
+            }}>
+              <TouchableOpacity
+                onPress={() => {
+                  resumeGame();
+                }}
+                style={{
+                  height: HeightRatio(100),
+                  width: HeightRatio(100),
+                  // backgroundColor: 'red'
+                }}>
+                <Image
+                  source={require('../../../assets/button_resume.png')}
+                  style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+              </TouchableOpacity>
+            </View>
+            :
+            <>
+              {!pauseTimeout.current && !resumeSelected && isGameInProgress.current ?
+                <View style={{
+                  position: 'absolute',
+                  zIndex: -7,
+                  top: HeightRatio(20),
+                  left: HeightRatio(20)
+                }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      pauseGame();
+                    }}
+                    style={{
+                      height: HeightRatio(100),
+                      width: HeightRatio(100),
+                      // backgroundColor: 'red'
+                    }}>
+                    <Image
+                      source={require('../../../assets/button_pause.png')}
+                      style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                  </TouchableOpacity>
+                </View>
+                :
+                <View style={{
+                  position: 'absolute',
+                  zIndex: -7,
+                  top: HeightRatio(20),
+                  left: HeightRatio(20)
+                }}>
+                  <Image
+                    source={require('../../../assets/clock_icon.png')}
+                    style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                </View>
+              }
+            </>
+          }
+          {score.current != null ?
+            <>
               <View style={{
                 position: 'absolute',
                 zIndex: -7,
-                top: HeightRatio(20),
-                left: HeightRatio(20)
+                top: windowHeight * 0.84,
+                left: HeightRatio(30),
+                backgroundColor: 'transparent',
               }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    resumeGame();
-                  }}
-                  style={{
-                    height: HeightRatio(100),
-                    width: HeightRatio(100),
-                    // backgroundColor: 'red'
-                  }}>
-                  <Image
-                    source={require('../../../assets/button_resume.png')}
-                    style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-                </TouchableOpacity>
+                <Text style={{
+                  color: 'rgba(255, 255, 255, 1.0)',
+                  fontSize: WidthRatio(12),
+                  fontWeight: 'bold'
+                }}
+                  allowFontScaling={false}
+                >Score: {score.current}</Text>
               </View>
-              :
-              <>
-                {!pauseTimeout.current && !resumeSelected ?
-                  <View style={{
-                    position: 'absolute',
-                    zIndex: -7,
-                    top: HeightRatio(20),
-                    left: HeightRatio(20)
-                  }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        pauseGame();
-                      }}
-                      style={{
-                        height: HeightRatio(100),
-                        width: HeightRatio(100),
-                        // backgroundColor: 'red'
-                      }}>
-                      <Image
-                        source={require('../../../assets/button_pause.png')}
-                        style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-                    </TouchableOpacity>
-                  </View>
-                  :
-                  <View style={{
-                    position: 'absolute',
-                    zIndex: -7,
-                    top: HeightRatio(20),
-                    left: HeightRatio(20)
-                  }}>
-                    <Image
-                      source={require('../../../assets/clock_icon.png')}
-                      style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-                  </View>
-                }
-              </>
-            }
-            {score.current != null ?
-              <>
+              {scoreFlash_100.current &&
                 <View style={{
                   position: 'absolute',
+                  top: windowHeight / 2 - WidthRatio(30),
+                  left: windowWidth / 2 - WidthRatio(30),
                   zIndex: -7,
-                  top: windowHeight * 0.84,
-                  left: HeightRatio(30),
-                  backgroundColor: 'transparent',
-                }}>
-                  <Text style={{
-                    color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: WidthRatio(12),
-                    fontWeight: 'bold'
-                  }}
-                    allowFontScaling={false}
-                  >Score: {score.current}</Text>
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }} >
+                  <Image
+                    source={require('../../../assets/reward_100_points.png')}
+                    style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
                 </View>
-                {scoreFlash_100.current &&
-                  <View style={{
-                    position: 'absolute',
-                    top: windowHeight / 2 - WidthRatio(30),
-                    left: windowWidth / 2 - WidthRatio(30),
-                    zIndex: -7,
-                    padding: HeightRatio(20),
-                    borderRadius: HeightRatio(20)
-                  }} >
-                    <Image
-                      source={require('../../../assets/reward_100_points.png')}
-                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
-                  </View>
-                }
-                {scoreFlash_1000.current &&
-                  <View style={{
-                    position: 'absolute',
-                    top: windowHeight / 2 - HeightRatio(300),
-                    left: windowWidth / 2 - HeightRatio(300),
-                    zIndex: -7,
-                    padding: HeightRatio(20),
-                    borderRadius: HeightRatio(20)
-                  }} >
-                    <Image
-                      source={require('../../../assets/reward_1000_points_0.png')}
-                      style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
-                  </View>
-                }
-              </>
-              :
-              <>
+              }
+              {scoreFlash_1000.current &&
                 <View style={{
                   position: 'absolute',
+                  top: windowHeight / 2 - HeightRatio(300),
+                  left: windowWidth / 2 - HeightRatio(300),
                   zIndex: -7,
-                  top: windowHeight * 0.84,
-                  left: HeightRatio(30),
-                  backgroundColor: 'transparent',
-                }}>
-                  <Text style={{
-                    color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: WidthRatio(12),
-                    fontWeight: 'bold'
-                  }}
-                    allowFontScaling={false}
-                  >Score: 0</Text>
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }} >
+                  <Image
+                    source={require('../../../assets/reward_1000_points_0.png')}
+                    style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
                 </View>
+              }
+            </>
+            :
+            <>
+              <View style={{
+                position: 'absolute',
+                zIndex: -7,
+                top: windowHeight * 0.84,
+                left: HeightRatio(30),
+                backgroundColor: 'transparent',
+              }}>
+                <Text style={{
+                  color: 'rgba(255, 255, 255, 1.0)',
+                  fontSize: WidthRatio(12),
+                  fontWeight: 'bold'
+                }}
+                  allowFontScaling={false}
+                >Score: 0</Text>
+              </View>
 
-              </>
-            }
-          </>
+            </>
+          }
+        </>
 
         {/* Letter Blocks */}
         <Animated.View
@@ -1875,7 +1866,7 @@ export const Stage_1_Projectile = (props) => {
                   stage10: false,
                   currentScore: 0,
                   currentLevel: 0,
-                  currentCrashes: 0, 
+                  currentCrashes: 0,
                   isGameInProgress: false
                 })
                 setTimeout(() => {

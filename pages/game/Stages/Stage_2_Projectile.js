@@ -99,7 +99,7 @@ export const Stage_2_Projectile = (props) => {
   const animation = useRef(null)
   const count = new Animated.Value(mainState.current.currentLetter_countValue);
   const countRef = useRef(mainState.current.currentLetter_countValue);
-  const wordPlusSeven = useRef(mainState.current.currentWordPlusSeven)
+  const wordPlusSeven = useRef(mainState.current.currentWordPlusSeven);
   let timeoutLetter_ID;
 
   // [OBSTACLE ANIMATION 0] - - - - - 
@@ -221,7 +221,7 @@ export const Stage_2_Projectile = (props) => {
   const Generate = (localPrevCrashes) => {
     console.log("Stage, #1 Generate")
     if (!mainState.current.fromSavedGame) {
-      console.log("Stage, #2 This is ")
+      console.log("Stage, #2 fromSavedGame: false ")
 
     setOpenGate(true)
     setContinuousEndGameCall(false)
@@ -254,7 +254,7 @@ export const Stage_2_Projectile = (props) => {
     setDisplayPlaybutton(false)
 
     if (level.current > 0) {
-      score.current = score.current + 1000;
+      score.current = mainState.current.currentScore + 1000;
       scoreFlash_1000.current = true;
       setTimeout(() => {
         scoreFlash_1000.current = false;
@@ -320,7 +320,8 @@ export const Stage_2_Projectile = (props) => {
       if (!hasGameBeenStarted) {
         if (isGameInProgress.current) {
           setMainState({
-            isGameInProgress: isGameInProgress.current
+            isGameInProgress: isGameInProgress.current,
+            gameOverScreen: false
           })
 
           updatedPostResume.current = true;
@@ -1091,7 +1092,7 @@ export const Stage_2_Projectile = (props) => {
         });
       }
     }, 200);
-  }, [crashes.current, level.current])
+  }, [crashes.current])
 
   const getBackgroundColor = (input) => {
     let uniqueLetterPocket = Array.from(new Set(letterPocket));
@@ -1130,52 +1131,55 @@ export const Stage_2_Projectile = (props) => {
       isGameInProgress: isGameInProgress.current
     })
 
-    if (level.current >= 0 && animation.current != null) {
+    if (animation.current != null) {
       animation.current.stop();
       letterPosition.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedLetterBlock.current = false;
-
-      if (obstacle_twins_1.current != null) {
-        obstacle_twins_1.current.stop();
-
-        obstaclePosition_twins_1.setValue({ x: WidthRatio(370), y: 0 })
-        obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(370), y: 0 })
-
-      }
-      if (obstacle_0.current != null) {
-        obstacle_0.current.stop();
-        obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_0.current = false;
-      }
-      if (obstacle_1.current != null) {
-        obstacle_1.current.stop();
-        obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_1.current = false;
-
-      }
-
-      if (auxilliaryGreenHealth.current != null) {
-        auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedAuxilliaryGreenHealth.current = false;
-      }
     }
-    if (level.current >= 1 && obstacle_twins_0.current != null) {
+
+    if (obstacle_twins_1.current != null) {
+      obstacle_twins_1.current.stop();
+
+      obstaclePosition_twins_1.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(500), y: 0 })
+
+    }
+
+    if (obstacle_0.current != null) {
+      obstacle_0.current.stop();
+      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_0.current = false;
+    }
+
+    if (obstacle_1.current != null) {
+      obstacle_1.current.stop();
+      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_1.current = false;
+
+    }
+
+    if (obstacle_twins_0.current != null) {
       obstacle_twins_0.current.stop();
-      obstaclePosition_twins_0.setValue({ x: WidthRatio(370), y: 0 })
-      obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_twins_0.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_twins_0.current = false;
     }
-    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
+    if (obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
-    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
+    if (obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
+    }
+
+    if (auxilliaryGreenHealth.current != null) {
+      auxilliaryGreenHealth.current.stop();
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
     setIsPaused(true)
@@ -1198,22 +1202,29 @@ export const Stage_2_Projectile = (props) => {
         isGameInProgress: isGameInProgress.current
       })
 
-      if (mainState.current.currentLevel >= 0) {
-        letterAnimation();
-        runObstacleAnimation_twins_1();
-      }
-
-      if (mainState.current.currentLevel >= 1) {
-        runObstacleAnimation_twins_0();
-      }
-
-      if (mainState.current.currentLevel >= 2) {
-        runObstacleAnimation_right_angle_0();
-      }
-
-      if (mainState.current.currentLevel >= 3) {
-        runObstacleAnimation_right_angle_1();
-      }
+      setTimeout(() => {
+        if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+          deployedGreenHealthOnGenerate.current = true;
+          runAuxilliaryGreenHealth();
+        }
+        if (mainState.current.currentLevel >= 0) {
+          letterAnimation();
+          runObstacleAnimation_twins_1();
+        }
+  
+        if (mainState.current.currentLevel >= 1) {
+          runObstacleAnimation_twins_0();
+        }
+  
+        if (mainState.current.currentLevel >= 2) {
+          runObstacleAnimation_right_angle_0();
+        }
+  
+        if (mainState.current.currentLevel >= 3) {
+          runObstacleAnimation_right_angle_1();
+        }
+      }, 1500)
+      
 
       setTimeout(() => {
         pauseTimeout.current = false;
@@ -1305,31 +1316,40 @@ export const Stage_2_Projectile = (props) => {
     countRef.current = mainState.current.currentLetter_countValue + 1;
 
 
-    hideCrashesUntilUpdate.current = false;
     isGameInProgress.current = true;
-    setHasGameBeenStarted(true)
-
     setMainState({
       isGameInProgress: isGameInProgress.current,
       gameOverScreen: false
     })
 
-    if (mainState.current.currentLevel >= 0) {
-      letterAnimation();
-      runObstacleAnimation_twins_1();
-    }
+    hideCrashesUntilUpdate.current = false;
+    setHasGameBeenStarted(true)
 
-    if (mainState.current.currentLevel >= 1) {
-      runObstacleAnimation_twins_0();
-    }
+    setTimeout(() => {
+      if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+        deployedGreenHealthOnGenerate.current = true;
+        runAuxilliaryGreenHealth();
+      }
+  
+      if (mainState.current.currentLevel >= 0) {
+        letterAnimation();
+        runObstacleAnimation_twins_1();
+      }
+  
+      if (mainState.current.currentLevel >= 1) {
+        runObstacleAnimation_twins_0();
+      }
+  
+      if (mainState.current.currentLevel >= 2) {
+        runObstacleAnimation_right_angle_0();
+      }
+  
+      if (mainState.current.currentLevel >= 3) {
+        runObstacleAnimation_right_angle_1();
+      }
 
-    if (mainState.current.currentLevel >= 2) {
-      runObstacleAnimation_right_angle_0();
-    }
-
-    if (mainState.current.currentLevel >= 3) {
-      runObstacleAnimation_right_angle_1();
-    }
+    }, 1500)
+    
   }
 
   // [END GAME] 
@@ -1340,58 +1360,59 @@ export const Stage_2_Projectile = (props) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
 
-    if (level.current >= 0 && animation.current != null) {
+    if (animation.current != null) {
       animation.current.stop();
-      letterPosition.setValue({ x: WidthRatio(370), y: 0 })
+      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedLetterBlock.current = false;
-
-      if (obstacle_twins_1.current != null) {
-        obstacle_twins_1.current.stop();
-
-        obstaclePosition_twins_1.setValue({ x: WidthRatio(370), y: 0 })
-        obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(370), y: 0 })
-
-      }
-      if (obstacle_0.current != null) {
-        obstacle_0.current.stop();
-        obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_0.current = false;
-      }
-      if (obstacle_1.current != null) {
-        obstacle_1.current.stop();
-        obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_1.current = false;
-
-      }
-
-      if (auxilliaryGreenHealth.current != null) {
-        auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedAuxilliaryGreenHealth.current = false;
-      }
     }
-    if (level.current >= 1 && obstacle_twins_0.current != null) {
+
+    if (obstacle_twins_1.current != null) {
+      obstacle_twins_1.current.stop();
+
+      obstaclePosition_twins_1.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(500), y: 0 })
+
+    }
+
+    if (obstacle_0.current != null) {
+      obstacle_0.current.stop();
+      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_0.current = false;
+    }
+
+    if (obstacle_1.current != null) {
+      obstacle_1.current.stop();
+      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_1.current = false;
+
+    }
+
+    if (obstacle_twins_0.current != null) {
       obstacle_twins_0.current.stop();
-      obstaclePosition_twins_0.setValue({ x: WidthRatio(370), y: 0 })
-      obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_twins_0.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_twins_0.current = false;
     }
-    if (level.current >= 2 && obstacle_right_angle_0.current != null) {
+    if (obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
-    if (level.current >= 3 && obstacle_right_angle_1.current != null) {
+    if (obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
+    }
+
+    if (auxilliaryGreenHealth.current != null) {
+      auxilliaryGreenHealth.current.stop();
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
-      console.log(" - - - input.continue - - - ")
-      console.log(input.level)
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
@@ -1575,7 +1596,7 @@ export const Stage_2_Projectile = (props) => {
               </View>
               :
               <>
-                {!pauseTimeout.current && !resumeSelected ?
+                {!pauseTimeout.current && !resumeSelected && isGameInProgress.current ?
                   <View style={{
                     position: 'absolute',
                     zIndex: -7,
