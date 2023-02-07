@@ -189,9 +189,9 @@ export const Stage_6_Projectile = (props) => {
   }, []);
 
   const Generate = (localPrevCrashes) => {
+    console.log("Stage, #1 Generate")
     console.log(userID.current)
       console.log(userByID?.user.username)
-    console.log("Stage, #1 Generate")
     if (!mainState.current.fromSavedGame) {
       console.log("Stage, #2 fromSavedGame: false ")
 
@@ -1131,13 +1131,16 @@ export const Stage_6_Projectile = (props) => {
     countRef.current = mainState.current.currentLetter_countValue + 1;
 
 
-    hideCrashesUntilUpdate.current = false;
     isGameInProgress.current = true;
+    setMainState({
+      isGameInProgress: isGameInProgress.current,
+      gameOverScreen: false
+    })
+
+    hideCrashesUntilUpdate.current = false;
     setHasGameBeenStarted(true)
 
-    setMainState({
-      isGameInProgress: isGameInProgress.current
-    })
+    
 
     if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
       deployedGreenHealthOnGenerate.current = true;
@@ -1234,10 +1237,14 @@ export const Stage_6_Projectile = (props) => {
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
+      console.log("END GAME - Continuation #1")
+
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
       if (input.level >= 4) {
+        console.log("END GAME - Reached Level 4")
+
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
@@ -1287,6 +1294,8 @@ export const Stage_6_Projectile = (props) => {
 
         return;
       } else {
+        console.log("END GAME - Continuation #2")
+
         let localLevel = input.level + 1;
         level.current = localLevel;
 
@@ -1317,6 +1326,7 @@ export const Stage_6_Projectile = (props) => {
     } else {
 
       if (input.local == "b") {
+        console.log("END GAME - Game Lost")
         let localLevel = input.level + 1;
         setRecordedLevel(localLevel)
         setRecordedScore(input.score)
@@ -1359,6 +1369,7 @@ export const Stage_6_Projectile = (props) => {
 
         }, 100);
       } else if (input.local == "c") {
+        console.log("END GAME - Full Exit")
         setContinuousEndGameCall(true)
 
         // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC

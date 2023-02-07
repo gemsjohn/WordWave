@@ -1282,19 +1282,19 @@ export const Stage_2_Projectile = (props) => {
   }
 
   const continueGame = () => {
-    console.log("CONTINUE GAME");
-    console.log("- - - - - -")
-    console.log(mainState.current.stage1)
-    console.log(mainState.current.stage2)
-    console.log(mainState.current.stage3)
-    console.log(mainState.current.currentScore)
-    console.log(mainState.current.currentLevel)
-    console.log(mainState.current.currentCrashes)
-    console.log(mainState.current.currentLetterPocket)
-    console.log(mainState.current.currentWordPlusSeven)
-    console.log(mainState.current.currentDisplayLetters)
-    console.log(mainState.current.currentLetter_countValue)
-    console.log("- - - - - -")
+    // console.log("CONTINUE GAME");
+    // console.log("- - - - - -")
+    // console.log(mainState.current.stage1)
+    // console.log(mainState.current.stage2)
+    // console.log(mainState.current.stage3)
+    // console.log(mainState.current.currentScore)
+    // console.log(mainState.current.currentLevel)
+    // console.log(mainState.current.currentCrashes)
+    // console.log(mainState.current.currentLetterPocket)
+    // console.log(mainState.current.currentWordPlusSeven)
+    // console.log(mainState.current.currentDisplayLetters)
+    // console.log(mainState.current.currentLetter_countValue)
+    // console.log("- - - - - -")
 
     score.current = mainState.current.currentScore;
     level.current = mainState.current.currentLevel;
@@ -1310,7 +1310,8 @@ export const Stage_2_Projectile = (props) => {
     setHasGameBeenStarted(true)
 
     setMainState({
-      isGameInProgress: isGameInProgress.current
+      isGameInProgress: isGameInProgress.current,
+      gameOverScreen: false
     })
 
     if (mainState.current.currentLevel >= 0) {

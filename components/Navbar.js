@@ -163,8 +163,7 @@ export const Navbar = (props) => {
                         bottom: 0,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-
+                        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
                         flexDirection: 'row',
                     }}
                 >
@@ -176,10 +175,11 @@ export const Navbar = (props) => {
                                 isGameInProgress: false
                             })
                         }}
+                        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopLeftRadius: HeightRatio(30)}}
                     >
                         <View
                             style={{
-                                flexDirection: 'column', marginLeft: HeightRatio(10), marginRight: HeightRatio(10)
+                                flexDirection: 'column', marginLeft: HeightRatio(10), marginRight: HeightRatio(10),
                             }}
                             accessible={true}
                             accessibilityLabel="Home"
@@ -196,6 +196,7 @@ export const Navbar = (props) => {
                                 isGameInProgress: false
                             })
                         }}
+                        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
                     >
                         <View
                             style={{
@@ -215,6 +216,7 @@ export const Navbar = (props) => {
                                 isGameInProgress: false
                             })
                         }}
+                        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
                     >
                         <View
                             style={{
@@ -236,6 +238,7 @@ export const Navbar = (props) => {
                                     isGameInProgress: false
                                 })
                             }}
+                            style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopRightRadius: HeightRatio(30)}}
                         >
                             <View
                                 style={{
@@ -250,6 +253,7 @@ export const Navbar = (props) => {
                         :
                         <TouchableOpacity
                             onPress={() => { props.nav.dispatch(resetActionAuth); }}
+                            style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopRightRadius: HeightRatio(30)}}
                         >
                             <View
                                 style={{

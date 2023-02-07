@@ -1409,7 +1409,8 @@ export const Stage_5_Projectile = (props) => {
     setHasGameBeenStarted(true)
 
     setMainState({
-      isGameInProgress: isGameInProgress.current
+      isGameInProgress: isGameInProgress.current,
+      gameOverScreen: false
     })
 
     if (mainState.current.currentLevel >= 0) {

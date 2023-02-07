@@ -138,7 +138,7 @@ export const GameScreen = ({ navigation }) => {
             if (mainState.current.stage10 != null) {
                 setStage10(mainState.current.stage10);
             }
-
+            
             setIsGameInProgress(mainState.current.isGameInProgress);
             setGameOverScreen(mainState.current.gameOverScreen)
         }, 500)
@@ -148,7 +148,9 @@ export const GameScreen = ({ navigation }) => {
 
     useEffect(() => {
         console.log("Setup: #3 ")
+        console.log("Is Game in Progress?")
         console.log(isGameInProgress)
+
         if (!isGameInProgress) {
             if (userByID?.user.saved != null && userByID?.user.saved.date != null ) {
                 setDisplayOptionsToPlaySavedGame(true)
