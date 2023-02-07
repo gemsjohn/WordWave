@@ -171,7 +171,7 @@ export const Stage_6_Projectile = (props) => {
     const timeoutId = setTimeout(() => {
       console.log("MOUNTED_INNER")
       setDisplayPlaybutton(true)
-      
+
     }, 1000);
 
     // Return a function that cleans up the effect
@@ -190,8 +190,7 @@ export const Stage_6_Projectile = (props) => {
 
   const Generate = (localPrevCrashes) => {
     console.log("Stage, #1 Generate")
-    console.log(userID.current)
-      console.log(userByID?.user.username)
+
     if (!mainState.current.fromSavedGame) {
       console.log("Stage, #2 fromSavedGame: false ")
 
@@ -463,8 +462,8 @@ export const Stage_6_Projectile = (props) => {
           clearTimeout(timeoutObstacle_homing_missile_ID)
         }
         timeoutObstacle_homing_missile_ID = setTimeout(() => {
-            hasRunObstacleAnimation_0.current = false;
-            runObstacleAnimation_0();
+          hasRunObstacleAnimation_0.current = false;
+          runObstacleAnimation_0();
         }, 200)
 
 
@@ -779,7 +778,7 @@ export const Stage_6_Projectile = (props) => {
         scoreFlash_100.current = false;
       }, 500)
 
-      if (!continuousEndGameCall ) {
+      if (!continuousEndGameCall) {
         if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
 
           endGame({
@@ -862,40 +861,40 @@ export const Stage_6_Projectile = (props) => {
       isGameInProgress: isGameInProgress.current
     })
 
-      hasRunObstacleAnimation_0.current = false;
-      hasRunObstacleAnimation_1.current = false;
+    hasRunObstacleAnimation_0.current = false;
+    hasRunObstacleAnimation_1.current = false;
 
-      if (animation.current != null) {
-        animation.current.stop();
-        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedLetterBlock.current = false;
-      }
+    if (animation.current != null) {
+      animation.current.stop();
+      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedLetterBlock.current = false;
+    }
 
-      if (obstacle_homing_missile.current != null) {
-        obstacle_homing_missile.current.stop();
-        obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedObstacle_homing_missile.current = false;
-      }
+    if (obstacle_homing_missile.current != null) {
+      obstacle_homing_missile.current.stop();
+      obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_homing_missile.current = false;
+    }
 
-      if (obstacle_Distributor.current != null) {
-        obstacle_Distributor.current.stop();
-        obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedObstacle_Distributor.current = false;
-      }
+    if (obstacle_Distributor.current != null) {
+      obstacle_Distributor.current.stop();
+      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_Distributor.current = false;
+    }
 
-      if (obstacle_right_angle_1.current != null) {
-        obstacle_right_angle_1.current.stop();
-        obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_right_angle_1.current = false;
-      }
+    if (obstacle_right_angle_1.current != null) {
+      obstacle_right_angle_1.current.stop();
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      hasUpdatedObstacle_right_angle_1.current = false;
+    }
 
-      if (auxilliaryGreenHealth.current != null) {
-        auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedAuxilliaryGreenHealth.current = false;
-      }
+    if (auxilliaryGreenHealth.current != null) {
+      auxilliaryGreenHealth.current.stop();
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedAuxilliaryGreenHealth.current = false;
+    }
 
-      
+
 
 
     setIsPaused(true)
@@ -1015,49 +1014,49 @@ export const Stage_6_Projectile = (props) => {
       isGameInProgress: isGameInProgress.current
     })
 
-      
 
-      if (animation.current != null) {
-        animation.current.stop();
-        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedLetterBlock.current = false;
-      }
 
-      if (obstacle_homing_missile.current != null) {
-        obstacle_homing_missile.current.stop();
-        obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedObstacle_homing_missile.current = false;
-      }
+    if (animation.current != null) {
+      animation.current.stop();
+      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedLetterBlock.current = false;
+    }
 
-      if (obstacle_Distributor.current != null) {
-        obstacle_Distributor.current.stop();
-        obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedObstacle_Distributor.current = false;
-      }
+    if (obstacle_homing_missile.current != null) {
+      obstacle_homing_missile.current.stop();
+      obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_homing_missile.current = false;
+    }
 
-      if (obstacle_right_angle_0.current != null) {
-        obstacle_right_angle_0.current.stop();
-        obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_right_angle_0.current = false;
-      }
+    if (obstacle_Distributor.current != null) {
+      obstacle_Distributor.current.stop();
+      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_Distributor.current = false;
+    }
 
-      if (obstacle_right_angle_1.current != null) {
-        obstacle_right_angle_1.current.stop();
-        obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
-        hasUpdatedObstacle_right_angle_1.current = false;
-      }
+    if (obstacle_right_angle_0.current != null) {
+      obstacle_right_angle_0.current.stop();
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
+      hasUpdatedObstacle_right_angle_0.current = false;
+    }
 
-      if (auxilliaryGreenHealth.current != null) {
-        auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedAuxilliaryGreenHealth.current = false;
-      }
+    if (obstacle_right_angle_1.current != null) {
+      obstacle_right_angle_1.current.stop();
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      hasUpdatedObstacle_right_angle_1.current = false;
+    }
 
-      if (auxilliaryGreenHealth.current != null) {
-        auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedAuxilliaryGreenHealth.current = false;
-      }
+    if (auxilliaryGreenHealth.current != null) {
+      auxilliaryGreenHealth.current.stop();
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedAuxilliaryGreenHealth.current = false;
+    }
+
+    if (auxilliaryGreenHealth.current != null) {
+      auxilliaryGreenHealth.current.stop();
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedAuxilliaryGreenHealth.current = false;
+    }
 
     setTimeout(() => {
       toBeContinuedHandler()
@@ -1065,6 +1064,11 @@ export const Stage_6_Projectile = (props) => {
   }
 
   const toBeContinuedHandler = async () => {
+    console.log("toBeContinuedHandler ")
+    console.log(userID.current)
+    console.log(userByID?.user.username)
+    console.log(mainState.current.currentScore)
+
     await addToBeContinued({
       variables: {
         userid: `${userID.current}`,
@@ -1140,7 +1144,7 @@ export const Stage_6_Projectile = (props) => {
     hideCrashesUntilUpdate.current = false;
     setHasGameBeenStarted(true)
 
-    
+
 
     if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
       deployedGreenHealthOnGenerate.current = true;
@@ -1191,7 +1195,7 @@ export const Stage_6_Projectile = (props) => {
     inputIterator.current = 0;
     hasRunObstacleAnimation_0.current = false;
     hasRunObstacleAnimation_1.current = false;
-    
+
     if (animation.current != null) {
       animation.current.stop();
       letterPosition.setValue({ x: WidthRatio(500), y: 0 })
@@ -1242,7 +1246,7 @@ export const Stage_6_Projectile = (props) => {
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
-      if (input.level >= 4) {
+      if (input.level >= 0) {
         console.log("END GAME - Reached Level 4")
 
         setLetter('');

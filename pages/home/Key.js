@@ -12,6 +12,10 @@ const resetActionHome = CommonActions.reset({
     routes: [{ name: 'Home', params: {} }]
 });
 
+async function deleteKey(key) {
+    await SecureStore.deleteItemAsync(key);
+}
+
 export const KeyScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
 
@@ -109,7 +113,7 @@ export const KeyScreen = ({ navigation }) => {
                                 alignSelf: 'center'
                             }} />
                         <View style={{ marginTop: HeightRatio(50), alignSelf: 'center' }}>
-                            <View style={{flexDirection: 'row'}}>
+                            <View style={{ flexDirection: 'row' }}>
                                 {count > 0 ?
                                     <View style={{
                                         backgroundColor: 'rgba(255, 255, 255, 1.0)',
@@ -148,7 +152,7 @@ export const KeyScreen = ({ navigation }) => {
                                 }
                             </View>
 
-                            <View style={{flexDirection: 'row'}}>
+                            <View style={{ flexDirection: 'row' }}>
                                 {count > 3 ?
                                     <View style={{
                                         backgroundColor: 'rgba(255, 255, 255, 1.0)',
@@ -258,6 +262,23 @@ export const KeyScreen = ({ navigation }) => {
                                     >0</Text>
                                 </TouchableOpacity>
                             </View>
+                        </View>
+                        <View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    deleteKey('cosmicKey');
+                                    navigation.dispatch(resetActionHome);
+                                }}
+                                style={Styling.modalWordButton}>
+                                <View style={{}}>
+                                    <Text
+                                        style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
+                                        allowFontScaling={false}
+                                    >
+                                        Forgot Key?
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     :

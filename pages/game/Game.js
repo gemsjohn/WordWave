@@ -54,8 +54,8 @@ export const GameScreen = ({ navigation }) => {
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
-    const [stage5, setStage5] = useState(false);
-    const [stage6, setStage6] = useState(true);
+    const [stage5, setStage5] = useState(true);
+    const [stage6, setStage6] = useState(false);
     const [stage7, setStage7] = useState(false);
     const [stage8, setStage8] = useState(false);
     const [stage9, setStage9] = useState(false);
@@ -138,7 +138,7 @@ export const GameScreen = ({ navigation }) => {
             if (mainState.current.stage10 != null) {
                 setStage10(mainState.current.stage10);
             }
-            
+
             setIsGameInProgress(mainState.current.isGameInProgress);
             setGameOverScreen(mainState.current.gameOverScreen)
         }, 500)
@@ -151,7 +151,7 @@ export const GameScreen = ({ navigation }) => {
         console.log("Is Game in Progress?")
         console.log(isGameInProgress)
 
-        if (!isGameInProgress) {
+        if (!isGameInProgress && !gameOverScreen) {
             if (userByID?.user.saved != null && userByID?.user.saved.date != null ) {
                 setDisplayOptionsToPlaySavedGame(true)
                 stage.current = parseInt(userByID?.user.saved.stage);

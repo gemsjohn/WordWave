@@ -415,7 +415,13 @@ export const Stage_5_Projectile = (props) => {
         runObstacleAnimations[i]();
       }
 
-      let localYPos_0 = WidthRatio(24) * roundedNum
+      let localYPos_0;
+
+      if (roundedNum == 0) {
+        localYPos_0 = (WidthRatio(24) * roundedNum) + WidthRatio(7)
+      } else {
+        localYPos_0 = (WidthRatio(24) * roundedNum)
+      }
 
       letterPosition.setValue({ x: WidthRatio(370), y: localYPos_0 })
       animation.current = Animated.parallel([
@@ -1307,11 +1313,17 @@ export const Stage_5_Projectile = (props) => {
       setMainState({
         isGameInProgress: isGameInProgress.current
       })
+      setTimeout(() => {
+        if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+          deployedGreenHealthOnGenerate.current = true;
+          runAuxilliaryGreenHealth();
+        }
 
-      if (mainState.current.currentLevel >= 0) {
-        letterAnimation();
-        // runObstacleAnimation_0();
-      }
+        if (mainState.current.currentLevel >= 0) {
+          letterAnimation();
+        }
+      }, 1500)
+
 
 
       setTimeout(() => {
@@ -1404,19 +1416,26 @@ export const Stage_5_Projectile = (props) => {
     countRef.current = mainState.current.currentLetter_countValue + 1;
 
 
-    hideCrashesUntilUpdate.current = false;
     isGameInProgress.current = true;
-    setHasGameBeenStarted(true)
-
     setMainState({
       isGameInProgress: isGameInProgress.current,
       gameOverScreen: false
     })
 
-    if (mainState.current.currentLevel >= 0) {
-      letterAnimation();
-      // runObstacleAnimation_0();
-    }
+    hideCrashesUntilUpdate.current = false;
+    setHasGameBeenStarted(true)
+
+
+    setTimeout(() => {
+      if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
+        deployedGreenHealthOnGenerate.current = true;
+        runAuxilliaryGreenHealth();
+      }
+
+      if (mainState.current.currentLevel >= 0) {
+        letterAnimation();
+      }
+    }, 1500)
 
   }
 
