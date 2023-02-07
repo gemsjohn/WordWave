@@ -113,29 +113,21 @@ export const isObstacleColliding_large = (obj1, obj2) => {
 }
 
 export const isObstacleColliding_right_angle_0 = (obj1, obj2) => {
-    // Find the distance between the centers of the two objects
-    let xDistance = obj1.x - obj2.x;
-    let yDistance = obj1.y - obj2.y;
-
-    // Scale the distances based on the elliptical shape
-    let scaledXDistance = xDistance / (obj2.width / 2);
-    let scaledYDistance = yDistance / (obj2.height / 2);
-
-    // Compare the scaled distance to 1
-    return (scaledXDistance * scaledXDistance + scaledYDistance * scaledYDistance) <= 1;
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
 }
 
 export const isObstacleColliding_right_angle_1 = (obj1, obj2) => {
-    // Find the distance between the centers of the two objects
-    let xDistance = obj1.x - obj2.x;
-    let yDistance = obj1.y - obj2.y;
-
-    // Scale the distances based on the elliptical shape
-    let scaledXDistance = xDistance / (obj2.width / 2);
-    let scaledYDistance = yDistance / (obj2.height / 2);
-
-    // Compare the scaled distance to 1
-    return (scaledXDistance * scaledXDistance + scaledYDistance * scaledYDistance) <= 1;
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width/2 > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
 }
 
 export const isObstacleColliding_twins_0 = (obj1, obj2) => {

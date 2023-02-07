@@ -307,8 +307,8 @@ export const Stage_1_Projectile = (props) => {
 
           setTimeout(() => {
             if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
-              runAuxilliaryGreenHealth();
               deployedGreenHealthOnGenerate.current = true;
+              runAuxilliaryGreenHealth();
             }
 
             if (level.current >= 0) {

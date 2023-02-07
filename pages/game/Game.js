@@ -148,7 +148,7 @@ export const GameScreen = ({ navigation }) => {
 
     useEffect(() => {
         console.log("Setup: #3 ")
-
+        console.log(isGameInProgress)
         if (!isGameInProgress) {
             if (userByID?.user.saved != null && userByID?.user.saved.date != null ) {
                 setDisplayOptionsToPlaySavedGame(true)
