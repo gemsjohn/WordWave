@@ -26,6 +26,11 @@ import {
     faFlagCheckered,
     faSliders,
 } from '@fortawesome/free-solid-svg-icons'
+import Purchases, { PurchasesOffering } from 'react-native-purchases';
+
+const APIKeys = {
+    google: "goog_eSMeOTAOoztqfufyCjPFYWImOfa"
+};
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -42,7 +47,8 @@ const resetActionAuth = CommonActions.reset({
 
 export const HomeScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
-
+    const [currentOffering, setCurrentOffering] = useState(PurchasesOffering || null)
+    
     const [count, setCount] = useState(0);
     const authState = useRef(false);
     const [displaySignUpModal, setDisplaySignUpModal] = useState(false);
@@ -78,6 +84,8 @@ export const HomeScreen = ({ navigation }) => {
 
 
     useEffect(() => {
+        Purchases
+
         setLoading(true)
         setTimeout(() => {
             authState.current = mainState.current.authState
@@ -91,6 +99,25 @@ export const HomeScreen = ({ navigation }) => {
         }, 500)
 
     }, [])
+
+    useEffect(() => {
+        Purchases.setDebugLogsEnabled(true);
+        const fetchData = async () => {
+            const offerings = await Purchases.getOfferings();
+            setCurrentOffering(offerings.current);
+        };
+
+        const config = async () => {
+            Purchases.setDebugLogsEnabled(true);
+            await Purchases.configure({ apiKey: APIKeys.google });
+        }
+
+        
+
+        fetchData()
+        config()
+            .catch(console.log);
+    }, []);
 
 
     useEffect(() => {
@@ -617,6 +644,25 @@ export const HomeScreen = ({ navigation }) => {
                                                         </TouchableOpacity>
 
                                                     </View>
+
+                                                    {!currentOffering ?
+                                                    <View>
+                                                        <Text style={{color: 'white', fontSize: 20}}>
+                                                            Loading ...
+                                                        </Text>
+                                                    </View>
+                                                    :
+                                                    <View>
+                                                        <Text>Current Offering: {currentOffering.identifier}</Text>
+                                                        <Text>Package Count: {currentOffering.availablePackages.length}</Text>
+                                                        {
+                                                            currentOffering.availablePackages.map((pkg) => {
+                                                               <Text>{pkg.product.identifier}</Text>
+                                                            })
+                                                        }
+                                                    </View>
+                                                    
+                                                    }
                                                 </View>
                                             }
 
