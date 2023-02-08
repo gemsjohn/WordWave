@@ -9,6 +9,7 @@ import { GET_USER_BY_ID, GET_ME } from '../utils/queries';
 import { MainStateContext } from '../App';
 import moment from 'moment';
 import { Styling } from '../Styling';
+import { Tokens } from '../pages/home/Tokens';
 
 
 const {
@@ -35,6 +36,10 @@ export const Navbar = (props) => {
 
     const [isTokenValid, setIsTokenValid] = useState(null);
     const [minimizeNav, setMinimizeNav] = useState(false);
+    const [displayTokenModal, setDisplayTokenModal] = useState(false);
+
+    const authState = useRef(false);
+    const userID = useRef(null);
 
     let localKeyMoment = moment();
 
@@ -109,6 +114,9 @@ export const Navbar = (props) => {
             console.log("profile")
         }
 
+        authState.current = mainState.current.authState
+        userID.current = mainState.current.userID;
+
     }, [])
 
     if (localKeyMoment != mainState.current.initialKeyMoment && mainState.current.bearerToken != null) {
@@ -175,7 +183,7 @@ export const Navbar = (props) => {
                                 isGameInProgress: false
                             })
                         }}
-                        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopLeftRadius: HeightRatio(30)}}
+                        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopLeftRadius: HeightRatio(30) }}
                     >
                         <View
                             style={{
@@ -196,7 +204,7 @@ export const Navbar = (props) => {
                                 isGameInProgress: false
                             })
                         }}
-                        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
+                        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                     >
                         <View
                             style={{
@@ -208,6 +216,64 @@ export const Navbar = (props) => {
                             <Image source={require('../assets/button_game_nav.png')} style={{ height: HeightRatio(60), width: HeightRatio(60) }} />
                         </View>
                     </TouchableOpacity>
+
+                    {authState.current == true && userID.current != null &&
+                        // <Tokens userID={userID.current} />
+                        <View style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+                        {displayTokenModal ?
+                            <TouchableOpacity
+                                onPress={() => setDisplayTokenModal(false)}
+                                style={{
+                                    height: HeightRatio(60),
+                                    width: HeightRatio(60),
+                                    flexDirection: 'column',
+                                    backgroundColor: 'red',
+                                    borderRadius: HeightRatio(100),
+                                    justifyContent: 'center',
+                                    borderWidth: 2,
+                                    borderColor: 'white',
+                                    backgroundColor: 'red'
+                                }}
+                            >
+            
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: HeightRatio(13),
+                                    fontWeight: 'bold',
+                                    textAlign: 'center',
+                                }} allowFontScaling={false}>
+                                    CLOSE
+                                </Text>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity
+                                onPress={() => setDisplayTokenModal(true)}
+                                style={{
+                                    height: HeightRatio(60),
+                                    width: HeightRatio(60),
+                                    flexDirection: 'column',
+                                    backgroundColor: 'blue',
+                                    borderRadius: HeightRatio(100),
+                                    justifyContent: 'center',
+                                    borderWidth: 2,
+                                    borderColor: 'white',
+                                    backgroundColor: '#35faa9'
+                                }}
+                            >
+            
+                                <Text style={{
+                                    color: 'black',
+                                    fontSize: HeightRatio(13),
+                                    fontWeight: 'bold',
+                                    textAlign: 'center',
+                                }} allowFontScaling={false}>
+                                    BUY TOKENS
+                                </Text>
+                            </TouchableOpacity>
+                        }
+                        </View>
+                    }
+
                     {/* [[[LEADER BOARD]]] */}
                     <TouchableOpacity
                         onPress={() => {
@@ -216,7 +282,7 @@ export const Navbar = (props) => {
                                 isGameInProgress: false
                             })
                         }}
-                        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
+                        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                     >
                         <View
                             style={{
@@ -238,7 +304,7 @@ export const Navbar = (props) => {
                                     isGameInProgress: false
                                 })
                             }}
-                            style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopRightRadius: HeightRatio(30)}}
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopRightRadius: HeightRatio(30) }}
                         >
                             <View
                                 style={{
@@ -253,7 +319,7 @@ export const Navbar = (props) => {
                         :
                         <TouchableOpacity
                             onPress={() => { props.nav.dispatch(resetActionAuth); }}
-                            style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopRightRadius: HeightRatio(30)}}
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', borderTopRightRadius: HeightRatio(30) }}
                         >
                             <View
                                 style={{
@@ -267,6 +333,14 @@ export const Navbar = (props) => {
                     }
                 </View>
             }
+            {displayTokenModal &&
+                        <>
+                        {authState.current == true && userID.current != null &&
+                            <Tokens userID={userID.current} />
+                        }
+                        </>
+
+                    }
         </>
     )
 }

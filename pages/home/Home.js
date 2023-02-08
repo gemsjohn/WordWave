@@ -26,11 +26,8 @@ import {
     faFlagCheckered,
     faSliders,
 } from '@fortawesome/free-solid-svg-icons'
-import Purchases, { PurchasesOffering } from 'react-native-purchases';
+import { Tokens } from './Tokens';
 
-const APIKeys = {
-    google: "goog_eSMeOTAOoztqfufyCjPFYWImOfa"
-};
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -47,8 +44,7 @@ const resetActionAuth = CommonActions.reset({
 
 export const HomeScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
-    const [currentOffering, setCurrentOffering] = useState(PurchasesOffering || null)
-    
+
     const [count, setCount] = useState(0);
     const authState = useRef(false);
     const [displaySignUpModal, setDisplaySignUpModal] = useState(false);
@@ -84,40 +80,19 @@ export const HomeScreen = ({ navigation }) => {
 
 
     useEffect(() => {
-        Purchases
-
         setLoading(true)
         setTimeout(() => {
             authState.current = mainState.current.authState
             userID.current = mainState.current.userID;
+
+
             getValueFor('cosmicKey')
             setTimeout(() => {
                 setLoading(false)
             }, 500)
-
-
         }, 500)
-
     }, [])
 
-    useEffect(() => {
-        Purchases.setDebugLogsEnabled(true);
-        const fetchData = async () => {
-            const offerings = await Purchases.getOfferings();
-            setCurrentOffering(offerings.current);
-        };
-
-        const config = async () => {
-            Purchases.setDebugLogsEnabled(true);
-            await Purchases.configure({ apiKey: APIKeys.google });
-        }
-
-        
-
-        fetchData()
-        config()
-            .catch(console.log);
-    }, []);
 
 
     useEffect(() => {
@@ -127,6 +102,7 @@ export const HomeScreen = ({ navigation }) => {
             setCount(0)
         }
     }, [count])
+
 
     return (
         <>
@@ -234,24 +210,8 @@ export const HomeScreen = ({ navigation }) => {
                                                         {userByID?.user.tokens}
                                                     </Text>
                                                 </View>
-                                                {/* <View style={{
-                                                    height: HeightRatio(130),
-                                                    width: HeightRatio(130),
-                                                    flexDirection: 'column',
-                                                    backgroundColor: '#fcd01f',
-                                                    borderRadius: HeightRatio(100),
-                                                    justifyContent: 'center',
-                                                }}>
 
-                                                    <Text style={{
-                                                        color: 'black',
-                                                        fontSize: HeightRatio(30),
-                                                        fontWeight: 'bold',
-                                                        textAlign: 'center',
-                                                    }}>
-                                                        BUY TOKENS
-                                                    </Text>
-                                                </View> */}
+
                                             </View>
                                             {userByID?.user.tobecontinued != null &&
                                                 <View style={{ flexDirection: 'row', marginTop: HeightRatio(10), alignSelf: 'center' }}>
@@ -592,77 +552,30 @@ export const HomeScreen = ({ navigation }) => {
                                                         <Image
                                                             source={require('../../assets/Example_0b.png')}
                                                             style={{ height: 200, width: 200, alignSelf: 'center', marginTop: 20 }} />
-                                                    </View>
-
-                                                    <View style={{
-                                                        backgroundColor: '#043648',
-                                                        borderColor: 'rgba(255, 255, 255, 0.25)',
-                                                        borderWidth: 1,
-                                                        padding: HeightRatio(20),
-                                                        borderRadius: HeightRatio(40),
-                                                        width: WidthRatio(160),
-                                                        margin: HeightRatio(20),
-                                                        alignSelf: 'center',
-                                                        justifyContent: 'center',
-                                                        flexDirection: 'column'
-                                                    }}>
 
                                                         <Text style={{
-                                                            color: '#00fcff',
-                                                            fontSize: HeightRatio(50),
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(45),
                                                             fontWeight: 'bold',
-                                                            // marginTop: HeightRatio(20)
+                                                            padding: HeightRatio(10),
                                                         }}
                                                             allowFontScaling={false}>
-                                                            But wait, <Text style={{ color: 'white' }}>
-                                                                if you want to continue playing you can use a token!
-                                                            </Text>
+                                                            If you want to continue playing you can use a <Text style={{ color: '#00fcff' }}>
+                                                                token    
+                                                            </Text>!
                                                         </Text>
-                                                        <TouchableOpacity
-                                                            onPress={() => {
-                                                                console.log("BUY TOKEN")
-                                                            }}
-                                                            style={{ ...Styling.modalWordButton, marginTop: 0 }}
-                                                        >
-                                                            <View style={{
-                                                                backgroundColor: 'blue',
-                                                                display: 'flex',
-                                                                justifyContent: 'flex-start',
-                                                                padding: HeightRatio(40),
-                                                                borderRadius: HeightRatio(80),
-                                                                alignSelf: 'center',
-                                                                margin: HeightRatio(10),
-                                                                width: WidthRatio(140)
-                                                            }}>
-                                                                <Text
-                                                                    style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
-                                                                    allowFontScaling={false}
-                                                                >
-                                                                    Buy Tokens
-                                                                </Text>
-                                                            </View>
-                                                        </TouchableOpacity>
 
-                                                    </View>
-
-                                                    {!currentOffering ?
-                                                    <View>
-                                                        <Text style={{color: 'white', fontSize: 20}}>
-                                                            Loading ...
+                                                        <Text style={{
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(45),
+                                                            fontWeight: 'bold',
+                                                            marginTop: HeightRatio(20),
+                                                            padding: HeightRatio(10),
+                                                        }}
+                                                            allowFontScaling={false}>
+                                                            Sign up to receive 5 free tokens and an option to purchase more.
                                                         </Text>
                                                     </View>
-                                                    :
-                                                    <View>
-                                                        <Text>Current Offering: {currentOffering.identifier}</Text>
-                                                        <Text>Package Count: {currentOffering.availablePackages.length}</Text>
-                                                        {
-                                                            currentOffering.availablePackages.map((pkg) => {
-                                                               <Text>{pkg.product.identifier}</Text>
-                                                            })
-                                                        }
-                                                    </View>
-                                                    
-                                                    }
                                                 </View>
                                             }
 
@@ -678,6 +591,7 @@ export const HomeScreen = ({ navigation }) => {
                 }
                 {/* </ImageBackground> */}
                 <Navbar nav={navigation} auth={mainState.current.authState} position={'absolute'} from={'profile'} />
+
 
             </View>
             <Modal
