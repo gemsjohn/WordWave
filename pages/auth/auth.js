@@ -792,8 +792,8 @@ export const Auth = ({ navigation }) => {
                                     setDisplayResetSuccessModal(!displayResetSuccessModal);
                                   }}
                                 >
-                                  <View style={Styling.centeredView}>
-                                    <View style={Styling.modalView}>
+                                  <View style={styles.centeredView}>
+                                    <View style={styles.modalView}>
                                       {/* TOP ROW */}
                                       <View
                                         style={{
@@ -896,3 +896,29 @@ export const Auth = ({ navigation }) => {
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22
+  },
+  modalView: {
+      margin: 20,
+      backgroundColor: "#edf2f4",
+      borderRadius: 10,
+      borderWidth: 3,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+          width: 0,
+          height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+      width: WidthRatio(300)
+  }
+});

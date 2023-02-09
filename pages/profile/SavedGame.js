@@ -84,8 +84,9 @@ export const SavedGame = (props) => {
                     <Text 
                         style={{
                             color: 'white',
-                            fontSize: HeightRatio(50),
+                            fontSize: HeightRatio(40),
                             margin: HeightRatio(10),
+                            width: HeightRatio(400),
                         }}
                         allowFontScaling={false}
                     >
@@ -94,8 +95,9 @@ export const SavedGame = (props) => {
                     <Text 
                         style={{
                             color: 'white',
-                            fontSize: HeightRatio(50),
-                            margin: HeightRatio(10)
+                            fontSize: HeightRatio(40),
+                            margin: HeightRatio(10),
+                            width: HeightRatio(400),
                         }}
                         allowFontScaling={false}
                     >
@@ -104,8 +106,9 @@ export const SavedGame = (props) => {
                     <Text 
                         style={{
                             color: 'white',
-                            fontSize: HeightRatio(50),
+                            fontSize: HeightRatio(40),
                             margin: HeightRatio(10),
+                            width: HeightRatio(400),
                         }}
                         allowFontScaling={false}
                     >

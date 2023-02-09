@@ -13,12 +13,17 @@ import { MainStateContext } from '../../App';
 import { SecureStorage } from './SecureStorage';
 import { windowHeight, windowWidth, HeightRatio, WidthRatio, Styling } from '../../Styling';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as SecureStore from 'expo-secure-store';
 import {
     UPDATE_USER,
     LOGIN_USER,
     UPDATE_USER_PASSWORD,
     DELETE_USER
 } from '../../utils/mutations';
+
+async function deleteKey(key) {
+    await SecureStore.deleteItemAsync(key);
+  }
 
 export const UserDetails = (props) => {
     const { mainState, setMainState } = useContext(MainStateContext);
@@ -108,7 +113,7 @@ export const UserDetails = (props) => {
                 await updateUser({
                     variables: {
                         profilepicture: userByID?.user.profilepicture,
-                        verified: userByID?.user.verified,
+                        prevusername: userByID?.user.username,
                         username: promptUsernameInput,
                         email: userByID?.user.email,
                     }
@@ -154,6 +159,8 @@ export const UserDetails = (props) => {
                 userID: null,
                 authState: false
             })
+
+            deleteKey('cosmicKey');
             props.nav.dispatch(resetActionAuth)
         }
         catch (e) { console.error(e); }
@@ -452,7 +459,7 @@ export const UserDetails = (props) => {
                                                 </>
                                             }
                                             {promptPasswordInput1 != '' && promptPasswordInput2 != '' && promptPasswordInput1 == promptPasswordInput2 &&
-                                                <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                                <View style={{ flexDirection: 'row', margin: HeightRatio(20) }}>
                                                     <Text 
                                                         style={{ color: 'white', fontSize: HeightRatio(40) }}
                                                         allowFontScaling={false}
@@ -462,7 +469,7 @@ export const UserDetails = (props) => {
                                                 </View>
                                             }
                                             {promptPasswordInput1 != '' && promptPasswordInput2 != '' && promptPasswordInput1 != promptPasswordInput2 &&
-                                                <View style={{ flexDirection: 'row', alignSelf: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: 10, borderRadius: 10 }}>
+                                                <View style={{ flexDirection: 'row', margin: HeightRatio(20) }}>
                                                     <Text 
                                                         style={{ color: 'red', fontSize: HeightRatio(40) }}
                                                         allowFontScaling={false}

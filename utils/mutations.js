@@ -49,8 +49,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const UPDATE_USER_PASSWORD = gql`
-  mutation Mutation {
-  updateUserPassword {
+  mutation Mutation($password: String) {
+  updateUserPassword(password: $password) {
     _id
     role
     username
@@ -94,8 +94,8 @@ export const UPDATE_USER_PASSWORD = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation Mutation($username: String, $email: String, $profilepicture: String) {
-  updateUser(username: $username, email: $email, profilepicture: $profilepicture) {
+  mutation Mutation($username: String, $email: String, $profilepicture: String, $prevusername: String) {
+  updateUser(username: $username, email: $email, profilepicture: $profilepicture, prevusername: $prevusername) {
     _id
     role
     username
@@ -277,8 +277,8 @@ export const ADD_USER = gql`
 `;
 
 export const DELETE_USER = gql`
-  mutation Mutation($deleteUserId: ID!, $echo: String) {
-    deleteUser(id: $deleteUserId, echo: $echo)
+  mutation Mutation($deleteUserId: ID!) {
+    deleteUser(id: $deleteUserId)
   }
 `;
 
@@ -346,8 +346,8 @@ export const UPDATE_MAX_SCORE_AND_STAGE = gql`
 `;
 
 export const UPDATE_TOKEN_COUNT = gql`
-  mutation Mutation($remove: String, $add: String, $amount: String) {
-  updateTokenCount(remove: $remove, add: $add, amount: $amount) {
+  mutation UpdateTokenCount($remove: String, $add: String, $amount: String, $userid: String) {
+  updateTokenCount(remove: $remove, add: $add, amount: $amount, userid: $userid) {
     _id
     role
     username

@@ -1,7 +1,7 @@
 import React, { useEffect, useInsertionEffect, useState, useContext, useRef } from 'react';
 import { View, Text, Button, Dimensions, Image, TouchableOpacity, PixelRatio } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSolid, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faSolid, faBars, faX } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
@@ -37,6 +37,7 @@ export const Navbar = (props) => {
     const [isTokenValid, setIsTokenValid] = useState(null);
     const [minimizeNav, setMinimizeNav] = useState(false);
     const [displayTokenModal, setDisplayTokenModal] = useState(mainState.current.displayTokenModal);
+    const [fromGame, setFromGame] = useState(false);
 
     const authState = useRef(false);
     const userID = useRef(null);
@@ -102,16 +103,20 @@ export const Navbar = (props) => {
         // console.log("NAV BAR USEEFFECT")
         if (props.from == 'home') {
             console.log("Home")
+            setFromGame(false)
         }
         if (props.from == 'game') {
             console.log("game")
             setMinimizeNav(true)
+            setFromGame(true)
         }
         if (props.from == 'leader') {
             console.log("leader")
+            setFromGame(false)
         }
         if (props.from == 'profile') {
             console.log("profile")
+            setFromGame(false)
         }
 
         authState.current = mainState.current.authState
@@ -345,6 +350,30 @@ export const Navbar = (props) => {
                             </View>
                         </TouchableOpacity>
 
+                    }
+
+                    {fromGame &&
+                        <TouchableOpacity
+                            onPress={() => setMinimizeNav(true)}
+                            style={{
+                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                borderRadius: HeightRatio(100),
+                                height: HeightRatio(50),
+                                width: HeightRatio(50),
+                                padding: HeightRatio(5),
+                                justifyContent: 'center',
+                                alignSelf: 'center',
+                                position: 'absolute',
+                                zIndex: 10,
+                                top: HeightRatio(-50),
+                                left: HeightRatio(200)
+                            }}>
+                            <FontAwesomeIcon
+                                icon={faSolid, faX}
+                                style={{ color: 'white', alignSelf: 'center' }}
+                                size={20}
+                            />
+                        </TouchableOpacity>
                     }
                 </View>
             }

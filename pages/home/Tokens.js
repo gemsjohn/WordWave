@@ -3,6 +3,8 @@ import { Platform, Text, View, FlatList, Alert, TouchableOpacity, Modal, Image }
 import { MainStateContext } from '../../App';
 import Purchases, { PurchasesOffering } from 'react-native-purchases';
 import { HeightRatio, windowHeight, windowWidth } from '../../Styling';
+import { useMutation, useQuery } from '@apollo/client';
+import { UPDATE_TOKEN_COUNT } from '../../utils/mutations';
 
 const APIKeys = {
     google: "goog_eSMeOTAOoztqfufyCjPFYWImOfa",
@@ -11,6 +13,8 @@ const APIKeys = {
 
 export const Tokens = (props) => {
     const { mainState, setMainState } = useContext(MainStateContext);
+    const [updateTokenCount] = useMutation(UPDATE_TOKEN_COUNT);
+
     // - State for all available package
     const [packages, setPackages] = useState([]);
 
@@ -72,6 +76,7 @@ export const Tokens = (props) => {
     const checkCustomerInfo = async (input) => {
         const customerInfo = await Purchases.getCustomerInfo();
         console.log("* * * * * * * *")
+        console.log(input)
 
         const intervalID = setInterval(() => {
             if (
@@ -83,6 +88,52 @@ export const Tokens = (props) => {
                     setUpdateComplete(true)
                     console.log("UPDATE DB WITH: " + input.product.identifier)
                     console.log("#1: clear INTERVAL!")
+
+                    const handleUpdateTokenCount = async () => {
+                        if (input.identifier === 'tokens_25') {
+                            await updateTokenCount({
+                                variables: {
+                                  remove: "false",
+                                  add: "true",
+                                  amount: "25",
+                                  userid: props.userID
+                                }
+                            });
+                        } else if (input.identifier === 'tokens_50') {
+                            await updateTokenCount({
+                                variables: {
+                                  remove: "false",
+                                  add: "true",
+                                  amount: "50",
+                                  userid: props.userID
+                                }
+                            });
+                        } else if (input.identifier === 'tokens_100') {
+                            await updateTokenCount({
+                                variables: {
+                                  remove: "false",
+                                  add: "true",
+                                  amount: "100",
+                                  userid: props.userID
+                                }
+                            });
+                        } else if (input.identifier === 'tokens_200') {
+                            await updateTokenCount({
+                                variables: {
+                                  remove: "false",
+                                  add: "true",
+                                  amount: "200",
+                                  userid: props.userID
+                                }
+                            });
+                        }
+                    }
+
+                    handleUpdateTokenCount();
+                    
+                    
+
+
                     clearInterval(intervalID);
                     setIsPurchaseSuccessful(true);
                     setMainState({
@@ -240,7 +291,7 @@ export const Tokens = (props) => {
 
             </View>
         }
-            {mainState.current.tokens_isPurchaseSuccessful && 
+            {isPuchaseSuccessful && 
                 <View
                 style={{
                     zIndex: 100,
@@ -257,7 +308,7 @@ export const Tokens = (props) => {
                 }}
             >
                 <Text style={{color: 'white', fontSize: HeightRatio(40), width: HeightRatio(500), margin: HeightRatio(10)}}>
-                    Purchase successful.
+                    Purchase successful. <Text style={{color: '#35faa9'}}>Refresh.</Text>
                 </Text>
 
             </View>

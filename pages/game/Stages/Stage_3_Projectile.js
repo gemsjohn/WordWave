@@ -1425,7 +1425,8 @@ export const Stage_3_Projectile = (props) => {
         variables: {
           remove: "true",
           add: "false",
-          amount: "0"
+          amount: "0",
+          userid: userID.current
         }
       });
       setGameOverModalVisible(!gameOverModalVisible);
