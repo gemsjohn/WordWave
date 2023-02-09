@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import { Platform, Text, View, FlatList, Alert, TouchableOpacity, Modal, Image } from 'react-native';
+import { Platform, Text, View, FlatList, Alert, TouchableOpacity, Modal, Image, ActivityIndicator, } from 'react-native';
 import { MainStateContext } from '../../App';
 import Purchases, { PurchasesOffering } from 'react-native-purchases';
 import { HeightRatio, windowHeight, windowWidth } from '../../Styling';
@@ -20,6 +20,7 @@ export const Tokens = (props) => {
 
     // - State for displaying an overlay view
     const [isPurchasing, setIsPurchasing] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const transactionLength = useRef(null);
     const [updateComplete, setUpdateComplete] = useState(false);
@@ -59,6 +60,7 @@ export const Tokens = (props) => {
 
         try {
             setDisplayModal(false)
+            setLoading(true)
             setMainState({
                 tokens_display: false
             })
@@ -86,6 +88,7 @@ export const Tokens = (props) => {
 
                 if (!updateComplete) {
                     setUpdateComplete(true)
+                    setLoading(false)
                     console.log("UPDATE DB WITH: " + input.product.identifier)
                     console.log("#1: clear INTERVAL!")
 
@@ -93,45 +96,45 @@ export const Tokens = (props) => {
                         if (input.identifier === 'tokens_25') {
                             await updateTokenCount({
                                 variables: {
-                                  remove: "false",
-                                  add: "true",
-                                  amount: "25",
-                                  userid: props.userID
+                                    remove: "false",
+                                    add: "true",
+                                    amount: "25",
+                                    userid: props.userID
                                 }
                             });
                         } else if (input.identifier === 'tokens_50') {
                             await updateTokenCount({
                                 variables: {
-                                  remove: "false",
-                                  add: "true",
-                                  amount: "50",
-                                  userid: props.userID
+                                    remove: "false",
+                                    add: "true",
+                                    amount: "50",
+                                    userid: props.userID
                                 }
                             });
                         } else if (input.identifier === 'tokens_100') {
                             await updateTokenCount({
                                 variables: {
-                                  remove: "false",
-                                  add: "true",
-                                  amount: "100",
-                                  userid: props.userID
+                                    remove: "false",
+                                    add: "true",
+                                    amount: "100",
+                                    userid: props.userID
                                 }
                             });
                         } else if (input.identifier === 'tokens_200') {
                             await updateTokenCount({
                                 variables: {
-                                  remove: "false",
-                                  add: "true",
-                                  amount: "200",
-                                  userid: props.userID
+                                    remove: "false",
+                                    add: "true",
+                                    amount: "200",
+                                    userid: props.userID
                                 }
                             });
                         }
                     }
 
                     handleUpdateTokenCount();
-                    
-                    
+
+
 
 
                     clearInterval(intervalID);
@@ -158,6 +161,7 @@ export const Tokens = (props) => {
             console.log("#3: clear INTERVAL!")
             clearInterval(intervalID);
             setUpdateComplete(false)
+            setLoading(false)
         }, 300000);
 
 
@@ -258,60 +262,84 @@ export const Tokens = (props) => {
 
     return (
         <>
-        {displayModal &&
-            <View
-                style={{
-                    zIndex: 100,
-                    position: 'absolute',
-                    top: HeightRatio(60),
-                    left: HeightRatio(20),
-                    backgroundColor: 'black',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: HeightRatio(30), padding: HeightRatio(20),
-                    borderWidth: 2,
-                    borderColor: 'white'
-                }}
-            >
-                <FlatList
-                    data={packages}
-                    renderItem={({ item }) =>
-                        <View style={{ alignSelf: 'center' }}>
-                            <Item
-                                title={item.product.title}
-                                identifier={item.product.identifier}
-                                description={item.product.description}
-                                priceString={item.product.priceString}
-                                purchasePackage={item}
-                            />
-                        </View>
-                    }
-                    keyExtractor={(item) => item.identifier}
+            {displayModal &&
+                <View
+                    style={{
+                        zIndex: 100,
+                        position: 'absolute',
+                        top: HeightRatio(60),
+                        left: HeightRatio(20),
+                        backgroundColor: 'black',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: HeightRatio(30), padding: HeightRatio(20),
+                        borderWidth: 2,
+                        borderColor: 'white'
+                    }}
+                >
+                    <FlatList
+                        data={packages}
+                        renderItem={({ item }) =>
+                            <View style={{ alignSelf: 'center' }}>
+                                <Item
+                                    title={item.product.title}
+                                    identifier={item.product.identifier}
+                                    description={item.product.description}
+                                    priceString={item.product.priceString}
+                                    purchasePackage={item}
+                                />
+                            </View>
+                        }
+                        keyExtractor={(item) => item.identifier}
+                    />
+
+                </View>
+            }
+            {loading &&
+                <View
+                    style={{
+                        zIndex: 100,
+                        position: 'absolute',
+                        top: HeightRatio(60),
+                        left: HeightRatio(20),
+                        width: HeightRatio(600),
+                        backgroundColor: 'black',
+                        // alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: HeightRatio(30), padding: HeightRatio(20),
+                        borderWidth: 2,
+                        borderColor: 'white'
+                    }}
+                >
+                <ActivityIndicator
+                    size="large"
+                    color="#00ff00"
+                    
                 />
 
-            </View>
-        }
-            {isPuchaseSuccessful && 
+                </View>
+            }
+            {isPuchaseSuccessful &&
                 <View
-                style={{
-                    zIndex: 100,
-                    position: 'absolute',
-                    top: HeightRatio(60),
-                    left: HeightRatio(20),
-                    width: HeightRatio(600),
-                    backgroundColor: 'black',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: HeightRatio(30), padding: HeightRatio(20),
-                    borderWidth: 2,
-                    borderColor: 'white'
-                }}
-            >
-                <Text style={{color: 'white', fontSize: HeightRatio(40), width: HeightRatio(500), margin: HeightRatio(10)}}>
-                    Purchase successful. <Text style={{color: '#35faa9'}}>Refresh.</Text>
-                </Text>
+                    style={{
+                        zIndex: 100,
+                        position: 'absolute',
+                        top: HeightRatio(60),
+                        left: HeightRatio(20),
+                        width: HeightRatio(600),
+                        backgroundColor: 'black',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: HeightRatio(30), padding: HeightRatio(20),
+                        borderWidth: 2,
+                        borderColor: 'white'
+                    }}
+                >
+                    <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(500), margin: HeightRatio(10) }}>
+                        Purchase successful. <Text style={{ color: '#35faa9' }}>Refresh.</Text>
+                    </Text>
 
-            </View>
+                </View>
             }
 
             {isPurchasing && <View />}
