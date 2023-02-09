@@ -226,9 +226,7 @@ export const Navbar = (props) => {
                                     setDisplayTokenModal(false);
                                     setMainState({
                                         displayTokenModal: false,
-                                        tokens_replaceContent: false,
-                                        tokens_isProcessing: false,
-                                        tokens_isError: false,
+                                        tokens_isPurchaseSuccessful: false,
                                         tokens_display: true
                                     })
 
@@ -260,7 +258,9 @@ export const Navbar = (props) => {
                                 onPress={() => {
                                     setDisplayTokenModal(true)
                                     setMainState({
-                                        displayTokenModal: true
+                                        displayTokenModal: true,
+                                        tokens_display: true,
+                                        tokens_isPurchaseSuccessful: false
                                     })
                                 }}
                                 style={{

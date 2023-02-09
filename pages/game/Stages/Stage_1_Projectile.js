@@ -1874,7 +1874,7 @@ export const Stage_1_Projectile = (props) => {
                     textAlign: 'center',
                   }}
                     allowFontScaling={false}>
-                    Whish you could continue? <Text style={{color: 'white'}}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
+                    Wish you could continue? <Text style={{color: 'white'}}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
                   </Text>
                   <TouchableOpacity
                     onPress={() => props.nav.dispatch(resetActionAuth)}

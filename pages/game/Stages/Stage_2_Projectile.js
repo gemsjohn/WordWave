@@ -46,10 +46,16 @@ const resetActionHome = CommonActions.reset({
   routes: [{ name: 'Home', params: {} }]
 });
 
+const resetActionAuth = CommonActions.reset({
+  index: 1,
+  routes: [{ name: 'Auth', params: {} }]
+});
+
 export const Stage_2_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
   const { mainState, setMainState } = useContext(MainStateContext);
   const userID = useRef(null);
+  const authState = useRef(false);
 
   // APOLLO MUTATIONS
   const [updateMaxScoreAndStage] = useMutation(UPDATE_MAX_SCORE_AND_STAGE);
@@ -194,6 +200,7 @@ export const Stage_2_Projectile = (props) => {
       gameOverScreen: false 
     })
 
+    authState.current = mainState.current.authState
     userID.current = mainState.current.userID;
   }, [])
 
@@ -2155,7 +2162,81 @@ export const Stage_2_Projectile = (props) => {
                 </View>
               </View>
               <View style={{ margin: HeightRatio(40), alignSelf: 'center' }} />
-              {!tokenWarning ?
+              {authState.current = true && userID.current != null ?
+                <>
+                  {!tokenWarning ?
+                    <View style={{
+                      margin: HeightRatio(50),
+                      alignSelf: 'center',
+                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                      borderRadius: HeightRatio(50),
+                      width: WidthRatio(130),
+                      height: windowWidth / 4
+                    }}>
+                      <Text style={{
+                        alignSelf: 'center',
+                        color: '#00e5ff',
+                        fontSize: HeightRatio(60),
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                      }}
+                        allowFontScaling={false}>
+                        DO YOU WANT TO CONTINUE?
+                      </Text>
+                      <Text style={{
+                        ...Styling.modal_text_style,
+                        alignSelf: 'center',
+                        fontSize: HeightRatio(50),
+                        color: 'white',
+                        marginTop: HeightRatio(8)
+                      }}
+                        allowFontScaling={false}>
+                        USE A TOKEN
+                      </Text>
+                      <Text
+                        style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
+                        allowFontScaling={false}>
+                        {userByID?.user.tokens} remaining
+                      </Text>
+                      <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: HeightRatio(40) }}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setTimeout(() => {
+                              insertToken();
+                            }, 500)
+                          }}
+                          style={{ backgroundColor: '#1a2135', padding: HeightRatio(10), margin: HeightRatio(8), borderRadius: HeightRatio(20), width: WidthRatio(100), borderWidth: HeightRatio(2), borderColor: 'white' }}>
+                          <Text
+                            style={{ color: '#00e5ff', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
+                            allowFontScaling={false}>
+                            YES
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+
+                    </View>
+
+                    :
+                    <View style={{
+                      margin: HeightRatio(40),
+                      alignSelf: 'center',
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      padding: HeightRatio(40),
+                      width: WidthRatio(130),
+                      height: windowWidth / 4
+                    }}>
+                      <Text style={{
+                        ...Styling.modal_text_style,
+                        alignSelf: 'center',
+                        color: 'red'
+                      }}
+                        allowFontScaling={false}>
+                        Unfortunately, you have run out of tokens!
+                      </Text>
+                    </View>
+                  }
+                </>
+                :
                 <View style={{
                   margin: HeightRatio(50),
                   alignSelf: 'center',
@@ -2167,63 +2248,34 @@ export const Stage_2_Projectile = (props) => {
                   <Text style={{
                     alignSelf: 'center',
                     color: '#00e5ff',
-                    fontSize: HeightRatio(60),
+                    fontSize: HeightRatio(50),
                     fontWeight: 'bold',
                     textAlign: 'center',
                   }}
                     allowFontScaling={false}>
-                    DO YOU WANT TO CONTINUE?
+                    Wish you could continue? <Text style={{color: 'white'}}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
                   </Text>
-                  <Text style={{
-                    ...Styling.modal_text_style,
-                    alignSelf: 'center',
-                    fontSize: HeightRatio(50),
-                    color: 'white',
-                    marginTop: HeightRatio(8)
-                  }}
-                    allowFontScaling={false}>
-                    USE A TOKEN
-                  </Text>
-                  <Text
-                    style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
-                    allowFontScaling={false}>
-                    {userByID?.user.tokens} remaining
-                  </Text>
-                  <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: HeightRatio(40) }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setTimeout(() => {
-                          insertToken();
-                        }, 500)
-                      }}
-                      style={{ backgroundColor: '#1a2135', padding: HeightRatio(10), margin: HeightRatio(8), borderRadius: HeightRatio(20), width: WidthRatio(100), borderWidth: HeightRatio(2), borderColor: 'white' }}>
+                  <TouchableOpacity
+                    onPress={() => props.nav.dispatch(resetActionAuth)}
+                    style={{ ...Styling.modalWordButton, marginTop: 10 }}
+                  >
+                    <View style={{
+                      backgroundColor: 'blue',
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      padding: HeightRatio(40),
+                      borderRadius: HeightRatio(40),
+                      alignSelf: 'center',
+                      margin: HeightRatio(10),
+                    }}>
                       <Text
-                        style={{ color: '#00e5ff', fontSize: HeightRatio(60), fontWeight: 'bold', alignSelf: 'center' }}
-                        allowFontScaling={false}>
-                        YES
+                        style={{ color: 'white', fontSize: HeightRatio(50), fontWeight: 'bold', alignSelf: 'center' }}
+                        allowFontScaling={false}
+                      >
+                        Sign Up or Login
                       </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                </View>
-
-                :
-                <View style={{
-                  margin: HeightRatio(40),
-                  alignSelf: 'center',
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  padding: HeightRatio(40),
-                  width: WidthRatio(130),
-                  height: windowWidth / 4
-                }}>
-                  <Text style={{
-                    ...Styling.modal_text_style,
-                    alignSelf: 'center',
-                    color: 'red'
-                  }}
-                    allowFontScaling={false}>
-                    Unfortunately, you have run out of tokens!
-                  </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               }
 

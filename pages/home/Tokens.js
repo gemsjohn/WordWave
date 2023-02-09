@@ -240,7 +240,7 @@ export const Tokens = (props) => {
 
             </View>
         }
-            {isPuchaseSuccessful  || mainState.current.tokens_isPurchaseSuccessful && 
+            {mainState.current.tokens_isPurchaseSuccessful && 
                 <View
                 style={{
                     zIndex: 100,

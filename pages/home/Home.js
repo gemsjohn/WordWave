@@ -624,7 +624,7 @@ export const HomeScreen = ({ navigation }) => {
                             <View style={{ height: 10 }}></View>
 
                             <Text style={{ color: '#fcd01f', fontSize: HeightRatio(50), fontWeight: 'bold' }} allowFontScaling={false}>
-                                Oh yeah? : <Text style={{ color: 'white' }}>
+                                Extra : <Text style={{ color: 'white' }}>
                                     As an added bonus, you'll also receive <Text style={{ color: '#6de5e9' }}>5 free</Text> tokens,
                                     providing you with the chance to keep playing even if you hit a setback.
                                 </Text>

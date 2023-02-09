@@ -290,7 +290,7 @@ export const Auth = ({ navigation }) => {
                                 style={{ color: '#70e000', margin: HeightRatio(14), alignSelf: 'center' }}
                               />
                               <Text
-                                style={{ color: 'white', alignSelf: 'center' }}
+                                style={{ color: 'white', fontSize: HeightRatio(25), textAlign: 'center' }}
                                 allowFontScaling={false}
                               >Email</Text>
                             </View>
@@ -307,7 +307,7 @@ export const Auth = ({ navigation }) => {
                                 style={{ color: 'white', margin: HeightRatio(14), alignSelf: 'center' }}
                               />
                               <Text
-                                style={{ color: 'white', alignSelf: 'center' }}
+                                style={{ color: 'white', fontSize: HeightRatio(25), textAlign: 'center' }}
                                 allowFontScaling={false}
                               >Email</Text>
                             </View>
@@ -325,9 +325,9 @@ export const Auth = ({ navigation }) => {
                                 style={{ color: '#70e000', margin: HeightRatio(14), alignSelf: 'center' }}
                               />
                               <Text
-                                style={{ color: 'white', alignSelf: 'center' }}
+                                style={{ color: 'white', fontSize: HeightRatio(25), textAlign: 'center' }}
                                 allowFontScaling={false}
-                              >Username</Text>
+                              >Username </Text>
                             </View>
                             :
                             <View
@@ -342,9 +342,9 @@ export const Auth = ({ navigation }) => {
                                 style={{ color: 'white', margin: HeightRatio(14), alignSelf: 'center' }}
                               />
                               <Text
-                                style={{ color: 'white', alignSelf: 'center' }}
+                                style={{ color: 'white', fontSize: HeightRatio(25), textAlign: 'center' }}
                                 allowFontScaling={false}
-                              >Username</Text>
+                              >Username </Text>
                             </View>
                           }
                           {promptPasswordInput ?
@@ -360,7 +360,7 @@ export const Auth = ({ navigation }) => {
                                 style={{ color: '#70e000', margin: HeightRatio(14), alignSelf: 'center' }}
                               />
                               <Text
-                                style={{ color: 'white', alignSelf: 'center' }}
+                                style={{ color: 'white', fontSize: HeightRatio(25), textAlign: 'center' }}
                                 allowFontScaling={false}
                               >Password</Text>
                             </View>
@@ -377,7 +377,7 @@ export const Auth = ({ navigation }) => {
                                 style={{ color: 'white', margin: HeightRatio(14), alignSelf: 'center' }}
                               />
                               <Text
-                                style={{ color: 'white', alignSelf: 'center' }}
+                                style={{ color: 'white', fontSize: HeightRatio(25), textAlign: 'center' }}
                                 allowFontScaling={false}
                               >Password</Text>
                             </View>
@@ -482,7 +482,7 @@ export const Auth = ({ navigation }) => {
                         style={{ color: 'white', alignSelf: 'center', fontSize: HeightRatio(60), margin: 20, fontWeight: 'bold' }}
                         allowFontScaling={false}
                       >
-                        Have an account?
+                        Already have an account?
                       </Text>
                       <TouchableOpacity
                         onPress={() => {
@@ -517,7 +517,7 @@ export const Auth = ({ navigation }) => {
                       {displayLoading ?
                         <Loading />
                         :
-                        <>
+                        <View>
                           <Text
                             style={{ color: 'white', alignSelf: 'center', fontSize: HeightRatio(100), margin: 20, fontWeight: 'bold' }}
                             allowFontScaling={false}
@@ -608,13 +608,18 @@ export const Auth = ({ navigation }) => {
                             </TouchableOpacity>
                           }
 
-                          <View style={Styling.profileDivisionLine}></View>
+                          {/* <View style={Styling.profileDivisionLine}></View> */}
+                          <View style={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                            margin: HeightRatio(30),
+                            borderRadius: HeightRatio(30)
+                          }}>
 
                           <TouchableOpacity
                             onPress={() => setDisplayForgotPasswordContent(current => !current)}>
                             <View>
                               <Text
-                                style={{ color: '#fcd01f', alignSelf: 'center', fontSize: HeightRatio(60), margin: 10, fontWeight: 'bold' }}
+                                style={{ color: 'white', alignSelf: 'center', fontSize: HeightRatio(30), margin: 10, fontWeight: 'bold' }}
                                 allowFontScaling={false}
                               >
                                 Forgot Password?
@@ -634,7 +639,7 @@ export const Auth = ({ navigation }) => {
                                 <TextInput
                                   type="text"
                                   name="resetemail"
-                                  placeholder="Email"
+                                  placeholder="Enter Email"
                                   placeholderTextColor='white'
                                   value={promptResetEmail}
                                   onChangeText={setPromptResetEmail}
@@ -698,7 +703,7 @@ export const Auth = ({ navigation }) => {
                                   <TextInput
                                     type="text"
                                     name="resetoken"
-                                    placeholder="Reset Token"
+                                    placeholder="Enter Reset Token"
                                     placeholderTextColor="white"
                                     value={promptResetToken}
                                     onChangeText={setPromptResetToken}
@@ -775,7 +780,6 @@ export const Auth = ({ navigation }) => {
 
                                   </View>
                                 </>
-
                               }
 
                               <View>
@@ -835,8 +839,9 @@ export const Auth = ({ navigation }) => {
                               </View>
                             </View>
                           }
+                          </View>
 
-                          <View style={Styling.profileDivisionLine}></View>
+                          {/* <View style={Styling.profileDivisionLine}></View> */}
 
 
                           <Text
@@ -867,7 +872,7 @@ export const Auth = ({ navigation }) => {
                             </View>
                           </TouchableOpacity>
 
-                        </>
+                        </View>
                       }
                     </>
                   }
