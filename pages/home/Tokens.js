@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Platform, Text, View, FlatList, Alert, TouchableOpacity, Modal, Image } from 'react-native';
 import { MainStateContext } from '../../App';
 import Purchases, { PurchasesOffering } from 'react-native-purchases';
-import { HeightRatio, windowHeight } from '../../Styling';
+import { HeightRatio, windowHeight, windowWidth } from '../../Styling';
 
 const APIKeys = {
     google: "goog_eSMeOTAOoztqfufyCjPFYWImOfa",
@@ -16,17 +16,16 @@ export const Tokens = (props) => {
 
     // - State for displaying an overlay view
     const [isPurchasing, setIsPurchasing] = useState(false);
+
     const transactionLength = useRef(null);
     const [updateComplete, setUpdateComplete] = useState(false);
-    const [replaceContent, setReplaceContent] = useState(false)
+    const [displayModal, setDisplayModal] = useState(mainState.current.tokens_display)
+    const [isPuchaseSuccessful, setIsPurchaseSuccessful] = useState(mainState.current.tokens_isPurchaseSuccessful)
 
     useEffect(() => {
-        setReplaceContent(false)
-
         const getPackages = async () => {
             await Purchases.configure({ apiKey: APIKeys.google, appUserID: props.userID });
             Purchases.setDebugLogsEnabled(true);
-
             try {
 
                 const offerings = await Purchases.getOfferings();
@@ -39,7 +38,6 @@ export const Tokens = (props) => {
             } catch (e) {
                 Alert.alert('Error getting offers', e.message);
             }
-
         };
 
         getPackages();
@@ -47,18 +45,23 @@ export const Tokens = (props) => {
 
     const onSelection = async (input) => {
         setIsPurchasing(true);
+        setIsPurchaseSuccessful(false);
+        setMainState({
+            tokens_isPurchaseSuccessful: false
+        })
 
         const customerInfo = await Purchases.getCustomerInfo();
         transactionLength.current = customerInfo.nonSubscriptionTransactions.length;
 
         try {
+            setDisplayModal(false)
+            setMainState({
+                tokens_display: false
+            })
             const { purchaserInfo } = await Purchases.purchasePackage(input);
-
-
-
         } catch (e) {
             if (!e.userCancelled) {
-                Alert.alert('Error purchasing package', e.message);
+                // Alert.alert('Error purchasing package', e.message);
             }
         } finally {
             checkCustomerInfo(input)
@@ -81,8 +84,10 @@ export const Tokens = (props) => {
                     console.log("UPDATE DB WITH: " + input.product.identifier)
                     console.log("#1: clear INTERVAL!")
                     clearInterval(intervalID);
-                    setReplaceContent(true)
-
+                    setIsPurchaseSuccessful(true);
+                    setMainState({
+                        tokens_isPurchaseSuccessful: true
+                    })
                 }
 
 
@@ -102,7 +107,7 @@ export const Tokens = (props) => {
             console.log("#3: clear INTERVAL!")
             clearInterval(intervalID);
             setUpdateComplete(false)
-        }, 60000);
+        }, 300000);
 
 
 
@@ -116,7 +121,7 @@ export const Tokens = (props) => {
 
             <View
                 style={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                    backgroundColor: '#445c6d60',
                     width: HeightRatio(400),
                     borderTopLeftRadius: HeightRatio(20),
                     borderBottomLeftRadius: HeightRatio(20),
@@ -202,39 +207,21 @@ export const Tokens = (props) => {
 
     return (
         <>
-            {replaceContent ?
-                <View
+        {displayModal &&
+            <View
                 style={{
-                zIndex: 100,
-                position: 'absolute',
-                top: HeightRatio(60),
-                left: HeightRatio(20),
-                width: '90%',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: HeightRatio(30), padding: HeightRatio(20)
-                }}
-            >
-                <Text style={{color: 'black', fontSize: HeightRatio(60), fontWeight: 'bold', width: HeightRatio(600)}}>
-                    Purchase successful!
-                </Text>
-
-            </View>
-                :
-                
-                <View
-                    style={{
                     zIndex: 100,
                     position: 'absolute',
                     top: HeightRatio(60),
                     left: HeightRatio(20),
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    backgroundColor: 'black',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: HeightRatio(30), padding: HeightRatio(20)
-                    }}
-                >
+                    borderRadius: HeightRatio(30), padding: HeightRatio(20),
+                    borderWidth: 2,
+                    borderColor: 'white'
+                }}
+            >
                 <FlatList
                     data={packages}
                     renderItem={({ item }) =>
@@ -251,10 +238,32 @@ export const Tokens = (props) => {
                     keyExtractor={(item) => item.identifier}
                 />
 
-                </View>
+            </View>
+        }
+            {isPuchaseSuccessful  || mainState.current.tokens_isPurchaseSuccessful && 
+                <View
+                style={{
+                    zIndex: 100,
+                    position: 'absolute',
+                    top: HeightRatio(60),
+                    left: HeightRatio(20),
+                    width: HeightRatio(600),
+                    backgroundColor: 'black',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: HeightRatio(30), padding: HeightRatio(20),
+                    borderWidth: 2,
+                    borderColor: 'white'
+                }}
+            >
+                <Text style={{color: 'white', fontSize: HeightRatio(40), width: HeightRatio(500), margin: HeightRatio(10)}}>
+                    Purchase successful.
+                </Text>
+
+            </View>
             }
 
-{ isPurchasing && <View /> }
+            {isPurchasing && <View />}
         </>
     );
 

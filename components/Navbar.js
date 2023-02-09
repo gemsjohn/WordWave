@@ -36,7 +36,7 @@ export const Navbar = (props) => {
 
     const [isTokenValid, setIsTokenValid] = useState(null);
     const [minimizeNav, setMinimizeNav] = useState(false);
-    const [displayTokenModal, setDisplayTokenModal] = useState(false);
+    const [displayTokenModal, setDisplayTokenModal] = useState(mainState.current.displayTokenModal);
 
     const authState = useRef(false);
     const userID = useRef(null);
@@ -222,7 +222,17 @@ export const Navbar = (props) => {
                         <View style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
                         {displayTokenModal ?
                             <TouchableOpacity
-                                onPress={() => setDisplayTokenModal(false)}
+                                onPress={() => {
+                                    setDisplayTokenModal(false);
+                                    setMainState({
+                                        displayTokenModal: false,
+                                        tokens_replaceContent: false,
+                                        tokens_isProcessing: false,
+                                        tokens_isError: false,
+                                        tokens_display: true
+                                    })
+
+                                }}
                                 style={{
                                     height: HeightRatio(60),
                                     width: HeightRatio(60),
@@ -247,7 +257,12 @@ export const Navbar = (props) => {
                             </TouchableOpacity>
                             :
                             <TouchableOpacity
-                                onPress={() => setDisplayTokenModal(true)}
+                                onPress={() => {
+                                    setDisplayTokenModal(true)
+                                    setMainState({
+                                        displayTokenModal: true
+                                    })
+                                }}
                                 style={{
                                     height: HeightRatio(60),
                                     width: HeightRatio(60),
