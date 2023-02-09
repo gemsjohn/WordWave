@@ -13,7 +13,7 @@ const windowHeight = Dimensions.get('window').height;
 export const LeaderScreen = ({ navigation }) => {
 
   const { data: leaderboard, refetch } = useQuery(GAMES);
-  // console.log(leaderboard)
+  console.log(leaderboard)
 
   const DATA = leaderboard?.games;
   // console.log(DATA)
