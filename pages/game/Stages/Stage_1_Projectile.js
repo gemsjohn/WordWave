@@ -1214,7 +1214,7 @@ export const Stage_1_Projectile = (props) => {
           });
 
         }
-        
+
         setTimeout(() => {
           refetch();
           setDisplayGameOverText(true)
@@ -1577,7 +1577,7 @@ export const Stage_1_Projectile = (props) => {
           <View style={{
             position: 'absolute',
             zIndex: 25,
-            top: HeightRatio(125),
+            top: HeightRatio(110),
             left: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.9)',
             // flex: 1,
@@ -1595,21 +1595,60 @@ export const Stage_1_Projectile = (props) => {
             }}
               allowFontScaling={false}
             >PAUSE</Text>
-            <Text style={{
-              color: 'white',
-              fontSize: HeightRatio(50),
-              fontWeight: 'bold',
-              // flexWrap: 'wrap',
-              alignSelf: 'center',
-              textAlign: 'center'
-            }}
-              allowFontScaling={false}
-            >Save and continue later?</Text>
-            <TouchableOpacity
-              onPress={() => saveAndContinueLater()}
-              style={{ backgroundColor: '#03d81a', width: WidthRatio(50), borderRadius: HeightRatio(10), alignSelf: 'center', margin: HeightRatio(25) }}>
-              <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center', margin: HeightRatio(10) }}> Sure </Text>
-            </TouchableOpacity>
+
+            {authState.current == true && userID.current != null ?
+              <>
+                <Text style={{
+                  color: 'white',
+                  fontSize: HeightRatio(50),
+                  fontWeight: 'bold',
+                  // flexWrap: 'wrap',
+                  alignSelf: 'center',
+                  textAlign: 'center'
+                }}
+                  allowFontScaling={false}
+                >Save and continue later?</Text>
+                <TouchableOpacity
+                  onPress={() => saveAndContinueLater()}
+                  style={{ backgroundColor: '#03d81a', width: WidthRatio(50), borderRadius: HeightRatio(10), alignSelf: 'center', margin: HeightRatio(25) }}>
+                  <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center', margin: HeightRatio(10) }}> Sure </Text>
+                </TouchableOpacity>
+              </>
+              :
+              <>
+                <Text style={{
+                  color: 'white',
+                  fontSize: HeightRatio(50),
+                  fontWeight: 'bold',
+                  // flexWrap: 'wrap',
+                  alignSelf: 'center',
+                  textAlign: 'center'
+                }}
+                  allowFontScaling={false}
+                >Want to be able to save and continue later?</Text>
+                <TouchableOpacity
+                  onPress={() => props.nav.dispatch(resetActionAuth)}
+                  style={{ borderRadius: HeightRatio(10), alignSelf: 'center', margin: HeightRatio(25) }}
+                >
+                  <View style={{
+                    backgroundColor: 'blue',
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(40),
+                    alignSelf: 'center',
+                    // margin: HeightRatio(10),
+                  }}>
+                    <Text
+                      style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
+                      allowFontScaling={false}
+                    >
+                      Sign Up or Login
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </>
+            }
           </View>
         }
 
@@ -1880,7 +1919,7 @@ export const Stage_1_Projectile = (props) => {
                     textAlign: 'center',
                   }}
                     allowFontScaling={false}>
-                    Wish you could continue? <Text style={{color: 'white'}}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
+                    Wish you could continue? <Text style={{ color: 'white' }}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
                   </Text>
                   <TouchableOpacity
                     onPress={() => props.nav.dispatch(resetActionAuth)}
