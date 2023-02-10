@@ -15,14 +15,31 @@ import {
 import { shuffle } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../../utils/queries';
-import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT, ADD_SAVED_GAME, TO_BE_CONTINUED } from '../../../utils/mutations';
+import { UPDATE_MAX_SCORE_AND_STAGE, UPDATE_TOKEN_COUNT, ADD_SAVED_GAME } from '../../../utils/mutations';
 import { MainStateContext } from '../../../App';
 import {
   isLetterBlockColliding,
   isObstacleColliding_0,
   isObstacleColliding_1,
+  isObstacleColliding_2,
+  isObstacleColliding_large,
   isObstacleColliding_right_angle_0,
   isObstacleColliding_right_angle_1,
+  isObstacleColliding_twins_0,
+  isObstacleColliding_twins_0_divgergence,
+  isObstacleColliding_twins_1,
+  isObstacleColliding_twins_1_divgergence,
+  isObstacleColliding_opacity_bot,
+  isObstacleColliding_opacity_bot_divergence,
+  isSpecialColliding_0,
+  isSpecialColliding_1,
+  isSpecialColliding_2,
+  isSpecialColliding_3,
+  isSpecialColliding_a_0,
+  isSpecialColliding_a_1,
+  isSpecialColliding_a_2,
+  isSpecialColliding_a_3,
+  isUpgradeToSpecial_0_Colliding,
   isAuxilliaryGreenHealth_Colliding
 } from '../CollisionHandler';
 import {
@@ -57,7 +74,6 @@ export const Stage_6_Projectile = (props) => {
   const [updateMaxScoreAndStage] = useMutation(UPDATE_MAX_SCORE_AND_STAGE);
   const [updateTokenCount] = useMutation(UPDATE_TOKEN_COUNT);
   const [addSavedGame] = useMutation(ADD_SAVED_GAME);
-  const [addToBeContinued] = useMutation(TO_BE_CONTINUED);
 
   // [WORDS AND LETTERS] - - - - - 
   const [randomWord, setRandomWord] = useState('')
@@ -93,7 +109,6 @@ export const Stage_6_Projectile = (props) => {
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   const [displayPauseText, setDisplayPauseText] = useState(false)
   const [openGate, setOpenGate] = useState(false);
-  const [displayToBeCotinuedText, setDisplayToBeCotinuedText] = useState(false)
   let timeoutCallGenerateID;
 
   // [LETTER ANIMATION] - - - - - 
@@ -106,23 +121,26 @@ export const Stage_6_Projectile = (props) => {
   const wordPlusSeven = useRef(mainState.current.currentWordPlusSeven);
   let timeoutLetter_ID;
 
-  // [HOMING MISSILE ANIMATION 0] - - - - - 
-  const hasUpdatedObstacle_homing_missile = useRef(false);
-  const obstaclePosition_homing_missile = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
-  const obstacleRotation_homing_missile = useRef(new Animated.Value(0)).current;
-  const obstacle_homing_missile = useRef(null)
-  const obstacleOpacity_homing_missile = useRef(new Animated.Value(0)).current;
-  const projectileCount = useRef(null);
-  const hasRunObstacleAnimation_0 = useRef(false);
-  let timeoutObstacle_homing_missile_ID;
+  // [OBSTACLE ANIMATION 0] - - - - - 
+  const hasUpdatedObstacle_0 = useRef(false);
+  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstacleRotation_0 = useRef(new Animated.Value(0)).current;
+  const obstacle_0 = useRef(null)
+  let timeoutObstacle_0_ID;
 
-  // [HOMING MISSLE DISTRIBUTOR ANIMATION 1] - - - - - 
-  const hasUpdatedObstacle_Distributor = useRef(false);
-  const obstaclePosition_Distributor = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
-  const obstacleRotation_Distributor = useRef(new Animated.Value(0)).current;
-  const obstacle_Distributor = useRef(null)
-  const inputIterator = useRef(0)
-  const hasRunObstacleAnimation_1 = useRef(false);
+  // [OBSTACLE ANIMATION 1] - - - - - 
+  const hasUpdatedObstacle_1 = useRef(false);
+  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstacleRotation_1 = useRef(new Animated.Value(0)).current;
+  const obstacle_1 = useRef(null)
+  let timeoutObstacle_1_ID;
+
+  // [OBSTACLE ANIMATION 2] - - - - - 
+  const hasUpdatedObstacle_2 = useRef(false);
+  const obstaclePosition_2 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstacleRotation_2 = useRef(new Animated.Value(0)).current;
+  const obstacle_2 = useRef(null)
+  let timeoutObstacle_2_ID;
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
   const hasUpdatedObstacle_right_angle_0 = useRef(false);
@@ -138,6 +156,39 @@ export const Stage_6_Projectile = (props) => {
   const obstacle_right_angle_1 = useRef(null)
   let timeoutObstacle_right_angle_1_ID;
 
+  // [OBSTACLE ANIMATION OPACITY BOT] - - - - - 
+  const hasUpdatedObstacle_opacity_bot = useRef(false);
+  const obstaclePosition_opacity_bot = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstaclePosition_opacity_bot_divergence = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstacleOpacity_opacity_bot = useRef(new Animated.Value(0)).current;
+  const obstacle_opacity_bot = useRef(null)
+  let timeoutObstacle_opacity_bot_ID;
+
+
+  // [OBSTACLE ANIMATION TWINS 0] - - - - - 
+  const hasUpdatedObstacle_twins_0 = useRef(false);
+  const obstaclePosition_twins_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstaclePosition_twins_0_divergence = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstacleOpacity_twins_0 = useRef(new Animated.Value(0)).current;
+  const obstacle_twins_0 = useRef(null)
+  let timeoutObstacle_twins_0_ID;
+
+  // [OBSTACLE ANIMATION TWINS 1] - - - - - 
+  const hasUpdatedObstacle_twins_1 = useRef(false);
+  const obstaclePosition_twins_1 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstaclePosition_twins_1_divergence = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstacleOpacity_twins_1 = useRef(new Animated.Value(0)).current;
+  const obstacle_twins_1 = useRef(null)
+  let timeoutObstacle_twins_1_ID;
+  const flip = useRef(false);
+
+  // [UPGRADE TO SPECIAL 0 ANIMATION] - - - - - 
+  const hasUpdatedUpgradeToSpecial_0 = useRef(false);
+  const upgradeToSpecial_0_Position = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const upgradeToSpecial_0 = useRef(null)
+  let timeoutUpgradeToSpecial_0_ID;
+  const retainUpgradeToSpecial_0 = useRef(false);
+
   // [AUXILLIARY GREEN HEALTH ANIMATION] - - - - - 
   const hasUpdatedAuxilliaryGreenHealth = useRef(false);
   const auxilliaryGreenHealth_Position = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
@@ -145,19 +196,32 @@ export const Stage_6_Projectile = (props) => {
   let timeoutAuxilliaryGreenHealth_ID;
   const retainAuxilliaryGreenHealth = useRef(false);
   const deployedGreenHealthOnGenerate = useRef(false);
+  const [greenHealthDeployed, setGreenHealthDeployed] = useState(false);
 
   // [TESTING]
-  const boxInterpolation_0 = obstacleRotation_homing_missile.interpolate({
+  const boxInterpolation_0 = obstacleRotation_0.interpolate({
     inputRange: [0, 5000],
     outputRange: ['360deg', '0deg']
   });
-  const boxInterpolation_1 = obstacleRotation_Distributor.interpolate({
+  const boxInterpolation_1 = obstacleRotation_1.interpolate({
     inputRange: [0, 5000],
     outputRange: ['360deg', '0deg']
   });
-  const boxInterpolation_homing_missile = obstacleOpacity_homing_missile.interpolate({
+  const boxInterpolation_2 = obstacleRotation_2.interpolate({
+    inputRange: [0, 5000],
+    outputRange: ['360deg', '0deg']
+  });
+  const boxInterpolation_opacity_bot = obstacleOpacity_opacity_bot.interpolate({
     inputRange: [0, 1],
     outputRange: [0.0, 1.0]
+  });
+  const boxInterpolation_twins_1_a = obstacleOpacity_twins_1.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.5, 1.0]
+  });
+  const boxInterpolation_twins_1_b = obstacleOpacity_twins_1.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1.0, 0.5]
   });
 
   const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
@@ -171,7 +235,6 @@ export const Stage_6_Projectile = (props) => {
       deployUpgradeToSpecialAnimation: false, 
       gameOverScreen: false 
     })
-
     authState.current = mainState.current.authState
     userID.current = mainState.current.userID;
   }, [])
@@ -203,89 +266,91 @@ export const Stage_6_Projectile = (props) => {
       console.log("Stage, #2 fromSavedGame: false ")
 
       setOpenGate(true)
-      setContinuousEndGameCall(false)
-      clearTimeout(timeoutCallGenerateID);
-      if (localPrevCrashes > 0) {
-        crashes.current = localPrevCrashes;
-      }
-      else {
-        crashes.current = 0;
-      }
-
-      const data = require('../output.json');
-      const index = Math.floor(Math.random() * data.length);
-      const word = data[index].word;
-      const letters = word.split('');
-
-      const randomLetters = [];
-      for (let i = 0; i < 7; i++) {
-        const letterCode = Math.floor(Math.random() * 26) + 65;
-        const letter = String.fromCharCode(letterCode);
-        let lowerCaseLetter = letter.toLowerCase();
-        randomLetters.push(lowerCaseLetter);
-      }
-      setLetterPositionNum(letters.length)
-
-      let combined = letters.concat(randomLetters);
-      let uniqueCombined = [...new Set(combined)];
-      let scambledCombined = shuffle(uniqueCombined);
-
-      setDisplayPlaybutton(false)
-
-      if (level.current > 0) {
-        score.current = mainState.current.currentScore + 1000;
-        scoreFlash_1000.current = true;
-        setTimeout(() => {
-          scoreFlash_1000.current = false;
-        }, 1000)
-      }
-
-      setRandomWord(word);
-      setDisplayLetters(letters)
-
-      wordPlusSeven.current = scambledCombined; // Must be last
-
-    } else {
-      console.log("Stage, #2 fromSavedGame: true")
-
-      setContinuousEndGameCall(false)
-
-      setMainState({
-        fromSavedGame: false
-      })
-
-      const randomLetters = [];
-      for (let i = 0; i < 7; i++) {
-        const letterCode = Math.floor(Math.random() * 26) + 65;
-        const letter = String.fromCharCode(letterCode);
-        let lowerCaseLetter = letter.toLowerCase();
-        randomLetters.push(lowerCaseLetter);
-      }
-      setLetterPositionNum(displayLetters.length)
-
-      let combined = displayLetters.concat(randomLetters);
-      let uniqueCombined = [...new Set(combined)];
-      let scambledCombined = shuffle(uniqueCombined);
-
-      setDisplayPlaybutton(false)
-
-      setRandomWord(displayLetters.join(""));
-      setDisplayLetters(displayLetters)
-
-      let savedWord = displayLetters.join("");
-      let letters = savedWord.split('');
-
-
-      const wrongElements = letterPocket.filter((element) => !letters.includes(element));
-      setPrevWrongElements(wrongElements.length)
-
-      let uniqueLetterPocket = Array.from(new Set(letterPocket));
-      const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
-      setPrevSimilarElements(similarElements.length)
-
-      wordPlusSeven.current = scambledCombined; // Must be last
-      setOpenGate(true)
+    setContinuousEndGameCall(false)
+    clearTimeout(timeoutCallGenerateID);
+    if (localPrevCrashes > 0) {
+      crashes.current = localPrevCrashes;
     }
+    else {
+      crashes.current = 0;
+    }
+
+    setLetterPocket([]);
+
+    const data = require('../output.json');
+    const index = Math.floor(Math.random() * data.length);
+    const word = data[index].word;
+    const letters = word.split('');
+
+    const randomLetters = [];
+    for (let i = 0; i < 7; i++) {
+      const letterCode = Math.floor(Math.random() * 26) + 65;
+      const letter = String.fromCharCode(letterCode);
+      let lowerCaseLetter = letter.toLowerCase();
+      randomLetters.push(lowerCaseLetter);
+    }
+    setLetterPositionNum(letters.length)
+
+    let combined = letters.concat(randomLetters);
+    let uniqueCombined = [...new Set(combined)];
+    let scambledCombined = shuffle(uniqueCombined);
+
+    setDisplayPlaybutton(false)
+
+    if (level.current > 0) {
+      score.current = mainState.current.currentScore + 1000;
+      scoreFlash_1000.current = true;
+      setTimeout(() => {
+        scoreFlash_1000.current = false;
+      }, 1000)
+    }
+
+    setRandomWord(word);
+    setDisplayLetters(letters)
+
+    wordPlusSeven.current = scambledCombined; // Must be last
+
+  } else {
+    console.log("Stage, #2 fromSavedGame: true")
+
+    setContinuousEndGameCall(false)
+
+    setMainState({
+      fromSavedGame: false
+    })
+
+    const randomLetters = [];
+    for (let i = 0; i < 7; i++) {
+      const letterCode = Math.floor(Math.random() * 26) + 65;
+      const letter = String.fromCharCode(letterCode);
+      let lowerCaseLetter = letter.toLowerCase();
+      randomLetters.push(lowerCaseLetter);
+    }
+    setLetterPositionNum(displayLetters.length)
+
+    let combined = displayLetters.concat(randomLetters);
+    let uniqueCombined = [...new Set(combined)];
+    let scambledCombined = shuffle(uniqueCombined);
+
+    setDisplayPlaybutton(false)
+
+    setRandomWord(displayLetters.join(""));
+    setDisplayLetters(displayLetters)
+
+    let savedWord = displayLetters.join("");
+    let letters = savedWord.split('');
+
+
+    const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+    setPrevWrongElements(wrongElements.length)
+
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+    setPrevSimilarElements(similarElements.length)
+
+    wordPlusSeven.current = scambledCombined; // Must be last
+    setOpenGate(true)
+  }
   }
 
   useEffect(() => {
@@ -307,38 +372,24 @@ export const Stage_6_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
-            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
-              deployedGreenHealthOnGenerate.current = true;
-              runAuxilliaryGreenHealth();
-            }
-
-            if (level.current == 0) {
-              inputIterator.current = 0;
-            }
-            if (level.current == 1) {
-              inputIterator.current = 1;
-            }
-            if (level.current == 2) {
-              inputIterator.current = 0;
-            }
-            if (level.current == 3) {
-              inputIterator.current = 1;
-            }
-            if (level.current == 4) {
-              inputIterator.current = 0;
-            }
-
-            if (level.current >= 0) {
+             if (level.current >= 0) {
               letterAnimation();
+              runObstacleAnimation_opacity_bot()
+            }
+
+            if (level.current >= 1) {
               runObstacleAnimation_1();
+              setTimeout(() => {
+                runObstacleAnimation_0();
+              }, 800)
             }
 
             if (level.current >= 2) {
-              runObstacleAnimation_right_angle_0();
+              runObstacleAnimation_2();
             }
 
             if (level.current >= 3) {
-              runObstacleAnimation_right_angle_1();
+              runObstacleAnimation_right_angle_0();
             }
 
             setHasGameBeenStarted(true)
@@ -365,12 +416,12 @@ export const Stage_6_Projectile = (props) => {
       animation.current = Animated.parallel([
         Animated.timing(letterPosition.x, {
           toValue: -WidthRatio(40),
-          duration: 3500,
+          duration: 4000,
           useNativeDriver: true,
         }),
         Animated.timing(letterPosition.y, {
           toValue: localYPos_0,
-          duration: 3500,
+          duration: 4000,
           useNativeDriver: true,
         })
       ]);
@@ -401,76 +452,40 @@ export const Stage_6_Projectile = (props) => {
 
 
   const runObstacleAnimation_0 = () => {
-    if (isGameInProgress.current && !hasRunObstacleAnimation_0.current) {
-      hasUpdatedObstacle_homing_missile.current = false;
-      hasRunObstacleAnimation_0.current = true;
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_0.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      let feederLocation = [
-        { x: WidthRatio(243), y: HeightRatio(100) },
-        { x: WidthRatio(293), y: HeightRatio(550) }
-      ]
+      obstaclePosition_0.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstacleRotation_0.setValue(0);
 
-      obstaclePosition_homing_missile.setValue({ x: feederLocation[inputIterator.current].x, y: feederLocation[inputIterator.current].y - HeightRatio(25) });
-      obstacleOpacity_homing_missile.setValue(0);
-
-      let offset;
-      if (inputIterator.current == 1) {
-        offset = mainState.current.charHeight;
-      } else {
-        offset = 0;
-      }
-
-
-      obstacle_homing_missile.current = Animated.sequence([
-        Animated.timing(obstaclePosition_homing_missile.x, {
-          toValue: feederLocation[inputIterator.current].x,
-          duration: 50,
+      obstacle_0.current = Animated.parallel([
+        Animated.timing(obstaclePosition_0.x, {
+          toValue: -WidthRatio(40),
+          duration: 3000,
           useNativeDriver: true,
         }),
-        Animated.timing(obstaclePosition_homing_missile.y, {
-          toValue: feederLocation[inputIterator.current].y,
-          duration: 50,
+        Animated.timing(obstaclePosition_0.y, {
+          toValue: localYPos_1,
+          duration: 3000,
           useNativeDriver: true,
         }),
+        Animated.timing(obstacleRotation_0, {
+          toValue: 3000,
+          duration: 3000,
+          useNativeDriver: true
+        })
 
-        Animated.parallel([
-          Animated.timing(obstacleOpacity_homing_missile, {
-            toValue: 1,
-            duration: 500,
-            easing: Easing.linear,
-            useNativeDriver: true,
-            isInteraction: false,
-            loop: true,
-            delay: 0,
-          }),
-          Animated.timing(obstaclePosition_homing_missile.x, {
-            toValue: (mainState.current.charX + WidthRatio(64) - mainState.current.charWidth / 2),
-            duration: 1000,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_homing_missile.y, {
-            toValue: mainState.current.charY - offset,
-            duration: 1000,
-            useNativeDriver: true,
-          }),
+      ]);
 
-        ]),
-      ])
-
-
-
-      obstacle_homing_missile.current.start(() => {
-        if (timeoutObstacle_homing_missile_ID) {
-          clearTimeout(timeoutObstacle_homing_missile_ID)
+      obstacle_0.current.start(() => {
+        if (timeoutObstacle_0_ID) {
+          clearTimeout(timeoutObstacle_0_ID);
         }
-        timeoutObstacle_homing_missile_ID = setTimeout(() => {
-          hasRunObstacleAnimation_0.current = false;
+        timeoutObstacle_0_ID = setTimeout(() => {
           runObstacleAnimation_0();
         }, 200)
-
-
       });
     } else {
       return;
@@ -478,42 +493,82 @@ export const Stage_6_Projectile = (props) => {
   };
 
   const runObstacleAnimation_1 = () => {
-    projectileCount.current = 0;
-    if (isGameInProgress.current && !hasRunObstacleAnimation_1.current) {
-      hasUpdatedObstacle_Distributor.current = false;
-      hasRunObstacleAnimation_1.current = true;
-
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_1.current = false;
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      let feederLocation = [
-        { x: WidthRatio(250), y: HeightRatio(50) },
-        { x: WidthRatio(300), y: HeightRatio(500) }
-      ]
+      obstaclePosition_1.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstacleRotation_1.setValue(0);
 
+      obstacle_1.current = Animated.parallel([
+        Animated.timing(obstaclePosition_1.x, {
+          toValue: -WidthRatio(40),
+          duration: 2500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstaclePosition_1.y, {
+          toValue: localYPos_1,
+          duration: 2500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstacleRotation_1, {
+          toValue: 3000,
+          duration: 2500,
+          useNativeDriver: true
+        })
 
-      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: localYPos_0 });
-      obstacle_Distributor.current =
-        Animated.parallel([
-          Animated.timing(obstaclePosition_Distributor.x, {
-            toValue: feederLocation[inputIterator.current].x,
-            duration: 1500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(obstaclePosition_Distributor.y, {
-            toValue: feederLocation[inputIterator.current].y,
-            duration: 1500,
-            useNativeDriver: true,
-          }),
-        ]);
+      ]);
 
-      obstacle_Distributor.current.start(() => {
+      obstacle_1.current.start(() => {
+        if (timeoutObstacle_1_ID) {
+          clearTimeout(timeoutObstacle_1_ID);
+        }
+        timeoutObstacle_1_ID = setTimeout(() => {
+          runObstacleAnimation_1();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
 
-        setTimeout(() => {
-          runObstacleAnimation_0();
-        }, 1700)
+  const runObstacleAnimation_2 = () => {
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_2.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_2 = Math.floor(Math.random() * HeightRatio(670));
 
-      })
+      obstaclePosition_2.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstacleRotation_2.setValue(0);
+
+      obstacle_2.current = Animated.parallel([
+        Animated.timing(obstaclePosition_2.x, {
+          toValue: -WidthRatio(40),
+          duration: 2250,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstaclePosition_2.y, {
+          toValue: localYPos_2,
+          duration: 2250,
+          useNativeDriver: true,
+        }),
+        Animated.timing(obstacleRotation_2, {
+          toValue: 3000,
+          duration: 2250,
+          useNativeDriver: true
+        })
+
+      ]);
+
+      obstacle_2.current.start(() => {
+        if (timeoutObstacle_2_ID) {
+          clearTimeout(timeoutObstacle_2_ID);
+        }
+        timeoutObstacle_2_ID = setTimeout(() => {
+          runObstacleAnimation_2();
+        }, 200)
+      });
     } else {
       return;
     }
@@ -586,6 +641,132 @@ export const Stage_6_Projectile = (props) => {
         }
         timeoutObstacle_right_angle_1_ID = setTimeout(() => {
           runObstacleAnimation_right_angle_1();
+        }, 200)
+      });
+    } else {
+      return;
+    }
+  };
+
+  const runObstacleAnimation_opacity_bot = () => {
+    if (isGameInProgress.current) {
+      hasUpdatedObstacle_opacity_bot.current = false;
+      let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
+      let localYPos_2 = Math.floor(Math.random() * HeightRatio(670));
+
+      let localXPos_0 = Math.floor(Math.random() * (WidthRatio(225) - WidthRatio(150) + 1) + WidthRatio(150));
+      let localXPos_1 = Math.floor(Math.random() * (WidthRatio(225) - WidthRatio(150) + 1) + WidthRatio(150));
+
+      obstaclePosition_opacity_bot.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(370), y: localYPos_0 });
+
+      obstacleOpacity_opacity_bot.setValue(0);
+
+      obstacle_opacity_bot.current = Animated.parallel([
+
+
+        Animated.sequence([
+          Animated.parallel([
+            Animated.timing(obstaclePosition_opacity_bot.y, {
+              toValue: localYPos_1,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(obstaclePosition_opacity_bot_divergence.y, {
+              toValue: localYPos_2,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.timing(obstaclePosition_opacity_bot.x, {
+              toValue: localXPos_0,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(obstaclePosition_opacity_bot_divergence.x, {
+              toValue: localXPos_1,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.timing(obstaclePosition_opacity_bot.y, {
+              toValue: localYPos_0,
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(obstaclePosition_opacity_bot_divergence.y, {
+              toValue: localYPos_0 + WidthRatio(24),
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.timing(obstaclePosition_opacity_bot.x, {
+              toValue: -WidthRatio(40),
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+            Animated.timing(obstaclePosition_opacity_bot_divergence.x, {
+              toValue: -WidthRatio(40),
+              duration: 1000,
+              useNativeDriver: true,
+            }),
+          ]),
+
+
+        ]),
+        Animated.sequence([
+
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 0,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 1,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 0,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+          Animated.timing(obstacleOpacity_opacity_bot, {
+            toValue: 1,
+            duration: 800,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: false,
+            loop: true,
+            delay: 0,
+          }),
+        ])
+
+
+      ]);
+
+      obstacle_opacity_bot.current.start(() => {
+        if (timeoutObstacle_opacity_bot_ID) {
+          clearTimeout(timeoutObstacle_opacity_bot_ID);
+        }
+        timeoutObstacle_opacity_bot_ID = setTimeout(() => {
+          runObstacleAnimation_opacity_bot();
         }, 200)
       });
     } else {
@@ -672,20 +853,58 @@ export const Stage_6_Projectile = (props) => {
     });
 
     // Obstacle 0
-    const obstacleListener_0 = obstaclePosition_homing_missile.addListener((value) => {
+    const obstacleListener_0 = obstaclePosition_0.addListener((value) => {
       let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
 
       if (isObstacleColliding_0(obj1, obj2)) {
-        if (!hasUpdatedObstacle_homing_missile.current) {
+        if (!hasUpdatedObstacle_0.current) {
           crashes.current += 1;
           score.current = score.current - 25;
-          hasUpdatedObstacle_homing_missile.current = true;
+          hasUpdatedObstacle_0.current = true;
           flashOouchOnCrash.current = true;
           setTimeout(() => {
             flashOouchOnCrash.current = false;
           }, 500)
         }
-        obstacle_homing_missile.current.reset()
+        obstacle_0.current.reset()
+      }
+
+    });
+
+    // Obstacle 1
+    const obstacleListener_1 = obstaclePosition_1.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+
+      if (isObstacleColliding_1(obj1, obj2)) {
+        if (!hasUpdatedObstacle_1.current) {
+          crashes.current += 1;
+          score.current = score.current - 25;
+          hasUpdatedObstacle_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
+        }
+        obstacle_1.current.reset()
+      }
+
+    });
+
+    // Obstacle 2
+    const obstacleListener_2 = obstaclePosition_2.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10), radius: WidthRatio(5) }
+
+      if (isObstacleColliding_2(obj1, obj2)) {
+        if (!hasUpdatedObstacle_2.current) {
+          crashes.current += 1;
+          score.current = score.current - 25;
+          hasUpdatedObstacle_2.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
+        }
+        obstacle_2.current.reset()
       }
 
     });
@@ -728,6 +947,80 @@ export const Stage_6_Projectile = (props) => {
 
     });
 
+    // Obstacle Right Twins 1
+    const obstacleListener_twins_1 = obstaclePosition_twins_1.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(24), width: WidthRatio(18) }
+
+      if (isObstacleColliding_twins_1(obj1, obj2)) {
+        if (!hasUpdatedObstacle_twins_1.current) {
+          crashes.current += 1;
+          score.current = score.current - 25;
+          hasUpdatedObstacle_twins_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
+        }
+        obstacle_twins_1.current.reset()
+      }
+
+    });
+    // Obstacle Right Twins 1 Divergence
+    const obstacleListener_twins_1_divergence = obstaclePosition_twins_1_divergence.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(24), width: WidthRatio(18) }
+
+      if (isObstacleColliding_twins_1_divgergence(obj1, obj2)) {
+        if (!hasUpdatedObstacle_twins_1.current) {
+          crashes.current += 1;
+          score.current = score.current - 25;
+          hasUpdatedObstacle_twins_1.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
+        }
+        obstacle_twins_1.current.reset()
+      }
+
+    });
+
+    // Obstacle Opacity Bot
+    const obstacleListener_opacity_bot = obstaclePosition_opacity_bot.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(24), width: WidthRatio(24) }
+
+      if (isObstacleColliding_opacity_bot(obj1, obj2)) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          crashes.current += 1;
+          score.current = score.current - 25;
+          hasUpdatedObstacle_opacity_bot.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+
+    });
+
+    // Obstacle Opacity Bot Divergence
+    const obstacleListener_opacity_bot_divergence = obstaclePosition_opacity_bot_divergence.addListener((value) => {
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(24), width: WidthRatio(24) }
+
+      if (isObstacleColliding_opacity_bot_divergence(obj1, obj2)) {
+        if (!hasUpdatedObstacle_opacity_bot.current) {
+          crashes.current += 1;
+          score.current = score.current - 25;
+          hasUpdatedObstacle_opacity_bot.current = true;
+          flashOouchOnCrash.current = true;
+          setTimeout(() => {
+            flashOouchOnCrash.current = false;
+          }, 500)
+        }
+        obstacle_opacity_bot.current.reset()
+      }
+    });
+
     // AuxilliaryGreenHealth
 
     const auxilliaryGreenHealthListener = auxilliaryGreenHealth_Position.addListener((value) => {
@@ -746,9 +1039,17 @@ export const Stage_6_Projectile = (props) => {
 
     return () => {
       letterPosition.removeListener(wordBlockListener);
-      obstaclePosition_homing_missile.removeListener(obstacleListener_0);
+      obstaclePosition_0.removeListener(obstacleListener_0);
+      obstaclePosition_1.removeListener(obstacleListener_1);
+      obstaclePosition_2.removeListener(obstacleListener_2);
       obstaclePosition_right_angle_0.removeListener(obstacleListener_right_angle_0);
       obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1);
+      obstaclePosition_twins_1.removeListener(obstacleListener_twins_1);
+      obstaclePosition_twins_1_divergence.removeListener(obstacleListener_twins_1_divergence)
+
+      obstaclePosition_opacity_bot.removeListener(obstacleListener_opacity_bot);
+      obstaclePosition_opacity_bot_divergence.removeListener(obstacleListener_opacity_bot_divergence);
+
 
       auxilliaryGreenHealth_Position.removeListener(auxilliaryGreenHealthListener);
     }
@@ -756,51 +1057,52 @@ export const Stage_6_Projectile = (props) => {
 
   useEffect(() => {
     if (openGate) {
-      let uniqueLetterPocket = Array.from(new Set(letterPocket));
-      let letters = randomWord.split('');
-      let uniqueLetters = Array.from(new Set(letters));
+    let uniqueLetterPocket = Array.from(new Set(letterPocket));
+    let letters = randomWord.split('');
+    let uniqueLetters = Array.from(new Set(letters));
 
-      const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
-      const wrongElements = letterPocket.filter((element) => !letters.includes(element));
-      if (wrongElements.length > prevWrongElements) {
-        crashes.current += 1;
-        score.current = score.current - 25;
-        flashOouchOnCrash.current = true;
-        setTimeout(() => {
-          flashOouchOnCrash.current = false;
-        }, 500)
-      }
-
-      if (similarElements.length > prevSimilarElements) {
-        score.current = score.current + 100;
-        scoreFlash_100.current = true;
-      }
-      setPrevSimilarElements(similarElements.length)
-      setPrevWrongElements(wrongElements.length)
+    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+    const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+    if (wrongElements.length > prevWrongElements) {
+      crashes.current += 1;
+      score.current = score.current - 25;
+      flashOouchOnCrash.current = true;
       setTimeout(() => {
-        scoreFlash_100.current = false;
+        flashOouchOnCrash.current = false;
       }, 500)
+    }
 
-      if (!continuousEndGameCall) {
-        if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
+    if (similarElements.length > prevSimilarElements) {
+      score.current = score.current + 100;
+      scoreFlash_100.current = true;
+    }
+    setPrevSimilarElements(similarElements.length)
+    setPrevWrongElements(wrongElements.length)
+    setTimeout(() => {
+      scoreFlash_100.current = false;
+    }, 500)
 
-          endGame({
-            continue: true,
-            local: "a",
-            crashes: crashes.current,
-            score: score.current,
-            level: level.current
-          });
-        }
-      }
-      if (letterPocket.length > 0 && isGameInProgress.current) {
-        animation.current.reset()
+    if (!continuousEndGameCall) {
+      if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
+
+        endGame({
+          continue: true,
+          local: "a",
+          crashes: crashes.current,
+          score: score.current,
+          level: level.current
+        });
       }
     }
+    if (letterPocket.length > 0 && isGameInProgress.current) {
+      animation.current.reset()
+    }
+  }
 
   }, [letterPocket])
 
   useEffect(() => {
+    setGreenHealthDeployed(false);
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
@@ -808,7 +1110,8 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
-      } else if (crashes.current >= 2 && deployedGreenHealthOnGenerate.current == false) {
+      } else if (crashes.current >= 2 && !greenHealthDeployed) {
+        setGreenHealthDeployed(true);
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
@@ -854,6 +1157,16 @@ export const Stage_6_Projectile = (props) => {
       stage8: false,
       stage9: false,
       stage10: false,
+      stage11: false,
+      stage12: false,
+      stage13: false,
+      stage14: false,
+      stage15: false,
+      stage16: false,
+      stage17: false,
+      stage18: false,
+      stage19: false,
+      stage20: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -864,33 +1177,50 @@ export const Stage_6_Projectile = (props) => {
       isGameInProgress: isGameInProgress.current
     })
 
-    hasRunObstacleAnimation_0.current = false;
-    hasRunObstacleAnimation_1.current = false;
+      if (animation.current != null) {
+        animation.current.stop();
+        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedLetterBlock.current = false;
+      }
+      if(obstacle_opacity_bot.current != null) {
+        obstacle_opacity_bot.current.stop();
+        obstaclePosition_opacity_bot.setValue({ x: WidthRatio(500), y: 0 })
+        obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(500), y: 0 })
+        hasUpdatedObstacle_opacity_bot.current = false;
+      }
 
-    if (animation.current != null) {
-      animation.current.stop();
-      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedLetterBlock.current = false;
+    if (obstacle_0.current != null) {
+      obstacle_0.current.stop();
+      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_0.current = false;
     }
-
-    if (obstacle_homing_missile.current != null) {
-      obstacle_homing_missile.current.stop();
-      obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedObstacle_homing_missile.current = false;
+    if (obstacle_1.current != null) {
+      obstacle_1.current.stop();
+      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_1.current = false;
     }
-
-    if (obstacle_Distributor.current != null) {
-      obstacle_Distributor.current.stop();
-      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedObstacle_Distributor.current = false;
+    if (obstacle_2.current != null) {
+      obstacle_2.current.stop();
+      obstaclePosition_2.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_2.current = false;
+    }
+    if (obstacle_twins_1.current != null) {
+      obstacle_twins_1.current.stop();
+      obstaclePosition_twins_1.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_twins_1.current = false;
+    }
+    if (obstacle_right_angle_0.current != null) {
+      obstacle_right_angle_0.current.stop();
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_right_angle_0.current = false;
     }
 
     if (obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
     }
-
     if (auxilliaryGreenHealth.current != null) {
       auxilliaryGreenHealth.current.stop();
       auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
@@ -905,19 +1235,6 @@ export const Stage_6_Projectile = (props) => {
   }
 
   const resumeGame = () => {
-    // console.log("RESUME");
-    // console.log("- - - - - -")
-    // console.log(mainState.current.stage1)
-    // console.log(mainState.current.stage2)
-    // console.log(mainState.current.stage3)
-    // console.log(mainState.current.currentScore)
-    // console.log(mainState.current.currentLevel)
-    // console.log(mainState.current.currentCrashes)
-    // console.log(mainState.current.currentLetterPocket)
-    // console.log(mainState.current.currentWordPlusSeven)
-    // console.log(mainState.current.currentDisplayLetters)
-    // console.log(mainState.current.currentLetter_countValue)
-    // console.log("- - - - - -")
     setResumeSelected(true)
     setDisplayPauseText(false)
 
@@ -938,14 +1255,22 @@ export const Stage_6_Projectile = (props) => {
 
         if (mainState.current.currentLevel >= 0) {
           letterAnimation();
-          // runObstacleAnimation_0();
-          let randomInput = Math.floor(Math.random() * 2);
-          inputIterator.current = randomInput;
-          runObstacleAnimation_1();
-  
+          runObstacleAnimation_opacity_bot()
         }
+  
+        if (mainState.current.currentLevel >= 1) {
+          runObstacleAnimation_1();
+          runObstacleAnimation_0();
+        }
+  
+        if (mainState.current.currentLevel >= 2) {
+          runObstacleAnimation_right_angle_0();
+        }
+  
+        // if (mainState.current.currentLevel >= 3) {
+        //   runObstacleAnimation_right_angle_1();
+        // }
       }, 1500)
-      
 
       setTimeout(() => {
         pauseTimeout.current = false;
@@ -980,6 +1305,16 @@ export const Stage_6_Projectile = (props) => {
       stage8: false,
       stage9: false,
       stage10: false,
+      stage11: false,
+      stage12: false,
+      stage13: false,
+      stage14: false,
+      stage15: false,
+      stage16: false,
+      stage17: false,
+      stage18: false,
+      stage19: false,
+      stage20: false,
       currentScore: 0,
       currentLevel: 0,
       currentCrashes: 0,
@@ -993,110 +1328,6 @@ export const Stage_6_Projectile = (props) => {
     }, 500)
 
   };
-
-  const toBeContinuedSetup = () => {
-    isGameInProgress.current = false;
-    // updatedPostResume.current = false;
-    let uniqueLetterPocket = Array.from(new Set(letterPocket));
-
-    setMainState({
-      stage1: false,
-      stage2: false,
-      stage3: false,
-      stage4: false,
-      stage5: false,
-      stage6: false,
-      stage7: false,
-      stage8: false,
-      stage9: false,
-      stage10: false,
-      currentScore: score.current,
-      currentLevel: level.current,
-      currentCrashes: crashes.current,
-      currentLetterPocket: uniqueLetterPocket,
-      currentWordPlusSeven: wordPlusSeven.current,
-      currentDisplayLetters: displayLetters,
-      currentLetter_countValue: countRef.current,
-      isGameInProgress: isGameInProgress.current
-    })
-
-
-
-    if (animation.current != null) {
-      animation.current.stop();
-      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedLetterBlock.current = false;
-    }
-
-    if (obstacle_homing_missile.current != null) {
-      obstacle_homing_missile.current.stop();
-      obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedObstacle_homing_missile.current = false;
-    }
-
-    if (obstacle_Distributor.current != null) {
-      obstacle_Distributor.current.stop();
-      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedObstacle_Distributor.current = false;
-    }
-
-    if (obstacle_right_angle_0.current != null) {
-      obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
-      hasUpdatedObstacle_right_angle_0.current = false;
-    }
-
-    if (obstacle_right_angle_1.current != null) {
-      obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
-      hasUpdatedObstacle_right_angle_1.current = false;
-    }
-
-    if (auxilliaryGreenHealth.current != null) {
-      auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedAuxilliaryGreenHealth.current = false;
-    }
-
-    if (auxilliaryGreenHealth.current != null) {
-      auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedAuxilliaryGreenHealth.current = false;
-    }
-
-    setTimeout(() => {
-      toBeContinuedHandler()
-    }, 1000)
-  }
-
-  const toBeContinuedHandler = async () => {
-    console.log("toBeContinuedHandler ")
-    console.log(userID.current)
-    console.log(userByID?.user.username)
-    console.log(mainState.current.currentScore)
-
-    await addToBeContinued({
-      variables: {
-        userid: `${userID.current}`,
-        username: `${userByID?.user.username}`,
-        score: `${mainState.current.currentScore}`,
-        stage: "7",
-        date: null
-      }
-    })
-
-    await updateMaxScoreAndStage({
-      variables: {
-        maxstage: '6',
-        highscore: `${mainState.current.currentScore}`
-      }
-    });
-
-    setTimeout(() => {
-      setDisplayToBeCotinuedText(false)
-      props.nav.dispatch(resetActionHome);
-    }, 1000)
-  }
 
   const insertToken = async () => {
 
@@ -1156,39 +1387,24 @@ export const Stage_6_Projectile = (props) => {
         deployedGreenHealthOnGenerate.current = true;
         runAuxilliaryGreenHealth();
       }
-  
-      if (level.current == 0) {
-        inputIterator.current = 0;
-      }
-      if (level.current == 1) {
-        inputIterator.current = 1;
-      }
-      if (level.current == 2) {
-        inputIterator.current = 0;
-      }
-      if (level.current == 3) {
-        inputIterator.current = 1;
-      }
-      if (level.current == 4) {
-        inputIterator.current = 0;
-      }
-  
-      if (level.current >= 0) {
+
+      if (mainState.current.currentLevel >= 0) {
         letterAnimation();
-        runObstacleAnimation_1();
+        runObstacleAnimation_opacity_bot()
       }
   
+      if (mainState.current.currentLevel >= 1) {
+        runObstacleAnimation_1();
+        runObstacleAnimation_0();
+      }
   
-      if (level.current >= 2) {
+      if (mainState.current.currentLevel >= 2) {
         runObstacleAnimation_right_angle_0();
       }
-  
-      if (level.current >= 3) {
-        runObstacleAnimation_right_angle_1();
-      }
-
+      // if (mainState.current.currentLevel >= 3) {
+      //   runObstacleAnimation_right_angle_1();
+      // }
     }, 1500)
-    
   }
 
   // [END GAME] 
@@ -1198,64 +1414,63 @@ export const Stage_6_Projectile = (props) => {
   const endGame = async (input) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
-
-
-    inputIterator.current = 0;
-    hasRunObstacleAnimation_0.current = false;
-    hasRunObstacleAnimation_1.current = false;
-
     if (animation.current != null) {
       animation.current.stop();
       letterPosition.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedLetterBlock.current = false;
     }
-
-    if (obstacle_homing_missile.current != null) {
-      obstacle_homing_missile.current.stop();
-      obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedObstacle_homing_missile.current = false;
+    if(obstacle_opacity_bot.current != null) {
+      obstacle_opacity_bot.current.stop();
+      obstaclePosition_opacity_bot.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_opacity_bot.current = false;
     }
 
-    if (obstacle_Distributor.current != null) {
-      obstacle_Distributor.current.stop();
-      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedObstacle_Distributor.current = false;
-    }
+  if (obstacle_0.current != null) {
+    obstacle_0.current.stop();
+    obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+    hasUpdatedObstacle_0.current = false;
+  }
+  if (obstacle_1.current != null) {
+    obstacle_1.current.stop();
+    obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
+    hasUpdatedObstacle_1.current = false;
+  }
+  if (obstacle_2.current != null) {
+    obstacle_2.current.stop();
+    obstaclePosition_2.setValue({ x: WidthRatio(500), y: 0 })
+    hasUpdatedObstacle_2.current = false;
+  }
+  if (obstacle_twins_1.current != null) {
+    obstacle_twins_1.current.stop();
+    obstaclePosition_twins_1.setValue({ x: WidthRatio(500), y: 0 })
+    obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(500), y: 0 })
+    hasUpdatedObstacle_twins_1.current = false;
+  }
 
-    if (obstacle_right_angle_0.current != null) {
-      obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
-      hasUpdatedObstacle_right_angle_0.current = false;
-    }
+  if (obstacle_right_angle_0.current != null) {
+    obstacle_right_angle_0.current.stop();
+    obstaclePosition_right_angle_0.setValue({ x: WidthRatio(500), y: 0 })
+    hasUpdatedObstacle_right_angle_0.current = false;
+  }
 
-    if (obstacle_right_angle_1.current != null) {
-      obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
-      hasUpdatedObstacle_right_angle_1.current = false;
-    }
-
-    if (auxilliaryGreenHealth.current != null) {
-      auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedAuxilliaryGreenHealth.current = false;
-    }
-
-    if (auxilliaryGreenHealth.current != null) {
-      auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-      hasUpdatedAuxilliaryGreenHealth.current = false;
-    }
+  if (obstacle_right_angle_1.current != null) {
+    obstacle_right_angle_1.current.stop();
+    obstaclePosition_right_angle_1.setValue({ x: WidthRatio(500), y: 0 })
+    hasUpdatedObstacle_right_angle_1.current = false;
+  }
+  if (auxilliaryGreenHealth.current != null) {
+    auxilliaryGreenHealth.current.stop();
+    auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+    hasUpdatedAuxilliaryGreenHealth.current = false;
+  }
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
-      console.log("END GAME - Continuation #1")
-
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
       if (input.level >= 4) {
-        console.log("END GAME - Reached Level 4")
-
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
@@ -1270,43 +1485,43 @@ export const Stage_6_Projectile = (props) => {
           }, 1000)
         }, 501)
 
-        // [[[[  TO BE CONTINUED!!!!!  ]]]]
         setTimeout(() => {
-          setDisplayToBeCotinuedText(true);
+          setMainState({
+            stage1: false,
+            stage2: false,
+            stage3: false,
+            stage4: false,
+            stage4: false,
+            stage5: false,
+            stage6: false,
+            stage7: true,
+            stage8: false,
+            stage9: false,
+            stage10: false,
+            stage11: false,
+            stage12: false,
+            stage13: false,
+            stage14: false,
+            stage15: false,
+            stage16: false,
+            stage17: false,
+            stage18: false,
+            stage19: false,
+            stage20: false,
+            currentScore: score.current,
+            currentLevel: 0,
+            currentCrashes: input.crashes,
+            currentLetterPocket: [],
+            currentWordPlusSeven: [],
+            currentDisplayLetters: [],
+            currentLetter_countValue: 0,
+            gameOverScreen: false,
+            currentLetterPocket: []
+          })
         }, 1700)
-
-
-        // setTimeout(() => {
-        //   console.log("- - - - - ")
-        //   console.log(score.current)
-        //   console.log("- - - - - ")
-
-        //   setMainState({
-        //     stage1: false,
-        //     stage2: false,
-        //     stage3: false,
-        //     stage4: false,
-        //     stage5: false,
-        //     stage6: false,
-        //     stage7: true,
-        //     stage8: false,
-        //     stage9: false,
-        //     stage10: false,
-        //     currentScore: score.current,
-        //     currentLevel: 0,
-        //     currentCrashes: input.crashes,
-        //     currentLetterPocket: [],
-        //     currentWordPlusSeven: [],
-        //     currentDisplayLetters: [],
-        //     currentLetter_countValue: 0,
-        //     gameOverScreen: false
-        //   })
-        // }, 1700)
 
         return;
       } else {
-        console.log("END GAME - Continuation #2")
-
         let localLevel = input.level + 1;
         level.current = localLevel;
 
@@ -1337,7 +1552,6 @@ export const Stage_6_Projectile = (props) => {
     } else {
 
       if (input.local == "b") {
-        console.log("END GAME - Game Lost")
         let localLevel = input.level + 1;
         setRecordedLevel(localLevel)
         setRecordedScore(input.score)
@@ -1353,6 +1567,16 @@ export const Stage_6_Projectile = (props) => {
           stage8: false,
           stage9: false,
           stage10: false,
+          stage11: false,
+          stage12: false,
+          stage13: false,
+          stage14: false,
+          stage15: false,
+          stage16: false,
+          stage17: false,
+          stage18: false,
+          stage19: false,
+          stage20: false,
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
@@ -1366,12 +1590,13 @@ export const Stage_6_Projectile = (props) => {
         if (authState.current == true && userID.current != null) {
           await updateMaxScoreAndStage({
             variables: {
-              maxstage: '1',
+              maxstage: '6',
               highscore: `${input.score}`
             }
           });
 
         }
+
         setTimeout(() => {
           refetch();
           setDisplayGameOverText(true)
@@ -1383,7 +1608,6 @@ export const Stage_6_Projectile = (props) => {
 
         }, 100);
       } else if (input.local == "c") {
-        console.log("END GAME - Full Exit")
         setContinuousEndGameCall(true)
 
         // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1427,133 +1651,133 @@ export const Stage_6_Projectile = (props) => {
           </>
         }
 
-        <>
-          {/* [PAUSE / RESUME] */}
-          {isPaused && !resumeSelected ?
-            <View style={{
-              position: 'absolute',
-              zIndex: -7,
-              top: HeightRatio(20),
-              left: HeightRatio(20)
-            }}>
-              <TouchableOpacity
-                onPress={() => {
-                  resumeGame();
-                }}
-                style={{
-                  height: HeightRatio(100),
-                  width: HeightRatio(100),
-                  // backgroundColor: 'red'
-                }}>
-                <Image
-                  source={require('../../../assets/button_resume.png')}
-                  style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-              </TouchableOpacity>
-            </View>
-            :
-            <>
-              {!pauseTimeout.current && !resumeSelected && isGameInProgress.current ?
-                <View style={{
-                  position: 'absolute',
-                  zIndex: -7,
-                  top: HeightRatio(20),
-                  left: HeightRatio(20)
-                }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      pauseGame();
-                    }}
-                    style={{
-                      height: HeightRatio(100),
-                      width: HeightRatio(100),
-                      // backgroundColor: 'red'
-                    }}>
-                    <Image
-                      source={require('../../../assets/button_pause.png')}
-                      style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-                  </TouchableOpacity>
-                </View>
-                :
-                <View style={{
-                  position: 'absolute',
-                  zIndex: -7,
-                  top: HeightRatio(20),
-                  left: HeightRatio(20)
-                }}>
+          <>
+            {/* [PAUSE / RESUME] */}
+            {isPaused && !resumeSelected ?
+              <View style={{
+                position: 'absolute',
+                zIndex: -7,
+                top: HeightRatio(20),
+                left: HeightRatio(20)
+              }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    resumeGame();
+                  }}
+                  style={{
+                    height: HeightRatio(100),
+                    width: HeightRatio(100),
+                    // backgroundColor: 'red'
+                  }}>
                   <Image
-                    source={require('../../../assets/clock_icon.png')}
+                    source={require('../../../assets/button_resume.png')}
                     style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-                </View>
-              }
-            </>
-          }
-          {score.current != null ?
-            <>
-              <View style={{
-                position: 'absolute',
-                zIndex: -7,
-                top: windowHeight * 0.84,
-                left: HeightRatio(30),
-                backgroundColor: 'transparent',
-              }}>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: WidthRatio(12),
-                  fontWeight: 'bold'
-                }}
-                  allowFontScaling={false}
-                >Score: {score.current}</Text>
+                </TouchableOpacity>
               </View>
-              {scoreFlash_100.current &&
+              :
+              <>
+                {!pauseTimeout.current && !resumeSelected && isGameInProgress.current ?
+                  <View style={{
+                    position: 'absolute',
+                    zIndex: -7,
+                    top: HeightRatio(20),
+                    left: HeightRatio(20)
+                  }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        pauseGame();
+                      }}
+                      style={{
+                        height: HeightRatio(100),
+                        width: HeightRatio(100),
+                        // backgroundColor: 'red'
+                      }}>
+                      <Image
+                        source={require('../../../assets/button_pause.png')}
+                        style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                    </TouchableOpacity>
+                  </View>
+                  :
+                  <View style={{
+                    position: 'absolute',
+                    zIndex: -7,
+                    top: HeightRatio(20),
+                    left: HeightRatio(20)
+                  }}>
+                    <Image
+                      source={require('../../../assets/clock_icon.png')}
+                      style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                  </View>
+                }
+              </>
+            }
+            {score.current != null ?
+              <>
                 <View style={{
                   position: 'absolute',
-                  top: windowHeight / 2 - WidthRatio(30),
-                  left: windowWidth / 2 - WidthRatio(30),
                   zIndex: -7,
-                  padding: HeightRatio(20),
-                  borderRadius: HeightRatio(20)
-                }} >
-                  <Image
-                    source={require('../../../assets/reward_100_points.png')}
-                    style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                  top: windowHeight * 0.84,
+                  left: HeightRatio(30),
+                  backgroundColor: 'transparent',
+                }}>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: WidthRatio(12),
+                    fontWeight: 'bold'
+                  }}
+                    allowFontScaling={false}
+                  >Score: {score.current}</Text>
                 </View>
-              }
-              {scoreFlash_1000.current &&
+                {scoreFlash_100.current &&
+                  <View style={{
+                    position: 'absolute',
+                    top: windowHeight / 2 - WidthRatio(30),
+                    left: windowWidth / 2 - WidthRatio(30),
+                    zIndex: -7,
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(20)
+                  }} >
+                    <Image
+                      source={require('../../../assets/reward_100_points.png')}
+                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
+                  </View>
+                }
+                {scoreFlash_1000.current &&
+                  <View style={{
+                    position: 'absolute',
+                    top: windowHeight / 2 - HeightRatio(300),
+                    left: windowWidth / 2 - HeightRatio(300),
+                    zIndex: -7,
+                    padding: HeightRatio(20),
+                    borderRadius: HeightRatio(20)
+                  }} >
+                    <Image
+                      source={require('../../../assets/reward_1000_points_0.png')}
+                      style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
+                  </View>
+                }
+              </>
+              :
+              <>
                 <View style={{
                   position: 'absolute',
-                  top: windowHeight / 2 - HeightRatio(300),
-                  left: windowWidth / 2 - HeightRatio(300),
                   zIndex: -7,
-                  padding: HeightRatio(20),
-                  borderRadius: HeightRatio(20)
-                }} >
-                  <Image
-                    source={require('../../../assets/reward_1000_points_0.png')}
-                    style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
+                  top: windowHeight * 0.84,
+                  left: HeightRatio(30),
+                  backgroundColor: 'transparent',
+                }}>
+                  <Text style={{
+                    color: 'rgba(255, 255, 255, 1.0)',
+                    fontSize: WidthRatio(12),
+                    fontWeight: 'bold'
+                  }}
+                    allowFontScaling={false}
+                  >Score: 0</Text>
                 </View>
-              }
-            </>
-            :
-            <>
-              <View style={{
-                position: 'absolute',
-                zIndex: -7,
-                top: windowHeight * 0.84,
-                left: HeightRatio(30),
-                backgroundColor: 'transparent',
-              }}>
-                <Text style={{
-                  color: 'rgba(255, 255, 255, 1.0)',
-                  fontSize: WidthRatio(12),
-                  fontWeight: 'bold'
-                }}
-                  allowFontScaling={false}
-                >Score: 0</Text>
-              </View>
 
-            </>
-          }
-        </>
+              </>
+            }
+          </>
 
         {/* Letter Blocks */}
         <Animated.View
@@ -1583,16 +1807,14 @@ export const Stage_6_Projectile = (props) => {
             Styling.projectile_obstacle_block,
             {
               transform: [
-                { translateX: obstaclePosition_homing_missile.x },
-                { translateY: obstaclePosition_homing_missile.y }],
-
-              opacity: boxInterpolation_homing_missile,
+                { translateX: obstaclePosition_0.x },
+                { translateY: obstaclePosition_0.y },
+                { rotate: boxInterpolation_0 }],
             },
-
           ]}
         >
           <Image
-            source={require('../../../assets/projectile_fire_ball_1.png')}
+            source={require('../../../assets/projectile_asteroid_2.png')}
             style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
@@ -1601,14 +1823,31 @@ export const Stage_6_Projectile = (props) => {
             Styling.projectile_obstacle_block,
             {
               transform: [
-                { translateX: obstaclePosition_Distributor.x },
-                { translateY: obstaclePosition_Distributor.y }],
+                { translateX: obstaclePosition_1.x },
+                { translateY: obstaclePosition_1.y },
+                { rotate: boxInterpolation_1 }],
             },
           ]}
         >
           <Image
-            source={require('../../../assets/projectile_enemy_0.png')}
-            style={{ height: WidthRatio(50), width: WidthRatio(50) }} />
+            source={require('../../../assets/projectile_asteroid_2.png')}
+            style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
+        </Animated.View>
+
+        <Animated.View
+          style={[
+            Styling.projectile_obstacle_block,
+            {
+              transform: [
+                { translateX: obstaclePosition_2.x },
+                { translateY: obstaclePosition_2.y },
+                { rotate: boxInterpolation_2 }],
+            },
+          ]}
+        >
+          <Image
+            source={require('../../../assets/projectile_asteroid_2.png')}
+            style={{ height: WidthRatio(10), width: WidthRatio(10) }} />
         </Animated.View>
 
         {/* Right Angle 0 & 1 */}
@@ -1645,6 +1884,79 @@ export const Stage_6_Projectile = (props) => {
             style={{ height: WidthRatio(15), width: WidthRatio(24) }} />
         </Animated.View>
 
+        {/* Opacity Bot */}
+        {/* - - - - - - - - - - */}
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_opacity_bot.x },
+              { translateY: obstaclePosition_opacity_bot.y }
+              // { rotate: boxInterpolation_opacity_bot } 
+            ],
+            opacity: boxInterpolation_opacity_bot,
+
+          },
+          ]}
+        >
+          <Image
+            source={require('../../../assets/projectile_enemy_3.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_opacity_bot_divergence.x },
+              { translateY: obstaclePosition_opacity_bot_divergence.y }
+              // { rotate: boxInterpolation_opacity_bot } 
+            ],
+            opacity: boxInterpolation_opacity_bot,
+
+          },
+          ]}
+        >
+          <Image
+            source={require('../../../assets/projectile_enemy_3.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(24) }} />
+        </Animated.View>
+        {/* - - - - - - - - - - */}
+
+        {/* Twins */}
+        {/* - - - - - - - - - - */}
+
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_1.x },
+              { translateY: obstaclePosition_twins_1.y }
+              // { rotate: boxInterpolation_twins_1 } 
+            ],
+            opacity: boxInterpolation_twins_1_a,
+
+          },
+          ]}
+        >
+          <Image
+            source={require('../../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(20) }} />
+        </Animated.View>
+        <Animated.View
+          style={[Styling.projectile_obstacle_block, {
+            transform: [
+              { translateX: obstaclePosition_twins_1_divergence.x },
+              { translateY: obstaclePosition_twins_1_divergence.y }
+              // { rotate: boxInterpolation_twins_1 } 
+            ],
+            opacity: boxInterpolation_twins_1_b,
+          },
+          ]}
+        >
+          <Image
+            source={require('../../../assets/projectile_enemy_4.png')}
+            style={{ height: WidthRatio(24), width: WidthRatio(20) }} />
+        </Animated.View>
+        {/* - - - - - - - - - - */}
+
+
         {/* Auxilliary Green Health */}
         <Animated.View
           style={[
@@ -1658,6 +1970,12 @@ export const Stage_6_Projectile = (props) => {
             source={require('../../../assets/aux_green_plus.png')}  ///upgrade_to_special_0.png
             style={{ height: WidthRatio(12), width: WidthRatio(12) }} />
         </Animated.View>
+        {/* CHARACTER GUIDELINES */}
+        {/* <View style={{borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: obj1.x}} />
+          <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: obj1.y}} /> */}
+        {/* <View style={{borderWidth: 5, borderColor: 'blue', height: WidthRatio(12), width: WidthRatio(24), position: 'absolute', top: obj1.y+WidthRatio(6), left: obj1.x-WidthRatio(12)}} /> */}
+        {/* <View style={{borderWidth: 3, borderColor: 'red', width: windowWidth, position: 'absolute', top: yPos + WidthRatio(12.5)}} /> */}
+
 
         <View style={{ borderWidth: 3, borderColor: 'red', height: windowHeight, position: 'absolute', left: WidthRatio(-10) }} />
         {openGate &&
@@ -1736,7 +2054,7 @@ export const Stage_6_Projectile = (props) => {
           <View style={{
             position: 'absolute',
             zIndex: 25,
-            top: HeightRatio(125),
+            top: HeightRatio(110),
             left: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.9)',
             // flex: 1,
@@ -1811,48 +2129,6 @@ export const Stage_6_Projectile = (props) => {
           </View>
         }
 
-        {displayToBeCotinuedText &&
-          <View>
-            <View style={{
-              position: 'absolute',
-              zIndex: 25,
-              top: HeightRatio(0),
-              left: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.9)',
-              // flex: 1,
-              // width: '100%',
-              width: windowWidth,
-              alignSelf: 'center'
-            }}>
-              <Text style={{
-                color: 'white',
-                fontSize: HeightRatio(150),
-                fontWeight: 'bold',
-                // flexWrap: 'wrap',
-                alignSelf: 'center',
-                textAlign: 'center'
-              }}
-                allowFontScaling={false}
-              >YOU HAVE BEAT THE GAME, FOR NOW!</Text>
-              <Text style={{
-                color: 'white',
-                fontSize: HeightRatio(50),
-                fontWeight: 'bold',
-                // flexWrap: 'wrap',
-                alignSelf: 'center',
-                textAlign: 'center'
-              }}
-                allowFontScaling={false}
-              >Save your place and we'll let you know when more stages are available.</Text>
-              <TouchableOpacity
-                onPress={() => toBeContinuedSetup()}
-                style={{ backgroundColor: '#03d81a', width: WidthRatio(50), borderRadius: HeightRatio(10), alignSelf: 'center', margin: HeightRatio(25) }}>
-                <Text style={{ color: 'black', fontSize: 20, alignSelf: 'center', margin: HeightRatio(10) }}> Save </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
-
 
         {/* GAME OVER MODAL */}
         {displayGameOverText &&
@@ -1890,8 +2166,6 @@ export const Stage_6_Projectile = (props) => {
               source={require('../../../assets/game_over.png')}
               style={{
                 alignSelf: 'center',
-                // height: HeightRatio(800),
-                // width: HeightRatio(1600)
                 height: WidthRatio(190),
                 width: WidthRatio(375),
                 marginTop: HeightRatio(10)
@@ -2120,7 +2394,7 @@ export const Stage_6_Projectile = (props) => {
                     textAlign: 'center',
                   }}
                     allowFontScaling={false}>
-                    Wish you could continue? <Text style={{color: 'white'}}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
+                    Wish you could continue? <Text style={{ color: 'white' }}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
                   </Text>
                   <TouchableOpacity
                     onPress={() => props.nav.dispatch(resetActionAuth)}
@@ -2162,9 +2436,19 @@ export const Stage_6_Projectile = (props) => {
                   stage8: false,
                   stage9: false,
                   stage10: false,
+                  stage11: false,
+                  stage12: false,
+                  stage13: false,
+                  stage14: false,
+                  stage15: false,
+                  stage16: false,
+                  stage17: false,
+                  stage18: false,
+                  stage19: false,
+                  stage20: false,
                   currentScore: 0,
                   currentLevel: 0,
-                  currentCrashes: 0,
+                  currentCrashes: 0, 
                   isGameInProgress: false
                 })
                 setTimeout(() => {

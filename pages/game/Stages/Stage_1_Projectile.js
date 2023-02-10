@@ -139,6 +139,7 @@ export const Stage_1_Projectile = (props) => {
   let timeoutAuxilliaryGreenHealth_ID;
   const retainAuxilliaryGreenHealth = useRef(false);
   const deployedGreenHealthOnGenerate = useRef(false);
+  const [greenHealthDeployed, setGreenHealthDeployed] = useState(false);
 
   // [TESTING]
   const boxInterpolation_0 = obstacleRotation_0.interpolate({
@@ -172,6 +173,16 @@ export const Stage_1_Projectile = (props) => {
       stage8: null,
       stage9: null,
       stage10: null,
+      stage11: null,
+      stage12: null,
+      stage13: null,
+      stage14: null,
+      stage15: null,
+      stage16: null,
+      stage17: null,
+      stage18: null,
+      stage19: null,
+      stage20: null,
       currentScore: null,
       currentLevel: null,
       currentCrashes: null
@@ -216,6 +227,8 @@ export const Stage_1_Projectile = (props) => {
       else {
         crashes.current = 0;
       }
+
+      setLetterPocket([]);
 
       const data = require('../output.json');
       const index = Math.floor(Math.random() * data.length);
@@ -312,11 +325,6 @@ export const Stage_1_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
-            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
-              deployedGreenHealthOnGenerate.current = true;
-              runAuxilliaryGreenHealth();
-            }
-
             if (level.current >= 0) {
               letterAnimation();
               runObstacleAnimation_0();
@@ -330,9 +338,6 @@ export const Stage_1_Projectile = (props) => {
               runObstacleAnimation_right_angle_0();
             }
 
-            if (level.current >= 3) {
-              runObstacleAnimation_right_angle_1();
-            }
 
             setHasGameBeenStarted(true)
           }, 1500)
@@ -777,6 +782,7 @@ export const Stage_1_Projectile = (props) => {
   }, [letterPocket])
 
   useEffect(() => {
+    setGreenHealthDeployed(false);
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
@@ -784,7 +790,8 @@ export const Stage_1_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
-      } else if (crashes.current >= 2 && deployedGreenHealthOnGenerate.current == false) {
+      } else if (crashes.current >= 2 && !greenHealthDeployed) {
+        setGreenHealthDeployed(true);
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
@@ -830,6 +837,16 @@ export const Stage_1_Projectile = (props) => {
       stage8: false,
       stage9: false,
       stage10: false,
+      stage11: false,
+      stage12: false,
+      stage13: false,
+      stage14: false,
+      stage15: false,
+      stage16: false,
+      stage17: false,
+      stage18: false,
+      stage19: false,
+      stage20: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -927,9 +944,9 @@ export const Stage_1_Projectile = (props) => {
           runObstacleAnimation_right_angle_0();
         }
 
-        if (mainState.current.currentLevel >= 3) {
-          runObstacleAnimation_right_angle_1();
-        }
+        // if (mainState.current.currentLevel >= 3) {
+        //   runObstacleAnimation_right_angle_1();
+        // }
       }, 1500)
 
       setTimeout(() => {
@@ -965,6 +982,16 @@ export const Stage_1_Projectile = (props) => {
       stage8: false,
       stage9: false,
       stage10: false,
+      stage11: false,
+      stage12: false,
+      stage13: false,
+      stage14: false,
+      stage15: false,
+      stage16: false,
+      stage17: false,
+      stage18: false,
+      stage19: false,
+      stage20: false,
       currentScore: 0,
       currentLevel: 0,
       currentCrashes: 0,
@@ -1051,9 +1078,9 @@ export const Stage_1_Projectile = (props) => {
         runObstacleAnimation_right_angle_0();
       }
 
-      if (mainState.current.currentLevel >= 3) {
-        runObstacleAnimation_right_angle_1();
-      }
+      // if (mainState.current.currentLevel >= 3) {
+      //   runObstacleAnimation_right_angle_1();
+      // }
     }, 1500)
   }
 
@@ -1135,6 +1162,16 @@ export const Stage_1_Projectile = (props) => {
             stage8: false,
             stage9: false,
             stage10: false,
+            stage11: false,
+            stage12: false,
+            stage13: false,
+            stage14: false,
+            stage15: false,
+            stage16: false,
+            stage17: false,
+            stage18: false,
+            stage19: false,
+            stage20: false,
             currentScore: score.current,
             currentLevel: 0,
             currentCrashes: input.crashes,
@@ -1194,6 +1231,16 @@ export const Stage_1_Projectile = (props) => {
           stage8: false,
           stage9: false,
           stage10: false,
+          stage11: false,
+          stage12: false,
+          stage13: false,
+          stage14: false,
+          stage15: false,
+          stage16: false,
+          stage17: false,
+          stage18: false,
+          stage19: false,
+          stage20: false,
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
@@ -1961,6 +2008,16 @@ export const Stage_1_Projectile = (props) => {
                   stage8: false,
                   stage9: false,
                   stage10: false,
+                  stage11: false,
+                  stage12: false,
+                  stage13: false,
+                  stage14: false,
+                  stage15: false,
+                  stage16: false,
+                  stage17: false,
+                  stage18: false,
+                  stage19: false,
+                  stage20: false,
                   currentScore: 0,
                   currentLevel: 0,
                   currentCrashes: 0,
