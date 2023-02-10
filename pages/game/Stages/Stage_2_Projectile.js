@@ -1520,12 +1520,15 @@ export const Stage_2_Projectile = (props) => {
           isGameInProgress: isGameInProgress.current,
           gameOverScreen: true
         })
-        await updateMaxScoreAndStage({
-          variables: {
-            maxstage: '2',
-            highscore: `${input.score}`
-          }
-        });
+        if (authState.current == true && userID.current != null) {
+          await updateMaxScoreAndStage({
+            variables: {
+              maxstage: '1',
+              highscore: `${input.score}`
+            }
+          });
+
+        }
         setTimeout(() => {
           refetch();
           setDisplayGameOverText(true)
