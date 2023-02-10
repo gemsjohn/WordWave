@@ -47,7 +47,7 @@ const resetActionAuth = CommonActions.reset({
   routes: [{ name: 'Auth', params: {} }]
 });
 
-export const Stage_6_Projectile = (props) => {
+export const Stage_13_Projectile = (props) => {
   // [USE CONTEXT API] - - - - - 
   const { mainState, setMainState } = useContext(MainStateContext);
   const userID = useRef(null);
@@ -145,6 +145,7 @@ export const Stage_6_Projectile = (props) => {
   let timeoutAuxilliaryGreenHealth_ID;
   const retainAuxilliaryGreenHealth = useRef(false);
   const deployedGreenHealthOnGenerate = useRef(false);
+  const [greenHealthDeployed, setGreenHealthDeployed] = useState(false);
 
   // [TESTING]
   const boxInterpolation_0 = obstacleRotation_homing_missile.interpolate({
@@ -309,11 +310,6 @@ export const Stage_6_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
-            if (mainState.current.currentCrashes >= 2 || crashes.current >= 2 && auxilliaryGreenHealth.current == null) {
-              deployedGreenHealthOnGenerate.current = true;
-              runAuxilliaryGreenHealth();
-            }
-
             if (level.current == 0) {
               inputIterator.current = 0;
             }
@@ -438,15 +434,26 @@ export const Stage_6_Projectile = (props) => {
         }),
 
         Animated.parallel([
-          Animated.timing(obstacleOpacity_homing_missile, {
-            toValue: 1,
-            duration: 500,
-            easing: Easing.linear,
-            useNativeDriver: true,
-            isInteraction: false,
-            loop: true,
-            delay: 0,
-          }),
+          Animated.sequence([
+            Animated.timing(obstacleOpacity_homing_missile, {
+              toValue: 1,
+              duration: 900,
+              easing: Easing.linear,
+              useNativeDriver: true,
+              isInteraction: false,
+              loop: true,
+              delay: 0,
+            }),
+            Animated.timing(obstacleOpacity_homing_missile, {
+              toValue: 0,
+              duration: 100,
+              easing: Easing.linear,
+              useNativeDriver: true,
+              isInteraction: false,
+              loop: true,
+              delay: 0,
+            })
+          ]),
           Animated.timing(obstaclePosition_homing_missile.x, {
             toValue: (mainState.current.charX + WidthRatio(64) - mainState.current.charWidth / 2),
             duration: 1000,
@@ -733,7 +740,7 @@ export const Stage_6_Projectile = (props) => {
     // AuxilliaryGreenHealth
 
     const auxilliaryGreenHealthListener = auxilliaryGreenHealth_Position.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, width: WidthRatio(12), height: WidthRatio(12) }
+      let obj2 = { x: value.x, y: value.y, width: WidthRatio(15), height: WidthRatio(15) }
 
       if (isAuxilliaryGreenHealth_Colliding(obj1, obj2)) {
         if (!hasUpdatedAuxilliaryGreenHealth.current) {
@@ -803,6 +810,7 @@ export const Stage_6_Projectile = (props) => {
   }, [letterPocket])
 
   useEffect(() => {
+    setGreenHealthDeployed(false);
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
@@ -810,7 +818,8 @@ export const Stage_6_Projectile = (props) => {
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
-      } else if (crashes.current >= 2 && deployedGreenHealthOnGenerate.current == false) {
+      } else if (crashes.current >= 2 && !greenHealthDeployed) {
+        setGreenHealthDeployed(true);
         runAuxilliaryGreenHealth();
       }
       if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
@@ -851,11 +860,21 @@ export const Stage_6_Projectile = (props) => {
       stage3: false,
       stage4: false,
       stage5: false,
-      stage6: true,
+      stage6: false,
       stage7: false,
       stage8: false,
       stage9: false,
       stage10: false,
+      stage11: false,
+      stage12: false,
+      stage13: true,
+      stage14: false,
+      stage15: false,
+      stage16: false,
+      stage17: false,
+      stage18: false,
+      stage19: false,
+      stage20: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -907,19 +926,6 @@ export const Stage_6_Projectile = (props) => {
   }
 
   const resumeGame = () => {
-    // console.log("RESUME");
-    // console.log("- - - - - -")
-    // console.log(mainState.current.stage1)
-    // console.log(mainState.current.stage2)
-    // console.log(mainState.current.stage3)
-    // console.log(mainState.current.currentScore)
-    // console.log(mainState.current.currentLevel)
-    // console.log(mainState.current.currentCrashes)
-    // console.log(mainState.current.currentLetterPocket)
-    // console.log(mainState.current.currentWordPlusSeven)
-    // console.log(mainState.current.currentDisplayLetters)
-    // console.log(mainState.current.currentLetter_countValue)
-    // console.log("- - - - - -")
     setResumeSelected(true)
     setDisplayPauseText(false)
 
@@ -937,7 +943,6 @@ export const Stage_6_Projectile = (props) => {
           deployedGreenHealthOnGenerate.current = true;
           runAuxilliaryGreenHealth();
         }
-
         if (mainState.current.currentLevel >= 0) {
           letterAnimation();
           // runObstacleAnimation_0();
@@ -962,7 +967,7 @@ export const Stage_6_Projectile = (props) => {
     await addSavedGame({
       variables: {
         userid: `${userByID?.user._id}`,
-        stage: '6',
+        stage: '13',
         score: `${mainState.current.currentScore}`,
         level: `${mainState.current.currentLevel}`,
         crashes: `${mainState.current.currentCrashes}`,
@@ -982,6 +987,16 @@ export const Stage_6_Projectile = (props) => {
       stage8: false,
       stage9: false,
       stage10: false,
+      stage11: false,
+      stage12: false,
+      stage13: false,
+      stage14: false,
+      stage15: false,
+      stage16: false,
+      stage17: false,
+      stage18: false,
+      stage19: false,
+      stage20: false,
       currentScore: 0,
       currentLevel: 0,
       currentCrashes: 0,
@@ -1012,6 +1027,16 @@ export const Stage_6_Projectile = (props) => {
       stage8: false,
       stage9: false,
       stage10: false,
+      stage11: false,
+      stage12: false,
+      stage13: false,
+      stage14: false,
+      stage15: false,
+      stage16: false,
+      stage17: false,
+      stage18: false,
+      stage19: false,
+      stage20: false,
       currentScore: score.current,
       currentLevel: level.current,
       currentCrashes: crashes.current,
@@ -1082,14 +1107,14 @@ export const Stage_6_Projectile = (props) => {
         userid: `${userID.current}`,
         username: `${userByID?.user.username}`,
         score: `${mainState.current.currentScore}`,
-        stage: "7",
+        stage: "14",
         date: null
       }
     })
 
     await updateMaxScoreAndStage({
       variables: {
-        maxstage: '6',
+        maxstage: '13',
         highscore: `${mainState.current.currentScore}`
       }
     });
@@ -1121,20 +1146,6 @@ export const Stage_6_Projectile = (props) => {
   }
 
   const continueGame = () => {
-    // console.log("CONTINUE GAME");
-    // console.log("- - - - - -")
-    // console.log(mainState.current.stage1)
-    // console.log(mainState.current.stage2)
-    // console.log(mainState.current.stage3)
-    // console.log(mainState.current.currentScore)
-    // console.log(mainState.current.currentLevel)
-    // console.log(mainState.current.currentCrashes)
-    // console.log(mainState.current.currentLetterPocket)
-    // console.log(mainState.current.currentWordPlusSeven)
-    // console.log(mainState.current.currentDisplayLetters)
-    // console.log(mainState.current.currentLetter_countValue)
-    // console.log("- - - - - -")
-
     score.current = mainState.current.currentScore;
     level.current = mainState.current.currentLevel;
     crashes.current = mainState.current.currentCrashes;
@@ -1190,7 +1201,6 @@ export const Stage_6_Projectile = (props) => {
       }
 
     }, 1500)
-    
   }
 
   // [END GAME] 
@@ -1200,7 +1210,6 @@ export const Stage_6_Projectile = (props) => {
   const endGame = async (input) => {
     hideCrashesUntilUpdate.current = true;
     isGameInProgress.current = false;
-
 
     inputIterator.current = 0;
     hasRunObstacleAnimation_0.current = false;
@@ -1250,14 +1259,10 @@ export const Stage_6_Projectile = (props) => {
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
-      console.log("END GAME - Continuation #1")
-
       setContinuousEndGameCall(true)
       setHasGameBeenStarted(false);
 
       if (input.level >= 4) {
-        console.log("END GAME - Reached Level 4")
-
         setLetter('');
         setRandomWord('');
         wordPlusSeven.current = [];
@@ -1272,43 +1277,44 @@ export const Stage_6_Projectile = (props) => {
           }, 1000)
         }, 501)
 
-        // [[[[  TO BE CONTINUED!!!!!  ]]]]
         setTimeout(() => {
-          setDisplayToBeCotinuedText(true);
+          setMainState({
+            stage1: false,
+            stage2: false,
+            stage3: false,
+            stage4: false,
+            stage4: false,
+            stage5: false,
+            stage6: false,
+            stage7: false,
+            stage8: false,
+            stage9: false,
+            stage10: false,
+            stage11: false,
+            stage12: false,
+            stage13: false,
+            stage14: true,
+            stage15: false,
+            stage16: false,
+            stage17: false,
+            stage18: false,
+            stage19: false,
+            stage20: false,
+            currentScore: score.current,
+            currentLevel: 0,
+            currentCrashes: input.crashes,
+            currentLetterPocket: [],
+            currentWordPlusSeven: [],
+            currentDisplayLetters: [],
+            currentLetter_countValue: 0,
+            gameOverScreen: false,
+            currentLetterPocket: []
+
+          })
         }, 1700)
-
-
-        // setTimeout(() => {
-        //   console.log("- - - - - ")
-        //   console.log(score.current)
-        //   console.log("- - - - - ")
-
-        //   setMainState({
-        //     stage1: false,
-        //     stage2: false,
-        //     stage3: false,
-        //     stage4: false,
-        //     stage5: false,
-        //     stage6: false,
-        //     stage7: true,
-        //     stage8: false,
-        //     stage9: false,
-        //     stage10: false,
-        //     currentScore: score.current,
-        //     currentLevel: 0,
-        //     currentCrashes: input.crashes,
-        //     currentLetterPocket: [],
-        //     currentWordPlusSeven: [],
-        //     currentDisplayLetters: [],
-        //     currentLetter_countValue: 0,
-        //     gameOverScreen: false
-        //   })
-        // }, 1700)
 
         return;
       } else {
-        console.log("END GAME - Continuation #2")
-
         let localLevel = input.level + 1;
         level.current = localLevel;
 
@@ -1339,7 +1345,6 @@ export const Stage_6_Projectile = (props) => {
     } else {
 
       if (input.local == "b") {
-        console.log("END GAME - Game Lost")
         let localLevel = input.level + 1;
         setRecordedLevel(localLevel)
         setRecordedScore(input.score)
@@ -1350,11 +1355,21 @@ export const Stage_6_Projectile = (props) => {
           stage3: false,
           stage4: false,
           stage5: false,
-          stage6: true,
+          stage6: false,
           stage7: false,
           stage8: false,
           stage9: false,
           stage10: false,
+          stage11: false,
+          stage12: false,
+          stage13: true,
+          stage14: false,
+          stage15: false,
+          stage16: false,
+          stage17: false,
+          stage18: false,
+          stage19: false,
+          stage20: false,
           currentScore: input.score,
           currentLevel: input.level,
           currentCrashes: 0,
@@ -1368,7 +1383,7 @@ export const Stage_6_Projectile = (props) => {
         if (authState.current == true && userID.current != null) {
           await updateMaxScoreAndStage({
             variables: {
-              maxstage: '1',
+              maxstage: '13',
               highscore: `${input.score}`
             }
           });
@@ -1385,7 +1400,6 @@ export const Stage_6_Projectile = (props) => {
 
         }, 100);
       } else if (input.local == "c") {
-        console.log("END GAME - Full Exit")
         setContinuousEndGameCall(true)
 
         // [CLEAR/RESET] :: WORD, LETTERS, OBSTACLES, GAME LOGIC
@@ -1422,13 +1436,12 @@ export const Stage_6_Projectile = (props) => {
               }}
             >
               <Image
-                source={require('../../../assets/stage_transition_6.png')}
+                source={require('../../../assets/stage_transition_13.png')}
                 style={{ height: HeightRatio(900), width: HeightRatio(900) }}
               />
             </TouchableOpacity>
           </>
         }
-
         <>
           {/* [PAUSE / RESUME] */}
           {isPaused && !resumeSelected ?
@@ -1590,7 +1603,6 @@ export const Stage_6_Projectile = (props) => {
 
               opacity: boxInterpolation_homing_missile,
             },
-
           ]}
         >
           <Image
@@ -1738,7 +1750,7 @@ export const Stage_6_Projectile = (props) => {
           <View style={{
             position: 'absolute',
             zIndex: 25,
-            top: HeightRatio(125),
+            top: HeightRatio(110),
             left: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.9)',
             // flex: 1,
@@ -1892,8 +1904,6 @@ export const Stage_6_Projectile = (props) => {
               source={require('../../../assets/game_over.png')}
               style={{
                 alignSelf: 'center',
-                // height: HeightRatio(800),
-                // width: HeightRatio(1600)
                 height: WidthRatio(190),
                 width: WidthRatio(375),
                 marginTop: HeightRatio(10)
@@ -1988,7 +1998,7 @@ export const Stage_6_Projectile = (props) => {
                       numberOfLines={1}
                       ellipsizeMode='tail'
                     >
-                      6
+                      13
                     </Text>
                   </View>
 
@@ -2122,7 +2132,7 @@ export const Stage_6_Projectile = (props) => {
                     textAlign: 'center',
                   }}
                     allowFontScaling={false}>
-                    Wish you could continue? <Text style={{color: 'white'}}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
+                    Wish you could continue? <Text style={{ color: 'white' }}>You need tokens.</Text> Sign up, get 5 free tokens and the option to purchase more.
                   </Text>
                   <TouchableOpacity
                     onPress={() => props.nav.dispatch(resetActionAuth)}
@@ -2164,9 +2174,19 @@ export const Stage_6_Projectile = (props) => {
                   stage8: false,
                   stage9: false,
                   stage10: false,
+                  stage11: false,
+                  stage12: false,
+                  stage13: false,
+                  stage14: false,
+                  stage15: false,
+                  stage16: false,
+                  stage17: false,
+                  stage18: false,
+                  stage19: false,
+                  stage20: false,
                   currentScore: 0,
                   currentLevel: 0,
-                  currentCrashes: 0,
+                  currentCrashes: 0, 
                   isGameInProgress: false
                 })
                 setTimeout(() => {

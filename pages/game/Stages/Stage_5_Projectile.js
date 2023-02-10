@@ -1063,7 +1063,7 @@ export const Stage_5_Projectile = (props) => {
     // AuxilliaryGreenHealth
 
     const auxilliaryGreenHealthListener = auxilliaryGreenHealth_Position.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, width: WidthRatio(12), height: WidthRatio(12) }
+      let obj2 = { x: value.x, y: value.y, width: WidthRatio(15), height: WidthRatio(15) }
 
       if (isAuxilliaryGreenHealth_Colliding(obj1, obj2)) {
         if (!hasUpdatedAuxilliaryGreenHealth.current) {

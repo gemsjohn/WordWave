@@ -35,6 +35,16 @@ import { Stage_7_Projectile } from './Stages/Stage_7_Projectile';
 import { Stage_8_Projectile } from './Stages/Stage_8_Projectile';
 import { Stage_9_Projectile } from './Stages/Stage_9_Projectile';
 import { Stage_10_Projectile } from './Stages/Stage_10_Projectile';
+import { Stage_11_Projectile } from './Stages/Stage_11_Projectile';
+import { Stage_12_Projectile } from './Stages/Stage_12_Projectile';
+import { Stage_13_Projectile } from './Stages/Stage_13_Projectile';
+import { Stage_14_Projectile } from './Stages/Stage_14_Projectile';
+import { Stage_15_Projectile } from './Stages/Stage_15_Projectile';
+
+
+
+
+
 
 
 
@@ -66,7 +76,7 @@ export const GameScreen = ({ navigation }) => {
     const userID = useRef(null);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(false);
+    const [stage1, setStage1] = useState(true);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
@@ -75,7 +85,7 @@ export const GameScreen = ({ navigation }) => {
     const [stage7, setStage7] = useState(false);
     const [stage8, setStage8] = useState(false);
     const [stage9, setStage9] = useState(false);
-    const [stage10, setStage10] = useState(true);
+    const [stage10, setStage10] = useState(false);
     const [stage11, setStage11] = useState(false);
     const [stage12, setStage12] = useState(false);
     const [stage13, setStage13] = useState(false);
@@ -500,6 +510,116 @@ export const GameScreen = ({ navigation }) => {
                     setStage19(false);
                     setStage20(false);
                     break;
+                case 11:
+                    setStage1(false);
+                    setStage2(false);
+                    setStage3(false);
+                    setStage4(false);
+                    setStage5(false);
+                    setStage6(false);
+                    setStage7(false)
+                    setStage8(false);
+                    setStage9(false);
+                    setStage10(false);
+                    setStage11(true);
+                    setStage12(false);
+                    setStage13(false);
+                    setStage14(false);
+                    setStage15(false);
+                    setStage16(false);
+                    setStage17(false);
+                    setStage18(false);
+                    setStage19(false);
+                    setStage20(false);
+                    break;
+                case 12:
+                    setStage1(false);
+                    setStage2(false);
+                    setStage3(false);
+                    setStage4(false);
+                    setStage5(false);
+                    setStage6(false);
+                    setStage7(false)
+                    setStage8(false);
+                    setStage9(false);
+                    setStage10(false);
+                    setStage11(false);
+                    setStage12(true);
+                    setStage13(false);
+                    setStage14(false);
+                    setStage15(false);
+                    setStage16(false);
+                    setStage17(false);
+                    setStage18(false);
+                    setStage19(false);
+                    setStage20(false);
+                    break;
+                case 13:
+                        setStage1(false);
+                        setStage2(false);
+                        setStage3(false);
+                        setStage4(false);
+                        setStage5(false);
+                        setStage6(false);
+                        setStage7(false)
+                        setStage8(false);
+                        setStage9(false);
+                        setStage10(false);
+                        setStage11(false);
+                        setStage12(false);
+                        setStage13(true);
+                        setStage14(false);
+                        setStage15(false);
+                        setStage16(false);
+                        setStage17(false);
+                        setStage18(false);
+                        setStage19(false);
+                        setStage20(false);
+                        break;
+                    case 14:
+                        setStage1(false);
+                        setStage2(false);
+                        setStage3(false);
+                        setStage4(false);
+                        setStage5(false);
+                        setStage6(false);
+                        setStage7(false)
+                        setStage8(false);
+                        setStage9(false);
+                        setStage10(false);
+                        setStage11(false);
+                        setStage12(false);
+                        setStage13(false);
+                        setStage14(true);
+                        setStage15(false);
+                        setStage16(false);
+                        setStage17(false);
+                        setStage18(false);
+                        setStage19(false);
+                        setStage20(false);
+                        break;
+                    case 15:
+                        setStage1(false);
+                        setStage2(false);
+                        setStage3(false);
+                        setStage4(false);
+                        setStage5(false);
+                        setStage6(false);
+                        setStage7(false)
+                        setStage8(false);
+                        setStage9(false);
+                        setStage10(false);
+                        setStage11(false);
+                        setStage12(false);
+                        setStage13(false);
+                        setStage14(false);
+                        setStage15(true);
+                        setStage16(false);
+                        setStage17(false);
+                        setStage18(false);
+                        setStage19(false);
+                        setStage20(false);
+                        break;
             default:
                 break;
         }
@@ -612,6 +732,16 @@ export const GameScreen = ({ navigation }) => {
                                 {stage8 && <Stage_8_Projectile nav={navigation} />}
                                 {stage9 && <Stage_9_Projectile nav={navigation} />}
                                 {stage10 && <Stage_10_Projectile nav={navigation} />}
+                                {stage11 && <Stage_11_Projectile nav={navigation} />}
+                                {stage12 && <Stage_12_Projectile nav={navigation} />}
+                                {stage13 && <Stage_13_Projectile nav={navigation} />}
+                                {stage14 && <Stage_14_Projectile nav={navigation} />}
+                                {stage15 && <Stage_15_Projectile nav={navigation} />}
+
+
+
+
+
 
 
                             </View>

@@ -188,7 +188,6 @@ export const Stage_4_Projectile = (props) => {
     outputRange: [1.0, 0.5]
   });
 
-
   const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
     variables: { id: userID.current }
   });
@@ -341,7 +340,6 @@ export const Stage_4_Projectile = (props) => {
              if (level.current >= 0) {
               letterAnimation();
               runObstacleAnimation_twins_1();
-
             }
 
             if (level.current >= 1) {
@@ -351,7 +349,6 @@ export const Stage_4_Projectile = (props) => {
             if (level.current >= 2) {
               runObstacleAnimation_twins_0();
             }
-
             if (level.current >= 3) {
               runObstacleAnimation_right_angle_1();
             }
@@ -992,10 +989,9 @@ export const Stage_4_Projectile = (props) => {
     // AuxilliaryGreenHealth
 
     const auxilliaryGreenHealthListener = auxilliaryGreenHealth_Position.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, width: WidthRatio(12), height: WidthRatio(12) }
+      let obj2 = { x: value.x, y: value.y, width: WidthRatio(15), height: WidthRatio(15) }
 
       if (isAuxilliaryGreenHealth_Colliding(obj1, obj2)) {
-        // console.log("UPGRADE COLLISION!!!!!!")
         if (!hasUpdatedAuxilliaryGreenHealth.current) {
           retainAuxilliaryGreenHealth.current = true;
           crashes.current -= 1;
@@ -1011,7 +1007,7 @@ export const Stage_4_Projectile = (props) => {
       obstaclePosition_0.removeListener(obstacleListener_0);
       obstaclePosition_1.removeListener(obstacleListener_1);
       obstaclePosition_right_angle_0.removeListener(obstacleListener_right_angle_0);
-      obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1)
+      obstaclePosition_right_angle_1.removeListener(obstacleListener_right_angle_1);
       obstaclePosition_twins_0.removeListener(obstacleListener_twins_0);
       obstaclePosition_twins_0_divergence.removeListener(obstacleListener_twins_0_divergence)
 
@@ -1031,7 +1027,6 @@ export const Stage_4_Projectile = (props) => {
     const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
     const wrongElements = letterPocket.filter((element) => !letters.includes(element));
     if (wrongElements.length > prevWrongElements) {
-      console.log("#1 - - - - - - - - ")
       crashes.current += 1;
       score.current = score.current - 25;
       flashOouchOnCrash.current = true;
@@ -1041,7 +1036,6 @@ export const Stage_4_Projectile = (props) => {
     }
 
     if (similarElements.length > prevSimilarElements) {
-      console.log("#2 - - - - - - - - ")
       score.current = score.current + 100;
       scoreFlash_100.current = true;
     }
@@ -1053,8 +1047,6 @@ export const Stage_4_Projectile = (props) => {
 
     if (!continuousEndGameCall) {
       if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
-        console.log("CURRENT LEVEL:   " + level.current)
-        console.log("CURRENT CRASHES:   " + crashes.current)
 
         endGame({
           continue: true,
@@ -1320,20 +1312,6 @@ export const Stage_4_Projectile = (props) => {
   }
 
   const continueGame = () => {
-    // console.log("CONTINUE GAME");
-    // console.log("- - - - - -")
-    // console.log(mainState.current.stage1)
-    // console.log(mainState.current.stage2)
-    // console.log(mainState.current.stage3)
-    // console.log(mainState.current.currentScore)
-    // console.log(mainState.current.currentLevel)
-    // console.log(mainState.current.currentCrashes)
-    // console.log(mainState.current.currentLetterPocket)
-    // console.log(mainState.current.currentWordPlusSeven)
-    // console.log(mainState.current.currentDisplayLetters)
-    // console.log(mainState.current.currentLetter_countValue)
-    // console.log("- - - - - -")
-
     score.current = mainState.current.currentScore;
     level.current = mainState.current.currentLevel;
     crashes.current = mainState.current.currentCrashes;

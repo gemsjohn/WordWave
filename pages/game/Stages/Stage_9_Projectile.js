@@ -419,10 +419,10 @@ export const Stage_9_Projectile = (props) => {
       if (level.current >= 2) {
         speed = [{ top: 6500, bottom: 3000 }]
       }
-      let randomDuration_a = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
-      let randomDuration_b = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
-      let randomDuration_c = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
-      let randomDuration_d = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
+      let randomDuration_a = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
+      let randomDuration_b = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
+      let randomDuration_c = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
+      let randomDuration_d = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
       let durations = [randomDuration_a, randomDuration_b, randomDuration_c, randomDuration_d];
       let longestDuration = Math.max(...durations);
 
@@ -1184,7 +1184,7 @@ export const Stage_9_Projectile = (props) => {
     // AuxilliaryGreenHealth
 
     const auxilliaryGreenHealthListener = auxilliaryGreenHealth_Position.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, width: WidthRatio(12), height: WidthRatio(12) }
+      let obj2 = { x: value.x, y: value.y, width: WidthRatio(15), height: WidthRatio(15) }
 
       if (isAuxilliaryGreenHealth_Colliding(obj1, obj2)) {
         if (!hasUpdatedAuxilliaryGreenHealth.current) {
