@@ -2121,7 +2121,7 @@ export const Stage_14_Projectile = (props) => {
               allowFontScaling={false}
             >PAUSE</Text>
             
-            {authState.current == true && userID.current != null ?
+            {authState.current == true ?
               <>
                 <Text style={{
                   color: 'white',
@@ -2393,7 +2393,7 @@ export const Stage_14_Projectile = (props) => {
                 </View>
               </View>
               <View style={{ margin: HeightRatio(40), alignSelf: 'center' }} />
-              {authState.current = true && userID.current != null ?
+              {authState.current = true ?
                 <>
                   {!tokenWarning ?
                     <View style={{

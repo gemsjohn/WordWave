@@ -76,16 +76,16 @@ export const GameScreen = ({ navigation }) => {
     const userID = useRef(null);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(true);
+    const [stage1, setStage1] = useState(false);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
-    const [stage4, setStage4] = useState(true);
+    const [stage4, setStage4] = useState(false);
     const [stage5, setStage5] = useState(false);
     const [stage6, setStage6] = useState(false);
     const [stage7, setStage7] = useState(false);
     const [stage8, setStage8] = useState(false);
     const [stage9, setStage9] = useState(false);
-    const [stage10, setStage10] = useState(false);
+    const [stage10, setStage10] = useState(true);
     const [stage11, setStage11] = useState(false);
     const [stage12, setStage12] = useState(false);
     const [stage13, setStage13] = useState(false);
@@ -185,34 +185,34 @@ export const GameScreen = ({ navigation }) => {
                 setStage10(mainState.current.stage10);
             }
             if (mainState.current.stage11 != null) {
-                setStage10(mainState.current.stage10);
+                setStage11(mainState.current.stage11);
             }
             if (mainState.current.stage12 != null) {
-                setStage10(mainState.current.stage10);
+                setStage12(mainState.current.stage12);
             }
             if (mainState.current.stage13 != null) {
-                setStage10(mainState.current.stage10);
+                setStage13(mainState.current.stage13);
             }
             if (mainState.current.stage14 != null) {
-                setStage10(mainState.current.stage10);
+                setStage14(mainState.current.stage14);
             }
             if (mainState.current.stage15 != null) {
-                setStage10(mainState.current.stage10);
+                setStage15(mainState.current.stage15);
             }
             if (mainState.current.stage16 != null) {
-                setStage10(mainState.current.stage10);
+                setStage16(mainState.current.stage16);
             }
             if (mainState.current.stage17 != null) {
-                setStage10(mainState.current.stage10);
+                setStage17(mainState.current.stage17);
             }
             if (mainState.current.stage18 != null) {
-                setStage10(mainState.current.stage10);
+                setStage18(mainState.current.stage18);
             }
             if (mainState.current.stage19 != null) {
-                setStage10(mainState.current.stage10);
+                setStage19(mainState.current.stage19);
             }
             if (mainState.current.stage20 != null) {
-                setStage10(mainState.current.stage10);
+                setStage20(mainState.current.stage20);
             }
 
             setIsGameInProgress(mainState.current.isGameInProgress);
