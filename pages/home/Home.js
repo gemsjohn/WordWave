@@ -51,6 +51,10 @@ export const HomeScreen = ({ navigation }) => {
     const [displayUsername, setDisplayUsername] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const [expand_0, setExpand_0] = useState(false)
+    const [expand_1, setExpand_1] = useState(false)
+
+
     const userID = useRef(null);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -64,7 +68,7 @@ export const HomeScreen = ({ navigation }) => {
 
 
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-        variables: { id: userID.current }
+        variables: { id: mainState.current.userID }
     });
 
 
@@ -128,8 +132,9 @@ export const HomeScreen = ({ navigation }) => {
                                         source={require('../../assets/home_background_image.png')}
                                         style={{
                                             width: windowWidth,
-                                            height: HeightRatio(600),
+                                            height: HeightRatio(900),
                                             position: 'absolute',
+                                            top: HeightRatio(200),
                                             zIndex: -10,
                                             borderBottomLeftRadius: HeightRatio(100),
                                             borderBottomRightRadius: HeightRatio(100),
@@ -138,451 +143,729 @@ export const HomeScreen = ({ navigation }) => {
                                     />
                                     {displayUsername ?
                                         <>
-                                            <Text style={{
-                                                color: 'white',
-                                                fontSize: HeightRatio(70),
-                                                fontWeight: 'bold',
-                                                alignSelf: 'center',
-                                                position: 'absolute',
-                                                top: HeightRatio(400),
-                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                                padding: HeightRatio(15),
-                                                width: windowWidth,
-                                                textAlign: 'center'
-                                            }}
-                                                allowFontScaling={false}>
-                                                {userByID?.user.username}
-                                            </Text>
-                                            <View style={{ flexDirection: 'row', marginTop: HeightRatio(500), alignSelf: 'center' }}>
+                                            <View>
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: HeightRatio(70),
+                                                    fontWeight: 'bold',
+                                                    position: 'absolute',
+                                                    top: HeightRatio(100),
+                                                    left: HeightRatio(50),
+                                                    // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                    padding: HeightRatio(15),
+                                                    width: windowWidth,
+                                                    // textAlign: 'center'
+                                                }}
+                                                    allowFontScaling={false}>
+                                                    {userByID?.user.username.toUpperCase()}
+                                                </Text>
                                                 <View style={{
-                                                    height: HeightRatio(120),
-                                                    width: HeightRatio(270),
-                                                    flexDirection: 'column',
-                                                    margin: HeightRatio(10),
-                                                    backgroundColor: '#35faa9',
-                                                    borderRadius: HeightRatio(20),
-                                                    borderWidth: 1,
+                                                    position: 'absolute',
+                                                    top: HeightRatio(200),
+                                                    left: HeightRatio(70),
+                                                    padding: HeightRatio(15),
+                                                    width: windowWidth,
                                                 }}>
 
                                                     <Text style={{
-                                                        color: 'black',
+                                                        color: 'white',
                                                         fontSize: HeightRatio(30),
-                                                        textAlign: 'center',
-                                                        marginTop: HeightRatio(20)
                                                     }} allowFontScaling={false}>
-                                                        YOUR HIGH SCORE
+                                                        HIGH SCORE <Text style={{
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(30),
+                                                        }} allowFontScaling={false}>
+                                                            {userByID?.user.highscore}
+                                                        </Text>
                                                     </Text>
 
-                                                    <Text style={{
-                                                        color: 'black',
-                                                        fontSize: HeightRatio(30),
-                                                        textAlign: 'center',
-                                                        marginTop: HeightRatio(10)
-                                                    }} allowFontScaling={false}>
-                                                        {userByID?.user.highscore}
-                                                    </Text>
                                                 </View>
                                                 <View style={{
-                                                    height: HeightRatio(120),
-                                                    width: HeightRatio(270),
-                                                    flexDirection: 'column',
-                                                    margin: HeightRatio(10),
-                                                    backgroundColor: '#35faa9',
-                                                    borderRadius: HeightRatio(20),
-                                                    borderWidth: 1
+                                                    position: 'absolute',
+                                                    top: HeightRatio(250),
+                                                    left: HeightRatio(70),
+                                                    padding: HeightRatio(15),
+                                                    width: windowWidth,
                                                 }}>
 
                                                     <Text style={{
-                                                        color: 'black',
+                                                        color: 'white',
                                                         fontSize: HeightRatio(30),
-                                                        textAlign: 'center',
-                                                        marginTop: HeightRatio(20),
                                                     }} allowFontScaling={false}>
-                                                        TOKENS
+                                                        TOKENS <Text style={{
+                                                            color: 'white',
+                                                            fontSize: HeightRatio(30),
+                                                        }} allowFontScaling={false}>
+                                                            {userByID?.user.tokens}
+                                                        </Text>
                                                     </Text>
 
-                                                    <Text style={{
-                                                        color: 'black',
-                                                        fontSize: HeightRatio(30),
-                                                        textAlign: 'center',
-                                                        marginTop: HeightRatio(10)
-                                                    }} allowFontScaling={false}>
-                                                        {userByID?.user.tokens}
-                                                    </Text>
                                                 </View>
-
 
                                             </View>
-                                            {userByID?.user.tobecontinued != null &&
-                                                <View style={{ flexDirection: 'row', marginTop: HeightRatio(10), alignSelf: 'center' }}>
-                                                    <View style={{
-                                                        height: HeightRatio(130),
-                                                        width: HeightRatio(600),
-                                                        flexDirection: 'column',
-                                                        margin: HeightRatio(10),
-                                                        backgroundColor: '#fbd505',
-                                                        borderRadius: HeightRatio(20),
-                                                        borderWidth: 1,
-                                                    }}>
-                                                        <Text style={{
-                                                            color: 'black',
-                                                            fontSize: HeightRatio(30),
-                                                            textAlign: 'center',
-                                                            marginTop: HeightRatio(20)
-                                                        }} allowFontScaling={false}>
-                                                            YOU BEAT THE GAME WITH A SCORE OF:
-                                                        </Text>
-                                                        <Text style={{
-                                                            color: 'black',
-                                                            fontSize: HeightRatio(30),
-                                                            textAlign: 'center',
-                                                            marginTop: HeightRatio(20)
-                                                        }} allowFontScaling={false}>
-                                                            {userByID?.user.tobecontinued.score}
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                            }
                                         </>
                                         :
                                         <View style={{ height: HeightRatio(600) }} />
                                     }
+                                    <View style={{ marginTop: HeightRatio(1100) }} />
                                     {!displaySignUpModal &&
-                                        <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
-                                            {count == 0 &&
-                                                <View>
-                                                    <View style={{
-
-                                                        backgroundColor: '#043648',
-                                                        // borderColor: 'rgba(255, 255, 255, 0.25)',
-                                                        borderWidth: 1,
-                                                        padding: HeightRatio(20),
-                                                        borderRadius: HeightRatio(40),
-                                                        width: WidthRatio(160),
-                                                        margin: HeightRatio(20),
-                                                        alignSelf: 'center',
-                                                        justifyContent: 'center',
-                                                        flexDirection: 'column'
-                                                    }}>
-                                                        <Text style={{
-                                                            color: '#fcd01f',
-                                                            fontSize: HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            margin: HeightRatio(4),
-                                                            // backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                            padding: HeightRatio(10),
-                                                            borderRadius: HeightRatio(20)
-                                                        }}
-                                                            allowFontScaling={false}>
-                                                            Objective
-                                                        </Text>
-                                                        <Text style={{
-                                                            color: 'white',
-                                                            fontSize: HeightRatio(40),
-                                                            fontWeight: 'bold',
-                                                            margin: HeightRatio(20),
-                                                            alignSelf: 'center'
-                                                        }}
-                                                            allowFontScaling={false}>
-                                                            Collect letters to spell the word at the top of the screen,
-                                                            avoid obstacles and enemies. Complete all 5 levels to advance
-                                                            to the next stage. Game over after colliding with 3 objects.
-                                                        </Text>
-                                                    </View>
-
-                                                    <View style={{
-                                                        backgroundColor: '#043648',
-                                                        // borderColor: 'rgba(255, 255, 255, 0.25)',
-                                                        borderWidth: 1,
-                                                        padding: HeightRatio(20),
-                                                        borderRadius: HeightRatio(40),
-                                                        width: WidthRatio(160),
-                                                        margin: HeightRatio(20),
-                                                        alignSelf: 'center',
-                                                        justifyContent: 'center',
-                                                        flexDirection: 'column'
-                                                    }}>
-                                                        <Text style={{
-                                                            color: '#fcd01f',
-                                                            fontSize: HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            margin: HeightRatio(4),
-                                                            // backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                            padding: HeightRatio(10),
-                                                            borderRadius: HeightRatio(20)
-                                                        }}
-                                                            allowFontScaling={false}>
-                                                            Collect <Text style={{ color: 'white' }}>
-                                                                the correct letters.
-                                                            </Text>
-                                                        </Text>
-
-                                                        <Image
-                                                            source={require('../../assets/Example_0.png')}
-                                                            style={{ height: HeightRatio(200), width: HeightRatio(300), alignSelf: 'center' }} />
-
-                                                        <Text style={{
-                                                            color: '#f8200d',
-                                                            fontSize: HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            marginTop: HeightRatio(20),
-                                                            // backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                            padding: HeightRatio(10),
-                                                            borderRadius: HeightRatio(20)
-                                                        }}
-                                                            allowFontScaling={false}>
-                                                            Avoid <Text style={{ color: 'white' }}>
-                                                                the wrong letters.
-                                                            </Text>
-                                                        </Text>
-
-                                                        <Text style={{
-                                                            color: '#f8200d',
-                                                            fontSize: HeightRatio(50),
-                                                            fontWeight: 'bold',
-                                                            marginTop: HeightRatio(20),
-                                                            // backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                            padding: HeightRatio(10),
-                                                            borderRadius: HeightRatio(20)
-                                                        }}
-                                                            allowFontScaling={false}>
-                                                            Avoid <Text style={{ color: 'white' }}>
-                                                                obstacles.
-                                                            </Text>
-                                                        </Text>
-
-                                                        <View style={{
-                                                            flexDirection: 'row',
-                                                            flexWrap: 'wrap',
-                                                            alignSelf: 'center',
-                                                            justifyContent: 'center',
-                                                            marginTop: HeightRatio(20)
-                                                        }}>
-
-                                                            {/* CHARACTER: Asteroid */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_asteroid_2.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Asteroid</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Red UFO */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_red_ufo.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Red UFO</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Twin */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_enemy_4.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Twin</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Opacity Bot */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_enemy_3.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Opacity Bot</Text>
-                                                            </View>
-                                                            {/* CHARACTER: Atomic Oscillator */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_atomic.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Atomic Oscillator</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Triangle */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectiles_triangle.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Triangle</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Fireball */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_fire_ball_1.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Fireball</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Fire Boss */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/projectile_enemy_0.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Fire Boss</Text>
-                                                            </View>
-
-                                                            {/* CHARACTER: Blank Key */}
-                                                            <View style={{
-                                                                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                                borderRadius: 10,
-                                                                padding: 10,
-                                                                margin: 5,
-                                                                width: 100,
-                                                                height: 100
-                                                            }}>
-                                                                <Image
-                                                                    source={require('../../assets/block_keyboard_key.png')}
-                                                                    style={{ height: 50, width: 50, alignSelf: 'center' }} />
-                                                                <Text
-                                                                    style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
-                                                                    allowFontScaling={false}
-                                                                >Blank Key</Text>
-                                                            </View>
-
-                                                        </View>
-                                                    </View>
-
-
-                                                    <View style={{
-                                                        backgroundColor: '#043648',
+                                        <>
+                                            <TouchableOpacity 
+                                            onPress={() => {
+                                                setExpand_0(current => !current)
+                                            }}
+                                            style={{
+                                                borderRadius: HeightRatio(20),
+                                                padding: HeightRatio(15),
+                                                width: WidthRatio(160),
+                                                flexDirection: 'column',
+                                                margin: HeightRatio(20),
+                                                alignSelf: 'center',
+                                                backgroundColor: 'red'
+                                            }}>
+                                                {!expand_0 ?
+                                                <>
+                                                <LinearGradient
+                                                    colors={['#0b132b', '#181d21']}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        left: 0,
+                                                        right: 0,
+                                                        top: 0,
+                                                        // height: windowHeight,
+                                                        height: HeightRatio(230),
+                                                        borderRadius: HeightRatio(20),
+                                                        borderWidth: 2,
                                                         borderColor: 'rgba(255, 255, 255, 0.25)',
-                                                        borderWidth: 1,
-                                                        padding: HeightRatio(20),
-                                                        borderRadius: HeightRatio(40),
-                                                        width: WidthRatio(160),
-                                                        margin: HeightRatio(20),
+                                                        opacity: 0.5
+                                                    }}
+                                                />
+                                                <Text style={{
+                                                    color: '#fcd01f',
+                                                    fontSize: HeightRatio(50),
+                                                    fontWeight: 'bold',
+                                                    margin: HeightRatio(20)
+                                                }}
+                                                    allowFontScaling={false}>
+                                                    Objective
+                                                </Text>
+                                                <Text
+                                                    style={{
+                                                        color: 'white',
+                                                        // alignSelf: 'center', 
+                                                        fontSize: HeightRatio(40),
+                                                        fontWeight: 'bold',
+                                                        margin: HeightRatio(10),
+                                                        marginLeft: HeightRatio(20),
+                                                        width: WidthRatio(140)
+                                                    }}
+                                                    numberOfLines={2}
+                                                    ellipsizeMode='tail'
+                                                    allowFontScaling={false}
+                                                >
+                                                    Collect letters to spell the word at the top of the screen,
+                                                    avoid obstacles and enemies. Complete all 5 levels to advance
+                                                    to the next stage. Game over after colliding with 3 objects.
+                                                </Text>
+                                                </>
+                                                :
+                                                <>
+                                                <LinearGradient
+                                                    colors={['#0b132b', '#181d21']}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        left: 0,
+                                                        right: 0,
+                                                        top: 0,
+                                                        height: HeightRatio(360),
+                                                        borderRadius: HeightRatio(20),
+                                                        borderWidth: 2,
+                                                        borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                        opacity: 0.5
+                                                    }}
+                                                />
+                                                <Text style={{
+                                                    color: '#fcd01f',
+                                                    fontSize: HeightRatio(50),
+                                                    fontWeight: 'bold',
+                                                    margin: HeightRatio(20)
+                                                }}
+                                                    allowFontScaling={false}>
+                                                    Objective
+                                                </Text>
+                                                <Text
+                                                    style={{
+                                                        color: 'white',
+                                                        // alignSelf: 'center', 
+                                                        fontSize: HeightRatio(40),
+                                                        fontWeight: 'bold',
+                                                        margin: HeightRatio(10),
+                                                        marginLeft: HeightRatio(20),
+                                                        width: WidthRatio(140)
+                                                    }}
+                                                    numberOfLines={5}
+                                                    ellipsizeMode='tail'
+                                                    allowFontScaling={false}
+                                                >
+                                                    Collect letters to spell the word at the top of the screen,
+                                                    avoid obstacles and enemies. Complete all 5 levels to advance
+                                                    to the next stage. Game over after colliding with 3 objects.
+                                                </Text>
+                                                </>
+                                                }
+                                                {!expand_0 ?
+                                                <View
+                                                    style={{
+                                                        position: 'absolute',
+                                                        zIndex: 10,
+                                                        top: HeightRatio(30),
                                                         alignSelf: 'center',
-                                                        justifyContent: 'center',
-                                                        flexDirection: 'column'
-                                                    }}>
-                                                        <Text style={{
-                                                            color: '#fcd01f',
-                                                            fontSize: HeightRatio(45),
+                                                        left: WidthRatio(120),
+                                                        padding: HeightRatio(20),
+                                                        borderRadius: HeightRatio(20),
+                                                        flexDirection: 'row',
+                                                        backgroundColor: '#35faa9',
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            color: 'black',
                                                             fontWeight: 'bold',
-                                                            // backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                                                            padding: HeightRatio(10),
-                                                            borderRadius: HeightRatio(20)
+                                                            fontSize: HeightRatio(30),
+                                                            alignSelf: 'flex-end'
                                                         }}
-                                                            allowFontScaling={false}>
-                                                            Game over? <Text style={{ color: 'white' }}>
-                                                                Well, that depends.
-                                                            </Text>
-                                                        </Text>
-                                                        <Image
-                                                            source={require('../../assets/Example_0b.png')}
-                                                            style={{ height: 200, width: 200, alignSelf: 'center', marginTop: 20 }} />
-
-                                                        <Text style={{
-                                                            color: 'white',
-                                                            fontSize: HeightRatio(45),
-                                                            fontWeight: 'bold',
-                                                            padding: HeightRatio(10),
-                                                        }}
-                                                            allowFontScaling={false}>
-                                                            If you want to continue playing you can use a <Text style={{ color: '#00fcff' }}>
-                                                                token    
-                                                            </Text>!
-                                                        </Text>
-
-                                                        <Text style={{
-                                                            color: 'white',
-                                                            fontSize: HeightRatio(45),
-                                                            fontWeight: 'bold',
-                                                            marginTop: HeightRatio(20),
-                                                            padding: HeightRatio(10),
-                                                        }}
-                                                            allowFontScaling={false}>
-                                                            Sign up to receive 5 free tokens and an option to purchase more.
-                                                        </Text>
-                                                    </View>
+                                                        allowFontScaling={false}
+                                                    >
+                                                        MORE
+                                                    </Text>
                                                 </View>
-                                            }
+                                                :
+                                                <View
+                                                    style={{
+                                                        position: 'absolute',
+                                                        zIndex: 10,
+                                                        top: HeightRatio(30),
+                                                        alignSelf: 'center',
+                                                        left: WidthRatio(120),
+                                                        padding: HeightRatio(20),
+                                                        borderRadius: HeightRatio(20),
+                                                        flexDirection: 'row',
+                                                        backgroundColor: '#35faa9',
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            color: 'black',
+                                                            fontWeight: 'bold',
+                                                            fontSize: HeightRatio(30),
+                                                            alignSelf: 'flex-end'
+                                                        }}
+                                                        allowFontScaling={false}
+                                                    >
+                                                        CLOSE
+                                                    </Text>
+                                                </View>
+                                                }
+                                            </TouchableOpacity>
 
+
+
+                                            <TouchableOpacity 
+                                            onPress={() => {
+                                                setExpand_1(current => !current)
+                                            }}
+                                            style={{
+                                                borderRadius: HeightRatio(20),
+                                                padding: HeightRatio(15),
+                                                width: WidthRatio(160),
+                                                flexDirection: 'column',
+                                                margin: HeightRatio(20),
+                                                alignSelf: 'center',
+                                                backgroundColor: 'red'
+                                            }}>
+                                                {!expand_1 ?
+                                                <>
+                                                <LinearGradient
+                                                    colors={['#0b132b', '#181d21']}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        left: 0,
+                                                        right: 0,
+                                                        top: 0,
+                                                        // height: windowHeight,
+                                                        height: HeightRatio(230),
+                                                        borderRadius: HeightRatio(20),
+                                                        borderWidth: 2,
+                                                        borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                        opacity: 0.5
+                                                    }}
+                                                />
+                                                <Text style={{
+                                                    color: '#fcd01f',
+                                                    fontSize: HeightRatio(50),
+                                                    fontWeight: 'bold',
+                                                    margin: HeightRatio(20)
+                                                }}
+                                                    allowFontScaling={false}>
+                                                    Objective
+                                                </Text>
+                                                <Text
+                                                    style={{
+                                                        color: 'white',
+                                                        // alignSelf: 'center', 
+                                                        fontSize: HeightRatio(40),
+                                                        fontWeight: 'bold',
+                                                        margin: HeightRatio(10),
+                                                        marginLeft: HeightRatio(20),
+                                                        width: WidthRatio(140)
+                                                    }}
+                                                    numberOfLines={2}
+                                                    ellipsizeMode='tail'
+                                                    allowFontScaling={false}
+                                                >
+                                                    Collect letters to spell the word at the top of the screen,
+                                                    avoid obstacles and enemies. Complete all 5 levels to advance
+                                                    to the next stage. Game over after colliding with 3 objects.
+                                                </Text>
+                                                </>
+                                                :
+                                                <>
+                                                <LinearGradient
+                                                    colors={['#0b132b', '#181d21']}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        left: 0,
+                                                        right: 0,
+                                                        top: 0,
+                                                        height: HeightRatio(360),
+                                                        borderRadius: HeightRatio(20),
+                                                        borderWidth: 2,
+                                                        borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                        opacity: 0.5
+                                                    }}
+                                                />
+                                                <Text style={{
+                                                    color: '#fcd01f',
+                                                    fontSize: HeightRatio(50),
+                                                    fontWeight: 'bold',
+                                                    margin: HeightRatio(20)
+                                                }}
+                                                    allowFontScaling={false}>
+                                                    Objective
+                                                </Text>
+                                                <Text
+                                                    style={{
+                                                        color: 'white',
+                                                        // alignSelf: 'center', 
+                                                        fontSize: HeightRatio(40),
+                                                        fontWeight: 'bold',
+                                                        margin: HeightRatio(10),
+                                                        marginLeft: HeightRatio(20),
+                                                        width: WidthRatio(140)
+                                                    }}
+                                                    numberOfLines={5}
+                                                    ellipsizeMode='tail'
+                                                    allowFontScaling={false}
+                                                >
+                                                    Collect letters to spell the word at the top of the screen,
+                                                    avoid obstacles and enemies. Complete all 5 levels to advance
+                                                    to the next stage. Game over after colliding with 3 objects.
+                                                </Text>
+                                                </>
+                                                }
+                                                {!expand_0 ?
+                                                <View
+                                                    style={{
+                                                        position: 'absolute',
+                                                        zIndex: 10,
+                                                        top: HeightRatio(30),
+                                                        alignSelf: 'center',
+                                                        left: WidthRatio(120),
+                                                        padding: HeightRatio(20),
+                                                        borderRadius: HeightRatio(20),
+                                                        flexDirection: 'row',
+                                                        backgroundColor: '#35faa9',
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            color: 'black',
+                                                            fontWeight: 'bold',
+                                                            fontSize: HeightRatio(30),
+                                                            alignSelf: 'flex-end'
+                                                        }}
+                                                        allowFontScaling={false}
+                                                    >
+                                                        MORE
+                                                    </Text>
+                                                </View>
+                                                :
+                                                <View
+                                                    style={{
+                                                        position: 'absolute',
+                                                        zIndex: 10,
+                                                        top: HeightRatio(30),
+                                                        alignSelf: 'center',
+                                                        left: WidthRatio(120),
+                                                        padding: HeightRatio(20),
+                                                        borderRadius: HeightRatio(20),
+                                                        flexDirection: 'row',
+                                                        backgroundColor: '#35faa9',
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            color: 'black',
+                                                            fontWeight: 'bold',
+                                                            fontSize: HeightRatio(30),
+                                                            alignSelf: 'flex-end'
+                                                        }}
+                                                        allowFontScaling={false}
+                                                    >
+                                                        CLOSE
+                                                    </Text>
+                                                </View>
+                                                }
+                                            </TouchableOpacity>
 
                                             <View style={{ height: HeightRatio(500) }}></View>
+                                        </>
+                                        // <View style={{ alignSelf: 'center', flexDirection: 'column' }}>
+                                        //     {count == 0 &&
+                                        //         <View>
+                                        //             <View style={{
 
-                                        </View>
+                                        //                 backgroundColor: '#043648',
+                                        //                 // borderColor: 'rgba(255, 255, 255, 0.25)',
+                                        //                 borderWidth: 1,
+                                        //                 padding: HeightRatio(20),
+                                        //                 borderRadius: HeightRatio(40),
+                                        //                 width: WidthRatio(160),
+                                        //                 margin: HeightRatio(20),
+                                        //                 alignSelf: 'center',
+                                        //                 justifyContent: 'center',
+                                        //                 flexDirection: 'column'
+                                        //             }}>
+                                        //                 <Text style={{
+                                        //                     color: '#fcd01f',
+                                        //                     fontSize: HeightRatio(50),
+                                        //                     fontWeight: 'bold',
+                                        //                     margin: HeightRatio(4),
+                                        //                     // backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                     padding: HeightRatio(10),
+                                        //                     borderRadius: HeightRatio(20)
+                                        //                 }}
+                                        //                     allowFontScaling={false}>
+                                        //                     Objective
+                                        //                 </Text>
+                                        //                 <Text style={{
+                                        //                     color: 'white',
+                                        //                     fontSize: HeightRatio(40),
+                                        //                     fontWeight: 'bold',
+                                        //                     margin: HeightRatio(20),
+                                        //                     alignSelf: 'center'
+                                        //                 }}
+                                        //                     allowFontScaling={false}>
+                                        //                     Collect letters to spell the word at the top of the screen,
+                                        //                     avoid obstacles and enemies. Complete all 5 levels to advance
+                                        //                     to the next stage. Game over after colliding with 3 objects.
+                                        //                 </Text>
+                                        //             </View>
+
+                                        //             <View style={{
+                                        //                 backgroundColor: '#043648',
+                                        //                 // borderColor: 'rgba(255, 255, 255, 0.25)',
+                                        //                 borderWidth: 1,
+                                        //                 padding: HeightRatio(20),
+                                        //                 borderRadius: HeightRatio(40),
+                                        //                 width: WidthRatio(160),
+                                        //                 margin: HeightRatio(20),
+                                        //                 alignSelf: 'center',
+                                        //                 justifyContent: 'center',
+                                        //                 flexDirection: 'column'
+                                        //             }}>
+                                        //                 <Text style={{
+                                        //                     color: '#fcd01f',
+                                        //                     fontSize: HeightRatio(50),
+                                        //                     fontWeight: 'bold',
+                                        //                     margin: HeightRatio(4),
+                                        //                     // backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                     padding: HeightRatio(10),
+                                        //                     borderRadius: HeightRatio(20)
+                                        //                 }}
+                                        //                     allowFontScaling={false}>
+                                        //                     Collect <Text style={{ color: 'white' }}>
+                                        //                         the correct letters.
+                                        //                     </Text>
+                                        //                 </Text>
+
+                                        //                 <Image
+                                        //                     source={require('../../assets/Example_0.png')}
+                                        //                     style={{ height: HeightRatio(200), width: HeightRatio(300), alignSelf: 'center' }} />
+
+                                        //                 <Text style={{
+                                        //                     color: '#f8200d',
+                                        //                     fontSize: HeightRatio(50),
+                                        //                     fontWeight: 'bold',
+                                        //                     marginTop: HeightRatio(20),
+                                        //                     // backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                     padding: HeightRatio(10),
+                                        //                     borderRadius: HeightRatio(20)
+                                        //                 }}
+                                        //                     allowFontScaling={false}>
+                                        //                     Avoid <Text style={{ color: 'white' }}>
+                                        //                         the wrong letters.
+                                        //                     </Text>
+                                        //                 </Text>
+
+                                        //                 <Text style={{
+                                        //                     color: '#f8200d',
+                                        //                     fontSize: HeightRatio(50),
+                                        //                     fontWeight: 'bold',
+                                        //                     marginTop: HeightRatio(20),
+                                        //                     // backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                     padding: HeightRatio(10),
+                                        //                     borderRadius: HeightRatio(20)
+                                        //                 }}
+                                        //                     allowFontScaling={false}>
+                                        //                     Avoid <Text style={{ color: 'white' }}>
+                                        //                         obstacles.
+                                        //                     </Text>
+                                        //                 </Text>
+
+                                        //                 <View style={{
+                                        //                     flexDirection: 'row',
+                                        //                     flexWrap: 'wrap',
+                                        //                     alignSelf: 'center',
+                                        //                     justifyContent: 'center',
+                                        //                     marginTop: HeightRatio(20)
+                                        //                 }}>
+
+                                        //                     {/* CHARACTER: Asteroid */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/projectile_asteroid_2.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Asteroid</Text>
+                                        //                     </View>
+
+                                        //                     {/* CHARACTER: Red UFO */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/projectile_red_ufo.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Red UFO</Text>
+                                        //                     </View>
+
+                                        //                     {/* CHARACTER: Twin */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/projectile_enemy_4.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Twin</Text>
+                                        //                     </View>
+
+                                        //                     {/* CHARACTER: Opacity Bot */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/projectile_enemy_3.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Opacity Bot</Text>
+                                        //                     </View>
+                                        //                     {/* CHARACTER: Atomic Oscillator */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/projectile_atomic.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Atomic Oscillator</Text>
+                                        //                     </View>
+
+                                        //                     {/* CHARACTER: Triangle */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/projectiles_triangle.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Triangle</Text>
+                                        //                     </View>
+
+                                        //                     {/* CHARACTER: Fireball */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/projectile_fire_ball_1.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Fireball</Text>
+                                        //                     </View>
+
+                                        //                     {/* CHARACTER: Fire Boss */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/projectile_enemy_0.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Fire Boss</Text>
+                                        //                     </View>
+
+                                        //                     {/* CHARACTER: Blank Key */}
+                                        //                     <View style={{
+                                        //                         backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                         borderRadius: 10,
+                                        //                         padding: 10,
+                                        //                         margin: 5,
+                                        //                         width: 100,
+                                        //                         height: 100
+                                        //                     }}>
+                                        //                         <Image
+                                        //                             source={require('../../assets/block_keyboard_key.png')}
+                                        //                             style={{ height: 50, width: 50, alignSelf: 'center' }} />
+                                        //                         <Text
+                                        //                             style={{ color: 'white', textAlign: 'center', marginTop: 5 }}
+                                        //                             allowFontScaling={false}
+                                        //                         >Blank Key</Text>
+                                        //                     </View>
+
+                                        //                 </View>
+                                        //             </View>
+
+
+                                        //             <View style={{
+                                        //                 backgroundColor: '#043648',
+                                        //                 borderColor: 'rgba(255, 255, 255, 0.25)',
+                                        //                 borderWidth: 1,
+                                        //                 padding: HeightRatio(20),
+                                        //                 borderRadius: HeightRatio(40),
+                                        //                 width: WidthRatio(160),
+                                        //                 margin: HeightRatio(20),
+                                        //                 alignSelf: 'center',
+                                        //                 justifyContent: 'center',
+                                        //                 flexDirection: 'column'
+                                        //             }}>
+                                        //                 <Text style={{
+                                        //                     color: '#fcd01f',
+                                        //                     fontSize: HeightRatio(45),
+                                        //                     fontWeight: 'bold',
+                                        //                     // backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                                        //                     padding: HeightRatio(10),
+                                        //                     borderRadius: HeightRatio(20)
+                                        //                 }}
+                                        //                     allowFontScaling={false}>
+                                        //                     Game over? <Text style={{ color: 'white' }}>
+                                        //                         Well, that depends.
+                                        //                     </Text>
+                                        //                 </Text>
+                                        //                 <Image
+                                        //                     source={require('../../assets/Example_0b.png')}
+                                        //                     style={{ height: 200, width: 200, alignSelf: 'center', marginTop: 20 }} />
+
+                                        //                 <Text style={{
+                                        //                     color: 'white',
+                                        //                     fontSize: HeightRatio(45),
+                                        //                     fontWeight: 'bold',
+                                        //                     padding: HeightRatio(10),
+                                        //                 }}
+                                        //                     allowFontScaling={false}>
+                                        //                     If you want to continue playing you can use a <Text style={{ color: '#00fcff' }}>
+                                        //                         token
+                                        //                     </Text>!
+                                        //                 </Text>
+
+                                        //                 <Text style={{
+                                        //                     color: 'white',
+                                        //                     fontSize: HeightRatio(45),
+                                        //                     fontWeight: 'bold',
+                                        //                     marginTop: HeightRatio(20),
+                                        //                     padding: HeightRatio(10),
+                                        //                 }}
+                                        //                     allowFontScaling={false}>
+                                        //                     Sign up to receive 5 free tokens and an option to purchase more.
+                                        //                 </Text>
+                                        //             </View>
+                                        //         </View>
+                                        //     }
+
+
+                                        //     <View style={{ height: HeightRatio(500) }}></View>
+
+                                        // </View>
+
                                     }
                                 </View >
                             </ScrollView>

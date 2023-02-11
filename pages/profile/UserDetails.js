@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSolid, faAddressCard, faEnvelope, faSackDollar, faStar, faX, faPenToSquare, faCopy } from '@fortawesome/free-solid-svg-icons'
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
-import { DemoAppInvoiceAndQuote } from './VerificationInvoiceAndQuote';
 import * as Clipboard from 'expo-clipboard';
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -484,15 +483,6 @@ export const UserDetails = (props) => {
                             </>
                             :
                             null
-                        }
-                        {!userByID?.user.verified &&
-                            <>
-                                {showEditableFieldVerification && i == 4 &&
-                                    <View>
-                                        <DemoAppInvoiceAndQuote currentuser={userByID?.user} />
-                                    </View>
-                                }
-                            </>
                         }
                     </View>
                 </TouchableOpacity>

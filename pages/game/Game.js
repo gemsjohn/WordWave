@@ -7,13 +7,8 @@ import React, {
     useContext
 } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
-import { ADD_GAME } from '../../utils/mutations';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
-import { CommonActions, useTheme } from '@react-navigation/native';
 import { Navbar } from '../../components/Navbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MainStateContext } from '../../App';
@@ -24,6 +19,7 @@ import {
     windowHeight,
     windowWidth
 } from '../../Styling';
+
 import { CharacterAndJoystick } from './CharacterAndJoystick';
 import { Stage_1_Projectile } from './Stages/Stage_1_Projectile';
 import { Stage_2_Projectile } from './Stages/Stage_2_Projectile';
@@ -40,25 +36,6 @@ import { Stage_12_Projectile } from './Stages/Stage_12_Projectile';
 import { Stage_13_Projectile } from './Stages/Stage_13_Projectile';
 import { Stage_14_Projectile } from './Stages/Stage_14_Projectile';
 import { Stage_15_Projectile } from './Stages/Stage_15_Projectile';
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { Stage_3_Projectile } from './Stages/Stage_3_Projectile_v1';
-// import { Stage_4_Projectile } from './Stages/Stage_4_Projectile_v1';
-// import { Stage_5_Projectile } from './Stages/Stage_5_Projectile_v1';
-// import { Stage_6_Projectile } from './Stages/Stage_6_Projectile_v1';
-
-
 
 import {
     View,
@@ -103,7 +80,7 @@ export const GameScreen = ({ navigation }) => {
     const stage = useRef(null);
 
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-        variables: { id: userID.current }
+        variables: { id: mainState.current.userID }
     });
 
 
@@ -143,13 +120,11 @@ export const GameScreen = ({ navigation }) => {
             fromSavedGame: false,
             gameOverScreen: false
         })
-
-
     }, [])
 
     useEffect(() => {
         console.log("Setup: #2 ")
-        refetch();
+        
 
         setInterval(() => {
             setRetainUpgradeToSpecial_0(mainState.current.upgradeToSpecial_0);
@@ -259,6 +234,7 @@ export const GameScreen = ({ navigation }) => {
 
     const handleContinueSavedGame = (input) => {
         console.log("Setup: #5 ")
+        console.log(userByID?.user.saved)
 
         let str_0 = `${userByID?.user.saved.letterPocket}`;
         let arr_0;
@@ -489,144 +465,143 @@ export const GameScreen = ({ navigation }) => {
                 setStage20(false);
                 break;
             case 10:
-                    setStage1(false);
-                    setStage2(false);
-                    setStage3(false);
-                    setStage4(false);
-                    setStage5(false);
-                    setStage6(false);
-                    setStage7(false)
-                    setStage8(false);
-                    setStage9(false);
-                    setStage10(true);
-                    setStage11(false);
-                    setStage12(false);
-                    setStage13(false);
-                    setStage14(false);
-                    setStage15(false);
-                    setStage16(false);
-                    setStage17(false);
-                    setStage18(false);
-                    setStage19(false);
-                    setStage20(false);
-                    break;
-                case 11:
-                    setStage1(false);
-                    setStage2(false);
-                    setStage3(false);
-                    setStage4(false);
-                    setStage5(false);
-                    setStage6(false);
-                    setStage7(false)
-                    setStage8(false);
-                    setStage9(false);
-                    setStage10(false);
-                    setStage11(true);
-                    setStage12(false);
-                    setStage13(false);
-                    setStage14(false);
-                    setStage15(false);
-                    setStage16(false);
-                    setStage17(false);
-                    setStage18(false);
-                    setStage19(false);
-                    setStage20(false);
-                    break;
-                case 12:
-                    setStage1(false);
-                    setStage2(false);
-                    setStage3(false);
-                    setStage4(false);
-                    setStage5(false);
-                    setStage6(false);
-                    setStage7(false)
-                    setStage8(false);
-                    setStage9(false);
-                    setStage10(false);
-                    setStage11(false);
-                    setStage12(true);
-                    setStage13(false);
-                    setStage14(false);
-                    setStage15(false);
-                    setStage16(false);
-                    setStage17(false);
-                    setStage18(false);
-                    setStage19(false);
-                    setStage20(false);
-                    break;
-                case 13:
-                        setStage1(false);
-                        setStage2(false);
-                        setStage3(false);
-                        setStage4(false);
-                        setStage5(false);
-                        setStage6(false);
-                        setStage7(false)
-                        setStage8(false);
-                        setStage9(false);
-                        setStage10(false);
-                        setStage11(false);
-                        setStage12(false);
-                        setStage13(true);
-                        setStage14(false);
-                        setStage15(false);
-                        setStage16(false);
-                        setStage17(false);
-                        setStage18(false);
-                        setStage19(false);
-                        setStage20(false);
-                        break;
-                    case 14:
-                        setStage1(false);
-                        setStage2(false);
-                        setStage3(false);
-                        setStage4(false);
-                        setStage5(false);
-                        setStage6(false);
-                        setStage7(false)
-                        setStage8(false);
-                        setStage9(false);
-                        setStage10(false);
-                        setStage11(false);
-                        setStage12(false);
-                        setStage13(false);
-                        setStage14(true);
-                        setStage15(false);
-                        setStage16(false);
-                        setStage17(false);
-                        setStage18(false);
-                        setStage19(false);
-                        setStage20(false);
-                        break;
-                    case 15:
-                        setStage1(false);
-                        setStage2(false);
-                        setStage3(false);
-                        setStage4(false);
-                        setStage5(false);
-                        setStage6(false);
-                        setStage7(false)
-                        setStage8(false);
-                        setStage9(false);
-                        setStage10(false);
-                        setStage11(false);
-                        setStage12(false);
-                        setStage13(false);
-                        setStage14(false);
-                        setStage15(true);
-                        setStage16(false);
-                        setStage17(false);
-                        setStage18(false);
-                        setStage19(false);
-                        setStage20(false);
-                        break;
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                setStage7(false)
+                setStage8(false);
+                setStage9(false);
+                setStage10(true);
+                setStage11(false);
+                setStage12(false);
+                setStage13(false);
+                setStage14(false);
+                setStage15(false);
+                setStage16(false);
+                setStage17(false);
+                setStage18(false);
+                setStage19(false);
+                setStage20(false);
+                break;
+            case 11:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                setStage7(false)
+                setStage8(false);
+                setStage9(false);
+                setStage10(false);
+                setStage11(true);
+                setStage12(false);
+                setStage13(false);
+                setStage14(false);
+                setStage15(false);
+                setStage16(false);
+                setStage17(false);
+                setStage18(false);
+                setStage19(false);
+                setStage20(false);
+                break;
+            case 12:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                setStage7(false)
+                setStage8(false);
+                setStage9(false);
+                setStage10(false);
+                setStage11(false);
+                setStage12(true);
+                setStage13(false);
+                setStage14(false);
+                setStage15(false);
+                setStage16(false);
+                setStage17(false);
+                setStage18(false);
+                setStage19(false);
+                setStage20(false);
+                break;
+            case 13:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                setStage7(false)
+                setStage8(false);
+                setStage9(false);
+                setStage10(false);
+                setStage11(false);
+                setStage12(false);
+                setStage13(true);
+                setStage14(false);
+                setStage15(false);
+                setStage16(false);
+                setStage17(false);
+                setStage18(false);
+                setStage19(false);
+                setStage20(false);
+                break;
+            case 14:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                setStage7(false)
+                setStage8(false);
+                setStage9(false);
+                setStage10(false);
+                setStage11(false);
+                setStage12(false);
+                setStage13(false);
+                setStage14(true);
+                setStage15(false);
+                setStage16(false);
+                setStage17(false);
+                setStage18(false);
+                setStage19(false);
+                setStage20(false);
+                break;
+            case 15:
+                setStage1(false);
+                setStage2(false);
+                setStage3(false);
+                setStage4(false);
+                setStage5(false);
+                setStage6(false);
+                setStage7(false)
+                setStage8(false);
+                setStage9(false);
+                setStage10(false);
+                setStage11(false);
+                setStage12(false);
+                setStage13(false);
+                setStage14(false);
+                setStage15(true);
+                setStage16(false);
+                setStage17(false);
+                setStage18(false);
+                setStage19(false);
+                setStage20(false);
+                break;
             default:
                 break;
         }
-
-
         setDisplayOptionsToPlaySavedGame(false)
     };
+
 
     return (
         <>
@@ -654,9 +629,6 @@ export const GameScreen = ({ navigation }) => {
                                     top: HeightRatio(125),
                                     left: 0,
                                     height: HeightRatio(550),
-                                    // backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                                    // flex: 1,
-                                    // width: '100%',
                                     width: windowWidth,
                                     alignSelf: 'center'
                                 }}>
@@ -737,13 +709,6 @@ export const GameScreen = ({ navigation }) => {
                                 {stage13 && <Stage_13_Projectile nav={navigation} />}
                                 {stage14 && <Stage_14_Projectile nav={navigation} />}
                                 {stage15 && <Stage_15_Projectile nav={navigation} />}
-
-
-
-
-
-
-
                             </View>
                         }
 
@@ -762,8 +727,6 @@ export const GameScreen = ({ navigation }) => {
                     </View>
                 }
 
-
-
             </View>
             {!gameOverScreen &&
                 <Navbar nav={navigation} position={'absolute'} from={'game'} />
@@ -776,6 +739,4 @@ export const GameScreen = ({ navigation }) => {
                 hidden={true} />
         </>
     )
-
 }
-

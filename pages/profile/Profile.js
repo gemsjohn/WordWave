@@ -6,7 +6,6 @@ import { UserDetails } from './UserDetails';
 import { SavedGame } from './SavedGame';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
-import { RecentGames } from '../game/RecentGames';
 import { HeightRatio, WidthRatio, Styling } from '../../Styling';
 import { Navbar } from '../../components/Navbar';
 import * as SecureStore from 'expo-secure-store';
@@ -42,12 +41,6 @@ async function deleteKey(key) {
 
 export const ProfileScreen = ({ navigation }) => {
     const { mainState, setMainState } = useContext(MainStateContext);
-
-    const [userDetailsOpen, setUserDetailsOpen] = useState(false);
-    const [recentGamesOpen, setRecentGamesOpen] = useState(false);
-    const [leaderBoardsOpen, setLeaderBoardsOpen] = useState(false);
-    const [premiumOpen, setPremiumOpen] = useState(false);
-    const [displayUsername, setDisplayUsername] = useState(false);
     const [displaySetUpCosmicKeyModal, setDisplaySetUpCosmicKeyModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -56,7 +49,7 @@ export const ProfileScreen = ({ navigation }) => {
         setRefreshing(true);
         refetch();
         setTimeout(() => {
-        setRefreshing(false);
+            setRefreshing(false);
         }, 2000);
     }, []);
 
@@ -65,7 +58,7 @@ export const ProfileScreen = ({ navigation }) => {
     const userID = useRef(null);
 
     const { data: userByID, refetch } = useQuery(GET_USER_BY_ID, {
-        variables: { id: userID.current }
+        variables: { id: mainState.current.userID }
     });
 
     const resetActionAuth = CommonActions.reset({
@@ -76,11 +69,9 @@ export const ProfileScreen = ({ navigation }) => {
     async function getValueFor(key) {
         let result = await SecureStore.getItemAsync(key);
         if (result && authState) {
-            setDisplayUsername(true)
             return;
         } else if (!result && authState.current) {
             setDisplaySetUpCosmicKeyModal(true)
-            setDisplayUsername(false)
         }
     }
 
@@ -103,27 +94,19 @@ export const ProfileScreen = ({ navigation }) => {
     return (
         <>
             <View style={{ ...Styling.container }}>
-                {/* <ImageBackground
-                    source={require('../../assets/home_background.png')}
-                    resizeMode="cover"
-                    style={{
-                        justifyContent: 'center',
-                        height: '100%'
-                    }}> */}
                 {!loading &&
                     <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 0 }}>
-                        <ScrollView 
+                        <ScrollView
                             style={{}}
                             refreshControl={
                                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                              }
+                            }
                         >
                             <View style={{}}>
-                                {/* Buttons */}
                                 {mainState.current.authState &&
                                     <>
                                         <View style={{}}>
-                                            
+
 
                                             <Image
                                                 source={require('../../assets/profile_alien_full.png')}
@@ -132,20 +115,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                     width: HeightRatio(600),
                                                     alignSelf: 'center'
                                                 }} />
-                                            {/* <Text style={{
-                                                    color: 'white',
-                                                    fontSize: HeightRatio(70),
-                                                    fontWeight: 'bold',
-                                                    alignSelf: 'center',
-                                                    position: 'absolute',
-                                                    top: HeightRatio(500),
-                                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                                    borderRadius: HeightRatio(50),
-                                                    padding: HeightRatio(10)
-                                                }}
-                                                    allowFontScaling={false}>
-                                                    {userByID?.user.username}
-                                                </Text> */}
+
                                             <View style={{ flexDirection: 'row', marginTop: HeightRatio(20), alignSelf: 'center' }}>
                                                 <View style={{
                                                     height: HeightRatio(120),
@@ -258,8 +228,8 @@ export const ProfileScreen = ({ navigation }) => {
                                                     style={{ ...Styling.modalFontAwesomeIcons, color: 'white' }}
                                                     size={30}
                                                 />
-                                                <Text 
-                                                    style={Styling.modalScoringVarText} 
+                                                <Text
+                                                    style={Styling.modalScoringVarText}
                                                     allowFontScaling={false}>
                                                     User Details
                                                 </Text>
@@ -268,7 +238,6 @@ export const ProfileScreen = ({ navigation }) => {
                                                 <UserDetails nav={navigation} />
                                             </View>
 
-                                            {/* <View style={Styling.profileDivisionLine}></View> */}
 
                                             {/* [[[SAVED GAME DETAILS]]] */}
                                             <View
@@ -304,7 +273,7 @@ export const ProfileScreen = ({ navigation }) => {
                                                 </View>
                                                 :
                                                 <View style={{ marginBottom: HeightRatio(50) }}>
-                                                    <Text 
+                                                    <Text
                                                         style={{ color: 'white', fontSize: HeightRatio(50), textAlign: 'center' }}
                                                         allowFontScaling={false}
                                                     >
@@ -312,9 +281,6 @@ export const ProfileScreen = ({ navigation }) => {
                                                     </Text>
                                                 </View>
                                             }
-
-                                            {/* <View style={Styling.profileDivisionLine}></View> */}
-
 
                                             <View>
                                                 <TouchableOpacity

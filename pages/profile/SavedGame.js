@@ -1,23 +1,10 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { Button, View, TouchableOpacity, Text, TextInput, StyleSheet, Modal, PixelRatio } from "react-native";
-import { Dimensions } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faSolid, faAddressCard, faEnvelope, faSackDollar, faStar, faX, faPenToSquare, faCopy } from '@fortawesome/free-solid-svg-icons'
+import { View, TouchableOpacity, Text } from "react-native";
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from '../../utils/queries';
-import { DemoAppInvoiceAndQuote } from './VerificationInvoiceAndQuote';
-import * as Clipboard from 'expo-clipboard';
 import { CommonActions } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MainStateContext } from '../../App';
-import { SecureStorage } from './SecureStorage';
 import { windowHeight, windowWidth, HeightRatio, WidthRatio, Styling } from '../../Styling';
-import {
-    UPDATE_USER,
-    LOGIN_USER,
-    UPDATE_USER_PASSWORD,
-    DELETE_USER
-} from '../../utils/mutations';
 
 const resetActionGame = CommonActions.reset({
     index: 1,
@@ -50,9 +37,6 @@ export const SavedGame = (props) => {
 
     }, [userByID])
 
-
-
-
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View style={{}}>
@@ -60,8 +44,6 @@ export const SavedGame = (props) => {
                     {displayLetters.map((l, i) => (
                         <View style={{
                             width: WidthRatio(15),
-                            // position: 'absolute',
-                            // top: 10,
                             left: ((i * WidthRatio(2))),
                             height: WidthRatio(15),
                             borderRadius: HeightRatio(20),

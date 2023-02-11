@@ -356,7 +356,7 @@ export const Navbar = (props) => {
                         <TouchableOpacity
                             onPress={() => setMinimizeNav(true)}
                             style={{
-                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                backgroundColor: 'rgba(255, 0, 0, 0.5)',
                                 borderRadius: HeightRatio(100),
                                 height: HeightRatio(50),
                                 width: HeightRatio(50),
@@ -365,8 +365,8 @@ export const Navbar = (props) => {
                                 alignSelf: 'center',
                                 position: 'absolute',
                                 zIndex: 10,
-                                top: HeightRatio(-50),
-                                left: HeightRatio(200)
+                                top: HeightRatio(10),
+                                left: HeightRatio(160)
                             }}>
                             <FontAwesomeIcon
                                 icon={faSolid, faX}
