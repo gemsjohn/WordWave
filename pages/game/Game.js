@@ -632,7 +632,7 @@ export const GameScreen = ({ navigation }) => {
         <>
             <View style={{}}>
                 <Image
-                    source={require('../../assets/background_4.png')}
+                    source={require('../../assets/background_0.png')}
                     style={{ position: 'absolute', zIndex: -10, width: '100%' }}
                 />
                 {loadingComplete ?
