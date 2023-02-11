@@ -420,10 +420,10 @@ export const Stage_8_Projectile = (props) => {
       if (level.current >= 2) {
         speed = [{ top: 6500, bottom: 3000 }]
       }
-      let randomDuration_a = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
-      let randomDuration_b = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
-      let randomDuration_c = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
-      let randomDuration_d = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
+      let randomDuration_a = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
+      let randomDuration_b = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
+      let randomDuration_c = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
+      let randomDuration_d = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
       let durations = [randomDuration_a, randomDuration_b, randomDuration_c, randomDuration_d];
       let longestDuration = Math.max(...durations);
 
@@ -1618,7 +1618,6 @@ export const Stage_8_Projectile = (props) => {
             stage1: false,
             stage2: false,
             stage3: false,
-            stage4: false,
             stage4: false,
             stage5: false,
             stage6: false,

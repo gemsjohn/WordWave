@@ -439,18 +439,18 @@ export const Stage_10_Projectile = (props) => {
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
       let speed = [];
       if (level.current == 0) {
-        speed = [{ top: 8500, bottom: 3000 }]
-      }
-      if (level.current == 1) {
         speed = [{ top: 6500, bottom: 3000 }]
       }
-      if (level.current >= 2) {
+      if (level.current == 1) {
         speed = [{ top: 6000, bottom: 3000 }]
       }
-      let randomDuration_a = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
-      let randomDuration_b = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
-      let randomDuration_c = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
-      let randomDuration_d = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 2000);
+      if (level.current >= 2) {
+        speed = [{ top: 5500, bottom: 3000 }]
+      }
+      let randomDuration_a = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
+      let randomDuration_b = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
+      let randomDuration_c = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
+      let randomDuration_d = Math.floor(Math.random() * (speed[0].top - speed[0].bottom + 1) + 1000);
       let durations = [randomDuration_a, randomDuration_b, randomDuration_c, randomDuration_d];
       let longestDuration = Math.max(...durations);
 
@@ -1700,7 +1700,6 @@ export const Stage_10_Projectile = (props) => {
             stage1: false,
             stage2: false,
             stage3: false,
-            stage4: false,
             stage4: false,
             stage5: false,
             stage6: false,

@@ -79,7 +79,7 @@ export const GameScreen = ({ navigation }) => {
     const [stage1, setStage1] = useState(true);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
-    const [stage4, setStage4] = useState(false);
+    const [stage4, setStage4] = useState(true);
     const [stage5, setStage5] = useState(false);
     const [stage6, setStage6] = useState(false);
     const [stage7, setStage7] = useState(false);
@@ -247,7 +247,7 @@ export const GameScreen = ({ navigation }) => {
             console.log("Setup: #4 ")
             setLoadingComplete(true)
 
-        }, 1000);
+        }, 2000);
 
         // Return a function that cleans up the effect
         return () => {

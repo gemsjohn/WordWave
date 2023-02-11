@@ -1212,7 +1212,6 @@ export const Stage_2_Projectile = (props) => {
             stage2: false,
             stage3: true,
             stage4: false,
-            stage4: false,
             stage5: false,
             stage6: false,
             stage7: false,
