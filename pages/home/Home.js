@@ -9,7 +9,9 @@ import { Navbar } from '../../components/Navbar';
 import * as SecureStore from 'expo-secure-store';
 import { MainStateContext } from '../../App';
 import { LinearGradient } from 'expo-linear-gradient';
-import { AlienEffect } from './AlienAnimation';
+import { Index_Behind } from './stars_behind';
+import { Index_Top } from './stars_top';
+
 import { AlienEffect_middle } from './AlientAnimation_middle';
 import { AlienEffect_top } from './AlienAnimation_top';
 import {
@@ -136,9 +138,12 @@ export const HomeScreen = ({ navigation }) => {
                             >
                                 <View style={{}}>
 
-                                    <AlienEffect_top style={{ position: 'absolute', zIndex: 10 }} />
+                                    {/* <Index_Top style={{ position: 'absolute', zIndex: 10 }} /> */}
+
                                     <AlienEffect_middle style={{ position: 'absolute', zIndex: 0, top: HeightRatio(200) }} />
-                                    <AlienEffect style={{ position: 'absolute', zIndex: -10 }} />
+
+                                    {/* <Index_Behind style={{ position: 'absolute', zIndex: -10 }} /> */}
+                                    
 
                                     {displayUsername ?
                                         <>
@@ -151,7 +156,7 @@ export const HomeScreen = ({ navigation }) => {
                                                     top: HeightRatio(100),
                                                     left: HeightRatio(50),
                                                     padding: HeightRatio(15),
-                                                    width: windowWidth*0.9,
+                                                    width: windowWidth * 0.9,
                                                 }}
                                                     allowFontScaling={false}
                                                     ellipsizeMode='tail'
@@ -200,8 +205,8 @@ export const HomeScreen = ({ navigation }) => {
                                                     </Text>
 
                                                 </View>
-                                                {userByID?.user.saved != null && userByID?.user.saved.date != null &&
-                                                    <View 
+                                                {userByID?.user.tobecontinued != null &&
+                                                    <View
                                                         style={{
                                                             position: 'absolute',
                                                             zIndex: 10,
@@ -211,7 +216,7 @@ export const HomeScreen = ({ navigation }) => {
                                                             borderRadius: HeightRatio(40)
                                                         }}
                                                     >
-                                                        <Image 
+                                                        <Image
                                                             source={require('../../assets/victory.png')}
                                                             style={{
                                                                 height: HeightRatio(200),
@@ -226,7 +231,7 @@ export const HomeScreen = ({ navigation }) => {
                                         :
                                         <>
 
-                                        <View>
+                                            <View>
                                                 <Text style={{
                                                     color: 'white',
                                                     fontSize: HeightRatio(70),
@@ -242,13 +247,13 @@ export const HomeScreen = ({ navigation }) => {
                                                 </Text>
                                             </View>
 
-                                        <View style={{ height: HeightRatio(600) }} />
+                                            <View style={{ height: HeightRatio(600) }} />
                                         </>
                                     }
                                     {displayUsername ?
-                                    <View style={{ marginTop: HeightRatio(1100) }} />
-                                    :
-                                    <View style={{ marginTop: HeightRatio(500) }} />
+                                        <View style={{ marginTop: HeightRatio(1100) }} />
+                                        :
+                                        <View style={{ marginTop: HeightRatio(500) }} />
                                     }
 
                                     {/* MAIN CONTENT */}
@@ -733,7 +738,7 @@ export const HomeScreen = ({ navigation }) => {
                                             </TouchableOpacity>
                                             <View style={{ height: HeightRatio(500) }}></View>
                                         </>
-                                        
+
 
                                     }
                                 </View >
@@ -756,19 +761,19 @@ export const HomeScreen = ({ navigation }) => {
             >
                 <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
                     <View style={{ backgroundColor: '#191f25', borderTopLeftRadius: HeightRatio(60), borderTopRightRadius: HeightRatio(60) }}>
-                        
+
                         <View style={{ flexDirection: 'column' }}>
-                        <TouchableOpacity
-                            onPress={() => setDisplaySignUpModal(!displaySignUpModal)}>
-                            <View style={{
-                                backgroundColor: 'white',
-                                height: HeightRatio(20),
-                                width: HeightRatio(120),
-                                borderRadius: HeightRatio(100),
-                                marginTop: HeightRatio(40),
-                                alignSelf: 'center'
-                            }} />
-                        </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => setDisplaySignUpModal(!displaySignUpModal)}>
+                                <View style={{
+                                    backgroundColor: 'white',
+                                    height: HeightRatio(20),
+                                    width: HeightRatio(120),
+                                    borderRadius: HeightRatio(100),
+                                    marginTop: HeightRatio(40),
+                                    alignSelf: 'center'
+                                }} />
+                            </TouchableOpacity>
                             <Text
                                 style={{
                                     color: 'white',
@@ -807,7 +812,7 @@ export const HomeScreen = ({ navigation }) => {
                                 As an added bonus, you'll also receive <Text style={{ color: '#fcd01f' }}>5 free</Text> tokens,
                                 providing you with the chance to keep playing even if you hit a setback.
                             </Text>
-                            
+
 
                             <TouchableOpacity
                                 onPress={() => navigation.dispatch(resetActionAuth)}
@@ -821,14 +826,15 @@ export const HomeScreen = ({ navigation }) => {
                                     borderRadius: HeightRatio(40),
                                     alignSelf: 'center',
                                     // margin: HeightRatio(10),
-                                    width: windowWidth*0.9
+                                    width: windowWidth * 0.9
                                 }}>
                                     <Text
-                                        style={{ 
-                                            color: 'white', 
-                                            fontSize: HeightRatio(40), 
-                                            fontWeight: 'bold', 
-                                            alignSelf: 'center' }}
+                                        style={{
+                                            color: 'white',
+                                            fontSize: HeightRatio(40),
+                                            fontWeight: 'bold',
+                                            alignSelf: 'center'
+                                        }}
                                         allowFontScaling={false}
                                     >
                                         Sign Up or Login

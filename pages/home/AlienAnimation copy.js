@@ -435,6 +435,47 @@ export const AlienEffect = () => {
             }
 
         };
+        return () => {
+            clearTimeout(timeoutAlien_ID);
+            clearTimeout(timeoutAlien_ID_d0);
+            clearTimeout(timeoutAlien_ID_d1);
+            clearTimeout(timeoutAlien_ID_d2);
+            clearTimeout(timeoutAlien_ID_d3);
+            clearTimeout(timeoutAlien_ID_d4);
+            clearTimeout(timeoutAlien_ID_d5);
+            clearTimeout(timeoutAlien_ID_d6);
+            clearTimeout(timeoutAlien_ID_d7);
+
+
+            if (animation.current != null) {
+                animation.current.stop();
+            }
+            if (animation_d0.current != null) {
+                animation_d0.current.stop();
+            }
+            if (animation_d1.current != null) {
+                animation_d1.current.stop();
+            }
+            if (animation_d2.current != null) {
+                animation_d2.current.stop();
+            }
+            if (animation_d3.current != null) {
+                animation_d3.current.stop();
+            }
+            if (animation_d4.current != null) {
+                animation_d4.current.stop();
+            }
+            if (animation_d5.current != null) {
+                animation_d5.current.stop();
+            }
+            if (animation_d6.current != null) {
+                animation_d6.current.stop();
+            }
+            if (animation_d7.current != null) {
+                animation_d7.current.stop();
+            }
+
+        };
 
     }, [])
 

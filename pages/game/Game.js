@@ -53,7 +53,7 @@ export const GameScreen = ({ navigation }) => {
     const userID = useRef(null);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(false);
+    const [stage1, setStage1] = useState(true);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
@@ -62,7 +62,7 @@ export const GameScreen = ({ navigation }) => {
     const [stage7, setStage7] = useState(false);
     const [stage8, setStage8] = useState(false);
     const [stage9, setStage9] = useState(false);
-    const [stage10, setStage10] = useState(true);
+    const [stage10, setStage10] = useState(false);
     const [stage11, setStage11] = useState(false);
     const [stage12, setStage12] = useState(false);
     const [stage13, setStage13] = useState(false);

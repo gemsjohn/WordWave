@@ -44,6 +44,8 @@ export const ProfileScreen = ({ navigation }) => {
     const [displaySetUpCosmicKeyModal, setDisplaySetUpCosmicKeyModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [expand_0, setExpand_0] = useState(false)
+
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -190,38 +192,173 @@ export const ProfileScreen = ({ navigation }) => {
                                                 </View>
                                             </View>
                                             {userByID?.user.tobecontinued != null &&
-                                                <View style={{ flexDirection: 'row', marginTop: HeightRatio(10), alignSelf: 'center' }}>
-                                                    <View style={{
-                                                        height: HeightRatio(130),
-                                                        width: HeightRatio(600),
-                                                        flexDirection: 'column',
-                                                        margin: HeightRatio(10),
-                                                        backgroundColor: '#fbd505',
-                                                        borderRadius: HeightRatio(20),
-                                                        borderWidth: 1,
-                                                    }}>
-                                                        <Text style={{
-                                                            color: 'black',
-                                                            fontSize: HeightRatio(30),
-                                                            textAlign: 'center',
-                                                            marginTop: HeightRatio(20)
-                                                        }} allowFontScaling={false}>
-                                                            YOU BEAT THE GAME WITH A SCORE OF:
-                                                        </Text>
-                                                        <Text style={{
-                                                            color: 'black',
-                                                            fontSize: HeightRatio(30),
-                                                            textAlign: 'center',
-                                                            marginTop: HeightRatio(20)
-                                                        }} allowFontScaling={false}>
-                                                            {userByID?.user.tobecontinued.score}
-                                                        </Text>
+                                                    <View
+                                                        style={{
+                                                            
+                                                        }}
+                                                    >
+                                                        
+
+
+                                                        <TouchableOpacity
+                                                            onPress={() => {
+                                                                setExpand_0(current => !current)
+                                                            }}
+                                                            style={{
+                                                                marginTop: HeightRatio(20),
+                                                                marginBottom: expand_0 ? HeightRatio(150) : HeightRatio(20),
+                                                                // backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                                                                borderRadius: HeightRatio(40),
+                                                                width: windowWidth*0.8,
+                                                                alignSelf: 'center',
+                                                                flexDirection: 'row',
+                                                            }}>
+                                                            {!expand_0 ?
+                                                                <>
+                                                                    <LinearGradient
+                                                                        colors={['#0b132b', '#181d21']}
+                                                                        style={{
+                                                                            ...Styling.background,
+                                                                            height: HeightRatio(190),
+                                                                            borderRadius: HeightRatio(20),
+                                                                            borderWidth: 2,
+                                                                            borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                                            opacity: 0.5
+                                                                        }}
+                                                                    />
+                                                                    <Image
+                                                                        source={require('../../assets/victory.png')}
+                                                                        style={{
+                                                                            height: HeightRatio(200),
+                                                                            width: HeightRatio(200)
+                                                                        }}
+                                                                    />
+                                                                    <View style={{
+                                                                        flexDirection: 'column',
+                                                                        alignSelf: 'center',
+                                                                    }}>
+                                                                        
+                                                                        <Text style={{
+                                                                            color: '#fcd01f',
+                                                                            fontSize: HeightRatio(40),
+                                                                            textAlign: 'center',
+                                                                            width: HeightRatio(400),
+                                                                        }} allowFontScaling={false}>
+                                                                            YOU BEAT THE GAME!
+                                                                        </Text>
+                                                                    </View>
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    <LinearGradient
+                                                                        colors={['#0b132b', '#181d21']}
+                                                                        style={{
+                                                                            ...Styling.background,
+                                                                            height: HeightRatio(320),
+                                                                            borderRadius: HeightRatio(20),
+                                                                            borderWidth: 2,
+                                                                            borderColor: 'rgba(255, 255, 255, 0.25)',
+                                                                            opacity: 0.5
+                                                                        }}
+                                                                    />
+                                                                    <Image
+                                                                        source={require('../../assets/victory.png')}
+                                                                        style={{
+                                                                            height: HeightRatio(200),
+                                                                            width: HeightRatio(200)
+                                                                        }}
+                                                                    />
+                                                                    <View style={{
+                                                                        flexDirection: 'column',
+                                                                        alignSelf: 'center',
+                                                                        marginTop: HeightRatio(60)
+                                                                    }}>
+                                                                        
+                                                                        <Text style={{
+                                                                            color: '#fcd01f',
+                                                                            fontSize: HeightRatio(40),
+                                                                            textAlign: 'center',
+                                                                            width: HeightRatio(400),
+                                                                        }} allowFontScaling={false}>
+                                                                            YOU BEAT THE GAME!
+                                                                        </Text>
+                                                                        <Text style={{
+                                                                            color: 'white',
+                                                                            fontSize: HeightRatio(30),
+                                                                            // textAlign: 'center',
+                                                                            marginTop: HeightRatio(10),
+                                                                            marginBottom: HeightRatio(10),
+                                                                            marginLeft: HeightRatio(30)
+                                                                        }} allowFontScaling={false}>
+                                                                            Score: {userByID?.user.tobecontinued.score}
+                                                                        </Text>
+                                                                        <Text style={{
+                                                                            position: 'absolute',
+                                                                            left: HeightRatio(-180),
+                                                                            top: HeightRatio(100),
+                                                                            color: 'white',
+                                                                            fontSize: HeightRatio(30),
+                                                                            marginTop: HeightRatio(20),
+                                                                            marginLeft: HeightRatio(20),
+                                                                            width: HeightRatio(580),
+                                                                            padding: HeightRatio(20),
+                                                                            borderRadius: HeightRatio(20),
+                                                                            backgroundColor: 'rgba(0, 255, 0, 0.1)'
+                                                                        }} allowFontScaling={false}>
+                                                                            You will get a notification when more stages are available.
+                                                                        </Text>
+                                                                    </View>
+                                                                </>
+                                                            }
+                                                            {!expand_0 ?
+                                                                <View
+                                                                    style={{
+                                                                        position: 'absolute',
+                                                                        zIndex: 10,
+                                                                        top: HeightRatio(16),
+                                                                        alignSelf: 'center',
+                                                                        left: WidthRatio(130),
+                                                                        padding: HeightRatio(13),
+                                                                        height: HeightRatio(50),
+                                                                        width: HeightRatio(50),
+                                                                        borderRadius: HeightRatio(100),
+                                                                        flexDirection: 'row',
+                                                                        backgroundColor: '#35faa9',
+                                                                        justifyContent: 'center'
+                                                                    }}
+                                                                >
+                                                                    <Text style={{color: 'black', textAlign: 'center'}}>
+                                                                        i
+                                                                    </Text>
+                                                                </View>
+                                                                :
+                                                                <View
+                                                                    style={{
+                                                                        position: 'absolute',
+                                                                        zIndex: 10,
+                                                                        top: HeightRatio(16),
+                                                                        alignSelf: 'center',
+                                                                        left: WidthRatio(130),
+                                                                        padding: HeightRatio(13),
+                                                                        height: HeightRatio(50),
+                                                                        width: HeightRatio(50),
+                                                                        borderRadius: HeightRatio(100),
+                                                                        flexDirection: 'row',
+                                                                        backgroundColor: 'red',
+                                                                        justifyContent: 'center'
+                                                                    }}
+                                                                >
+                                                                    <Text style={{color: 'black', textAlign: 'center'}}>
+                                                                        i
+                                                                    </Text>
+                                                                </View>
+                                                            }
+                                                        </TouchableOpacity>
                                                     </View>
-                                                </View>
-                                            }
+                                                }
                                             {/* [[[USER DETAILS]]] */}
                                             <View
-                                                style={{ flexDirection: 'row', margin: 20, alignSelf: 'center' }}
+                                                style={{ flexDirection: 'row', margin: HeightRatio(20), marginTop: HeightRatio(5), alignSelf: 'center' }}
                                             >
                                                 <FontAwesomeIcon
                                                     icon={faSolid, faSliders}
