@@ -83,7 +83,7 @@ export const Stage_8_Projectile = (props) => {
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(false)
-  const crashes = useRef(mainState.current.currentCrashes);
+  const crashes = useRef(null);
   const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
@@ -100,6 +100,7 @@ export const Stage_8_Projectile = (props) => {
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   const [displayPauseText, setDisplayPauseText] = useState(false)
   const [openGate, setOpenGate] = useState(false);
+  const [hasEndGameBeenCalled, setHasEndGameBeenCalled] = useState(false);
   let timeoutCallGenerateID;
 
   // [LETTER ANIMATION] - - - - - 
@@ -219,18 +220,21 @@ export const Stage_8_Projectile = (props) => {
 
   const Generate = (localPrevCrashes) => {
     console.log("Stage, #1 Generate")
+    setHasEndGameBeenCalled(false);
     if (!mainState.current.fromSavedGame) {
       console.log("Stage, #2 This is ")
 
       setOpenGate(true)
       setContinuousEndGameCall(false)
       clearTimeout(timeoutCallGenerateID);
-      if (localPrevCrashes > 0) {
-        crashes.current = localPrevCrashes;
-      }
-      else {
-        crashes.current = 0;
-      }
+      // if (localPrevCrashes > 0) {
+      //   crashes.current = localPrevCrashes;
+      // }
+      // else {
+      //   crashes.current = 0;
+      // }
+
+      crashes.current = mainState.current.currentCrashes;
 
       setLetterPocket([]);
 
@@ -270,6 +274,7 @@ export const Stage_8_Projectile = (props) => {
     } else {
       console.log("Stage, #2 fromSavedGame: true")
 
+      crashes.current = mainState.current.currentCrashes;
       setContinuousEndGameCall(false)
 
       setMainState({
@@ -331,15 +336,8 @@ export const Stage_8_Projectile = (props) => {
           setTimeout(() => {
             if (level.current >= 0) {
               letterAnimation();
-              // runOscillationAnimation_1();
               runTriangleAnimation_a_b();
-              // setTimeout(() => {
-              //   runObstacleAnimation_2();
-              // }, 1000)
             }
-
-            // if (level.current >= 1) {
-            // }
 
             if (level.current >= 2) {
               runObstacleAnimation_opacity_bot()
@@ -1246,9 +1244,9 @@ export const Stage_8_Projectile = (props) => {
         scoreFlash_100.current = false;
       }, 500)
 
-      if (!continuousEndGameCall) {
+      if (!continuousEndGameCall && !hasEndGameBeenCalled) {
         if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
-
+          setHasEndGameBeenCalled(true);
           endGame({
             continue: true,
             local: "a",
@@ -1278,7 +1276,8 @@ export const Stage_8_Projectile = (props) => {
         setGreenHealthDeployed(true);
         runAuxilliaryGreenHealth();
       }
-      if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
+      if (crashes.current >= 3 && !hideCrashesUntilUpdate.current && !hasEndGameBeenCalled) {
+        setHasEndGameBeenCalled(true);
         endGame({
           continue: false,
           local: "b",
@@ -1407,16 +1406,8 @@ export const Stage_8_Projectile = (props) => {
         }
         if (mainState.current.currentLevel >= 0) {
           letterAnimation();
-          // runOscillationAnimation_1();
           runTriangleAnimation_a_b();
-          // setTimeout(() => {
-          //   runObstacleAnimation_2();
-          // }, 1000)
         }
-
-        // if (mainState.current.currentLevel >= 1) {
-        //   runTriangleAnimation_a_b();
-        // }
 
         if (mainState.current.currentLevel >= 2) {
           runObstacleAnimation_opacity_bot();
@@ -1505,10 +1496,45 @@ export const Stage_8_Projectile = (props) => {
     level.current = mainState.current.currentLevel;
     crashes.current = mainState.current.currentCrashes;
     setLetterPocket(mainState.current.currentLetterPocket)
-    wordPlusSeven.current = mainState.current.currentWordPlusSeven;
-    setDisplayLetters(mainState.current.currentDisplayLetters)
-    countRef.current = mainState.current.currentLetter_countValue + 1;
 
+    if (mainState.current.currentDisplayLetters != []) {
+      wordPlusSeven.current = mainState.current.currentWordPlusSeven;
+      setDisplayLetters(mainState.current.currentDisplayLetters)
+      countRef.current = mainState.current.currentLetter_countValue + 1;
+    } else {
+      setLetterPocket([]);
+
+      const data = require('../output.json');
+      const index = Math.floor(Math.random() * data.length);
+      const word = data[index].word;
+      const letters = word.split('');
+
+      const randomLetters = [];
+      for (let i = 0; i < 7; i++) {
+        const letterCode = Math.floor(Math.random() * 26) + 65;
+        const letter = String.fromCharCode(letterCode);
+        let lowerCaseLetter = letter.toLowerCase();
+        randomLetters.push(lowerCaseLetter);
+      }
+      setLetterPositionNum(letters.length)
+
+      let combined = letters.concat(randomLetters);
+      let uniqueCombined = [...new Set(combined)];
+      let scambledCombined = shuffle(uniqueCombined);
+
+      setDisplayPlaybutton(false)
+
+      setRandomWord(word);
+      setDisplayLetters(letters)
+      countRef.current = mainState.current.currentLetter_countValue;
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+    }
+
+    authState.current = mainState.current.authState
+    userID.current = mainState.current.userID;
+
+    setHasEndGameBeenCalled(false);
 
     isGameInProgress.current = true;
     setMainState({
@@ -1527,16 +1553,8 @@ export const Stage_8_Projectile = (props) => {
 
       if (mainState.current.currentLevel >= 0) {
         letterAnimation();
-        // runOscillationAnimation_1();
         runTriangleAnimation_a_b();
-        // setTimeout(() => {
-        //   runObstacleAnimation_2();
-        // }, 1000)
       }
-
-      // if (mainState.current.currentLevel >= 1) {
-      //   runTriangleAnimation_a_b();
-      // }
 
       if (mainState.current.currentLevel >= 2) {
         runObstacleAnimation_opacity_bot();

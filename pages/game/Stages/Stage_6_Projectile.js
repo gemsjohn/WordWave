@@ -92,7 +92,7 @@ export const Stage_6_Projectile = (props) => {
   const [continuousEndGameCall, setContinuousEndGameCall] = useState(false)
   const [hasGameBeenStarted, setHasGameBeenStarted] = useState(false)
   const [displayPlaybutton, setDisplayPlaybutton] = useState(false)
-  const crashes = useRef(mainState.current.currentCrashes);
+  const crashes = useRef(null);
   const flashOouchOnCrash = useRef(false);
   const prevCrashes = useRef(0);
   const hideCrashesUntilUpdate = useRef(false);
@@ -109,6 +109,7 @@ export const Stage_6_Projectile = (props) => {
   const [gameOverModalVisible, setGameOverModalVisible] = useState(false);
   const [displayPauseText, setDisplayPauseText] = useState(false)
   const [openGate, setOpenGate] = useState(false);
+  const [hasEndGameBeenCalled, setHasEndGameBeenCalled] = useState(false);
   let timeoutCallGenerateID;
 
   // [LETTER ANIMATION] - - - - - 
@@ -230,10 +231,10 @@ export const Stage_6_Projectile = (props) => {
 
   useLayoutEffect(() => {
     isGameInProgress.current = false;
-    setMainState({ 
-      upgradeToSpecial_0: false, 
-      deployUpgradeToSpecialAnimation: false, 
-      gameOverScreen: false 
+    setMainState({
+      upgradeToSpecial_0: false,
+      deployUpgradeToSpecialAnimation: false,
+      gameOverScreen: false
     })
     authState.current = mainState.current.authState
     userID.current = mainState.current.userID;
@@ -262,95 +263,99 @@ export const Stage_6_Projectile = (props) => {
 
   const Generate = (localPrevCrashes) => {
     console.log("Stage, #1 Generate")
+    setHasEndGameBeenCalled(false);
     if (!mainState.current.fromSavedGame) {
       console.log("Stage, #2 fromSavedGame: false ")
 
       setOpenGate(true)
-    setContinuousEndGameCall(false)
-    clearTimeout(timeoutCallGenerateID);
-    if (localPrevCrashes > 0) {
-      crashes.current = localPrevCrashes;
+      setContinuousEndGameCall(false)
+      clearTimeout(timeoutCallGenerateID);
+      // if (localPrevCrashes > 0) {
+      //   crashes.current = localPrevCrashes;
+      // }
+      // else {
+      //   crashes.current = 0;
+      // }
+
+      crashes.current = mainState.current.currentCrashes;
+
+      setLetterPocket([]);
+
+      const data = require('../output.json');
+      const index = Math.floor(Math.random() * data.length);
+      const word = data[index].word;
+      const letters = word.split('');
+
+      const randomLetters = [];
+      for (let i = 0; i < 7; i++) {
+        const letterCode = Math.floor(Math.random() * 26) + 65;
+        const letter = String.fromCharCode(letterCode);
+        let lowerCaseLetter = letter.toLowerCase();
+        randomLetters.push(lowerCaseLetter);
+      }
+      setLetterPositionNum(letters.length)
+
+      let combined = letters.concat(randomLetters);
+      let uniqueCombined = [...new Set(combined)];
+      let scambledCombined = shuffle(uniqueCombined);
+
+      setDisplayPlaybutton(false)
+
+      if (level.current > 0) {
+        score.current = mainState.current.currentScore + 1000;
+        scoreFlash_1000.current = true;
+        setTimeout(() => {
+          scoreFlash_1000.current = false;
+        }, 1000)
+      }
+
+      setRandomWord(word);
+      setDisplayLetters(letters)
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+
+    } else {
+      console.log("Stage, #2 fromSavedGame: true")
+
+      crashes.current = mainState.current.currentCrashes;
+      setContinuousEndGameCall(false)
+
+      setMainState({
+        fromSavedGame: false
+      })
+
+      const randomLetters = [];
+      for (let i = 0; i < 7; i++) {
+        const letterCode = Math.floor(Math.random() * 26) + 65;
+        const letter = String.fromCharCode(letterCode);
+        let lowerCaseLetter = letter.toLowerCase();
+        randomLetters.push(lowerCaseLetter);
+      }
+      setLetterPositionNum(displayLetters.length)
+
+      let combined = displayLetters.concat(randomLetters);
+      let uniqueCombined = [...new Set(combined)];
+      let scambledCombined = shuffle(uniqueCombined);
+
+      setDisplayPlaybutton(false)
+
+      setRandomWord(displayLetters.join(""));
+      setDisplayLetters(displayLetters)
+
+      let savedWord = displayLetters.join("");
+      let letters = savedWord.split('');
+
+
+      const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+      setPrevWrongElements(wrongElements.length)
+
+      let uniqueLetterPocket = Array.from(new Set(letterPocket));
+      const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+      setPrevSimilarElements(similarElements.length)
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+      setOpenGate(true)
     }
-    else {
-      crashes.current = 0;
-    }
-
-    setLetterPocket([]);
-
-    const data = require('../output.json');
-    const index = Math.floor(Math.random() * data.length);
-    const word = data[index].word;
-    const letters = word.split('');
-
-    const randomLetters = [];
-    for (let i = 0; i < 7; i++) {
-      const letterCode = Math.floor(Math.random() * 26) + 65;
-      const letter = String.fromCharCode(letterCode);
-      let lowerCaseLetter = letter.toLowerCase();
-      randomLetters.push(lowerCaseLetter);
-    }
-    setLetterPositionNum(letters.length)
-
-    let combined = letters.concat(randomLetters);
-    let uniqueCombined = [...new Set(combined)];
-    let scambledCombined = shuffle(uniqueCombined);
-
-    setDisplayPlaybutton(false)
-
-    if (level.current > 0) {
-      score.current = mainState.current.currentScore + 1000;
-      scoreFlash_1000.current = true;
-      setTimeout(() => {
-        scoreFlash_1000.current = false;
-      }, 1000)
-    }
-
-    setRandomWord(word);
-    setDisplayLetters(letters)
-
-    wordPlusSeven.current = scambledCombined; // Must be last
-
-  } else {
-    console.log("Stage, #2 fromSavedGame: true")
-
-    setContinuousEndGameCall(false)
-
-    setMainState({
-      fromSavedGame: false
-    })
-
-    const randomLetters = [];
-    for (let i = 0; i < 7; i++) {
-      const letterCode = Math.floor(Math.random() * 26) + 65;
-      const letter = String.fromCharCode(letterCode);
-      let lowerCaseLetter = letter.toLowerCase();
-      randomLetters.push(lowerCaseLetter);
-    }
-    setLetterPositionNum(displayLetters.length)
-
-    let combined = displayLetters.concat(randomLetters);
-    let uniqueCombined = [...new Set(combined)];
-    let scambledCombined = shuffle(uniqueCombined);
-
-    setDisplayPlaybutton(false)
-
-    setRandomWord(displayLetters.join(""));
-    setDisplayLetters(displayLetters)
-
-    let savedWord = displayLetters.join("");
-    let letters = savedWord.split('');
-
-
-    const wrongElements = letterPocket.filter((element) => !letters.includes(element));
-    setPrevWrongElements(wrongElements.length)
-
-    let uniqueLetterPocket = Array.from(new Set(letterPocket));
-    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
-    setPrevSimilarElements(similarElements.length)
-
-    wordPlusSeven.current = scambledCombined; // Must be last
-    setOpenGate(true)
-  }
   }
 
   useEffect(() => {
@@ -372,7 +377,7 @@ export const Stage_6_Projectile = (props) => {
           pauseTimeout.current = false;
 
           setTimeout(() => {
-             if (level.current >= 0) {
+            if (level.current >= 0) {
               letterAnimation();
               runObstacleAnimation_opacity_bot()
             }
@@ -1057,47 +1062,47 @@ export const Stage_6_Projectile = (props) => {
 
   useEffect(() => {
     if (openGate) {
-    let uniqueLetterPocket = Array.from(new Set(letterPocket));
-    let letters = randomWord.split('');
-    let uniqueLetters = Array.from(new Set(letters));
+      let uniqueLetterPocket = Array.from(new Set(letterPocket));
+      let letters = randomWord.split('');
+      let uniqueLetters = Array.from(new Set(letters));
 
-    const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
-    const wrongElements = letterPocket.filter((element) => !letters.includes(element));
-    if (wrongElements.length > prevWrongElements) {
-      crashes.current += 1;
-      score.current = score.current - 25;
-      flashOouchOnCrash.current = true;
+      const similarElements = uniqueLetterPocket.filter((element) => letters.includes(element));
+      const wrongElements = letterPocket.filter((element) => !letters.includes(element));
+      if (wrongElements.length > prevWrongElements) {
+        crashes.current += 1;
+        score.current = score.current - 25;
+        flashOouchOnCrash.current = true;
+        setTimeout(() => {
+          flashOouchOnCrash.current = false;
+        }, 500)
+      }
+
+      if (similarElements.length > prevSimilarElements) {
+        score.current = score.current + 100;
+        scoreFlash_100.current = true;
+      }
+      setPrevSimilarElements(similarElements.length)
+      setPrevWrongElements(wrongElements.length)
       setTimeout(() => {
-        flashOouchOnCrash.current = false;
+        scoreFlash_100.current = false;
       }, 500)
-    }
 
-    if (similarElements.length > prevSimilarElements) {
-      score.current = score.current + 100;
-      scoreFlash_100.current = true;
-    }
-    setPrevSimilarElements(similarElements.length)
-    setPrevWrongElements(wrongElements.length)
-    setTimeout(() => {
-      scoreFlash_100.current = false;
-    }, 500)
-
-    if (!continuousEndGameCall) {
-      if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
-
-        endGame({
-          continue: true,
-          local: "a",
-          crashes: crashes.current,
-          score: score.current,
-          level: level.current
-        });
+      if (!continuousEndGameCall && !hasEndGameBeenCalled) {
+        if (letterPocket.length > 0 && similarElements.length === uniqueLetters.length) {
+          setHasEndGameBeenCalled(true);
+          endGame({
+            continue: true,
+            local: "a",
+            crashes: crashes.current,
+            score: score.current,
+            level: level.current
+          });
+        }
+      }
+      if (letterPocket.length > 0 && isGameInProgress.current) {
+        animation.current.reset()
       }
     }
-    if (letterPocket.length > 0 && isGameInProgress.current) {
-      animation.current.reset()
-    }
-  }
 
   }, [letterPocket])
 
@@ -1114,7 +1119,8 @@ export const Stage_6_Projectile = (props) => {
         setGreenHealthDeployed(true);
         runAuxilliaryGreenHealth();
       }
-      if (crashes.current >= 3 && !hideCrashesUntilUpdate.current) {
+      if (crashes.current >= 3 && !hideCrashesUntilUpdate.current && !hasEndGameBeenCalled) {
+        setHasEndGameBeenCalled(true);
         endGame({
           continue: false,
           local: "b",
@@ -1177,17 +1183,17 @@ export const Stage_6_Projectile = (props) => {
       isGameInProgress: isGameInProgress.current
     })
 
-      if (animation.current != null) {
-        animation.current.stop();
-        letterPosition.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedLetterBlock.current = false;
-      }
-      if(obstacle_opacity_bot.current != null) {
-        obstacle_opacity_bot.current.stop();
-        obstaclePosition_opacity_bot.setValue({ x: WidthRatio(500), y: 0 })
-        obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(500), y: 0 })
-        hasUpdatedObstacle_opacity_bot.current = false;
-      }
+    if (animation.current != null) {
+      animation.current.stop();
+      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedLetterBlock.current = false;
+    }
+    if (obstacle_opacity_bot.current != null) {
+      obstacle_opacity_bot.current.stop();
+      obstaclePosition_opacity_bot.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_opacity_bot.current = false;
+    }
 
     if (obstacle_0.current != null) {
       obstacle_0.current.stop();
@@ -1257,19 +1263,21 @@ export const Stage_6_Projectile = (props) => {
           letterAnimation();
           runObstacleAnimation_opacity_bot()
         }
-  
+
         if (mainState.current.currentLevel >= 1) {
           runObstacleAnimation_1();
-          runObstacleAnimation_0();
+          setTimeout(() => {
+            runObstacleAnimation_0();
+          }, 800)
         }
-  
+
         if (mainState.current.currentLevel >= 2) {
+          runObstacleAnimation_2();
+        }
+
+        if (mainState.current.currentLevel >= 3) {
           runObstacleAnimation_right_angle_0();
         }
-  
-        // if (mainState.current.currentLevel >= 3) {
-        //   runObstacleAnimation_right_angle_1();
-        // }
       }, 1500)
 
       setTimeout(() => {
@@ -1368,10 +1376,45 @@ export const Stage_6_Projectile = (props) => {
     level.current = mainState.current.currentLevel;
     crashes.current = mainState.current.currentCrashes;
     setLetterPocket(mainState.current.currentLetterPocket)
-    wordPlusSeven.current = mainState.current.currentWordPlusSeven;
-    setDisplayLetters(mainState.current.currentDisplayLetters)
-    countRef.current = mainState.current.currentLetter_countValue + 1;
 
+    if (mainState.current.currentDisplayLetters != []) {
+      wordPlusSeven.current = mainState.current.currentWordPlusSeven;
+      setDisplayLetters(mainState.current.currentDisplayLetters)
+      countRef.current = mainState.current.currentLetter_countValue + 1;
+    } else {
+      setLetterPocket([]);
+
+      const data = require('../output.json');
+      const index = Math.floor(Math.random() * data.length);
+      const word = data[index].word;
+      const letters = word.split('');
+
+      const randomLetters = [];
+      for (let i = 0; i < 7; i++) {
+        const letterCode = Math.floor(Math.random() * 26) + 65;
+        const letter = String.fromCharCode(letterCode);
+        let lowerCaseLetter = letter.toLowerCase();
+        randomLetters.push(lowerCaseLetter);
+      }
+      setLetterPositionNum(letters.length)
+
+      let combined = letters.concat(randomLetters);
+      let uniqueCombined = [...new Set(combined)];
+      let scambledCombined = shuffle(uniqueCombined);
+
+      setDisplayPlaybutton(false)
+
+      setRandomWord(word);
+      setDisplayLetters(letters)
+      countRef.current = mainState.current.currentLetter_countValue;
+
+      wordPlusSeven.current = scambledCombined; // Must be last
+    }
+
+    authState.current = mainState.current.authState
+    userID.current = mainState.current.userID;
+
+    setHasEndGameBeenCalled(false);
 
     isGameInProgress.current = true;
     setMainState({
@@ -1392,18 +1435,21 @@ export const Stage_6_Projectile = (props) => {
         letterAnimation();
         runObstacleAnimation_opacity_bot()
       }
-  
+
       if (mainState.current.currentLevel >= 1) {
         runObstacleAnimation_1();
-        runObstacleAnimation_0();
+        setTimeout(() => {
+          runObstacleAnimation_0();
+        }, 800)
       }
-  
+
       if (mainState.current.currentLevel >= 2) {
+        runObstacleAnimation_2();
+      }
+
+      if (mainState.current.currentLevel >= 3) {
         runObstacleAnimation_right_angle_0();
       }
-      // if (mainState.current.currentLevel >= 3) {
-      //   runObstacleAnimation_right_angle_1();
-      // }
     }, 1500)
   }
 
@@ -1419,51 +1465,51 @@ export const Stage_6_Projectile = (props) => {
       letterPosition.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedLetterBlock.current = false;
     }
-    if(obstacle_opacity_bot.current != null) {
+    if (obstacle_opacity_bot.current != null) {
       obstacle_opacity_bot.current.stop();
       obstaclePosition_opacity_bot.setValue({ x: WidthRatio(500), y: 0 })
       obstaclePosition_opacity_bot_divergence.setValue({ x: WidthRatio(500), y: 0 })
       hasUpdatedObstacle_opacity_bot.current = false;
     }
 
-  if (obstacle_0.current != null) {
-    obstacle_0.current.stop();
-    obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
-    hasUpdatedObstacle_0.current = false;
-  }
-  if (obstacle_1.current != null) {
-    obstacle_1.current.stop();
-    obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
-    hasUpdatedObstacle_1.current = false;
-  }
-  if (obstacle_2.current != null) {
-    obstacle_2.current.stop();
-    obstaclePosition_2.setValue({ x: WidthRatio(500), y: 0 })
-    hasUpdatedObstacle_2.current = false;
-  }
-  if (obstacle_twins_1.current != null) {
-    obstacle_twins_1.current.stop();
-    obstaclePosition_twins_1.setValue({ x: WidthRatio(500), y: 0 })
-    obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(500), y: 0 })
-    hasUpdatedObstacle_twins_1.current = false;
-  }
+    if (obstacle_0.current != null) {
+      obstacle_0.current.stop();
+      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_0.current = false;
+    }
+    if (obstacle_1.current != null) {
+      obstacle_1.current.stop();
+      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_1.current = false;
+    }
+    if (obstacle_2.current != null) {
+      obstacle_2.current.stop();
+      obstaclePosition_2.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_2.current = false;
+    }
+    if (obstacle_twins_1.current != null) {
+      obstacle_twins_1.current.stop();
+      obstaclePosition_twins_1.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_twins_1_divergence.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_twins_1.current = false;
+    }
 
-  if (obstacle_right_angle_0.current != null) {
-    obstacle_right_angle_0.current.stop();
-    obstaclePosition_right_angle_0.setValue({ x: WidthRatio(500), y: 0 })
-    hasUpdatedObstacle_right_angle_0.current = false;
-  }
+    if (obstacle_right_angle_0.current != null) {
+      obstacle_right_angle_0.current.stop();
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_right_angle_0.current = false;
+    }
 
-  if (obstacle_right_angle_1.current != null) {
-    obstacle_right_angle_1.current.stop();
-    obstaclePosition_right_angle_1.setValue({ x: WidthRatio(500), y: 0 })
-    hasUpdatedObstacle_right_angle_1.current = false;
-  }
-  if (auxilliaryGreenHealth.current != null) {
-    auxilliaryGreenHealth.current.stop();
-    auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
-    hasUpdatedAuxilliaryGreenHealth.current = false;
-  }
+    if (obstacle_right_angle_1.current != null) {
+      obstacle_right_angle_1.current.stop();
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedObstacle_right_angle_1.current = false;
+    }
+    if (auxilliaryGreenHealth.current != null) {
+      auxilliaryGreenHealth.current.stop();
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      hasUpdatedAuxilliaryGreenHealth.current = false;
+    }
 
     // [HANDLE GAME RESTART]
     if (input.continue) {
@@ -1650,133 +1696,133 @@ export const Stage_6_Projectile = (props) => {
           </>
         }
 
-          <>
-            {/* [PAUSE / RESUME] */}
-            {isPaused && !resumeSelected ?
+        <>
+          {/* [PAUSE / RESUME] */}
+          {isPaused && !resumeSelected ?
+            <View style={{
+              position: 'absolute',
+              zIndex: -7,
+              top: HeightRatio(20),
+              left: HeightRatio(20)
+            }}>
+              <TouchableOpacity
+                onPress={() => {
+                  resumeGame();
+                }}
+                style={{
+                  height: HeightRatio(100),
+                  width: HeightRatio(100),
+                  // backgroundColor: 'red'
+                }}>
+                <Image
+                  source={require('../../../assets/button_resume.png')}
+                  style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+              </TouchableOpacity>
+            </View>
+            :
+            <>
+              {!pauseTimeout.current && !resumeSelected && isGameInProgress.current ?
+                <View style={{
+                  position: 'absolute',
+                  zIndex: -7,
+                  top: HeightRatio(20),
+                  left: HeightRatio(20)
+                }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      pauseGame();
+                    }}
+                    style={{
+                      height: HeightRatio(100),
+                      width: HeightRatio(100),
+                      // backgroundColor: 'red'
+                    }}>
+                    <Image
+                      source={require('../../../assets/button_pause.png')}
+                      style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                  </TouchableOpacity>
+                </View>
+                :
+                <View style={{
+                  position: 'absolute',
+                  zIndex: -7,
+                  top: HeightRatio(20),
+                  left: HeightRatio(20)
+                }}>
+                  <Image
+                    source={require('../../../assets/clock_icon.png')}
+                    style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
+                </View>
+              }
+            </>
+          }
+          {score.current != null ?
+            <>
               <View style={{
                 position: 'absolute',
                 zIndex: -7,
-                top: HeightRatio(20),
-                left: HeightRatio(20)
+                top: windowHeight * 0.84,
+                left: HeightRatio(30),
+                backgroundColor: 'transparent',
               }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    resumeGame();
-                  }}
-                  style={{
-                    height: HeightRatio(100),
-                    width: HeightRatio(100),
-                    // backgroundColor: 'red'
-                  }}>
-                  <Image
-                    source={require('../../../assets/button_resume.png')}
-                    style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-                </TouchableOpacity>
+                <Text style={{
+                  color: 'rgba(255, 255, 255, 1.0)',
+                  fontSize: WidthRatio(12),
+                  fontWeight: 'bold'
+                }}
+                  allowFontScaling={false}
+                >Score: {score.current}</Text>
               </View>
-              :
-              <>
-                {!pauseTimeout.current && !resumeSelected && isGameInProgress.current ?
-                  <View style={{
-                    position: 'absolute',
-                    zIndex: -7,
-                    top: HeightRatio(20),
-                    left: HeightRatio(20)
-                  }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        pauseGame();
-                      }}
-                      style={{
-                        height: HeightRatio(100),
-                        width: HeightRatio(100),
-                        // backgroundColor: 'red'
-                      }}>
-                      <Image
-                        source={require('../../../assets/button_pause.png')}
-                        style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-                    </TouchableOpacity>
-                  </View>
-                  :
-                  <View style={{
-                    position: 'absolute',
-                    zIndex: -7,
-                    top: HeightRatio(20),
-                    left: HeightRatio(20)
-                  }}>
-                    <Image
-                      source={require('../../../assets/clock_icon.png')}
-                      style={{ height: HeightRatio(100), width: HeightRatio(100) }} />
-                  </View>
-                }
-              </>
-            }
-            {score.current != null ?
-              <>
+              {scoreFlash_100.current &&
                 <View style={{
                   position: 'absolute',
+                  top: windowHeight / 2 - WidthRatio(30),
+                  left: windowWidth / 2 - WidthRatio(30),
                   zIndex: -7,
-                  top: windowHeight * 0.84,
-                  left: HeightRatio(30),
-                  backgroundColor: 'transparent',
-                }}>
-                  <Text style={{
-                    color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: WidthRatio(12),
-                    fontWeight: 'bold'
-                  }}
-                    allowFontScaling={false}
-                  >Score: {score.current}</Text>
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }} >
+                  <Image
+                    source={require('../../../assets/reward_100_points.png')}
+                    style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
                 </View>
-                {scoreFlash_100.current &&
-                  <View style={{
-                    position: 'absolute',
-                    top: windowHeight / 2 - WidthRatio(30),
-                    left: windowWidth / 2 - WidthRatio(30),
-                    zIndex: -7,
-                    padding: HeightRatio(20),
-                    borderRadius: HeightRatio(20)
-                  }} >
-                    <Image
-                      source={require('../../../assets/reward_100_points.png')}
-                      style={{ height: WidthRatio(60), width: WidthRatio(60) }} />
-                  </View>
-                }
-                {scoreFlash_1000.current &&
-                  <View style={{
-                    position: 'absolute',
-                    top: windowHeight / 2 - HeightRatio(300),
-                    left: windowWidth / 2 - HeightRatio(300),
-                    zIndex: -7,
-                    padding: HeightRatio(20),
-                    borderRadius: HeightRatio(20)
-                  }} >
-                    <Image
-                      source={require('../../../assets/reward_1000_points_0.png')}
-                      style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
-                  </View>
-                }
-              </>
-              :
-              <>
+              }
+              {scoreFlash_1000.current &&
                 <View style={{
                   position: 'absolute',
+                  top: windowHeight / 2 - HeightRatio(300),
+                  left: windowWidth / 2 - HeightRatio(300),
                   zIndex: -7,
-                  top: windowHeight * 0.84,
-                  left: HeightRatio(30),
-                  backgroundColor: 'transparent',
-                }}>
-                  <Text style={{
-                    color: 'rgba(255, 255, 255, 1.0)',
-                    fontSize: WidthRatio(12),
-                    fontWeight: 'bold'
-                  }}
-                    allowFontScaling={false}
-                  >Score: 0</Text>
+                  padding: HeightRatio(20),
+                  borderRadius: HeightRatio(20)
+                }} >
+                  <Image
+                    source={require('../../../assets/reward_1000_points_0.png')}
+                    style={{ height: HeightRatio(600), width: HeightRatio(600) }} />
                 </View>
+              }
+            </>
+            :
+            <>
+              <View style={{
+                position: 'absolute',
+                zIndex: -7,
+                top: windowHeight * 0.84,
+                left: HeightRatio(30),
+                backgroundColor: 'transparent',
+              }}>
+                <Text style={{
+                  color: 'rgba(255, 255, 255, 1.0)',
+                  fontSize: WidthRatio(12),
+                  fontWeight: 'bold'
+                }}
+                  allowFontScaling={false}
+                >Score: 0</Text>
+              </View>
 
-              </>
-            }
-          </>
+            </>
+          }
+        </>
 
         {/* Letter Blocks */}
         <Animated.View
@@ -2071,7 +2117,7 @@ export const Stage_6_Projectile = (props) => {
             }}
               allowFontScaling={false}
             >PAUSE</Text>
-            
+
             {authState.current == true ?
               <>
                 <Text style={{
@@ -2447,7 +2493,7 @@ export const Stage_6_Projectile = (props) => {
                   stage20: false,
                   currentScore: 0,
                   currentLevel: 0,
-                  currentCrashes: 0, 
+                  currentCrashes: 0,
                   isGameInProgress: false
                 })
                 setTimeout(() => {
