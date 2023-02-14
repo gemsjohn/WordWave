@@ -53,8 +53,8 @@ export const GameScreen = ({ navigation }) => {
     const userID = useRef(null);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(false);
-    const [stage2, setStage2] = useState(true);
+    const [stage1, setStage1] = useState(true);
+    const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
     const [stage5, setStage5] = useState(false);
