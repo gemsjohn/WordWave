@@ -84,7 +84,8 @@ export const AlienEffect_middle = () => {
         require('../../assets/Char_5.png'),
         require('../../assets/Char_6.png'),
         require('../../assets/Char_7.png'),
-        require('../../assets/Char_8.png')
+        require('../../assets/Char_8.png'),
+
     ]
     const [characterIndex, setCharacterIndex] = useState(0)
     const [selected, setSelected] = useState(false);

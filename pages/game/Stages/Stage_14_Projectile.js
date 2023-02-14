@@ -101,7 +101,7 @@ export const Stage_14_Projectile = (props) => {
   // [LETTER ANIMATION] - - - - - 
   const hasUpdatedLetterBlock = useRef(false);
   const [letter, setLetter] = useState('');
-  const letterPosition = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current
+  const letterPosition = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current
   const animation = useRef(null)
   const count = new Animated.Value(mainState.current.currentLetter_countValue);
   const countRef = useRef(mainState.current.currentLetter_countValue);
@@ -110,7 +110,7 @@ export const Stage_14_Projectile = (props) => {
 
   // [HOMING MISSILE ANIMATION 0] - - - - - 
   const hasUpdatedObstacle_homing_missile = useRef(false);
-  const obstaclePosition_homing_missile = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
+  const obstaclePosition_homing_missile = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: -WidthRatio(100) })).current;
   const obstacleRotation_homing_missile = useRef(new Animated.Value(0)).current;
   const obstacle_homing_missile = useRef(null)
   const obstacleOpacity_homing_missile = useRef(new Animated.Value(0)).current;
@@ -120,7 +120,7 @@ export const Stage_14_Projectile = (props) => {
 
   // [HOMING MISSLE DISTRIBUTOR ANIMATION 1] - - - - - 
   const hasUpdatedObstacle_Distributor = useRef(false);
-  const obstaclePosition_Distributor = useRef(new Animated.ValueXY({ x: WidthRatio(500), y: -WidthRatio(100) })).current;
+  const obstaclePosition_Distributor = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: -WidthRatio(100) })).current;
   const obstacleRotation_Distributor = useRef(new Animated.Value(0)).current;
   const obstacle_Distributor = useRef(null)
   const inputIterator = useRef(0)
@@ -128,42 +128,42 @@ export const Stage_14_Projectile = (props) => {
 
   // [OBSTACLE ANIMATION 0] - - - - - 
   const hasUpdatedObstacle_0 = useRef(false);
-  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_0 = useRef(new Animated.Value(0)).current;
   const obstacle_0 = useRef(null)
   let timeoutObstacle_0_ID;
 
   // [OBSTACLE ANIMATION 1] - - - - - 
   const hasUpdatedObstacle_1 = useRef(false);
-  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_1 = useRef(new Animated.Value(0)).current;
   const obstacle_1 = useRef(null)
   let timeoutObstacle_1_ID;
 
   // [OBSTACLE ANIMATION 2] - - - - - 
   const hasUpdatedObstacle_2 = useRef(false);
-  const obstaclePosition_2 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_2 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_2 = useRef(new Animated.Value(0)).current;
   const obstacle_2 = useRef(null)
   let timeoutObstacle_2_ID;
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 0] - - - - - 
   const hasUpdatedObstacle_right_angle_0 = useRef(false);
-  const obstaclePosition_right_angle_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstaclePosition_right_angle_0 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: -HeightRatio(100) })).current;
   const obstacleRotation_right_angle_0 = useRef(new Animated.Value(0)).current;
   const obstacle_right_angle_0 = useRef(null)
   let timeoutObstacle_right_angle_0_ID;
 
   // [OBSTACLE ANIMATION RIGHT ANGLE 1] - - - - - 
   const hasUpdatedObstacle_right_angle_1 = useRef(false);
-  const obstaclePosition_right_angle_1 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstaclePosition_right_angle_1 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: -HeightRatio(100) })).current;
   const obstacleRotation_right_angle_1 = useRef(new Animated.Value(0)).current;
   const obstacle_right_angle_1 = useRef(null)
   let timeoutObstacle_right_angle_1_ID;
 
   // [AUXILLIARY GREEN HEALTH ANIMATION] - - - - - 
   const hasUpdatedAuxilliaryGreenHealth = useRef(false);
-  const auxilliaryGreenHealth_Position = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const auxilliaryGreenHealth_Position = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const auxilliaryGreenHealth = useRef(null)
   let timeoutAuxilliaryGreenHealth_ID;
   const retainAuxilliaryGreenHealth = useRef(false);
@@ -395,7 +395,7 @@ export const Stage_14_Projectile = (props) => {
       setLetter(wordPlusSeven.current[count._value]);
       // let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_0 = Math.floor(Math.random() * (HeightRatio(670) - HeightRatio(30))) + HeightRatio(30);
-      letterPosition.setValue({ x: WidthRatio(370), y: localYPos_0 })
+      letterPosition.setValue({ x: WidthRatio(400), y: localYPos_0 })
       animation.current = Animated.parallel([
         Animated.timing(letterPosition.x, {
           toValue: -WidthRatio(40),
@@ -537,7 +537,7 @@ export const Stage_14_Projectile = (props) => {
       ]
 
 
-      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: localYPos_0 });
+      obstaclePosition_Distributor.setValue({ x: WidthRatio(400), y: localYPos_0 });
       obstacle_Distributor.current =
         Animated.parallel([
           Animated.timing(obstaclePosition_Distributor.x, {
@@ -570,7 +570,7 @@ export const Stage_14_Projectile = (props) => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_0.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_0.setValue({ x: WidthRatio(400), y: localYPos_0 });
       obstacleRotation_0.setValue(0);
 
       obstacle_0.current = Animated.parallel([
@@ -611,7 +611,7 @@ export const Stage_14_Projectile = (props) => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_1.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_1.setValue({ x: WidthRatio(400), y: localYPos_0 });
       obstacleRotation_1.setValue(0);
 
       obstacle_1.current = Animated.parallel([
@@ -652,7 +652,7 @@ export const Stage_14_Projectile = (props) => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_2 = Math.floor(Math.random() * HeightRatio(670));
 
-      obstaclePosition_2.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_2.setValue({ x: WidthRatio(400), y: localYPos_0 });
       obstacleRotation_2.setValue(0);
 
       obstacle_2.current = Animated.parallel([
@@ -767,7 +767,7 @@ export const Stage_14_Projectile = (props) => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
       auxilliaryGreenHealth.current = Animated.parallel([
         Animated.timing(auxilliaryGreenHealth_Position.x, {
@@ -811,7 +811,7 @@ export const Stage_14_Projectile = (props) => {
       setObj1({
         x: mainState.current.charX + WidthRatio(64) + mainState.current.charWidth / 2,
         y: mainState.current.charY - mainState.current.charHeight / 1.2,
-        width: mainState.current.charWidth,
+        width: mainState.current.charWidth*0.6,
         height: mainState.current.charHeight,
         // radius: mainState.current.charHeight / 2,
       });
@@ -1033,7 +1033,7 @@ export const Stage_14_Projectile = (props) => {
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
@@ -1110,47 +1110,47 @@ export const Stage_14_Projectile = (props) => {
 
     if (animation.current != null) {
       animation.current.stop();
-      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+      letterPosition.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedLetterBlock.current = false;
     }
 
     if (obstacle_homing_missile.current != null) {
       obstacle_homing_missile.current.stop();
-      obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_homing_missile.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_homing_missile.current = false;
     }
 
     if (obstacle_Distributor.current != null) {
       obstacle_Distributor.current.stop();
-      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_Distributor.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_Distributor.current = false;
     }
     if (obstacle_0.current != null) {
       obstacle_0.current.stop();
-      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_0.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_0.current = false;
     }
 
     if (obstacle_1.current != null) {
       obstacle_1.current.stop();
-      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_1.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_1.current = false;
     }
     if (obstacle_2.current != null) {
       obstacle_2.current.stop();
-      obstaclePosition_2.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_2.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_2.current = false;
     }
 
     if (obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
     }
 
     if (auxilliaryGreenHealth.current != null) {
       auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
@@ -1312,60 +1312,60 @@ export const Stage_14_Projectile = (props) => {
 
     if (animation.current != null) {
       animation.current.stop();
-      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+      letterPosition.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedLetterBlock.current = false;
     }
 
     if (obstacle_homing_missile.current != null) {
       obstacle_homing_missile.current.stop();
-      obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_homing_missile.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_homing_missile.current = false;
     }
 
     if (obstacle_Distributor.current != null) {
       obstacle_Distributor.current.stop();
-      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_Distributor.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_Distributor.current = false;
     }
 
     if (obstacle_0.current != null) {
       obstacle_0.current.stop();
-      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_0.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_0.current = false;
     }
 
     if (obstacle_1.current != null) {
       obstacle_1.current.stop();
-      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_1.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_1.current = false;
     }
     if (obstacle_2.current != null) {
       obstacle_2.current.stop();
-      obstaclePosition_2.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_2.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_2.current = false;
     }
 
     if (obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
     if (obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
     }
 
     if (auxilliaryGreenHealth.current != null) {
       auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
     if (auxilliaryGreenHealth.current != null) {
       auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
@@ -1534,60 +1534,60 @@ export const Stage_14_Projectile = (props) => {
 
     if (animation.current != null) {
       animation.current.stop();
-      letterPosition.setValue({ x: WidthRatio(500), y: 0 })
+      letterPosition.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedLetterBlock.current = false;
     }
 
     if (obstacle_homing_missile.current != null) {
       obstacle_homing_missile.current.stop();
-      obstaclePosition_homing_missile.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_homing_missile.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_homing_missile.current = false;
     }
 
     if (obstacle_Distributor.current != null) {
       obstacle_Distributor.current.stop();
-      obstaclePosition_Distributor.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_Distributor.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_Distributor.current = false;
     }
 
     if (obstacle_0.current != null) {
       obstacle_0.current.stop();
-      obstaclePosition_0.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_0.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_0.current = false;
     }
 
     if (obstacle_1.current != null) {
       obstacle_1.current.stop();
-      obstaclePosition_1.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_1.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_1.current = false;
     }
     if (obstacle_2.current != null) {
       obstacle_2.current.stop();
-      obstaclePosition_2.setValue({ x: WidthRatio(500), y: 0 })
+      obstaclePosition_2.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_2.current = false;
     }
 
     if (obstacle_right_angle_0.current != null) {
       obstacle_right_angle_0.current.stop();
-      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_0.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_right_angle_0.current = false;
     }
 
     if (obstacle_right_angle_1.current != null) {
       obstacle_right_angle_1.current.stop();
-      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(370), y: 0 })
+      obstaclePosition_right_angle_1.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedObstacle_right_angle_1.current = false;
     }
 
     if (auxilliaryGreenHealth.current != null) {
       auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
     if (auxilliaryGreenHealth.current != null) {
       auxilliaryGreenHealth.current.stop();
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
       hasUpdatedAuxilliaryGreenHealth.current = false;
     }
 
@@ -2151,7 +2151,7 @@ export const Stage_14_Projectile = (props) => {
               allowFontScaling={false}
             >PAUSE</Text>
             
-            {authState.current == true ?
+            {authState.current = true && userID.current != null ?
               <>
                 <Text style={{
                   color: 'white',
@@ -2423,7 +2423,7 @@ export const Stage_14_Projectile = (props) => {
                 </View>
               </View>
               <View style={{ margin: HeightRatio(40), alignSelf: 'center' }} />
-              {authState.current = true ?
+              {authState.current = true && userID.current != null ?
                 <>
                   {!tokenWarning ?
                     <View style={{

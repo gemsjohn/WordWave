@@ -106,7 +106,7 @@ export const Stage_11_Projectile = (props) => {
   // [LETTER ANIMATION] - - - - - 
   const hasUpdatedLetterBlock = useRef(false);
   const [letter, setLetter] = useState('');
-  const letterPosition = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current
+  const letterPosition = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current
   const animation = useRef(null)
   const count = new Animated.Value(mainState.current.currentLetter_countValue);
   const countRef = useRef(mainState.current.currentLetter_countValue);
@@ -115,64 +115,64 @@ export const Stage_11_Projectile = (props) => {
 
   // [OBSTACLE ANIMATION 0] - - - - - 
   const hasUpdatedObstacle_0 = useRef(false);
-  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_0 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_0 = useRef(new Animated.Value(0)).current;
   const obstacle_0 = useRef(null)
   let timeoutObstacle_0_ID;
 
   // [OBSTACLE ANIMATION 1] - - - - - 
   const hasUpdatedObstacle_1 = useRef(false);
-  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_1 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_1 = useRef(new Animated.Value(0)).current;
   const obstacle_1 = useRef(null)
   let timeoutObstacle_1_ID;
 
   // [OBSTACLE ANIMATION 2] - - - - - 
   const hasUpdatedObstacle_2 = useRef(false);
-  const obstaclePosition_2 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_2 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_2 = useRef(new Animated.Value(0)).current;
   const obstacle_2 = useRef(null)
   let timeoutObstacle_2_ID;
 
   // [OBSTACLE ANIMATION 3] - - - - - 
   const hasUpdatedObstacle_3 = useRef(false);
-  const obstaclePosition_3 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_3 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_3 = useRef(new Animated.Value(0)).current;
   const obstacle_3 = useRef(null)
   let timeoutObstacle_3_ID;
 
   // [OBSTACLE ANIMATION 4] - - - - - 
   const hasUpdatedObstacle_4 = useRef(false);
-  const obstaclePosition_4 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_4 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_4 = useRef(new Animated.Value(0)).current;
   const obstacle_4 = useRef(null)
   let timeoutObstacle_4_ID;
 
   // [OBSTACLE ANIMATION 5] - - - - - 
   const hasUpdatedObstacle_5 = useRef(false);
-  const obstaclePosition_5 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_5 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_5 = useRef(new Animated.Value(0)).current;
   const obstacle_5 = useRef(null)
   let timeoutObstacle_5_ID;
 
   // [OBSTACLE ANIMATION 6] - - - - - 
   const hasUpdatedObstacle_6 = useRef(false);
-  const obstaclePosition_6 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const obstaclePosition_6 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const obstacleRotation_6 = useRef(new Animated.Value(0)).current;
   const obstacle_6 = useRef(null)
   let timeoutObstacle_6_ID;
 
   // [OSCILLATOR ANIMATION] - - - - - 
   const hasUpdatedOscillator = useRef(false);
-  const oscillatorPosition = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const oscillatorPosition = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const oscillatorRotation = useRef(new Animated.Value(0)).current;
   const oscillator = useRef(null)
   let timeoutOscillator_ID;
 
   // [OBSTACLE ANIMATION TWINS 0] - - - - - 
   const hasUpdatedObstacle_twins_0 = useRef(false);
-  const obstaclePosition_twins_0 = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
-  const obstaclePosition_twins_0_divergence = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: -HeightRatio(100) })).current;
+  const obstaclePosition_twins_0 = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: -HeightRatio(100) })).current;
+  const obstaclePosition_twins_0_divergence = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: -HeightRatio(100) })).current;
   const obstacleOpacity_twins_0 = useRef(new Animated.Value(0)).current;
   const obstacle_twins_0 = useRef(null)
   let timeoutObstacle_twins_0_ID;
@@ -180,7 +180,7 @@ export const Stage_11_Projectile = (props) => {
 
   // [AUXILLIARY GREEN HEALTH ANIMATION] - - - - - 
   const hasUpdatedAuxilliaryGreenHealth = useRef(false);
-  const auxilliaryGreenHealth_Position = useRef(new Animated.ValueXY({ x: WidthRatio(370), y: 0 })).current;
+  const auxilliaryGreenHealth_Position = useRef(new Animated.ValueXY({ x: WidthRatio(400), y: 0 })).current;
   const auxilliaryGreenHealth = useRef(null)
   let timeoutAuxilliaryGreenHealth_ID;
   const retainAuxilliaryGreenHealth = useRef(false);
@@ -436,7 +436,7 @@ export const Stage_11_Projectile = (props) => {
         localYPos_0 = (WidthRatio(26) * roundedNum)
       }
 
-      letterPosition.setValue({ x: WidthRatio(370), y: localYPos_0 })
+      letterPosition.setValue({ x: WidthRatio(400), y: localYPos_0 })
       animation.current = Animated.parallel([
         Animated.timing(letterPosition.x, {
           toValue: -WidthRatio(40),
@@ -480,7 +480,7 @@ export const Stage_11_Projectile = (props) => {
       hasUpdatedObstacle_0.current = false;
       let localYPos_0 = WidthRatio(26) * 0 // 0 - 6
 
-      obstaclePosition_0.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_0.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
 
       obstacle_0.current = Animated.parallel([
@@ -504,7 +504,7 @@ export const Stage_11_Projectile = (props) => {
       hasUpdatedObstacle_1.current = false;
       let localYPos_0 = WidthRatio(26) * 1 // 0 - 6
 
-      obstaclePosition_1.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_1.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
       obstacle_1.current = Animated.parallel([
         Animated.timing(obstaclePosition_1.x, {
@@ -529,7 +529,7 @@ export const Stage_11_Projectile = (props) => {
       let randomDuration = Math.floor(Math.random() * (4000 - 800 + 1) + 1000);
       let localYPos_0 = WidthRatio(26) * 2 // 0 - 6
 
-      obstaclePosition_2.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_2.setValue({ x: WidthRatio(400), y: localYPos_0 });
       // obstacleRotation_2.setValue(0);
 
       obstacle_2.current = Animated.parallel([
@@ -554,7 +554,7 @@ export const Stage_11_Projectile = (props) => {
       hasUpdatedObstacle_3.current = false;
       let localYPos_0 = WidthRatio(26) * 3 // 0 - 6
 
-      obstaclePosition_3.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_3.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
       obstacle_3.current = Animated.parallel([
         Animated.timing(obstaclePosition_3.x, {
@@ -576,7 +576,7 @@ export const Stage_11_Projectile = (props) => {
       hasUpdatedObstacle_4.current = false;
       let localYPos_0 = WidthRatio(26) * 4 // 0 - 6
 
-      obstaclePosition_4.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_4.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
       obstacle_4.current = Animated.parallel([
         Animated.timing(obstaclePosition_4.x, {
@@ -598,7 +598,7 @@ export const Stage_11_Projectile = (props) => {
       hasUpdatedObstacle_5.current = false;
       let localYPos_0 = WidthRatio(26) * 5 // 0 - 6
 
-      obstaclePosition_5.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_5.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
       obstacle_5.current = Animated.parallel([
         Animated.timing(obstaclePosition_5.x, {
@@ -619,7 +619,7 @@ export const Stage_11_Projectile = (props) => {
       hasUpdatedObstacle_6.current = false;
       let localYPos_0 = WidthRatio(26) * 6 // 0 - 6
 
-      obstaclePosition_6.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      obstaclePosition_6.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
       obstacle_6.current = Animated.parallel([
         Animated.timing(obstaclePosition_6.x, {
@@ -656,7 +656,7 @@ export const Stage_11_Projectile = (props) => {
         boundaries = [{ bottom: HeightRatio(80), top: HeightRatio(510) }]
       }
 
-      oscillatorPosition.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      oscillatorPosition.setValue({ x: WidthRatio(400), y: localYPos_0 });
       oscillatorRotation.setValue(0);
 
       oscillator.current = Animated.parallel([
@@ -725,8 +725,8 @@ export const Stage_11_Projectile = (props) => {
       let localYPos_2 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_3 = Math.floor(Math.random() * (HeightRatio(770) - HeightRatio(-100) + 1)) + HeightRatio(-100);
 
-      obstaclePosition_twins_0.setValue({ x: WidthRatio(370), y: localYPos_0 });
-      obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(370), y: localYPos_2 });
+      obstaclePosition_twins_0.setValue({ x: WidthRatio(400), y: localYPos_0 });
+      obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(400), y: localYPos_2 });
 
       // obstacleRotation_twins_0.setValue(0);
 
@@ -813,7 +813,7 @@ export const Stage_11_Projectile = (props) => {
       let localYPos_0 = Math.floor(Math.random() * HeightRatio(670));
       let localYPos_1 = Math.floor(Math.random() * HeightRatio(670));
 
-      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: localYPos_0 });
+      auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: localYPos_0 });
 
       auxilliaryGreenHealth.current = Animated.parallel([
         Animated.timing(auxilliaryGreenHealth_Position.x, {
@@ -857,7 +857,7 @@ export const Stage_11_Projectile = (props) => {
       setObj1({
         x: mainState.current.charX + WidthRatio(64) + mainState.current.charWidth / 2,
         y: mainState.current.charY - mainState.current.charHeight / 1.2,
-        width: mainState.current.charWidth,
+        width: mainState.current.charWidth*0.6,
         height: mainState.current.charHeight,
         // radius: mainState.current.charHeight / 2,
       });
@@ -1164,7 +1164,7 @@ export const Stage_11_Projectile = (props) => {
     setTimeout(() => {
       if (crashes.current < 2 && auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedAuxilliaryGreenHealth.current = false;
         retainAuxilliaryGreenHealth.current = false;
 
@@ -1238,68 +1238,68 @@ export const Stage_11_Projectile = (props) => {
 
       if (animation.current != null) {
         animation.current.stop();
-        letterPosition.setValue({ x: WidthRatio(370), y: 0 })
+        letterPosition.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedLetterBlock.current = false;
       }
 
       if (obstacle_0.current != null) {
         obstacle_0.current.stop();
-        obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_0.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_0.current = false;
       }
 
       if (obstacle_1.current != null) {
         obstacle_1.current.stop();
-        obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_1.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_1.current = false;
       }
 
       if (obstacle_2.current != null) {
         obstacle_2.current.stop();
-        obstaclePosition_2.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_2.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_2.current = false;
       }
 
       if (obstacle_3.current != null) {
         obstacle_3.current.stop();
-        obstaclePosition_3.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_3.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_3.current = false;
       }
 
       if (obstacle_4.current != null) {
         obstacle_4.current.stop();
-        obstaclePosition_4.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_4.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_4.current = false;
       }
 
       if (obstacle_5.current != null) {
         obstacle_5.current.stop();
-        obstaclePosition_5.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_5.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_5.current = false;
       }
 
       if (obstacle_6.current != null) {
         obstacle_6.current.stop();
-        obstaclePosition_6.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_6.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_6.current = false;
       }
 
       if (oscillator.current != null) {
         oscillator.current.stop();
-        oscillatorPosition.setValue({ x: WidthRatio(370), y: 0 })
+        oscillatorPosition.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedOscillator.current = false;
       }
 
       if (obstacle_twins_0.current != null) {
         obstacle_twins_0.current.stop();
-        obstaclePosition_twins_0.setValue({ x: WidthRatio(370), y: 0 })
-        obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_twins_0.setValue({ x: WidthRatio(400), y: 0 })
+        obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_twins_0.current = false;
       }
 
       if (auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(500), y: 0 })
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedAuxilliaryGreenHealth.current = false;
       }
 
@@ -1502,68 +1502,68 @@ export const Stage_11_Projectile = (props) => {
 
       if (animation.current != null) {
         animation.current.stop();
-        letterPosition.setValue({ x: WidthRatio(370), y: 0 })
+        letterPosition.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedLetterBlock.current = false;
       }
 
       if (obstacle_0.current != null) {
         obstacle_0.current.stop();
-        obstaclePosition_0.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_0.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_0.current = false;
       }
 
       if (obstacle_1.current != null) {
         obstacle_1.current.stop();
-        obstaclePosition_1.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_1.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_1.current = false;
       }
 
       if (obstacle_2.current != null) {
         obstacle_2.current.stop();
-        obstaclePosition_2.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_2.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_2.current = false;
       }
 
       if (obstacle_3.current != null) {
         obstacle_3.current.stop();
-        obstaclePosition_3.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_3.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_3.current = false;
       }
 
       if (obstacle_4.current != null) {
         obstacle_4.current.stop();
-        obstaclePosition_4.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_4.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_4.current = false;
       }
 
       if (obstacle_5.current != null) {
         obstacle_5.current.stop();
-        obstaclePosition_5.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_5.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_5.current = false;
       }
 
       if (obstacle_6.current != null) {
         obstacle_6.current.stop();
-        obstaclePosition_6.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_6.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_6.current = false;
       }
 
       if (oscillator.current != null) {
         oscillator.current.stop();
-        oscillatorPosition.setValue({ x: WidthRatio(370), y: 0 })
+        oscillatorPosition.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedOscillator.current = false;
       }
 
       if (obstacle_twins_0.current != null) {
         obstacle_twins_0.current.stop();
-        obstaclePosition_twins_0.setValue({ x: WidthRatio(370), y: 0 })
-        obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(370), y: 0 })
+        obstaclePosition_twins_0.setValue({ x: WidthRatio(400), y: 0 })
+        obstaclePosition_twins_0_divergence.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedObstacle_twins_0.current = false;
       }
 
       if (auxilliaryGreenHealth.current != null) {
         auxilliaryGreenHealth.current.stop();
-        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(370), y: 0 })
+        auxilliaryGreenHealth_Position.setValue({ x: WidthRatio(400), y: 0 })
         hasUpdatedAuxilliaryGreenHealth.current = false;
       }
 
@@ -2200,7 +2200,7 @@ export const Stage_11_Projectile = (props) => {
               allowFontScaling={false}
             >PAUSE</Text>
             
-            {authState.current == true ?
+            {authState.current = true && userID.current != null ?
               <>
                 <Text style={{
                   color: 'white',
@@ -2430,7 +2430,7 @@ export const Stage_11_Projectile = (props) => {
                 </View>
               </View>
               <View style={{ margin: HeightRatio(40), alignSelf: 'center' }} />
-              {authState.current = true ?
+              {authState.current = true && userID.current != null ?
                 <>
                   {!tokenWarning ?
                     <View style={{

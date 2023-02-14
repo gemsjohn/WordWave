@@ -613,7 +613,7 @@ export const GameScreen = ({ navigation }) => {
                 {loadingComplete ?
                     <>
                         {isGameInProgress &&
-                            <View style={{ position: 'absolute', zIndex: 20 }} >
+                            <View style={{ position: 'absolute', zIndex: 20, }} >
                                 <CharacterAndJoystick />
                             </View>
                         }

@@ -15,7 +15,7 @@ export const CharacterAndJoystick = () => {
   let newY;
   let newX;
   let charHeight = HeightRatio(68);
-  let charWidth = WidthRatio(24);
+  let charWidth = WidthRatio(30);
   let offset = WidthRatio(190);
   const objectPosition = useRef({ x: 0, y: 0 });
   let yInit = [];
@@ -128,7 +128,8 @@ export const CharacterAndJoystick = () => {
             style={{
               right: windowWidth - WidthRatio(98),
               top: 0,
-              flexDirection: 'row'
+              flexDirection: 'column',
+              
             }}>
             <Image
               source={mainState.current.selectedCharacter != null ? mainState.current.selectedCharacter : require('../../assets/Char_4.png')}
@@ -136,6 +137,7 @@ export const CharacterAndJoystick = () => {
             {/* <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', padding: 4, height: 23, width: 29, borderRadius: 10, left: -95, top: 16 }}>
                 <Text style={{ color: '#ccff33', fontSize: 10 }}>{posY - charHeight/2}</Text>
               </View> */}
+              {/* <View style={{backgroundColor: 'blue', height: charHeight, width: charWidth*0.6, alignSelf: 'center'}}/> */}
           </View>
           <View style={Styling.joystick_knob} />
 
