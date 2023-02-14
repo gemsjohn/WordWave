@@ -1440,7 +1440,7 @@ export const Stage_9_Projectile = (props) => {
         stage: '9',
         score: `${mainState.current.currentScore}`,
         level: `${mainState.current.currentLevel}`,
-        crashes: `${mainState.current.currentCrashes}`,
+        crashes: `${mainState.current.currentCrashes != null ? mainState.current.currentCrashes : 0}`,
         letterPocket: `${mainState.current.currentLetterPocket}`,
         displayLetters: `${mainState.current.currentDisplayLetters}`,
         currentLetterCountValue: `${mainState.current.currentLetter_countValue}`

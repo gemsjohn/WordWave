@@ -256,7 +256,7 @@ export const Stage_3_Projectile = (props) => {
 
     } else {
       console.log("Stage, #2 fromSavedGame: true")
-
+      console.log(mainState.current.currentCrashes)
       crashes.current = mainState.current.currentCrashes;
       setContinuousEndGameCall(false)
 
@@ -1029,7 +1029,7 @@ export const Stage_3_Projectile = (props) => {
         stage: '3',
         score: `${mainState.current.currentScore}`,
         level: `${mainState.current.currentLevel}`,
-        crashes: `${mainState.current.currentCrashes}`,
+        crashes: `${mainState.current.currentCrashes != null ? mainState.current.currentCrashes : 0}`,
         letterPocket: `${mainState.current.currentLetterPocket}`,
         displayLetters: `${mainState.current.currentDisplayLetters}`,
         currentLetterCountValue: `${mainState.current.currentLetter_countValue}`

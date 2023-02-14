@@ -967,7 +967,7 @@ export const Stage_1_Projectile = (props) => {
         stage: '1',
         score: `${mainState.current.currentScore}`,
         level: `${mainState.current.currentLevel}`,
-        crashes: `${mainState.current.currentCrashes}`,
+        crashes: `${mainState.current.currentCrashes != null ? mainState.current.currentCrashes : 0}`,
         letterPocket: `${mainState.current.currentLetterPocket}`,
         displayLetters: `${mainState.current.currentDisplayLetters}`,
         currentLetterCountValue: `${mainState.current.currentLetter_countValue}`
@@ -1029,6 +1029,7 @@ export const Stage_1_Projectile = (props) => {
   }
 
   const continueGame = () => {
+    console.log("CONTINUE GAME")
     // console.log("CONTINUE GAME");
     // console.log("- - - - - -")
     // console.log(mainState.current.stage1)
