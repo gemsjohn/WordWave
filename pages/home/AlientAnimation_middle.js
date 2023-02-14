@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState, useContext, useRef, useCallback } from 'react';
+import { useEffect, useState, useContext, useRef, useCallback, useLayoutEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { CommonActions } from '@react-navigation/native';
 import { useMutation, useQuery } from '@apollo/client';
@@ -26,6 +26,8 @@ import {
     faSolid,
     faFlagCheckered,
     faSliders,
+    faCheck,
+    faX
 } from '@fortawesome/free-solid-svg-icons'
 import { Tokens } from './Tokens';
 
@@ -35,6 +37,8 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const AlienEffect_middle = () => {
+    const { mainState, setMainState } = useContext(MainStateContext);
+
     const alienPosition = useRef(new Animated.ValueXY({ x: HeightRatio(0), y: 0 })).current
     const animation = useRef(null);
     let timeoutAlien_ID;
@@ -73,8 +77,34 @@ export const AlienEffect_middle = () => {
     }
 
 
+    
+
+    const CharacterArray = [
+        require('../../assets/Char_4.png'),
+        require('../../assets/Char_5.png'),
+        require('../../assets/Char_6.png'),
+        require('../../assets/Char_7.png'),
+        require('../../assets/Char_8.png')
+    ]
+    const [characterIndex, setCharacterIndex] = useState(0)
+    const [selected, setSelected] = useState(false);
+
+    const handleChangeCharacter = (input) => {
+        if (input == 'forward') {
+            setCharacterIndex((characterIndex + 1) % CharacterArray.length);
+        } else if (input == 'back') {
+            setCharacterIndex((CharacterArray.length + characterIndex - 1) % CharacterArray.length);
+        }
+    }
+
     useEffect(() => {
         AlienAnimation();
+
+        if (mainState.current.selectedCharacter != null) {
+            setSelected(true)
+        } else {
+            setSelected(false)
+        }
 
         return () => {
             clearTimeout(timeoutAlien_ID);
@@ -82,8 +112,29 @@ export const AlienEffect_middle = () => {
         };
     }, [])
 
+
+
     return (
         <>
+        {!selected &&
+            <TouchableOpacity
+                onPress={() => !selected ? handleChangeCharacter('back') : null}
+                style={{
+                    position: 'absolute',
+                    zIndex: 30,
+                    top: HeightRatio(600),
+                    backgroundColor: 'rgba(25, 255, 255, 0.2)',
+                    height: HeightRatio(100),
+                    width: HeightRatio(100),
+                    borderRadius: HeightRatio(100)
+                }}
+            >
+                <Image
+                    style={{ height: HeightRatio(35), width: HeightRatio(35), alignSelf: 'center', marginTop: HeightRatio(35) }}
+                    source={require('../../assets/left_arrow.png')} />
+            </TouchableOpacity>
+            }
+
             {/* ALIEN */}
             <Animated.View
                 style={
@@ -97,7 +148,7 @@ export const AlienEffect_middle = () => {
                     ]}
             >
                 <Image
-                    source={require('../../assets/home_background_image.png')}
+                    source={mainState.current.selectedCharacter != null ? mainState.current.selectedCharacter : CharacterArray[characterIndex]}
                     style={{
                         width: windowWidth,
                         height: HeightRatio(900),
@@ -106,6 +157,80 @@ export const AlienEffect_middle = () => {
                     }}
                 />
             </Animated.View>
+            {selected ?
+                <TouchableOpacity
+                    onPress={() => {
+                        setSelected(false)
+                        setMainState({
+                            selectedCharacter: null
+                        })
+                        setCharacterIndex(mainState.current.characterIndex)
+                    }}
+                    style={{
+                        position: 'absolute',
+                        zIndex: 30,
+                        top: HeightRatio(950),
+                        // left: HeightRatio(700),
+                        alignSelf: 'center',
+                        backgroundColor: 'red',
+                        height: HeightRatio(100),
+                        width: HeightRatio(100),
+                        borderRadius: HeightRatio(100)
+                    }}
+                >
+                    <FontAwesomeIcon
+                        icon={faSolid, faX}
+                        style={{ ...Styling.modalFontAwesomeIcons, color: 'white', marginTop: HeightRatio(35), marginLeft: HeightRatio(20) }}
+                        size={20}
+                    />
+                </TouchableOpacity>
+                :
+                <TouchableOpacity
+                    onPress={() => {
+                        setSelected(true)
+                        setMainState({
+                            selectedCharacter: CharacterArray[characterIndex],
+                            characterIndex: characterIndex
+                        })
+                    }}
+                    style={{
+                        position: 'absolute',
+                        zIndex: 30,
+                        top: HeightRatio(950),
+                        // left: HeightRatio(700),
+                        alignSelf: 'center',
+                        backgroundColor: '#35faa9',
+                        height: HeightRatio(100),
+                        width: HeightRatio(100),
+                        borderRadius: HeightRatio(100)
+                    }}
+                >
+                    <FontAwesomeIcon
+                        icon={faSolid, faCheck}
+                        style={{ ...Styling.modalFontAwesomeIcons, color: 'black', marginTop: HeightRatio(35), marginLeft: HeightRatio(20) }}
+                        size={20}
+                    />
+                </TouchableOpacity>
+            }
+            {!selected &&
+            <TouchableOpacity
+                onPress={() => !selected ? handleChangeCharacter('forward') : null}
+                style={{
+                    position: 'absolute',
+                    zIndex: 30,
+                    top: HeightRatio(600),
+                    left: HeightRatio(700),
+                    backgroundColor: 'rgba(25, 255, 255, 0.2)',
+                    height: HeightRatio(100),
+                    width: HeightRatio(100),
+                    borderRadius: HeightRatio(100)
+                }}
+            >
+                <Image
+                    style={{ height: HeightRatio(35), width: HeightRatio(35), alignSelf: 'center', marginTop: HeightRatio(35) }}
+                    source={require('../../assets/right_arrow.png')} />
+            </TouchableOpacity>
+            }
         </>
     );
 }

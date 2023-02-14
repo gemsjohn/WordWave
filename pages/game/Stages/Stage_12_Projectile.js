@@ -1658,7 +1658,7 @@ export const Stage_12_Projectile = (props) => {
     crashes.current = mainState.current.currentCrashes;
     setLetterPocket(mainState.current.currentLetterPocket)
 
-    if (mainState.current.currentDisplayLetters != []l) {
+    if (mainState.current.currentDisplayLetters != []) {
       wordPlusSeven.current = mainState.current.currentWordPlusSeven;
       setDisplayLetters(mainState.current.currentDisplayLetters)
       countRef.current = mainState.current.currentLetter_countValue + 1;
