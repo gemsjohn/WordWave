@@ -81,10 +81,11 @@ export const AlienEffect_middle = () => {
 
     const CharacterArray = [
         require('../../assets/Char_4.png'),
-        require('../../assets/Char_5.png'),
-        require('../../assets/Char_6.png'),
+        // require('../../assets/Char_5.png'),
+        // require('../../assets/Char_6.png'),
         require('../../assets/Char_7.png'),
         require('../../assets/Char_8.png'),
+        require('../../assets/Char_9.png'),
 
     ]
     const [characterIndex, setCharacterIndex] = useState(0)

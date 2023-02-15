@@ -766,7 +766,7 @@ export const HomeScreen = ({ navigation }) => {
                             <TouchableOpacity
                                 onPress={() => setDisplaySignUpModal(!displaySignUpModal)}>
                                 <View style={{
-                                    backgroundColor: 'white',
+                                    backgroundColor: 'red',
                                     height: HeightRatio(20),
                                     width: HeightRatio(120),
                                     borderRadius: HeightRatio(100),

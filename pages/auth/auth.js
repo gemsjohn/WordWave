@@ -35,7 +35,7 @@ export const Auth = ({ navigation }) => {
   const { mainState, setMainState } = useContext(MainStateContext);
   // const [authState, setAuthState] = useState(false);
   const [displayLoading, setDisplayLoading] = useState(false);
-  const [newUser, setNewUser] = useState(false);
+  const [newUser, setNewUser] = useState(true);
   const [displayLoginFailureAlert, setDisplayLoginFailureAlert] = useState(false)
 
 
@@ -254,13 +254,13 @@ export const Auth = ({ navigation }) => {
   return (
     <>
       <View style={{ ...Styling.container, backgroundColor: 'black' }}>
-        <ImageBackground
+        {/* <ImageBackground
           source={require('../../assets/home_background.png')}
           resizeMode="cover"
           style={{
             justifyContent: 'center',
             height: '100%'
-          }}>
+          }}> */}
           <SafeAreaView style={{ height: '90%', marginBottom: 32, marginTop: 32 }}>
             <ScrollView style={{}} keyboardShouldPersistTaps={'always'} keyboardDismissMode="on-drag">
 
@@ -626,7 +626,7 @@ export const Auth = ({ navigation }) => {
                               </Text>
                             </View>
                           </TouchableOpacity>
-                          {displayForgotPasswordContent &&
+                          {displayForgotPasswordContent ?
                             <View
                               style={{
                                 alignSelf: 'center',
@@ -838,39 +838,43 @@ export const Auth = ({ navigation }) => {
                                 </Modal>
                               </View>
                             </View>
+                            :
+                            <>
+                            <Text
+                              style={{ color: 'white', alignSelf: 'center', fontSize: HeightRatio(60), margin: HeightRatio(20), fontWeight: 'bold' }}
+                              allowFontScaling={false}
+                            >
+                              Don't have an account?
+                            </Text>
+                            <TouchableOpacity onPress={() => { setNewUser(true) }}>
+                              <View
+                                style={{
+                                  backgroundColor: 'blue',
+                                  display: 'flex',
+                                  justifyContent: 'flex-start',
+                                  padding: HeightRatio(20),
+                                  borderRadius: HeightRatio(80),
+                                  alignSelf: 'center',
+                                  margin: HeightRatio(20),
+                                  width: WidthRatio(160)
+                                }}
+                              >
+                                <Text
+                                  style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
+                                  allowFontScaling={false}
+                                >
+                                  SIGN UP
+                                </Text>
+                              </View>
+                            </TouchableOpacity>
+                          </>
                           }
                           </View>
 
                           {/* <View style={Styling.profileDivisionLine}></View> */}
 
 
-                          <Text
-                            style={{ color: 'white', alignSelf: 'center', fontSize: HeightRatio(60), margin: HeightRatio(20), fontWeight: 'bold' }}
-                            allowFontScaling={false}
-                          >
-                            Don't have an account?
-                          </Text>
-                          <TouchableOpacity onPress={() => { setNewUser(true) }}>
-                            <View
-                              style={{
-                                backgroundColor: 'blue',
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                padding: HeightRatio(20),
-                                borderRadius: HeightRatio(80),
-                                alignSelf: 'center',
-                                margin: HeightRatio(20),
-                                width: WidthRatio(160)
-                              }}
-                            >
-                              <Text
-                                style={{ color: 'white', fontSize: HeightRatio(40), fontWeight: 'bold', alignSelf: 'center' }}
-                                allowFontScaling={false}
-                              >
-                                SIGN UP
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
+                          
 
                         </View>
                       }
@@ -882,7 +886,7 @@ export const Auth = ({ navigation }) => {
               <View style={{ marginBottom: HeightRatio(400) }}></View>
             </ScrollView>
           </SafeAreaView>
-        </ImageBackground>
+        {/* </ImageBackground> */}
         <Navbar nav={navigation} auth={isTokenValid} position={'absolute'} from={'auth'} />
       </View>
 

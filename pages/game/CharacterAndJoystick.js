@@ -133,7 +133,7 @@ export const CharacterAndJoystick = () => {
             }}>
             <Image
               source={mainState.current.selectedCharacter != null ? mainState.current.selectedCharacter : require('../../assets/Char_4.png')}
-              style={{ height: charHeight, width: charWidth }} />
+              style={{ height: charHeight*1.2, width: charWidth }} />
             {/* <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)', padding: 4, height: 23, width: 29, borderRadius: 10, left: -95, top: 16 }}>
                 <Text style={{ color: '#ccff33', fontSize: 10 }}>{posY - charHeight/2}</Text>
               </View> */}

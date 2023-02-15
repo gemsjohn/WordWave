@@ -989,7 +989,7 @@ export const Stage_9_Projectile = (props) => {
 
     // Trianlge A
     const triangleListener_a = obstacleTriangle_a.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(12), width: WidthRatio(12) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10) }
 
       if (isTriangleColliding_a(obj1, obj2)) {
         if (!hasUpdatedTriangle_a.current) {
@@ -1010,7 +1010,7 @@ export const Stage_9_Projectile = (props) => {
 
     // Trianlge B
     const triangleListener_b = obstacleTriangle_b.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(12), width: WidthRatio(12) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10) }
 
       if (isTriangleColliding_b(obj1, obj2)) {
         if (!hasUpdatedTriangle_a.current) {
@@ -1031,7 +1031,7 @@ export const Stage_9_Projectile = (props) => {
 
     // Trianlge C
     const triangleListener_c = obstacleTriangle_c.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(12), width: WidthRatio(12) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10) }
 
       if (isTriangleColliding_c(obj1, obj2)) {
         if (!hasUpdatedTriangle_a.current) {
@@ -1052,7 +1052,7 @@ export const Stage_9_Projectile = (props) => {
 
     // Trianlge D
     const triangleListener_d = obstacleTriangle_d.addListener((value) => {
-      let obj2 = { x: value.x, y: value.y, height: WidthRatio(12), width: WidthRatio(12) }
+      let obj2 = { x: value.x, y: value.y, height: WidthRatio(10), width: WidthRatio(10) }
 
       if (isTriangleColliding_d(obj1, obj2)) {
         if (!hasUpdatedTriangle_a.current) {

@@ -44,7 +44,8 @@ import {
     ActivityIndicator,
     UIManager,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    SafeAreaView
 } from 'react-native';
 
 export const GameScreen = ({ navigation }) => {
@@ -53,14 +54,14 @@ export const GameScreen = ({ navigation }) => {
     const userID = useRef(null);
     const [loadingComplete, setLoadingComplete] = useState(false)
     const [retainUpgradeToSpecial_0, setRetainUpgradeToSpecial_0] = useState(false)
-    const [stage1, setStage1] = useState(true);
+    const [stage1, setStage1] = useState(false);
     const [stage2, setStage2] = useState(false);
     const [stage3, setStage3] = useState(false);
     const [stage4, setStage4] = useState(false);
     const [stage5, setStage5] = useState(false);
     const [stage6, setStage6] = useState(false);
     const [stage7, setStage7] = useState(false);
-    const [stage8, setStage8] = useState(false);
+    const [stage8, setStage8] = useState(true);
     const [stage9, setStage9] = useState(false);
     const [stage10, setStage10] = useState(false);
     const [stage11, setStage11] = useState(false);
@@ -605,7 +606,7 @@ export const GameScreen = ({ navigation }) => {
 
     return (
         <>
-            <View style={{}}>
+            <SafeAreaView style={{}}>
                 <Image
                     source={require('../../assets/background_0.png')}
                     style={{ position: 'absolute', zIndex: -10, width: '100%' }}
@@ -727,7 +728,7 @@ export const GameScreen = ({ navigation }) => {
                     </View>
                 }
 
-            </View>
+            </SafeAreaView>
             {!gameOverScreen &&
                 <Navbar nav={navigation} position={'absolute'} from={'game'} />
             }
