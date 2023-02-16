@@ -198,8 +198,14 @@ export const Tokens = (props) => {
                             }}
                         />
                         <View style={{ alignSelf: 'center' }}>
-                            <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(300) }}>Buy 25 Tokens</Text>
-                            <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(100) }}>{priceString}</Text>
+                            <Text
+                                allowFontScaling={false} 
+                                style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(300) }}
+                            >Buy 25 Tokens</Text>
+                            <Text 
+                                allowFontScaling={false}
+                                style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(100) }}
+                            >{priceString}</Text>
                         </View>
                     </>
                 }
@@ -215,8 +221,14 @@ export const Tokens = (props) => {
                             }}
                         />
                         <View style={{ alignSelf: 'center' }}>
-                            <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(300) }}>Buy 50 Tokens</Text>
-                            <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(100) }}>{priceString}</Text>
+                            <Text 
+                                allowFontScaling={false}
+                                style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(300) }}
+                            >Buy 50 Tokens</Text>
+                            <Text 
+                                allowFontScaling={false} 
+                                style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(100) }}
+                            >{priceString}</Text>
                         </View>
                     </>
                 }
@@ -232,8 +244,14 @@ export const Tokens = (props) => {
                             }}
                         />
                         <View style={{ alignSelf: 'center' }}>
-                            <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(300) }}>Buy 100 Tokens</Text>
-                            <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(100) }}>{priceString}</Text>
+                            <Text 
+                                allowFontScaling={false}
+                                style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(300) }}
+                            >Buy 100 Tokens</Text>
+                            <Text 
+                                allowFontScaling={false}
+                                style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(100) }}
+                            >{priceString}</Text>
                         </View>
                     </>
                 }
@@ -249,8 +267,14 @@ export const Tokens = (props) => {
                             }}
                         />
                         <View style={{ alignSelf: 'center' }}>
-                            <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(300) }}>Buy 200 Tokens</Text>
-                            <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(100) }}>{priceString}</Text>
+                            <Text 
+                                allowFontScaling={false}
+                                style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(300) }}
+                            >Buy 200 Tokens</Text>
+                            <Text 
+                                allowFontScaling={false}
+                                style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(100) }}
+                            >{priceString}</Text>
                         </View>
                     </>
                 }
@@ -335,8 +359,10 @@ export const Tokens = (props) => {
                         borderColor: 'white'
                     }}
                 >
-                    <Text style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(500), margin: HeightRatio(10) }}>
-                        Purchase successful. <Text style={{ color: '#35faa9' }}>Refresh.</Text>
+                    <Text 
+                    allowFontScaling={false}
+                        style={{ color: 'white', fontSize: HeightRatio(40), width: HeightRatio(500), margin: HeightRatio(10) }}>
+                        Purchase successful. <Text allowFontScaling={false} style={{ color: '#35faa9' }}>Refresh.</Text>
                     </Text>
 
                 </View>
