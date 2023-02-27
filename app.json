@@ -39,6 +39,16 @@
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
-    }
+    },
+    "plugins": [
+      [
+      "expo-build-properties",
+      {
+        "android": {
+          "enableProguardInReleaseBuilds": true
+        }
+      }
+    ]
+    ]
   }
 }

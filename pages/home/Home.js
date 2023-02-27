@@ -31,6 +31,7 @@ import {
     faSolid,
     faFlagCheckered,
     faSliders,
+    faX
 } from '@fortawesome/free-solid-svg-icons'
 import { Tokens } from './Tokens';
 
@@ -143,7 +144,7 @@ export const HomeScreen = ({ navigation }) => {
                                     <AlienEffect_middle style={{ position: 'absolute', zIndex: 0, top: HeightRatio(200) }} />
 
                                     {/* <Index_Behind style={{ position: 'absolute', zIndex: -10 }} /> */}
-                                    
+
 
                                     {displayUsername ?
                                         <>
@@ -752,6 +753,132 @@ export const HomeScreen = ({ navigation }) => {
 
             </View>
             <Modal
+                animationType="none"
+                transparent={true}
+                visible={displaySignUpModal}
+                onRequestClose={() => {
+                    setDisplaySignUpModal(!displaySignUpModal);
+                    // setMainState({
+                    //   displaySignUpModal: false
+                    // })
+                }}
+            >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+                    <View style={{ borderTopRightRadius: HeightRatio(10) }}>
+                        <View
+                            style={{
+                                borderWidth: 2,
+                                borderColor: '#ff0076',
+                                alignSelf: 'center',
+                                borderRadius: 100,
+                                position: 'absolute',
+                                zIndex: 10,
+                                top: HeightRatio(-100),
+                                right: 20
+
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setDisplaySignUpModal(!displaySignUpModal);
+                                    setMainState({
+                                        displaySignUpModal: false
+                                    })
+                                }}
+                                style={{
+                                    borderRadius: 100,
+                                    height: HeightRatio(125),
+                                    width: HeightRatio(125),
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faSolid, faX}
+                                    style={{
+                                        color: 'white',
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ flexDirection: 'column' }}>
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    fontSize: HeightRatio(55),
+                                    fontWeight: 'bold',
+                                    // alignSelf: 'center',
+                                    marginTop: HeightRatio(40)
+                                }}
+                                allowFontScaling={false}>
+                                SIGN UP!
+                            </Text>
+                            <View style={{ height: 10 }}></View>
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    fontSize: HeightRatio(45),
+                                    fontWeight: 'bold',
+                                    width: windowWidth * 0.9,
+                                    alignSelf: 'center',
+                                    width: windowWidth - WidthRatio(50)
+                                }}
+                                allowFontScaling={false}>
+                                Enhance your gaming experience and put your skills on display by
+                                signing up or logging in and climbing to the top of the leaderboard!
+                            </Text>
+                            <View style={{ height: 10 }}></View>
+
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    fontSize: HeightRatio(45),
+                                    fontWeight: 'bold',
+                                    width: windowWidth * 0.9,
+                                    alignSelf: 'center',
+                                    width: windowWidth - WidthRatio(50)
+                                }}
+                                allowFontScaling={false}>
+                                As an added bonus, you'll also receive <Text style={{ color: '#fcd01f' }}>5 free</Text> tokens,
+                                providing you with the chance to keep playing even if you hit a setback.
+                            </Text>
+
+
+                            <TouchableOpacity
+                                onPress={() => navigation.dispatch(resetActionAuth)}
+                                style={{ ...Styling.modalWordButton, marginTop: 10 }}
+                            >
+                                <View style={{
+                                    backgroundColor: 'blue',
+                                    display: 'flex',
+                                    justifyContent: 'flex-start',
+                                    padding: HeightRatio(20),
+                                    borderRadius: HeightRatio(40),
+                                    alignSelf: 'center',
+                                    // margin: HeightRatio(10),
+                                    width: windowWidth - WidthRatio(50)
+                                }}>
+                                    <Text
+                                        style={{
+                                            color: 'white',
+                                            fontSize: HeightRatio(40),
+                                            fontWeight: 'bold',
+                                            alignSelf: 'center'
+                                        }}
+                                        allowFontScaling={false}
+                                    >
+                                        Sign Up or Login
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+
+
+                        </View>
+                        {/* </LinearGradient> */}
+                    </View>
+                </View>
+            </Modal>
+            {/* <Modal
                 animationType="slide"
                 transparent={true}
                 visible={displaySignUpModal}
@@ -846,7 +973,7 @@ export const HomeScreen = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
-            </Modal>
+            </Modal> */}
 
             <StatusBar
                 barStyle="default"

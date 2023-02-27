@@ -137,7 +137,7 @@ export const Navbar = (props) => {
             {minimizeNav ?
                 <View
                     style={{
-                        position: `${props.position}`,
+                        position: 'absolute',
                         zIndex: 10,
                         left: 0,
                         right: 0,
