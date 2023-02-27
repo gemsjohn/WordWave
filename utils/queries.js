@@ -43,6 +43,7 @@ export const GET_ME = gql`
       tokens
       resetToken
       resetTokenExpiry
+      currentVersion
     }
   }
 `;
@@ -88,6 +89,7 @@ export const GET_USER_BY_ID = gql`
       tokens
       resetToken
       resetTokenExpiry
+      currentVersion
     }
   }
 `;

@@ -748,7 +748,7 @@ export const HomeScreen = ({ navigation }) => {
                     </>
                 }
                 {/* </ImageBackground> */}
-                <Navbar nav={navigation} auth={mainState.current.authState} position={'absolute'} from={'profile'} />
+                <Navbar nav={navigation} auth={mainState.current.authState} position={'absolute'} from={'home'} />
 
 
             </View>
