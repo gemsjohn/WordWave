@@ -138,7 +138,8 @@ export const HomeScreen = ({ navigation }) => {
                                 }
                             >
                                 <View style={{}}>
-
+                                {!displaySignUpModal &&
+                                <>
                                     {/* <Index_Top style={{ position: 'absolute', zIndex: 10 }} /> */}
 
                                     <AlienEffect_middle style={{ position: 'absolute', zIndex: 0, top: HeightRatio(200) }} />
@@ -258,8 +259,8 @@ export const HomeScreen = ({ navigation }) => {
                                     }
 
                                     {/* MAIN CONTENT */}
-                                    {!displaySignUpModal &&
-                                        <>
+                                    
+                                        
                                             {/* OBJECTIVE */}
                                             <TouchableOpacity
                                                 onPress={() => {
@@ -763,7 +764,7 @@ export const HomeScreen = ({ navigation }) => {
                     // })
                 }}
             >
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{ borderTopRightRadius: HeightRatio(10) }}>
                         <View
                             style={{

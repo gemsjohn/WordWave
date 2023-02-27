@@ -10,7 +10,7 @@ import { MainStateContext } from '../App';
 import moment from 'moment';
 import { Styling } from '../Styling';
 import { Tokens } from '../pages/home/Tokens';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 
 
 const {
@@ -34,7 +34,7 @@ const HeightRatio = (size) => {
 
 export const Navbar = (props) => {
     const { mainState, setMainState } = useContext(MainStateContext);
-    const version = Constants.manifest2.extra.expoClient.version;
+    // const version = Constants.manifest2.extra.expoClient.version;
 
     const [isTokenValid, setIsTokenValid] = useState(null);
     const [minimizeNav, setMinimizeNav] = useState(false);
@@ -177,9 +177,9 @@ export const Navbar = (props) => {
                 </View>
                 :
                 <>
-                    {props.from == 'home' &&
+                    {/* {props.from == 'home' &&
                         <>
-                            {typeof userByID?.user.currentVersion === 'string' && typeof version === 'string' && userByID?.user.currentVersion != version ?
+                            {typeof userByID?.user.currentVersion === 'string' && typeof version === 'string' && userByID?.user.currentVersion != version &&
                                
                                     <TouchableHighlight
                                         onPress={() => {
@@ -213,39 +213,11 @@ export const Navbar = (props) => {
                                             UPDATE
                                         </Text>
                                     </TouchableHighlight>
-                                :
-                                <View
-                                    style={{
-                                        position: 'absolute',
-                                        zIndex: 20,
-                                        // top: 0,
-                                        // left: 0,
-                                        // right: 0,
-                                        bottom: HeightRatio(70),
-                                        right: HeightRatio(30),
-                                        justifyContent: 'center',
-                                        alignSelf: 'flex-end',
-                                        backgroundColor: '#161b21',
-                                        flexDirection: 'row',
-                                        // padding: HeightRatio(10),
-                                        height: HeightRatio(40),
-                                        width: HeightRatio(80),
-                                        borderRadius: HeightRatio(30),
-                                        borderWidth: 2,
-                                        borderColor: '#35faa9'
-                                    }}
-                                >
-                                    <Text
-                                        style={{ color: 'white', fontSize: HeightRatio(18), textAlign: 'center', alignSelf: 'center' }}
-                                        allowFontScaling={false}
-                                    >
-                                        v{version}
-                                    </Text>
-                                </View>
+                                
                             }
                         </>
 
-                    }
+                    } */}
                     <View
                         style={{
                             position: `${props.position}`,
