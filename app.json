@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "Cosmic",
+    "name": "Cosmic Scramble: Space Runner",
+    "description": "Take to the stars in Cosmic Scramble, a fast-paced 2D runner game with intense arcade-style action! Fly, dodge, and collect your way through space in this thrilling adventure.",
     "slug": "cosmicScramble",
     "version": "1.2.7",
     "orientation": "portrait",
